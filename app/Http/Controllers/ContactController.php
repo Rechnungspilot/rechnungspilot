@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Contacts\Contact;
+use App\Http\Controllers\Controller;
 use App\Models\CustomFields\CustomField;
 use App\Receipts\Expense;
 use App\Receipts\Invoice;

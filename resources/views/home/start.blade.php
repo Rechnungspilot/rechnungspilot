@@ -17,9 +17,6 @@
             </div>
             <div class="card-body d-flex flex-column">
                 <p class="flex-grow-1">Nutze Rechnungspilot kostenlos und hilf mit den Service zu verbessern.<br /><a href="https://github.com/Rechnungspilot">View on Github</a></p>
-                <div>
-                    <a class="btn btn-secondary" href="/preise">Preis</a>
-                </div>
             </div>
         </div>
         <div class="card mb-4 shadow-sm">

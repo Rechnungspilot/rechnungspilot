@@ -37,6 +37,8 @@ Route::get('/impressum', function () {
     return view('impressum');
 })->name('impressum');
 
+Route::post('/contact', 'Guests\ContactController@store');
+
 Auth::routes();
 
 // Deployment
