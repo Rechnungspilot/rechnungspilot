@@ -16,7 +16,7 @@
         "laravel/framework": "^6.0",
         "laravel/horizon": "^3.0",
         "laravel/telescope": "^2.0",
-        "laravel/tinker": "^1.0",
+        "laravel/tinker": "^2.4",
         "laravelcollective/html": "^6.0",
         "league/flysystem-aws-s3-v3": "~1.0",
         "nemiah/php-fints": "^1.5",
