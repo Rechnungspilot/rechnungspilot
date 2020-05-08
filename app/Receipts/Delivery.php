@@ -94,7 +94,7 @@ class Delivery extends Receipt
 
     public function getMailBoilerplateAttribute()
     {
-        return Boilerplate::default(Boilerplate::STANDARD_DELIVERY_MAIL);
+        return Boilerplate::default(Boilerplate::STANDARD_DELIVERY_MAIL, $this->company_id);
     }
 
     protected function getNameFormat()
@@ -104,12 +104,12 @@ class Delivery extends Receipt
 
     protected function setTextAbove()
     {
-        $this->text_above = Boilerplate::default(Boilerplate::STANDARD_DELIVERY_ABOVE);
+        $this->text_above = Boilerplate::default(Boilerplate::STANDARD_DELIVERY_ABOVE, $this->company_id);
     }
 
     protected function setTextBelow()
     {
-        $this->text_below = Boilerplate::default(Boilerplate::STANDARD_DELIVERY_BELOW);
+        $this->text_below = Boilerplate::default(Boilerplate::STANDARD_DELIVERY_BELOW, $this->company_id);
     }
 
 }

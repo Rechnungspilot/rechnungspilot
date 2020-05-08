@@ -138,7 +138,7 @@ class Quote extends Receipt
 
     public function getMailBoilerplateAttribute()
     {
-        return Boilerplate::default(Boilerplate::STANDARD_QUOTE_MAIL);
+        return Boilerplate::default(Boilerplate::STANDARD_QUOTE_MAIL, $this->company_id);
     }
 
     protected function getNameFormat()
@@ -148,12 +148,12 @@ class Quote extends Receipt
 
     protected function setTextAbove()
     {
-        $this->text_above = Boilerplate::default(Boilerplate::STANDARD_QUOTE_ABOVE);
+        $this->text_above = Boilerplate::default(Boilerplate::STANDARD_QUOTE_ABOVE, $this->company_id);
     }
 
     protected function setTextBelow()
     {
-        $this->text_below = Boilerplate::default(Boilerplate::STANDARD_QUOTE_BELOW);
+        $this->text_below = Boilerplate::default(Boilerplate::STANDARD_QUOTE_BELOW, $this->company_id);
     }
 
     public function scopePossibleExpired($query)

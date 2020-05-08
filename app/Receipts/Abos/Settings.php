@@ -18,7 +18,7 @@ class Settings extends Model
 
     const SEND_MAIL_OPTIONS = [
         0 => 'Entwurf erstellen, manuell versenden',
-        // 1 => 'Entwurf erstellen, automatisch versenden',
+        1 => 'Entwurf erstellen, automatisch versenden',
     ];
 
     protected $casts = [

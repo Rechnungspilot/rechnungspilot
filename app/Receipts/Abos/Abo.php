@@ -103,9 +103,13 @@ class Abo extends Receipt
     {
         $invoices = [];
         foreach ($this->contacts as $key => $contact) {
-            $invoices[] = Invoice::from($this, [
+            $invoice = Invoice::from($this, [
                 'contact' => $contact,
             ]);
+            if ($this->settings->send_mail == 1) {
+                $invoice->send();
+            }
+            $invoices[] = $invoice;
         }
 
         $this->settings->setNextAt();

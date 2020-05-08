@@ -68,15 +68,17 @@ class Boilerplate extends Model
         'text',
     ];
 
-    public static function default(int $key) : string
+    public static function default(int $key, int $company_id) : string
     {
         $texts = [];
-        $boilerplates = self::where('standard', $key)->get();
+        $boilerplates = self::where('company_id', $company_id)
+            ->where('standard', $key)
+            ->get();
         foreach ($boilerplates as $key => $boilerplate) {
             $texts[] = $boilerplate->text;
         }
 
-        return join($texts, "\n\n");
+        return join("\n\n", $texts);
     }
 
     public function getStandardNameAttribute()

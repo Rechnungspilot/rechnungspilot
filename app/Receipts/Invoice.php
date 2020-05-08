@@ -259,7 +259,7 @@ class Invoice extends Receipt
 
     public function getMailBoilerplateAttribute()
     {
-        return Boilerplate::default(Boilerplate::STANDARD_INVOICE_MAIL);
+        return Boilerplate::default(Boilerplate::STANDARD_INVOICE_MAIL, $this->company_id);
     }
 
     public function getNumberLabelAttribute()
@@ -274,12 +274,12 @@ class Invoice extends Receipt
 
     protected function setTextAbove()
     {
-        $this->text_above = Boilerplate::default(Boilerplate::STANDARD_INVOICE_ABOVE);
+        $this->text_above = Boilerplate::default(Boilerplate::STANDARD_INVOICE_ABOVE, $this->company_id);
     }
 
     protected function setTextBelow()
     {
-        $this->text_below = Boilerplate::default(Boilerplate::STANDARD_INVOICE_BELOW);
+        $this->text_below = Boilerplate::default(Boilerplate::STANDARD_INVOICE_BELOW, $this->company_id);
     }
 
     public function scopeOutstanding($query)
