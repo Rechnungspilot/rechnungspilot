@@ -3722,16 +3722,16 @@
         },
         {
             "name": "symfony/finder",
-            "version": "v4.4.3",
+            "version": "v4.4.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/finder.git",
-                "reference": "3a50be43515590faf812fbd7708200aabc327ec3"
+                "reference": "5729f943f9854c5781984ed4907bbb817735776b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/finder/zipball/3a50be43515590faf812fbd7708200aabc327ec3",
-                "reference": "3a50be43515590faf812fbd7708200aabc327ec3",
+                "url": "https://api.github.com/repos/symfony/finder/zipball/5729f943f9854c5781984ed4907bbb817735776b",
+                "reference": "5729f943f9854c5781984ed4907bbb817735776b",
                 "shasum": ""
             },
             "require": {
@@ -3767,7 +3767,7 @@
             ],
             "description": "Symfony Finder Component",
             "homepage": "https://symfony.com",
-            "time": "2020-01-04T13:00:46+00:00"
+            "time": "2020-03-27T16:54:36+00:00"
         },
         {
             "name": "symfony/http-foundation",
@@ -4829,26 +4829,26 @@
     "packages-dev": [
         {
             "name": "barryvdh/laravel-debugbar",
-            "version": "v3.2.8",
+            "version": "v3.3.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/barryvdh/laravel-debugbar.git",
-                "reference": "18208d64897ab732f6c04a19b319fe8f1d57a9c0"
+                "reference": "57f2219f6d9efe41ed1bc880d86701c52f261bf5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/barryvdh/laravel-debugbar/zipball/18208d64897ab732f6c04a19b319fe8f1d57a9c0",
-                "reference": "18208d64897ab732f6c04a19b319fe8f1d57a9c0",
+                "url": "https://api.github.com/repos/barryvdh/laravel-debugbar/zipball/57f2219f6d9efe41ed1bc880d86701c52f261bf5",
+                "reference": "57f2219f6d9efe41ed1bc880d86701c52f261bf5",
                 "shasum": ""
             },
             "require": {
-                "illuminate/routing": "^5.5|^6",
-                "illuminate/session": "^5.5|^6",
-                "illuminate/support": "^5.5|^6",
-                "maximebf/debugbar": "~1.15.0",
+                "illuminate/routing": "^5.5|^6|^7",
+                "illuminate/session": "^5.5|^6|^7",
+                "illuminate/support": "^5.5|^6|^7",
+                "maximebf/debugbar": "^1.15.1",
                 "php": ">=7.0",
-                "symfony/debug": "^3|^4",
-                "symfony/finder": "^3|^4"
+                "symfony/debug": "^3|^4|^5",
+                "symfony/finder": "^3|^4|^5"
             },
             "require-dev": {
                 "laravel/framework": "5.5.x"
@@ -4893,7 +4893,7 @@
                 "profiler",
                 "webprofiler"
             ],
-            "time": "2019-08-29T07:01:03+00:00"
+            "time": "2020-05-05T10:53:32+00:00"
         },
         {
             "name": "beyondcode/laravel-dump-server",
@@ -5263,22 +5263,22 @@
         },
         {
             "name": "maximebf/debugbar",
-            "version": "v1.15.1",
+            "version": "v1.16.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/maximebf/php-debugbar.git",
-                "reference": "6c4277f6117e4864966c9cb58fb835cee8c74a1e"
+                "reference": "1a1605b8e9bacb34cc0c6278206d699772e1d372"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/maximebf/php-debugbar/zipball/6c4277f6117e4864966c9cb58fb835cee8c74a1e",
-                "reference": "6c4277f6117e4864966c9cb58fb835cee8c74a1e",
+                "url": "https://api.github.com/repos/maximebf/php-debugbar/zipball/1a1605b8e9bacb34cc0c6278206d699772e1d372",
+                "reference": "1a1605b8e9bacb34cc0c6278206d699772e1d372",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.6",
+                "php": "^7.1",
                 "psr/log": "^1.0",
-                "symfony/var-dumper": "^2.6|^3|^4"
+                "symfony/var-dumper": "^2.6|^3|^4|^5"
             },
             "require-dev": {
                 "phpunit/phpunit": "^5"
@@ -5291,7 +5291,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.15-dev"
+                    "dev-master": "1.16-dev"
                 }
             },
             "autoload": {
@@ -5320,7 +5320,7 @@
                 "debug",
                 "debugbar"
             ],
-            "time": "2019-09-24T14:55:42+00:00"
+            "time": "2020-05-06T07:06:27+00:00"
         },
         {
             "name": "mockery/mockery",
