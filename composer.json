@@ -20,7 +20,7 @@
         "laravelcollective/html": "^6.0",
         "league/flysystem-aws-s3-v3": "~1.0",
         "nemiah/php-fints": "^1.5",
-        "niklasravnsborg/laravel-pdf": "^3.1",
+        "niklasravnsborg/laravel-pdf": "^4.0",
         "spatie/laravel-cookie-consent": "^2.10",
         "spatie/laravel-permission": "^3.0",
         "staudenmeir/eloquent-json-relations": "^1.1",
