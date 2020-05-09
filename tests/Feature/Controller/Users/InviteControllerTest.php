@@ -67,5 +67,7 @@ class InviteControllerTest extends TestCase
         // Ist die Tabelle "invitations" wirklich notwendig?
         // User können gelöscht werden
         // Alternative uuid ändern??
+
+        $this->markTestIncomplete('This test has not been implemented yet.');
     }
 }

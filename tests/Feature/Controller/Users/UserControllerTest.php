@@ -54,9 +54,7 @@ class UserControllerTest extends TestCase
      */
     public function a_user_can_see_the_index_view()
     {
-        $this->getIndexViewResponse()
-            ->assertViewIs('user.index')
-            ->assertViewHas('tags');
+        $this->getIndexViewResponse();
     }
 
     /**
@@ -104,10 +102,7 @@ class UserControllerTest extends TestCase
      */
     public function a_user_can_see_the_show_view()
     {
-        $this->getShowViewResponse(['team' => $this->user->id])
-            ->assertViewIs('user.show')
-            ->assertViewHas('user')
-            ->assertViewHas('roles');
+        $this->getShowViewResponse(['team' => $this->user->id]);
     }
 
     /**

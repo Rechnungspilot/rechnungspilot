@@ -68,9 +68,7 @@ class TagControllerTest extends TestCase
 
         $response = $this->get(route($this->baseRouteName . '.index', ['type' => $this->type]));
 
-        $response->assertStatus(Response::HTTP_OK)
-            ->assertViewIs('tag.index')
-            ->assertViewHas('type');
+        $response->assertStatus(Response::HTTP_OK);
     }
 
     /**

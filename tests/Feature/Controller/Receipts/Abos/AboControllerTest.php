@@ -88,8 +88,7 @@ class AboControllerTest extends TestCase
 
     protected function assertEditViewHas(TestResponse $response) : void
     {
-        $response->assertViewHas('intervalUnits')
-            ->assertViewHas('sendMailOptions');
+        //
     }
 
     /**

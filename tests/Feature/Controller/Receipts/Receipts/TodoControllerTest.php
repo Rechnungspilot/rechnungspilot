@@ -68,6 +68,6 @@ class TodoControllerTest extends TestCase
 
         $this->signIn();
 
-        $this->getCollection(['type' => 'belege', 'receipt' => $this->receipt->id]);
+        $this->getCollection(['type' => 'belege', 'model' => $this->receipt->id]);
     }
 }

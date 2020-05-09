@@ -20,6 +20,6 @@ class OrderControllerTest extends TestCase
 
     protected function assertEditViewHas(TestResponse $response) : void
     {
-        $response->assertViewHas('users');
+        //
     }
 }

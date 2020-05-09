@@ -13,7 +13,7 @@ class UserFileTest extends TestCase
      */
     public function it_deletes_the_file_on_deleting()
     {
-
+        $this->markTestIncomplete('This test has not been implemented yet.');
     }
 
     /**
@@ -22,6 +22,7 @@ class UserFileTest extends TestCase
     public function it_has_a_path()
     {
         // folder/name.extension
+        $this->markTestIncomplete('This test has not been implemented yet.');
     }
 
     /**
@@ -30,5 +31,6 @@ class UserFileTest extends TestCase
     public function it_has_an_url()
     {
         // http://dateien.rechnungspilot.de/
+        $this->markTestIncomplete('This test has not been implemented yet.');
     }
 }

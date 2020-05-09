@@ -29,7 +29,7 @@ class ReceiptTest extends TestCase
      */
     public function it_deletes_its_statuses_before_being_deleted()
     {
-
+        $this->markTestIncomplete('This test has not been implemented yet.');
     }
 
     /**

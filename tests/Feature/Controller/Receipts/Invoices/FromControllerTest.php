@@ -13,6 +13,6 @@ class FromControllerTest extends TestCase
      */
     public function a_user_can_create_an_invoice_from_another_receipt()
     {
-
+        $this->markTestIncomplete('This test has not been implemented yet.');
     }
 }

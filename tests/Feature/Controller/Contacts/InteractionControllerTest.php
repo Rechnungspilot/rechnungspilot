@@ -49,10 +49,10 @@ class InteractionControllerTest extends TestCase
         $actions = [
             'index' => ['type' => 'kontakte', 'model' => $this->contact->id],
             'store' => ['type' => 'kontakte', 'model' => $this->contact->id],
-            'show' => ['transaction' => $id],
-            'edit' => ['transaction' => $id],
-            'update' => ['transaction' => $id],
-            'destroy' => ['transaction' => $id],
+            'show' => ['interaction' => $id],
+            'edit' => ['interaction' => $id],
+            'update' => ['interaction' => $id],
+            'destroy' => ['interaction' => $id],
         ];
         $this->a_guest_can_not_access($actions);
     }
@@ -64,7 +64,7 @@ class InteractionControllerTest extends TestCase
     {
         $modelOfADifferentCompany = factory($this->className)->create();
 
-        $this->a_user_can_not_see_things_from_a_different_company(['transaction' => $modelOfADifferentCompany->id]);
+        $this->a_user_can_not_see_things_from_a_different_company(['interaction' => $modelOfADifferentCompany->id]);
 
         $response = $this->json('get', route($this->baseRouteName . '.index', ['type' => 'kontakte', 'model' => $this->contact->id]))
             ->assertJsonCount(0, 'data');
@@ -96,9 +96,7 @@ class InteractionControllerTest extends TestCase
 
         $model = $this->createInteraction();
 
-        $this->getShowViewResponse(['interaction' => $model->id])
-            ->assertViewIs($this->baseViewPath . '.show')
-            ->assertViewHas('model');
+        $this->getShowViewResponse(['interaction' => $model->id]);
     }
 
     /**
@@ -108,9 +106,7 @@ class InteractionControllerTest extends TestCase
     {
         $model = $this->createInteraction();
 
-        $this->getEditViewResponse(['interaction' => $model->id])
-            ->assertViewIs($this->baseViewPath . '.edit')
-            ->assertViewHas('model');
+        $this->getEditViewResponse(['interaction' => $model->id]);
     }
 
     /**

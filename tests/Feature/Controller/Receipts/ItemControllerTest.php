@@ -131,10 +131,7 @@ class ItemControllerTest extends TestCase
     {
         $receiptItem = $this->createReceiptItem();
 
-        $this->getEditViewResponse(['receiptItem' => $receiptItem->id])
-            ->assertViewIs('receiptitem.edit')
-            ->assertViewHas('receiptitem')
-            ->assertViewHas('units');
+        $this->getEditViewResponse(['receiptItem' => $receiptItem->id]);
     }
 
     /**

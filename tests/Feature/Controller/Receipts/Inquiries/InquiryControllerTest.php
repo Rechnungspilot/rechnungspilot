@@ -26,9 +26,7 @@ class InquiryControllerTest extends TestCase
 
         $model = $this->createReceipt();
 
-        $response = $this->getEditViewResponse([$this->getBaseRouteParameter() => $model->id])
-            ->assertViewIs($this->getBaseRouteParameter() . '.edit')
-            ->assertViewHas('model');
+        $response = $this->getEditViewResponse([$this->getBaseRouteParameter() => $model->id]);
     }
 
     /**

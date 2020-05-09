@@ -47,9 +47,7 @@ class SetPasswordControllerTest extends TestCase
         ]);
 
         $response = $this->get($user->createPasswordUrl)
-            ->assertStatus(Response::HTTP_OK)
-            ->assertViewIs('auth.passwords.set')
-            ->assertViewHas('user');
+            ->assertStatus(Response::HTTP_OK);
     }
 
     /**

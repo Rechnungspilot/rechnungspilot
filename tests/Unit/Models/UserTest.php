@@ -18,4 +18,16 @@ class UserTest extends TestCase
 
         $this->assertEquals(route('team.show', ['team' => $user->id]), $user->path);
     }
+
+    /**
+     * @test
+     */
+    public function it_gets_its_initals()
+    {
+        $model = factory(User::class)->create([
+            'firstname' => 'John',
+            'lastname' => 'Doe'
+        ]);
+        $this->assertEquals('JD', $model->initials);
+    }
 }

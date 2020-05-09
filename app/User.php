@@ -92,7 +92,7 @@ class User extends Authenticatable
 
     public function getInitialsAttribute()
     {
-        return $this->attributes['firstname']{0} . $this->attributes['lastname']{0};
+        return substr($this->attributes['firstname'], 0, 1) . substr($this->attributes['lastname'], 0, 1);
     }
 
     public function getCreatePasswordUrlAttribute() : string

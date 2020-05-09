@@ -51,9 +51,7 @@ class ContactControllerTest extends TestCase
      */
     public function a_user_can_see_the_index_view()
     {
-        $this->getIndexViewResponse()
-            ->assertViewIs('contact.index')
-            ->assertViewHas('tags');
+        $this->getIndexViewResponse();
     }
 
     /**
@@ -173,12 +171,7 @@ class ContactControllerTest extends TestCase
             'company_id' => $this->user->company_id,
         ]);
 
-        $this->getShowViewResponse(['kontakte' => $contact->id])
-            ->assertViewIs('contact.show')
-            ->assertViewHas('contact')
-            ->assertViewHas('net')
-            ->assertViewHas('tax_value')
-            ->assertViewHas('gross');
+        $this->getShowViewResponse(['kontakte' => $contact->id]);
     }
 
     /**
@@ -190,12 +183,7 @@ class ContactControllerTest extends TestCase
             'company_id' => $this->user->company_id,
         ]);
 
-        $this->getEditViewResponse(['kontakte' => $contact->id])
-            ->assertViewIs('contact.edit')
-            ->assertViewHas('contact')
-            ->assertViewHas('tags')
-            ->assertViewHas('terms')
-            ->assertViewHas('termsExpense');
+        $this->getEditViewResponse(['kontakte' => $contact->id]);
     }
 
     /**

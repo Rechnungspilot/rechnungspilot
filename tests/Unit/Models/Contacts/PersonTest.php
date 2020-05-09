@@ -15,7 +15,7 @@ class PersonTest extends TestCase
      */
     public function it_sets_the_default_invoice()
     {
-
+        $this->markTestIncomplete('This test has not been implemented yet.');
     }
 
     /**
@@ -23,7 +23,7 @@ class PersonTest extends TestCase
      */
     public function it_sets_the_default_quote()
     {
-
+        $this->markTestIncomplete('This test has not been implemented yet.');
     }
 
     /**
@@ -55,6 +55,6 @@ class PersonTest extends TestCase
      */
     public function it_knows_if_it_is_deletable()
     {
-
+        $this->markTestIncomplete('This test has not been implemented yet.');
     }
 }

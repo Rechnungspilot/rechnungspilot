@@ -123,9 +123,7 @@ class PersonControllerTest extends TestCase
 
         $response = $this->get(route($this->baseRouteName . '.edit', ['contact' => $this->contact->id, 'person' => $person->id]));
 
-        $response->assertStatus(Response::HTTP_OK)
-            ->assertViewIs('contact.person.edit')
-            ->assertViewHas('person');
+        $response->assertStatus(Response::HTTP_OK);
     }
 
     /**
