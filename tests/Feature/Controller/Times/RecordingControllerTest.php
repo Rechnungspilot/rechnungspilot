@@ -52,7 +52,6 @@ class RecordingControllerTest extends TestCase
         $id = factory($this->className)->create()->id;
 
         $actions = [
-            'index' => [],
             'store' => [],
             'destroy' => ['time' => $id],
         ];
