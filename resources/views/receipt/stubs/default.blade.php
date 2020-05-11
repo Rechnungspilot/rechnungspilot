@@ -149,7 +149,9 @@
                     <th width="15%" style="text-align: right;">Menge</th>
                     <th width="15%" style="text-align: left;">Einheit</th>
                     <th width="15%" style="text-align: right;">Preis</th>
-                    <th width="15%" style="text-align: right;">USt.</th>
+                    @if($company->sales_tax)
+                        <th width="15%" style="text-align: right;">USt.</th>
+                    @endif
                     <th width="15%" style="text-align: right;">Betrag</th>
                 </tr>
             </thead>
@@ -160,12 +162,14 @@
                         <td style="text-align: right;">{{ number_format($item->quantity, 2, ',', '.') }}</td>
                         <td style="">{{ $item->unit_id ? $item->unit->name : '' }}</td>
                         <td style="text-align: right;">{{ number_format($item->unit_price, $item->item->decimals, ',', '.') }} €</td>
-                        <td style="text-align: right;">{{ number_format($item->tax * 100, 2, ',', '.') }}%</td>
+                        @if($company->sales_tax)
+                            <td style="text-align: right;">{{ number_format($item->tax * 100, 2, ',', '.') }}%</td>
+                        @endif
                         <td style="text-align: right;">{{ number_format($item->net / 100, 2, ',', '.') }} €</td>
                     </tr>
                     @if($item->description)
                         <tr>
-                            <td colspan="6"><div class="text-muted">{!! nl2br(e($item->description)) !!}</div></td>
+                            <td colspan="{{ $company->sales_tax ? '6' : '5' }}"><div class="text-muted">{!! nl2br(e($item->description)) !!}</div></td>
                         </tr>
                     @endif
                 @endforeach
@@ -173,35 +177,44 @@
             </tbody>
             <tfoot>
                 <tr style="height: 10px;">
-                    <td colspan="6"></td>
+                    <td colspan="{{ $company->sales_tax ? '6' : '5' }}"></td>
                 </tr>
-                </tr>
-                <tr>
-                    <td style="">Zwischensumme</td>
-                    <td style=""></td>
-                    <td style=""></td>
-                    <td style=""></td>
-                    <td style=""></td>
-                    <td style="text-align: right; ">{{ number_format($receipt->net / 100, 2, ',', '.') }} €</td>
-                </tr>
-                @foreach($receipt->tax as $tax)
-                    <tr style="">
-                        <td>Ust.</td>
-                        <td></td>
-                        <td></td>
-                        <td style="text-align: right;">{{ number_format($tax['net'] / 100, 2, ',', '.') }} €</td>
-                        <td style="text-align: right;">{{ $tax['tax'] * 100 }} %</td>
-                        <td style="text-align: right;">{{ number_format($tax['value'] / 100, 2, ',', '.') }} €</td>
+                @if($company->sales_tax)
+                    <tr>
+                        <td style="">Zwischensumme</td>
+                        <td style=""></td>
+                        <td style=""></td>
+                        <td style=""></td>
+                        <td style=""></td>
+                        <td style="text-align: right; ">{{ number_format($receipt->net / 100, 2, ',', '.') }} €</td>
                     </tr>
-                @endforeach
-                <tr style="">
-                    <td style="">Bruttosumme</td>
-                    <td style=""></td>
-                    <td style=""></td>
-                    <td style=""></td>
-                    <td style=""></td>
-                    <td style="text-align: right; ">{{ number_format($receipt->gross / 100, 2, ',', '.') }} €</td>
-                </tr>
+                    @foreach($receipt->tax as $tax)
+                        <tr style="">
+                            <td>Ust.</td>
+                            <td></td>
+                            <td></td>
+                            <td style="text-align: right;">{{ number_format($tax['net'] / 100, 2, ',', '.') }} €</td>
+                            <td style="text-align: right;">{{ $tax['tax'] * 100 }} %</td>
+                            <td style="text-align: right;">{{ number_format($tax['value'] / 100, 2, ',', '.') }} €</td>
+                        </tr>
+                    @endforeach
+                    <tr style="">
+                        <td style="">Bruttosumme</td>
+                        <td style=""></td>
+                        <td style=""></td>
+                        <td style=""></td>
+                        <td style=""></td>
+                        <td style="text-align: right; ">{{ number_format($receipt->gross / 100, 2, ',', '.') }} €</td>
+                    </tr>
+                @else
+                    <tr style="">
+                        <td style="">Gesamt</td>
+                        <td style=""></td>
+                        <td style=""></td>
+                        <td style=""></td>
+                        <td style="text-align: right; ">{{ number_format($receipt->net / 100, 2, ',', '.') }} €</td>
+                    </tr>
+                @endif
             </tfoot>
         </table>
     @endif

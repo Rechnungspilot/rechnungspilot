@@ -34,7 +34,7 @@
                         <th width="10%">Einheit</th>
                         <th class="text-right" width="10%">Preis</th>
                         <th class="text-right" width="5%">%</th>
-                        <th class="text-right" width="10%">Ust.</th>
+                        <th class="text-right" width="10%" v-if="model.company.sales_tax">Ust.</th>
                         <th class="text-right" width="10%">Betrag</th>
                         <th class="text-right" width="5%"></th>
                         <th class="text-right" width="10%"></th>
@@ -42,7 +42,7 @@
                 </thead>
                 <tbody>
                     <template v-for="(item, index) in items">
-                        <row :item="item" :key="item.id" :selected="(selected.indexOf(item.id) == -1) ? false : true" :units="units" @deleted="remove(index)" @updated="updated(index, $event)" @input="toggleSelected"></row>
+                        <row :item="item" :key="item.id" :selected="(selected.indexOf(item.id) == -1) ? false : true" :company="model.company" :units="units" @deleted="remove(index)" @updated="updated(index, $event)" @input="toggleSelected"></row>
                     </template>
                 </tbody>
                 <tfoot>
@@ -53,7 +53,7 @@
                         <td></td>
                         <td class="text-right"></td>
                         <td class="text-right"></td>
-                        <td></td>
+                        <td v-if="model.company.sales_tax"></td>
                         <td></td>
                         <td></td>
                         <td class="align-middle">
@@ -71,12 +71,12 @@
                         <td></td>
                         <td class="text-right"></td>
                         <td class="text-right"></td>
-                        <td></td>
+                        <td v-if="model.company.sales_tax"></td>
                         <td class="text-right">{{ (net / 100).format(2, ',', '.') }} €</td>
                         <td></td>
                         <td class="text-right"></td>
                     </tr>
-                    <tr v-for="tax in taxes">
+                    <tr v-for="tax in taxes"  v-if="model.company.sales_tax">
                         <td></td>
                         <td>Ust.</td>
                         <td class="text-right"></td>
@@ -95,8 +95,8 @@
                         <td></td>
                         <td class="text-right"></td>
                         <td class="text-right"></td>
-                        <td></td>
-                        <td class="text-right"><b>{{ (gross / 100).format(2, ',', '.') }} €</b></td>
+                        <td v-if="model.company.sales_tax"></td>
+                        <td class="text-right"><b>{{ ( (model.company.sales_tax ? gross : net) / 100).format(2, ',', '.') }} €</b></td>
                         <td></td>
                         <td class="text-right"></td>
                     </tr>

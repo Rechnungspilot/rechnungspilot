@@ -58,7 +58,7 @@ class CreateCompaniesTable extends Migration
             $table->unsignedTinyInteger('revenue_account_number_0_inland')->default(0);
             $table->unsignedTinyInteger('default_revenue_account_number')->default(0);
             $table->unsignedTinyInteger('default_expense_account_number')->default(0);
-
+            $table->boolean('sales_tax')->default(true);
             $table->timestamps();
         });
     }

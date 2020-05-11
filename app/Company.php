@@ -64,6 +64,7 @@ class Company extends Model
         'revenue_account_number_0_inland',
         'revenue_account_number_19',
         'revenue_account_number_7',
+        'sales_tax',
         'traderegister',
         'vatnumber',
         'web',

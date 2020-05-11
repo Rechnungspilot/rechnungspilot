@@ -313,6 +313,23 @@
                     </div>
 
                 </div>
+
+                <div class="form-row">
+
+                    <div class="col">
+
+                        <div class="form-group form-check">
+                            <input type="checkbox" class="form-check-input" id="sales_tax" name="sales_tax" value="1" <?php echo ($company->sales_tax ? 'checked="checked"' : '') ?>>
+                            <label class="form-check-label" for="sales_tax">Umsatzsteuer ausweisen</label>
+                        </div>
+
+                    </div>
+
+                    <div class="col">
+
+                    </div>
+
+                </div>
             </div>
         </div>
         <button type="submit" class="btn btn-primary">Speichern</button>

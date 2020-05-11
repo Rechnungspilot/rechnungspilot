@@ -96,6 +96,8 @@ class CompanyController extends Controller
             'web' => 'nullable|string|max:255',
         ]);
 
+        $validatedData['sales_tax'] = $request->filled('sales_tax');
+
         $company->update($validatedData);
         // if($company->hasDirtyAddress())
         // {
