@@ -8,7 +8,7 @@
         <div class="col"></div>
         <div class="col-sm col-sm-auto d-flex">
             <a href="{{ url($contact->path . '/edit') }}" class="btn btn-primary"><i class="fas fa-edit"></i></a>
-            <a href="{{ url('/artikel') }}" class="btn btn-secondary ml-1">Übersicht</a>
+            <a href="{{ url('/kontakte') }}" class="btn btn-secondary ml-1">Übersicht</a>
             @if ($contact->isDeletable())
                 <form action="{{ url('/kontakte', $contact->id) }}" class="ml-1" method="POST">
                     @csrf

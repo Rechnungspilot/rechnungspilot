@@ -119,7 +119,7 @@
                             <td>{{ $company->iban ? 'IBAN ' . $company->iban : '' }}</td>
                         </tr>
                         <tr>
-                            <td> {{ ($company->lastname && $company->firstname) ? 'Geschäftsführer ' . $company->lastname. ', ' . $company->firstname : '' }}</td>
+                            <td>{{ ($company->lastname && $company->firstname) ? 'Geschäftsführer ' . $company->lastname. ', ' . $company->firstname : '' }}</td>
                             <td>{{ $company->euvatnumber ? 'USt-IdNr.: ' . $company->euvatnumber : '' }}</td>
                             <td>{{ $company->bic ? 'BIC: ' . $company->bic : ''}}</td>
                         </tr>
