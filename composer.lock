@@ -3146,16 +3146,16 @@
         },
         {
             "name": "staudenmeir/eloquent-json-relations",
-            "version": "v1.3.2",
+            "version": "v1.3.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/staudenmeir/eloquent-json-relations.git",
-                "reference": "a1fad9ffb45225af1f6f6119529946cdc4168ff3"
+                "reference": "7018a7b12add15300b36d6cc9223652e470c3faf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/staudenmeir/eloquent-json-relations/zipball/a1fad9ffb45225af1f6f6119529946cdc4168ff3",
-                "reference": "a1fad9ffb45225af1f6f6119529946cdc4168ff3",
+                "url": "https://api.github.com/repos/staudenmeir/eloquent-json-relations/zipball/7018a7b12add15300b36d6cc9223652e470c3faf",
+                "reference": "7018a7b12add15300b36d6cc9223652e470c3faf",
                 "shasum": ""
             },
             "require": {
@@ -3183,7 +3183,7 @@
                 }
             ],
             "description": "Laravel Eloquent relationships with JSON keys",
-            "time": "2020-04-16T01:33:26+00:00"
+            "time": "2020-05-16T20:49:30+00:00"
         },
         {
             "name": "stevebauman/purify",
