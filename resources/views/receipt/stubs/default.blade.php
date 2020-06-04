@@ -103,23 +103,23 @@
                     <thead>
                         <tr style="font-weight: 700;">
                             <td width="35%">{{ $company->name }}</td>
-                            <td width="43%">{{ $company->districtcourt }}</td>
+                            <td width="43%">{{ $company->vatnumber ? 'Steuernummer: ' . $company->vatnumber : '' }}</td>
                             <td width="22%">Bankverbindung</td>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
                             <td>{{ $company->address }}</td>
-                            <td>{{ $company->traderegister }}</td>
+                            <td>{{ $company->districtcourt }}</td>
                             <td>{{ $company->bankname }}</td>
                         </tr>
                         <tr>
                             <td>{{ $company->postcode }} {{ $company->city }}</td>
-                            <td>{{ $company->vatnumber ? 'Steuernummer: ' . $company->vatnumber : '' }}</td>
+                            <td>{{ $company->traderegister }}</td>
                             <td>{{ $company->iban ? 'IBAN ' . $company->iban : '' }}</td>
                         </tr>
                         <tr>
-                            <td>{{ ($company->lastname && $company->firstname) ? 'Geschäftsführer ' . $company->lastname. ', ' . $company->firstname : '' }}</td>
+                            <td></td>
                             <td>{{ $company->euvatnumber ? 'USt-IdNr.: ' . $company->euvatnumber : '' }}</td>
                             <td>{{ $company->bic ? 'BIC: ' . $company->bic : ''}}</td>
                         </tr>
