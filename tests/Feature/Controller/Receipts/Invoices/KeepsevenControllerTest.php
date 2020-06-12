@@ -19,6 +19,7 @@ class KeepsevenControllerTest extends TestCase
      */
     public function it_has_a_create_view()
     {
+        $this->markTestIncomplete();
         $response = $this->get('/rechnungen/keepseven/create')->assertOk();
     }
 
@@ -27,6 +28,7 @@ class KeepsevenControllerTest extends TestCase
      */
     public function it_can_create_a_new_invoice()
     {
+        $this->markTestIncomplete();
         $this->withoutExceptionHandling();
 
         Term::setup(1);
