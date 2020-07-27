@@ -100,6 +100,7 @@
                 uri: '/belege/' + this.item.receipt_id + '/artikel/' + this.item.id,
                 taxes: {
                     '0.190': '19%',
+                    '0.160': '16%',
                     '0.070': '7%',
                     '0.000': '0%',
                 },
