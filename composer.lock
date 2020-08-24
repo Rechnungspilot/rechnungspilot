@@ -2652,12 +2652,12 @@
             "version": "v1.1.1",
             "source": {
                 "type": "git",
-                "url": "https://github.com/nrk/predis.git",
+                "url": "https://github.com/predis/predis.git",
                 "reference": "f0210e38881631afeafb56ab43405a92cafd9fd1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nrk/predis/zipball/f0210e38881631afeafb56ab43405a92cafd9fd1",
+                "url": "https://api.github.com/repos/predis/predis/zipball/f0210e38881631afeafb56ab43405a92cafd9fd1",
                 "reference": "f0210e38881631afeafb56ab43405a92cafd9fd1",
                 "shasum": ""
             },
@@ -2694,6 +2694,16 @@
                 "nosql",
                 "predis",
                 "redis"
+            ],
+            "funding": [
+                {
+                    "url": "https://www.paypal.me/tillkruss",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/tillkruss",
+                    "type": "github"
+                }
             ],
             "time": "2016-06-16T16:22:20+00:00"
         },
@@ -3208,16 +3218,16 @@
         },
         {
             "name": "spatie/laravel-cookie-consent",
-            "version": "2.12.5",
+            "version": "2.12.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/laravel-cookie-consent.git",
-                "reference": "46ad2dd6d20cf931d9a2ca98926cdbf8407d612c"
+                "reference": "917986a07313bd4390cc2fc37c35d8417b3f0987"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-cookie-consent/zipball/46ad2dd6d20cf931d9a2ca98926cdbf8407d612c",
-                "reference": "46ad2dd6d20cf931d9a2ca98926cdbf8407d612c",
+                "url": "https://api.github.com/repos/spatie/laravel-cookie-consent/zipball/917986a07313bd4390cc2fc37c35d8417b3f0987",
+                "reference": "917986a07313bd4390cc2fc37c35d8417b3f0987",
                 "shasum": ""
             },
             "require": {
@@ -3277,7 +3287,7 @@
                     "type": "custom"
                 }
             ],
-            "time": "2020-06-08T10:07:44+00:00"
+            "time": "2020-08-23T09:31:31+00:00"
         },
         {
             "name": "spatie/laravel-permission",
@@ -6624,6 +6634,7 @@
             "keywords": [
                 "tokenizer"
             ],
+            "abandoned": true,
             "time": "2019-09-17T06:23:10+00:00"
         },
         {
