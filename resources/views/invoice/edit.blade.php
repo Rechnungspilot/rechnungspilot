@@ -64,7 +64,7 @@
 
                 <address-select selected-address="{{ $invoice->address }}" :selected-contact-id="{{ $invoice->contact_id }}" :contacts="{{ json_encode($contacts) }}"></address-select>
 
-                <order-select class="mb-1" :value="{{ json_encode($invoice->order) }}" receipt-id="{{ $invoice->id }}"></order-select>
+                <order-select class="mb-1" :value="{{ json_encode($invoice->order) }}" :receipt-id="{{ $invoice->id }}"></order-select>
 
                 <tag-select class="my-2" :selected="{{ json_encode($invoice->tags) }}" type="rechnungen" type_id="{{ $invoice->id }}"></tag-select>
 

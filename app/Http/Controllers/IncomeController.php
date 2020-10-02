@@ -96,6 +96,7 @@ class IncomeController extends Controller
     public function edit(Income $income)
     {
         $income->load([
+            'company',
             'items',
             'tags',
             'previewFile',

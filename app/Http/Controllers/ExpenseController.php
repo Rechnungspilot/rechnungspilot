@@ -98,6 +98,7 @@ class ExpenseController extends Controller
     public function edit(Expense $expense)
     {
         $expense->load([
+            'company',
             'items',
             'tags',
             'previewFile',

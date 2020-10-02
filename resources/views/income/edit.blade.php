@@ -76,7 +76,7 @@
     </form>
     <br />
 
-    {{-- <receipt-item-table :model="{{ json_encode($income) }}" :options="{{ json_encode($items) }}" :units="{{ json_encode($units) }}"></receipt-item-table> --}}
+    <receipt-item-table :model="{{ json_encode($income) }}" :options="{{ json_encode($items) }}" :units="{{ json_encode($units) }}"></receipt-item-table>
 
     <div class="row mb-3">
         <div class="col-md-4 d-flex align-items-center justify-content-center">

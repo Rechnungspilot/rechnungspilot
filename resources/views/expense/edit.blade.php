@@ -63,7 +63,7 @@
                     @endif
                 </div>
 
-                <order-select class="mb-1" :value="{{ json_encode($expense->order) }}" receipt-id="{{ $expense->id }}"></order-select>
+                <order-select class="mb-1" :value="{{ json_encode($expense->order) }}" :receipt-id="{{ $expense->id }}"></order-select>
 
                 <tag-select class="my-2" :selected="{{ json_encode($expense->tags) }}" type="ausgaben" type_id="{{ $expense->id }}"></tag-select>
 
