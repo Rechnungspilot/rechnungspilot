@@ -49,42 +49,19 @@
         <nav id="nav" class="d-flex flex-column" style="">
             <ul class="col">
                 <a href="{{ url('/') }}"><li>Start</li></a>
-                <a href="" data-toggle="collapse" data-target="#nav-angebote"><li class="d-flex align-items-center justify-content-between line-height-base">Akquise<i class="fas fa-caret-right"></i></li></a>
-                <ul id="nav-angebote" class="collapse">
+                <a href="" data-toggle="collapse" data-target="#nav-belege"><li class="d-flex align-items-center justify-content-between line-height-base">Belege<i class="fas fa-caret-right"></i></li></a>
+                <ul id="nav-belege" class="collapse">
+                    <a href="{{ url('/abos') }}"><li>Abos</li></a>
                     <a href="{{ route('receipt.inquiry.index') }}"><li>Anfragen</li></a>
                     <a href="{{ route('receipt.quote.index') }}"><li>Angebote</li></a>
-                </ul>
-                <a href="" data-toggle="collapse" data-target="#nav-auftraege"><li class="d-flex align-items-center justify-content-between line-height-base">Auftragsmanagement<i class="fas fa-caret-right"></i></li></a>
-                <ul id="nav-auftraege" class="collapse">
                     <a href="{{ route('receipt.order.index') }}"><li>Aufträge</li></a>
+                    <a href="{{ url('/briefe') }}"><li>Briefe</li></a>
                     <a href="{{ url('/lieferscheine') }}"><li>Lieferscheine</li></a>
-                    <a href="{{ url('/zeiten') }}"><li>Zeiten</li></a>
-                </ul>
-                <a href="" data-toggle="collapse" data-target="#nav-personal"><li class="d-flex align-items-center justify-content-between line-height-base">Personalplanung<i class="fas fa-caret-right"></i></li></a>
-                <ul id="nav-personal" class="collapse">
-                    <a href="{{ url('/kalender') }}"><li>Kalender</li></a>
-                    <a href="{{ url('/projekte') }}"><li>Projekte</li></a>
-                </ul>
-                <a href="" data-toggle="collapse" data-target="#nav-rechnungswesen"><li class="d-flex align-items-center justify-content-between line-height-base">Rechnungswesen<i class="fas fa-caret-right"></i></li></a>
-                <ul id="nav-rechnungswesen" class="collapse">
-                    <a href="{{ url('/abos') }}"><li>Abos</li></a>
                     <a href="{{ url('/rechnungen') }}"><li>Rechnungen</li></a>
                     <a href="{{ url('/einnahmen') }}"><li>Einnahmen</li></a>
-                    <a href="{{ url('/forderungen') }}"><li>Forderungen</li></a>
-                    <a href="{{ url('/buchungen') }}"><li>Buchungen</li></a>
-                    <a href="{{ url('/mahnungen') }}"><li>Mahnungen</li></a>
-                </ul>
-                <a href="" data-toggle="collapse" data-target="#nav-after-sales"><li class="d-flex align-items-center justify-content-between line-height-base">After Sales<i class="fas fa-caret-right"></i></li></a>
-                <ul id="nav-after-sales" class="collapse">
-                    <a href="{{ url('/briefe') }}"><li>Briefe</li></a>
-                    <a href="{{ url('/projekte') }}"><li>Projekte</li></a>
-                </ul>
-                <a href="" data-toggle="collapse" data-target="#nav-kosten"><li class="d-flex align-items-center justify-content-between line-height-base">Kosten<i class="fas fa-caret-right"></i></li></a>
-                <ul id="nav-kosten" class="collapse">
                     <a href="{{ url('/ausgaben') }}"><li>Ausgaben</li></a>
-                    <a href="{{ url('/verbindlichkeiten') }}"><li>Verbindlichkeiten</li></a>
-                    <a href="{{ url('/buchungen') }}"><li>Buchungen</li></a>
                 </ul>
+                <a href="{{ url('/projekte') }}"><li>Projekte</li></a>
                 <a href="" data-toggle="collapse" data-target="#nav-stammdaten"><li class="d-flex align-items-center justify-content-between line-height-base">Stammdaten<i class="fas fa-caret-right"></i></li></a>
                 <ul id="nav-stammdaten" class="collapse">
                     <a href="{{ url('/artikel') }}"><li>Artikel</li></a>
@@ -93,11 +70,12 @@
                     <a href="{{ url('/konten') }}"><li>Konten</li></a>
                     <a href="{{ url('/team') }}"><li>Team</li></a>
                 </ul>
-                <a href="" data-toggle="collapse" data-target="#nav-import"><li class="d-flex align-items-center justify-content-between line-height-base">Import<i class="fas fa-caret-right"></i></li></a>
-                <ul id="nav-import" class="collapse">
-                    <a href="{{ url('/import/artikel') }}"><li>Artikel</li></a>
-                    <a href="{{ url('/import/kontakte') }}"><li>Kontakte</li></a>
-                    <a href="{{ url('/import/philip') }}"><li>Philip</li></a>
+                <a href="" data-toggle="collapse" data-target="#nav-buchhaltung"><li class="d-flex align-items-center justify-content-between line-height-base">Buchhaltung<i class="fas fa-caret-right"></i></li></a>
+                <ul id="nav-buchhaltung" class="collapse">
+                    <a href="{{ url('/buchungen') }}"><li>Buchungen</li></a>
+                    <a href="{{ url('/forderungen') }}"><li>Forderungen</li></a>
+                    <a href="{{ url('/verbindlichkeiten') }}"><li>Verbindlichkeiten</li></a>
+                    <a href="{{ url('/mahnungen') }}"><li>Mahnungen</li></a>
                 </ul>
                 <li class="divider"></li>
                 <a href="" data-toggle="collapse" data-target="#nav-einstellungen"><li class="d-flex align-items-center justify-content-between line-height-base">Einstellungen<i class="fas fa-caret-right"></i></li></a>
@@ -144,6 +122,8 @@
                         </button>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                             <a class="dropdown-item" href="{{ url('/aufgaben') }}">Aufgaben</a>
+                            <a class="dropdown-item" href="{{ url('/kalender') }}">Kalender</a>
+                            <a class="dropdown-item" href="{{ url('/zeiten') }}">Zeiten</a>
                             <a class="dropdown-item" href="{{ route('time.recording.index') }}" target="_blank">Zeiterfassung starten</a>
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
