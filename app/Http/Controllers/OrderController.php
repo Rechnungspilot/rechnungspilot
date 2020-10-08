@@ -108,6 +108,7 @@ class OrderController extends Controller
     public function edit(Order $order)
     {
         $order->load([
+            'company',
             'customfields',
             'expenses.status',
             'invoices.status',

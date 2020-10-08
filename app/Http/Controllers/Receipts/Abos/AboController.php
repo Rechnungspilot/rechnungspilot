@@ -108,6 +108,7 @@ class AboController extends Controller
     public function edit(Abo $abo)
     {
         $abo->load([
+            'company',
             'contacts',
             'items',
             'settings',

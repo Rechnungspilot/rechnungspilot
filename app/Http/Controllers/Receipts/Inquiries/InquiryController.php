@@ -104,6 +104,7 @@ class InquiryController extends Controller
     public function edit(Inquiry $inquiry)
     {
         $inquiry->load([
+            'company',
             'tags',
         ]);
 

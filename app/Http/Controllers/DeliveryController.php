@@ -93,6 +93,7 @@ class DeliveryController extends Controller
     public function edit(Delivery $delivery)
     {
         $delivery->load([
+            'company',
             'items',
             'tags',
         ]);

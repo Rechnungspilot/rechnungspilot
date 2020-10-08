@@ -109,6 +109,7 @@ class QuoteController extends Controller
     public function edit(int $id)
     {
         $quote = Quote::with([
+            'company',
             'items',
             'tags',
             'term',
