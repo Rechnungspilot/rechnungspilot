@@ -55,6 +55,7 @@ class Receipt extends Model
         'uri',
         'labelSingular',
         'labelPlural',
+        'contact_link_string',
     ];
 
     protected $casts = [
@@ -159,6 +160,35 @@ class Receipt extends Model
     public function childDeleting()
     {
 
+    }
+
+
+
+    /**
+     * @param $name
+     * @param $flag
+     * @return bool
+     */
+    public function hasFlag($flag) : bool
+    {
+        return (($this->flags & $flag) == $flag);
+    }
+
+    /**
+     * @param string flag
+     * @param int $flag
+     * @param $value
+     * @return $this
+     */
+    public function setFlag($flag, $value) : self
+    {
+        if ($value) {
+            $this->flags |= $flag;
+        } else {
+            $this->flags &= ~$flag;
+        }
+
+        return $this;
     }
 
     public static function nextNumber(Carbon $date)
@@ -439,6 +469,11 @@ class Receipt extends Model
         return $this->nextMainStatus;
     }
 
+    public function getContactLinkStringAttribute() : string
+    {
+        return ($this->contact_id ? $this->contact->link : '');
+    }
+
     public function getTypeNameAttribute()
     {
         return $this->typeName;
@@ -713,6 +748,23 @@ class Receipt extends Model
     public function scopeInvoices($query)
     {
         return $query->whereIn('type', self::INVOICE_TYPES);
+    }
+
+    public function scopeHasFlags(Builder $query, string $status, $value) : Builder
+    {
+        if (is_null($value)) {
+            return $query;
+        }
+
+        if ($value) {
+            return $query->whereRaw('flags & :status <> 0', [
+                'status' => $status,
+            ]);
+        }
+
+        return $query->whereRaw('flags & :status == 0', [
+            'status' => $status,
+        ]);
     }
 
     public function pdf()
