@@ -136,6 +136,11 @@ class Abo extends Receipt
         return $this->uri . '/' . $this->id;
     }
 
+    public function getContactLinkStringAttribute() : string
+    {
+        return $this->contacts->implode('link', ', ');
+    }
+
     public function contacts()
     {
         return $this->belongsToMany('App\Contacts\Contact', 'contact_receipt');

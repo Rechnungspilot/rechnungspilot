@@ -33,6 +33,7 @@ class Contact extends Model
         'billingAddress',
         'name',
         'path',
+        'link',
     ];
 
     protected $fillable = [
@@ -110,6 +111,11 @@ class Contact extends Model
     public function getPathAttribute()
     {
         return $this->uri . '/' . $this->id;
+    }
+
+    public function getLinkAttribute() : string
+    {
+        return '<a href="' . $this->uri . '/' . $this->id . '">' . $this->name . '</a>';
     }
 
     public function defaultReceiptEmail(string $type)

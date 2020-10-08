@@ -6,7 +6,7 @@
         </td>
         <td class="align-middle pointer" @click="link">{{ date }}</td>
         <td class="align-middle pointer" @click="link">{{ item.name }}</td>
-        <td class="align-middle"><a :href="'/kontakte/' + item.contact.id">{{ item.contact.name }}</a></td>
+        <td class="align-middle" v-html="item.contact_link_string"></a></td>
         <td class="align-middle pointer" @click="link">{{ item.tagsString }}</td>
         <td class="align-middle text-right pointer" @click="link">{{ (item.net / 100).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2, }) }}</td>
         <td class="align-middle text-right pointer" @click="link">{{ (item.gross / 100).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2, }) }}</td>

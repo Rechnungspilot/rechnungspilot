@@ -67,7 +67,7 @@ class AboController extends Controller
         $receipt = Abo::create([
             'address' => $contact->billingAddress,
             'company_id' => auth()->user()->company_id,
-            'contact_id' => $contact->id,
+            // 'contact_id' => $contact->id,
         ]);
 
         if ($request->wantsJson()) {

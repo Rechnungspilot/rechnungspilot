@@ -57503,11 +57503,10 @@ var render = function() {
       _vm._v(_vm._s(_vm.item.name))
     ]),
     _vm._v(" "),
-    _c("td", { staticClass: "align-middle" }, [
-      _c("a", { attrs: { href: "/kontakte/" + _vm.item.contact.id } }, [
-        _vm._v(_vm._s(_vm.item.contact.name))
-      ])
-    ]),
+    _c("td", {
+      staticClass: "align-middle",
+      domProps: { innerHTML: _vm._s(_vm.item.contact_link_string) }
+    }),
     _vm._v(" "),
     _c("td", { staticClass: "align-middle pointer", on: { click: _vm.link } }, [
       _vm._v(_vm._s(_vm.item.tagsString))
