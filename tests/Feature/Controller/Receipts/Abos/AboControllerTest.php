@@ -5,6 +5,7 @@ namespace Tests\Feature\Controller\Receipts\Abos;
 use App\Contacts\Contact;
 use App\Receipts\Abos\Abo;
 use App\Receipts\Abos\Settings;
+use App\Receipts\Receipt;
 use App\Receipts\Statuses\Created;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\TestResponse;
@@ -41,7 +42,7 @@ class AboControllerTest extends TestCase
         $this->assertDatabaseHas('receipts', [
             'id' => 1,
             'number' => 1,
-            // 'contact_id' => $firstContact->id,
+            'contact_id' => null,
         ]);
 
         $abo = Abo::first();
@@ -71,20 +72,57 @@ class AboControllerTest extends TestCase
 
         $this->assertCount(0, $abo->contacts, 'contacts count');
 
-        // TODO: Abo für Kunde anlegen
-        // $this->assertDatabaseHas('contact_receipt', [
-        //     'receipt_id' => $abo->id,
-        //     'contact_id' => $firstContact->id,
-        // ]);
-
         $response = $this->json('POST', route($this->getBaseRouteName() . '.store'), [])
             ->assertStatus(Response::HTTP_CREATED)
             ->assertJsonStructure(['id', 'name'])
             ->assertJson([
                 'company_id' => $this->user->company_id,
-                // 'contact_id' => $firstContact->id,
                 'number' => 2
             ]);
+    }
+
+    /**
+     * @test
+     */
+    public function a_user_can_create_a_receipt_for_a_contact()
+    {
+        $this->withoutExceptionHandling();
+
+        $this->signIn();
+
+        $contact = factory(Contact::class)->create([
+            'company_id' => $this->user->company_id,
+        ]);
+
+        $this->assertCount(0, Receipt::all());
+
+        $response = $this->post(route($this->getBaseRouteName() . '.store'), ['contact_id' => $contact->id])
+            ->assertStatus(Response::HTTP_FOUND)
+            ->assertRedirect(route($this->getBaseRouteName() . '.' . $this->getRedirectRouteAction(), [$this->getBaseRouteParameter() => 1]));
+
+        $this->assertDatabaseHas('receipts', [
+            'id' => 1,
+            'number' => 1,
+            'contact_id' => null,
+        ]);
+
+        $abo = Abo::find(1);
+
+        $this->assertCount(1, $abo->contacts, 'contacts count');
+
+        $this->assertDatabaseHas('contact_receipt', [
+            'receipt_id' => $abo->id,
+            'contact_id' => $contact->id,
+        ]);
+
+        $response = $this->json('POST', route($this->getBaseRouteName() . '.store'), ['contact_id' => $contact->id])
+            ->assertStatus(Response::HTTP_CREATED)
+            ->assertJsonStructure(['id', 'name'])
+            ->assertJson([
+                'company_id' => $this->user->company_id,
+                'number' => 2
+            ]);
+
     }
 
     protected function assertEditViewHas(TestResponse $response) : void

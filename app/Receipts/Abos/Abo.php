@@ -46,8 +46,6 @@ class Abo extends Receipt
             'start_at' => $today,
             'next_at' => $today,
         ]);
-
-        $this->contacts()->attach($this->contact_id);
     }
 
     public function childDeleting()

@@ -62,13 +62,14 @@ class AboController extends Controller
      */
     public function store(Request $request)
     {
-        $contact = ($request->has('contact_id') ? Contact::find($request->input('contact_id')) : Contact::first());
-
         $receipt = Abo::create([
-            'address' => $contact->billingAddress,
+            'address' => NULL,
             'company_id' => auth()->user()->company_id,
-            // 'contact_id' => $contact->id,
         ]);
+
+        if ($request->has('contact_id')) {
+            $receipt->contacts()->attach($request->input('contact_id'));
+        }
 
         if ($request->wantsJson()) {
             $receipt->cache();
