@@ -228,9 +228,8 @@ class Receipt extends Model
             'type_income' => Income::class,
             'type_invoice' => Invoice::class,
         ];
-        if ($contactId > 0)
-        {
-            $params['contact_id'] = $companyId;
+        if ($contactId > 0) {
+            $params['contact_id'] = $contactId;
         }
         $data = DB::select($sql, $params);
         $revenues = [];
@@ -265,19 +264,16 @@ class Receipt extends Model
             'to' => $to,
             'type' => Expense::class,
         ];
-        if ($contactId > 0)
-        {
-            $params['contact_id'] = $companyId;
+        if ($contactId > 0) {
+            $params['contact_id'] = $contactId;
         }
         $data = DB::select($sql, $params);
         foreach ($data as $key => $revenue) {
             $key = $revenue->year . str_pad($revenue->month, 2, '0', STR_PAD_LEFT);
-            if (array_key_exists($key, $revenues))
-            {
+            if (array_key_exists($key, $revenues)) {
                 $revenues[$key]['expenses'] = (float) $revenue->gross / 100;
             }
-            else
-            {
+            else {
                 $revenues[$key] = [
                     'key' => $key,
                     'payed' => 0,
@@ -289,8 +285,7 @@ class Receipt extends Model
 
         foreach ($periods as $period) {
             $key = $period->format('Ym');
-            if (array_key_exists($key, $revenues))
-            {
+            if (array_key_exists($key, $revenues)) {
                 continue;
             }
             $revenues[$key] = [
