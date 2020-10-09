@@ -51,15 +51,14 @@
                 <a href="{{ url('/') }}"><li>Start</li></a>
                 <a href="" data-toggle="collapse" data-target="#nav-belege"><li class="d-flex align-items-center justify-content-between line-height-base">Belege<i class="fas fa-caret-right"></i></li></a>
                 <ul id="nav-belege" class="collapse">
-                    <a href="{{ url('/abos') }}"><li>Abos</li></a>
-                    <a href="{{ route('receipt.inquiry.index') }}"><li>Anfragen</li></a>
-                    <a href="{{ route('receipt.quote.index') }}"><li>Angebote</li></a>
-                    <a href="{{ route('receipt.order.index') }}"><li>Aufträge</li></a>
-                    <a href="{{ url('/briefe') }}"><li>Briefe</li></a>
-                    <a href="{{ url('/lieferscheine') }}"><li>Lieferscheine</li></a>
-                    <a href="{{ url('/rechnungen') }}"><li>Rechnungen</li></a>
-                    <a href="{{ url('/einnahmen') }}"><li>Einnahmen</li></a>
+                    <!-- <a href="{{ route('receipt.inquiry.index') }}"><li>Anfragen</li></a> -->
+                    <!-- <a href="{{ route('receipt.quote.index') }}"><li>Angebote</li></a> -->
+                    <!-- <a href="{{ route('receipt.order.index') }}"><li>Aufträge</li></a> -->
                     <a href="{{ url('/ausgaben') }}"><li>Ausgaben</li></a>
+                    <!-- <a href="{{ url('/briefe') }}"><li>Briefe</li></a> -->
+                    <!-- <a href="{{ url('/lieferscheine') }}"><li>Lieferscheine</li></a> -->
+                    <a href="{{ url('/rechnungen') }}"><li>Rechnungen</li></a>
+                    <!-- <a href="{{ url('/einnahmen') }}"><li>Einnahmen</li></a> -->
                 </ul>
                 <a href="{{ url('/projekte') }}"><li>Projekte</li></a>
                 <a href="" data-toggle="collapse" data-target="#nav-stammdaten"><li class="d-flex align-items-center justify-content-between line-height-base">Stammdaten<i class="fas fa-caret-right"></i></li></a>
@@ -88,18 +87,6 @@
                     <a href="{{ url('/textbausteine') }}"><li>Textbausteine</li></a>
                     <a href="{{ url('/vorlagen/edit') }}"><li>Vorlagen</li></a>
                 </ul>
-                @admin
-                    <li class="divider"></li>
-                    <a href="{{ url('/berichte') }}"><li>Berichte</li></a>
-                    <a href="{{ url('/handbuch') }}"><li>Handbuch</li></a>
-                    <a href="{{ url('/roadmap') }}"><li>Roadmap</li></a>
-
-                    <a href="" data-toggle="collapse" data-target="#nav-admin"><li class="d-flex align-items-center justify-content-between line-height-base">Admin<i class="fas fa-caret-right"></i></li></a>
-                    <ul id="nav-admin" class="collapse">
-                        <a href="{{ url('/firmen') }}"><li>Firmen</li></a>
-                        <a href="{{ url('/guthaben') }}"><li>Guthaben</li></a>
-                    </ul>
-                @endadmin
             </ul>
 
             <div class="bg-secondary text-white p-2 d-flex justify-content-around">
