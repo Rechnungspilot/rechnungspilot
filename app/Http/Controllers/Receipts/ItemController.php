@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Item;
 use App\Jobs\CacheContact;
 use App\Jobs\CacheItem;
+use App\Receipts\Abos\Abo;
 use App\Receipts\Item as ReceiptItem;
 use App\Receipts\Receipt;
 use App\Unit;
@@ -48,7 +49,7 @@ class ItemController extends Controller
 
         $receipt->cache();
 
-        CacheContact::dispatch($receipt->contact);
+        $this->cacheContact($receipt);
         CacheItem::dispatch($item);
 
         if ($request->wantsJson()) {
@@ -96,7 +97,7 @@ class ItemController extends Controller
         $receiptItem->update($validatedData);
         $receipt->cache();
 
-        CacheContact::dispatch($receipt->contact);
+        $this->cacheContact($receipt);
         if ($receiptItem->item_id > 0)
         {
             CacheItem::dispatch($receiptItem->item);
@@ -125,7 +126,7 @@ class ItemController extends Controller
 
         $receipt->cache();
 
-        CacheContact::dispatch($receipt->contact);
+        $this->cacheContact($receipt);
         if ($receiptItem->item_id > 0)
         {
             CacheItem::dispatch($receiptItem->item);
@@ -138,5 +139,17 @@ class ItemController extends Controller
 
         return back()->with('status', 'Artikel entfernt!');
 
+    }
+
+    protected function cacheContact(Receipt $receipt) : void
+    {
+        if ($receipt->contact_id) {
+            CacheContact::dispatch($receipt->contact);
+        }
+        elseif ($receipt->type == Abo::class) {
+            foreach ($receipt->contacts as $key => $contact) {
+                CacheContact::dispatch($contact);
+            }
+        }
     }
 }
