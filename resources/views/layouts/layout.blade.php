@@ -47,6 +47,9 @@
     <div id="app" style="">
 
         <nav id="nav" class="d-flex flex-column" style="">
+            <div class="text-center py-3">
+                <img src="/images/logos/logo.svg" width="50">
+            </div>
             <ul class="col">
                 <a href="{{ url('/') }}"><li>Start</li></a>
                 <a href="" data-toggle="collapse" data-target="#nav-belege"><li class="d-flex align-items-center justify-content-between line-height-base">Belege<i class="fas fa-caret-right"></i></li></a>
