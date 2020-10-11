@@ -97,7 +97,7 @@ class Todo extends Model
     protected function attachContact(Contact $contact, array $attributes) : Contact
     {
         $attributes = array_merge([
-            'address' => $contact->billingAddress,
+            'address' => $contact->billing_address,
             'company_id' => $this->company_id,
             'user_id' => auth()->user()->id,
         ], $attributes);

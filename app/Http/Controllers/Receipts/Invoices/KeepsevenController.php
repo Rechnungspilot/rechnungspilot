@@ -50,7 +50,7 @@ class KeepsevenController extends Controller
         $item = Item::find(14);
 
         $invoice = Invoice::create([
-            'address' => $contact->billingAddress,
+            'address' => $contact->billing_address,
             'company_id' => 1,
             'contact_id' => $contact->id,
             'term_id' => $term->id,

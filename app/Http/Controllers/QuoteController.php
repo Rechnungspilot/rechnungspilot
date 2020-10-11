@@ -66,7 +66,7 @@ class QuoteController extends Controller
         $term = Term::default(Quote::class);
 
         $quote = Quote::create([
-            'address' => $contact->billingAddress,
+            'address' => $contact->billing_address,
             'company_id' => auth()->user()->company_id,
             'contact_id' => $contact->id,
             'term_id' => $term->id,

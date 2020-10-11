@@ -13,6 +13,27 @@ class ContactTest extends TestCase
     /**
      * @test
      */
+    public function it_gets_its_billing_address()
+    {
+        $contact = factory(Contact::class)->create();
+        $billing_address = $contact->name . "\n" . $contact->address . "\n" .  $contact->postcode . ' ' . $contact->city . ($contact->country ? "\n" . $contact->country : '');
+
+        $this->assertEquals($billing_address, $contact->billing_address);
+
+        $contact->update([
+            'billing_address' => null,
+        ]);
+        $this->assertEquals($billing_address, $contact->billing_address);
+
+        $contact->update([
+            'billing_address' => 'test',
+        ]);
+        $this->assertEquals('test', $contact->billing_address);
+    }
+
+    /**
+     * @test
+     */
     public function it_sets_email_receipt()
     {
         $contact = factory(Contact::class)->create();

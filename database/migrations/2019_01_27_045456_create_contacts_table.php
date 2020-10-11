@@ -35,6 +35,7 @@ class CreateContactsTable extends Migration
             $table->string('vatnumber')->nullable();
             $table->string('euvatnumber')->nullable();
             $table->string('website')->nullable();
+            $table->text('billing_address')->nullable();
             $table->integer('revenue')->default(0);
             $table->unsignedInteger('invoice_term_id')->default(0)->index();
             $table->unsignedInteger('expense_term_id')->default(0)->index();

@@ -39,7 +39,7 @@
             fetchAddress() {
                 var component = this;
                 component.findSelectedContact();
-                component.address = component.selectedContact.name + "\n" + component.selectedContact.address + "\n" + component.selectedContact.postcode + ' ' + component.selectedContact.city;
+                component.address = component.selectedContact.billing_address;
                 // axios.get('/kontakte/adresse/' + this.contact_id)
                 //     .then(function (response) {
                 //         component.address = response.data;

@@ -112,7 +112,7 @@ class Time extends Model
         $term = Term::default(Invoice::class, $contact->invoice_term_id);
 
         $invoice = Invoice::create([
-            'address' => $contact->billingAddress,
+            'address' => $contact->billing_address,
             'company_id' => auth()->user()->company_id,
             'contact_id' => $contact->id,
             'term_id' => $term->id,

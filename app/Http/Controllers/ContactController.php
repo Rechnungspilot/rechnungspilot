@@ -150,6 +150,7 @@ class ContactController extends Controller
     {
         $validatedData = $request->validate([
             'address' => 'nullable|string|max:255',
+            'billing_address' => 'nullable|string',
             'bankname' => 'nullable|string|max:255',
             'bic' => 'nullable|string|max:255',
             'city' => 'nullable|string|max:255',

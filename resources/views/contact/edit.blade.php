@@ -137,6 +137,16 @@
                     </div>
 
                     <div class="form-group">
+                        <label for="billing_address">Rechnungsadresse (wird automatisch gefüllt)</label>
+                        <textarea class="form-control {{ ($errors->has('billing_address') ? 'is-invalid' : '') }}" id="billing_address" name="billing_address" rows="5">{{ old('billing_address') ?? $contact->billing_address }}</textarea>
+                        @if ($errors->has('billing_address'))
+                            <div class="invalid-feedback">
+                                {{ $errors->first('billing_address') }}
+                            </div>
+                        @endif
+                    </div>
+
+                    <div class="form-group">
                         <label for="phonenumber">Telefon</label>
                         <input type="text" class="form-control {{ ($errors->has('phonenumber') ? 'is-invalid' : '') }}" id="phonenumber" name="phonenumber" value="{{ old('phonenumber') ?? $contact->phonenumber }}">
                         @if ($errors->has('phonenumber'))

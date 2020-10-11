@@ -21,6 +21,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 
 class Contact extends Model
@@ -30,7 +31,6 @@ class Contact extends Model
     public $uri = '/kontakte';
 
     protected $appends = [
-        'billingAddress',
         'name',
         'path',
         'link',
@@ -39,6 +39,7 @@ class Contact extends Model
     protected $fillable = [
         'address',
         'bankname',
+        'billing_address',
         'bic',
         'city',
         'company',
@@ -94,6 +95,10 @@ class Contact extends Model
 
     public function getBillingAddressAttribute()
     {
+        if (Arr::has($this->attributes, 'billing_address') && isset($this->attributes['billing_address'])) {
+            return $this->attributes['billing_address'];
+        }
+
         return $this->name . "\n" . $this->address . "\n" .  $this->postcode . ' ' . $this->city . ($this->country ? "\n" . $this->country : '');
     }
 

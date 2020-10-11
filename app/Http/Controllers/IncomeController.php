@@ -62,7 +62,7 @@ class IncomeController extends Controller
         $contact = $request->has('contact_id') ? Contact::find($request->input('contact_id')) : Contact::first();
 
         $receipt = Income::create([
-            'address' => $contact->billingAddress,
+            'address' => $contact->billing_address,
             'company_id' => auth()->user()->company_id,
             'contact_id' => $contact->id,
             'name' => '',

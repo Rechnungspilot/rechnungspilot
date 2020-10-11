@@ -62,7 +62,7 @@ class ExpenseController extends Controller
         $term = Term::default(Expense::class, $contact->expense_term_id);
 
         $receipt = Expense::create([
-            'address' => $contact->billingAddress,
+            'address' => $contact->billing_address,
             'company_id' => auth()->user()->company_id,
             'contact_id' => $contact->id,
             'term_id' => $term->id,

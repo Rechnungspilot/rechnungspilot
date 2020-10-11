@@ -75,7 +75,7 @@ class OrderController extends Controller
         $contact = $request->has('contact_id') ? Contact::find($request->input('contact_id')) : Contact::first();
 
         $order = Order::create([
-            'address' => $contact->billingAddress,
+            'address' => $contact->billing_address,
             'company_id' => auth()->user()->company_id,
             'contact_id' => $contact->id,
         ]);

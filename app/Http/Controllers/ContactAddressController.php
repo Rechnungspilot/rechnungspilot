@@ -46,7 +46,7 @@ class ContactAddressController extends Controller
      */
     public function show(Request $request, Contact $contact)
     {
-        return $contact->billingAddress;
+        return $contact->billing_address;
     }
 
     /**
