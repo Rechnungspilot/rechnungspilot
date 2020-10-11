@@ -137,8 +137,8 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="billing_address">Rechnungsadresse (wird automatisch gefüllt)</label>
-                        <textarea class="form-control {{ ($errors->has('billing_address') ? 'is-invalid' : '') }}" id="billing_address" name="billing_address" rows="5">{{ old('billing_address') ?? $contact->billing_address }}</textarea>
+                        <label for="billing_address">Abweichende Rechnungsadresse</label>
+                        <textarea class="form-control {{ ($errors->has('billing_address') ? 'is-invalid' : '') }}" id="billing_address" name="billing_address" rows="5">{{ old('billing_address') ?? ($contact->has_billing_address ? $contact->billing_address : '') }}</textarea>
                         @if ($errors->has('billing_address'))
                             <div class="invalid-feedback">
                                 {{ $errors->first('billing_address') }}

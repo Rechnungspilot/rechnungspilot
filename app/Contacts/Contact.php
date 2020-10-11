@@ -95,11 +95,16 @@ class Contact extends Model
 
     public function getBillingAddressAttribute()
     {
-        if (Arr::has($this->attributes, 'billing_address') && isset($this->attributes['billing_address'])) {
+        if ($this->has_billing_address) {
             return $this->attributes['billing_address'];
         }
 
         return $this->name . "\n" . $this->address . "\n" .  $this->postcode . ' ' . $this->city . ($this->country ? "\n" . $this->country : '');
+    }
+
+    public function getHasBillingAddressAttribute() : bool
+    {
+        return (Arr::has($this->attributes, 'billing_address') && ! empty($this->attributes['billing_address']));
     }
 
     public function getNameAttribute() {

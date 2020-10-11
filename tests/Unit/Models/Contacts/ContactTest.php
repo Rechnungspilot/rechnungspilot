@@ -21,6 +21,11 @@ class ContactTest extends TestCase
         $this->assertEquals($billing_address, $contact->billing_address);
 
         $contact->update([
+            'billing_address' => '',
+        ]);
+        $this->assertEquals($billing_address, $contact->billing_address);
+
+        $contact->update([
             'billing_address' => null,
         ]);
         $this->assertEquals($billing_address, $contact->billing_address);
