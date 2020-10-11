@@ -8862,9 +8862,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
 
 
 
@@ -57844,15 +57841,11 @@ var render = function() {
                 },
                 [
                   _c("tr", [
-                    _c("td", { staticClass: "align-middle text-center" }, [
-                      _vm._v(_vm._s(_vm.selected.length) + " ausgewählt")
-                    ]),
-                    _vm._v(" "),
-                    _c("td"),
-                    _vm._v(" "),
-                    _c("td"),
-                    _vm._v(" "),
-                    _c("td"),
+                    _c(
+                      "td",
+                      { staticClass: "align-middle", attrs: { colspan: "3" } },
+                      [_vm._v(_vm._s(_vm.selected.length) + " ausgewählt")]
+                    ),
                     _vm._v(" "),
                     _c("td"),
                     _vm._v(" "),
@@ -57862,7 +57855,7 @@ var render = function() {
                     _vm._v(" "),
                     _c(
                       "td",
-                      { staticClass: "align-middle", attrs: { colspan: "2" } },
+                      { staticClass: "align-middle", attrs: { colspan: "3" } },
                       [
                         _c(
                           "select",

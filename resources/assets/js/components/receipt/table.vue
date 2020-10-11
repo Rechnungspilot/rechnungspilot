@@ -52,14 +52,11 @@
                 </tbody>
                 <tfoot v-show="selected.length > 0">
                     <tr>
-                        <td class="align-middle text-center">{{ selected.length }} ausgewählt</td>
+                        <td class="align-middle" colspan="3">{{ selected.length }} ausgewählt</td>
                         <td></td>
                         <td></td>
                         <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td class="align-middle" colspan="2">
+                        <td class="align-middle" colspan="3">
                             <select class="form-control" v-model="action">
                                 <option value="0">Aktion</option>
                                 <option value="downloadPdfs">PDFs herunterladen</option>
