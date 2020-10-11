@@ -17532,7 +17532,7 @@ body {
   left: 0;
   height: 100vh;
   transition: all 0.3s;
-  z-index: 1000;
+  z-index: 1050;
 }
 
 #nav.active {
