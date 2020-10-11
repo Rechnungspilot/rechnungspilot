@@ -103,29 +103,42 @@
 
         <div id="content-container">
 
-            <header>
-                <h1>@yield('title')</h1>
-                <div id="settings">
-                    <div class="dropdown">
-                        <button class="btn btn-link dropdown-toggle text-body" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                {{ Auth::user()->name }}
-                        </button>
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <a class="dropdown-item" href="{{ url('/aufgaben') }}">Aufgaben</a>
-                            <a class="dropdown-item" href="{{ url('/kalender') }}">Kalender</a>
-                            <a class="dropdown-item" href="{{ url('/zeiten') }}">Zeiten</a>
-                            <a class="dropdown-item" href="{{ route('time.recording.index') }}" target="_blank">Zeiterfassung starten</a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                                Abmelden
+            <nav class="navbar navbar-expand navbar-light bg-light sticky-top shadow-sm">
+                <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+                    <span class="navbar-text" id="menu-toggle">
+                        <i class="fas fa-bars pointer"></i>
+                    </span>
+                    <form class="form-inline col my-2 my-lg-0">
+                        <!-- <input class="form-control mr-sm-2 col d-none d-sm-block" type="search" placeholder="Search" aria-label="Search">
+                        <button class="btn btn-outline-primary my-2 my-sm-0 d-none d-sm-block" type="submit">Search</button> -->
+                    </form>
+                    <ul class="navbar-nav mr-auto mt-0 mt-lg-0">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="d-xs-none d-sm-none d-md-inline d-lg-inline d-xl-inline">{{ Auth::user()->name }}</span>
                             </a>
-                        </div>
-                    </div>
-                    <div id="menu-toggle" class="pointer"><i class="fas fa-bars"></i></div>
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
+                                <a class="dropdown-item" href="{{ url('/aufgaben') }}">Aufgaben</a>
+                                <a class="dropdown-item" href="{{ url('/kalender') }}">Kalender</a>
+                                <a class="dropdown-item" href="{{ url('/zeiten') }}">Zeiten</a>
+                                <a class="dropdown-item" href="{{ route('time.recording.index') }}" target="_blank">Zeiterfassung starten</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                    Abmelden
+                                </a>
+                            </div>
+                        </li>
+                    </ul>
                 </div>
-            </header>
+            </nav>
 
-            <div id="content" class="container-fluid" style="height: 100vh;">
+            <div id="content" class="container-fluid mt-3" style="height: 100vh;">
+
+                <div class="row align-items-center mb-3">
+                    <h2 class="col my-0">@yield('title')</h2>
+                    <div id="buttons" class="col-auto d-flex align-items-center justify-content-around">@yield('buttons')</div>
+                </div>
+
                 @yield('content')
             </div>
 
