@@ -3800,13 +3800,17 @@ __webpack_require__.r(__webpack_exports__);
               rotation: 0,
               color: '#FFFFFF',
               align: 'right',
-              format: '{point.y:.2f} €',
-              // one decimal
+              // format: '{point.y:.2f} €', // one decimal
               y: 0,
               // 10 pixels down from the top
               style: {
                 fontSize: '13px',
                 fontFamily: 'Verdana, sans-serif'
+              },
+              formatter: function formatter() {
+                if (this.y != 0) {
+                  return this.y ? highcharts__WEBPACK_IMPORTED_MODULE_0___default.a.numberFormat(this.y, 2) + ' €' : '';
+                }
               }
             }
           }, {
@@ -3824,13 +3828,17 @@ __webpack_require__.r(__webpack_exports__);
               rotation: 0,
               color: '#FFFFFF',
               align: 'right',
-              format: '{point.y:.2f} €',
-              // one decimal
+              // format: '{point.y:.2f} €', // one decimal
               y: 0,
               // 10 pixels down from the top
               style: {
                 fontSize: '13px',
                 fontFamily: 'Verdana, sans-serif'
+              },
+              formatter: function formatter() {
+                if (this.y != 0) {
+                  return this.y ? highcharts__WEBPACK_IMPORTED_MODULE_0___default.a.numberFormat(this.y, 2) + ' €' : '';
+                }
               }
             }
           }, {
@@ -80491,6 +80499,13 @@ Number.prototype.format = function (decimals, dec_point, thousands_sep) {
 };
 
 var Highcharts = __webpack_require__(/*! highcharts */ "./node_modules/highcharts/highcharts.js");
+
+Highcharts.setOptions({
+  lang: {
+    decimalPoint: ',',
+    thousandsSep: '.'
+  }
+});
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
@@ -80500,7 +80515,6 @@ var Highcharts = __webpack_require__(/*! highcharts */ "./node_modules/highchart
  */
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
-
 
 
 

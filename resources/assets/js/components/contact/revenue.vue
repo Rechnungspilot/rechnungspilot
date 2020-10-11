@@ -98,11 +98,16 @@
                                     rotation: 0,
                                     color: '#FFFFFF',
                                     align: 'right',
-                                    format: '{point.y:.2f} €', // one decimal
+                                    // format: '{point.y:.2f} €', // one decimal
                                     y: 0, // 10 pixels down from the top
                                     style: {
                                         fontSize: '13px',
                                         fontFamily: 'Verdana, sans-serif'
+                                    },
+                                    formatter: function () {
+                                        if(this.y != 0) {
+                                            return (this.y ? Highcharts.numberFormat(this.y, 2) + ' €' :  '');
+                                        }
                                     }
                                 }
                             },
@@ -121,11 +126,16 @@
                                     rotation: 0,
                                     color: '#FFFFFF',
                                     align: 'right',
-                                    format: '{point.y:.2f} €', // one decimal
+                                    // format: '{point.y:.2f} €', // one decimal
                                     y: 0, // 10 pixels down from the top
                                     style: {
                                         fontSize: '13px',
                                         fontFamily: 'Verdana, sans-serif'
+                                    },
+                                    formatter: function () {
+                                        if(this.y != 0) {
+                                            return (this.y ? Highcharts.numberFormat(this.y, 2) + ' €' :  '');
+                                        }
                                     }
                                 }
                             },

@@ -50,6 +50,13 @@ Number.prototype.format = function(decimals, dec_point, thousands_sep) {
 
 var Highcharts = require('highcharts');
 
+Highcharts.setOptions({
+    lang: {
+        decimalPoint: ',',
+        thousandsSep: '.'
+    }
+});
+
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
