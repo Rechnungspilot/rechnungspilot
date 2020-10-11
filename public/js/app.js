@@ -11183,7 +11183,7 @@ __webpack_require__.r(__webpack_exports__);
     filterTeam: _filter_team_vue__WEBPACK_IMPORTED_MODULE_3__["default"],
     filterPerPage: _filter_perPage_vue__WEBPACK_IMPORTED_MODULE_4__["default"]
   },
-  props: ['filterTags', 'filterTeam', 'contactId', 'hideFilter'],
+  props: ['filterTags', 'filterTeam', 'contactId', 'hideFilter', 'teamId'],
   data: function data() {
     return {
       uri: '/aufgaben',
@@ -11203,7 +11203,7 @@ __webpack_require__.r(__webpack_exports__);
         perPage: 25,
         searchtext: '',
         tags: [],
-        team: 0
+        team: this.teamId || 0
       },
       errors: {}
     };

@@ -100,10 +100,22 @@
 
     </div>
 
+
+    <div class="row">
+        <div class="col">
+            <div class="card mb-3">
+                <div class="card-header">Umsatz</div>
+                <div class="card-body">
+                    <contact-revenue-chart></contact-revenue-chart>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="row">
         <div class="col">
 
-            <div class="card">
+            <div class="card mb-3">
                 <div class="card-header">Neuste Kommentare</div>
                 <div class="card-body">
                     <comments></comments>
@@ -112,7 +124,7 @@
 
         </div>
 
-        <div class="col">
+        <!-- <div class="col">
 
             <div class="card">
                 <div class="card-header">Neuste Interaktionen</div>
@@ -121,15 +133,15 @@
                 </div>
             </div>
 
-        </div>
+        </div> -->
 
         <div class="col">
 
-            <div class="card">
+            <div class="card mb-3">
                 <div class="card-header"><a class="text-body" href="{{ url('/aufgaben') }}">Aufgaben</a></div>
 
                 <div class="card-body">
-                    <task-table hide-filter="1"></task-table>
+                    <task-table hide-filter="1" :team-id="1"></task-table>
                 </div>
             </div>
 

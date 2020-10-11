@@ -84,6 +84,7 @@
             'filterTeam',
             'contactId',
             'hideFilter',
+            'teamId',
         ],
 
         data () {
@@ -105,7 +106,7 @@
                     perPage: 25,
                     searchtext: '',
                     tags: [],
-                    team: 0,
+                    team: this.teamId || 0,
                 },
                 errors: {},
             };
