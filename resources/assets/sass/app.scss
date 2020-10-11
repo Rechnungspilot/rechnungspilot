@@ -129,6 +129,10 @@ header {
     box-shadow: 5px 1px 20px 0px rgba(204,204,204,1);
 }
 
+table {
+    table-layout: fixed;
+}
+
 header h1 {
     line-height: 50px;
     text-transform: uppercase;

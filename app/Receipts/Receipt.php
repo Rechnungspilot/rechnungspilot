@@ -48,6 +48,7 @@ class Receipt extends Model
     protected $appends = [
         'path',
         'tagsString',
+        'tags_badges',
         'typeName',
         'dateName',
         'dateDueName',

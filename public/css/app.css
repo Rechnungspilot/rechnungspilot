@@ -17629,6 +17629,10 @@ header {
   box-shadow: 5px 1px 20px 0px #cccccc;
 }
 
+table {
+  table-layout: fixed;
+}
+
 header h1 {
   line-height: 50px;
   text-transform: uppercase;

@@ -31,27 +31,24 @@
             </center>
         </div>
         <div class="table-responsive mt-3" v-else-if="items.length">
-            <table class="table table-hover table-striped bg-white">
+            <table class="table table-hover table-striped table-sm bg-white">
                 <thead>
                     <tr>
-                        <th width="5%">
+                        <th class="text-center" width="30">
                             <label class="form-checkbox" for="checkall"></label>
                             <input id="checkall" type="checkbox" v-model="selectAll">
                         </th>
-                        <th width="10%">Datum</th>
-                        <th width="10%">#</th>
-                        <th width="10%">Empfänger</th>
-                        <th width="15%">Tags</th>
-                        <th class="text-right" width="20%">Netto</th>
-                        <th class="text-right" width="20%">Brutto</th>
-                        <th width="20%">Status</th>
-                        <th class="text-right" width="10%">Aktion</th>
+                        <th width="100">Datum</th>
+                        <th width="50%">#</th>
+                        <th width="50%">Empfänger</th>
+                        <th class="text-right" width="100">Netto</th>
+                        <th class="text-right" width="100">Brutto</th>
+                        <th width="100">Status</th>
+                        <th class="text-right" width="100">Aktion</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <template v-for="(invoice, index) in items">
-                        <row :item="invoice" :key="invoice.id" :uri="uri" :selected="(selected.indexOf(invoice.id) == -1) ? false : true" @deleted="remove(index)" @input="toggleSelected"></row>
-                    </template>
+                    <row :item="invoice" :key="invoice.id" :uri="uri" :selected="(selected.indexOf(invoice.id) == -1) ? false : true" v-for="(invoice, index) in items" @deleted="remove(index)" @input="toggleSelected"></row>
                 </tbody>
                 <tfoot v-show="selected.length > 0">
                     <tr>

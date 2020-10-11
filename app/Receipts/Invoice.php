@@ -27,6 +27,7 @@ class Invoice extends Receipt
 {
     use HasParent;
 
+    // Key durch Status::FLAG ersetzen
     const AVAILABLE_STATUSES = [
         'outstanding' => 'Offen',
         Draft::class => Draft::NAME,
@@ -75,7 +76,7 @@ class Invoice extends Receipt
             if ($contact)
             {
                 $attributes['contact_id'] = $contact->id;
-                $attributes['address'] = $contact->billingAddress;
+                $attributes['address'] = $contact->billing_address;
             }
 
             if (in_array(get_class($receipt), [Abo::class, Order::class]))

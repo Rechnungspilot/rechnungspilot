@@ -8733,6 +8733,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['item', 'uri', 'selected'],
@@ -8775,9 +8777,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _filter_contact_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../filter/contact.vue */ "./resources/assets/js/components/filter/contact.vue");
 /* harmony import */ var _filter_tags_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../filter/tags.vue */ "./resources/assets/js/components/filter/tags.vue");
 /* harmony import */ var _filter_search_vue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../filter/search.vue */ "./resources/assets/js/components/filter/search.vue");
-//
-//
-//
 //
 //
 //
@@ -57489,7 +57488,7 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("tr", [
-    _c("td", { staticClass: "align-middle" }, [
+    _c("td", { staticClass: "align-middle text-center" }, [
       _c("label", { staticClass: "form-checkbox" }),
       _vm._v(" "),
       _c("input", {
@@ -57508,17 +57507,18 @@ var render = function() {
     ]),
     _vm._v(" "),
     _c("td", { staticClass: "align-middle pointer", on: { click: _vm.link } }, [
-      _vm._v(_vm._s(_vm.item.name))
+      _vm._v(
+        "\n        " +
+          _vm._s(_vm.item.name ? _vm.item.name : "In Vorbereitung") +
+          "\n        "
+      ),
+      _c("div", { domProps: { innerHTML: _vm._s(_vm.item.tags_badges) } })
     ]),
     _vm._v(" "),
     _c("td", {
       staticClass: "align-middle",
       domProps: { innerHTML: _vm._s(_vm.item.contact_link_string) }
     }),
-    _vm._v(" "),
-    _c("td", { staticClass: "align-middle pointer", on: { click: _vm.link } }, [
-      _vm._v(_vm._s(_vm.item.tagsString))
-    ]),
     _vm._v(" "),
     _c(
       "td",
@@ -57725,80 +57725,84 @@ var render = function() {
       ? _c("div", { staticClass: "table-responsive mt-3" }, [
           _c(
             "table",
-            { staticClass: "table table-hover table-striped bg-white" },
+            {
+              staticClass: "table table-hover table-striped table-sm bg-white"
+            },
             [
               _c("thead", [
                 _c("tr", [
-                  _c("th", { attrs: { width: "5%" } }, [
-                    _c("label", {
-                      staticClass: "form-checkbox",
-                      attrs: { for: "checkall" }
-                    }),
-                    _vm._v(" "),
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.selectAll,
-                          expression: "selectAll"
-                        }
-                      ],
-                      attrs: { id: "checkall", type: "checkbox" },
-                      domProps: {
-                        checked: Array.isArray(_vm.selectAll)
-                          ? _vm._i(_vm.selectAll, null) > -1
-                          : _vm.selectAll
-                      },
-                      on: {
-                        change: function($event) {
-                          var $$a = _vm.selectAll,
-                            $$el = $event.target,
-                            $$c = $$el.checked ? true : false
-                          if (Array.isArray($$a)) {
-                            var $$v = null,
-                              $$i = _vm._i($$a, $$v)
-                            if ($$el.checked) {
-                              $$i < 0 && (_vm.selectAll = $$a.concat([$$v]))
+                  _c(
+                    "th",
+                    { staticClass: "text-center", attrs: { width: "30" } },
+                    [
+                      _c("label", {
+                        staticClass: "form-checkbox",
+                        attrs: { for: "checkall" }
+                      }),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.selectAll,
+                            expression: "selectAll"
+                          }
+                        ],
+                        attrs: { id: "checkall", type: "checkbox" },
+                        domProps: {
+                          checked: Array.isArray(_vm.selectAll)
+                            ? _vm._i(_vm.selectAll, null) > -1
+                            : _vm.selectAll
+                        },
+                        on: {
+                          change: function($event) {
+                            var $$a = _vm.selectAll,
+                              $$el = $event.target,
+                              $$c = $$el.checked ? true : false
+                            if (Array.isArray($$a)) {
+                              var $$v = null,
+                                $$i = _vm._i($$a, $$v)
+                              if ($$el.checked) {
+                                $$i < 0 && (_vm.selectAll = $$a.concat([$$v]))
+                              } else {
+                                $$i > -1 &&
+                                  (_vm.selectAll = $$a
+                                    .slice(0, $$i)
+                                    .concat($$a.slice($$i + 1)))
+                              }
                             } else {
-                              $$i > -1 &&
-                                (_vm.selectAll = $$a
-                                  .slice(0, $$i)
-                                  .concat($$a.slice($$i + 1)))
+                              _vm.selectAll = $$c
                             }
-                          } else {
-                            _vm.selectAll = $$c
                           }
                         }
-                      }
-                    })
-                  ]),
+                      })
+                    ]
+                  ),
                   _vm._v(" "),
-                  _c("th", { attrs: { width: "10%" } }, [_vm._v("Datum")]),
+                  _c("th", { attrs: { width: "100" } }, [_vm._v("Datum")]),
                   _vm._v(" "),
-                  _c("th", { attrs: { width: "10%" } }, [_vm._v("#")]),
+                  _c("th", { attrs: { width: "50%" } }, [_vm._v("#")]),
                   _vm._v(" "),
-                  _c("th", { attrs: { width: "10%" } }, [_vm._v("Empfänger")]),
-                  _vm._v(" "),
-                  _c("th", { attrs: { width: "15%" } }, [_vm._v("Tags")]),
+                  _c("th", { attrs: { width: "50%" } }, [_vm._v("Empfänger")]),
                   _vm._v(" "),
                   _c(
                     "th",
-                    { staticClass: "text-right", attrs: { width: "20%" } },
+                    { staticClass: "text-right", attrs: { width: "100" } },
                     [_vm._v("Netto")]
                   ),
                   _vm._v(" "),
                   _c(
                     "th",
-                    { staticClass: "text-right", attrs: { width: "20%" } },
+                    { staticClass: "text-right", attrs: { width: "100" } },
                     [_vm._v("Brutto")]
                   ),
                   _vm._v(" "),
-                  _c("th", { attrs: { width: "20%" } }, [_vm._v("Status")]),
+                  _c("th", { attrs: { width: "100" } }, [_vm._v("Status")]),
                   _vm._v(" "),
                   _c(
                     "th",
-                    { staticClass: "text-right", attrs: { width: "10%" } },
+                    { staticClass: "text-right", attrs: { width: "100" } },
                     [_vm._v("Aktion")]
                   )
                 ])
@@ -57806,30 +57810,24 @@ var render = function() {
               _vm._v(" "),
               _c(
                 "tbody",
-                [
-                  _vm._l(_vm.items, function(invoice, index) {
-                    return [
-                      _c("row", {
-                        key: invoice.id,
-                        attrs: {
-                          item: invoice,
-                          uri: _vm.uri,
-                          selected:
-                            _vm.selected.indexOf(invoice.id) == -1
-                              ? false
-                              : true
-                        },
-                        on: {
-                          deleted: function($event) {
-                            return _vm.remove(index)
-                          },
-                          input: _vm.toggleSelected
-                        }
-                      })
-                    ]
+                _vm._l(_vm.items, function(invoice, index) {
+                  return _c("row", {
+                    key: invoice.id,
+                    attrs: {
+                      item: invoice,
+                      uri: _vm.uri,
+                      selected:
+                        _vm.selected.indexOf(invoice.id) == -1 ? false : true
+                    },
+                    on: {
+                      deleted: function($event) {
+                        return _vm.remove(index)
+                      },
+                      input: _vm.toggleSelected
+                    }
                   })
-                ],
-                2
+                }),
+                1
               ),
               _vm._v(" "),
               _c(

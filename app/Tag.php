@@ -58,6 +58,11 @@ class Tag extends Model
         return $this->name;
     }
 
+    public function getBadgeAttribute() : string
+    {
+        return '<span class="badge badge-secondary">' . $this->name . '</span>';
+    }
+
     public function scopeSearch($query, $searchtext)
     {
         if ($searchtext == '') {

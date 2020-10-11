@@ -14,6 +14,11 @@ trait HasTags
         return $this->tags->pluck('name')->implode(', ');
     }
 
+    public function getTagsBadgesAttribute() : string
+    {
+        return $this->tags->implode('badge', ' ');
+    }
+
     public function tags(): MorphToMany
     {
         return $this->morphToMany('App\Tag', 'taggable');
