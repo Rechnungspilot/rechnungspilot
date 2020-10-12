@@ -2,22 +2,20 @@
 
 @section('title', 'Artikel > ' . $item->name)
 
-@section('content')
-    <div class="row text-right mb-3">
-        <div class="col"></div>
-        <div class="d-flex col-sm col-sm-auto">
-            <a href="{{ url($item->path . '/edit') }}" class="btn btn-primary"><i class="fas fa-edit"></i></a>
-            <a href="{{ url('/artikel') }}" class="btn btn-secondary ml-1">Übersicht</a>
-            @if($item->isDeletable())
-                <form action="{{ route('artikel.destroy', ['artikel' => $item->id]) }}" class="ml-1" method="POST">
-                    @csrf
-                    @method('DELETE')
+@section('buttons')
+    <a href="{{ url($item->path . '/edit') }}" class="btn btn-primary"><i class="fas fa-edit"></i></a>
+    <a href="{{ url('/artikel') }}" class="btn btn-secondary ml-1">Übersicht</a>
+    @if($item->isDeletable())
+        <form action="{{ route('artikel.destroy', ['artikel' => $item->id]) }}" class="ml-1" method="POST">
+            @csrf
+            @method('DELETE')
 
-                    <button type="submit" class="btn btn-danger"><i class="fas fa-fw fa-fw fa-trash"></i></button>
-                </form>
-            @endif
-        </div>
-    </div>
+            <button type="submit" class="btn btn-danger"><i class="fas fa-fw fa-fw fa-trash"></i></button>
+        </form>
+    @endif
+@endsection
+
+@section('content')
 
     <div class="card mb-5">
         <div class="card-header">{{ $item->name }}</div>

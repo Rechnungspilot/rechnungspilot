@@ -2,14 +2,11 @@
 
 @section('title', 'Artikel > ' . $item->name)
 
-@section('content')
+@section('buttons')
+    <a href="{{ url($item->path) }}" class="btn btn-secondary">Artikel</a>
+@endsection
 
-    <div class="row text-right">
-        <div class="col"></div>
-        <div class="col-sm col-sm-auto">
-            <a href="{{ url($item->path) }}" class="btn btn-secondary">Artikel</a>
-        </div>
-    </div>
+@section('content')
 
     <form action="{{ url('/artikel', $item->id) }}" class="mb-3" method="POST">
         @csrf

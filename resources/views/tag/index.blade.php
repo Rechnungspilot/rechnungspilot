@@ -2,16 +2,11 @@
 
 @section('title', ucfirst($type) . ' > Tags')
 
+@section('buttons')
+    <a href="{{ url('/' . $type) }}" class="btn btn-secondary">Übersicht</a>
+@endsection
+
 @section('content')
-    <div class="row mb-3">
-        <div class="col">
-
-        </div>
-        <div class="col-md-auto">
-            <a href="{{ url('/' . $type) }}" class="btn btn-secondary">Übersicht</a>
-        </div>
-
-    </div>
 
     <tag-table slug="{{ $type }}"></tag-table>
 

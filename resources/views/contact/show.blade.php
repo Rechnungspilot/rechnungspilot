@@ -2,23 +2,20 @@
 
 @section('title', 'Kontakte > ' . $contact->name)
 
+@section('buttons')
+    <a href="{{ url($contact->path . '/edit') }}" class="btn btn-primary"><i class="fas fa-edit"></i></a>
+    <a href="{{ url('/kontakte') }}" class="btn btn-secondary ml-1">Übersicht</a>
+    @if ($contact->isDeletable())
+        <form action="{{ url('/kontakte', $contact->id) }}" class="ml-1" method="POST">
+            @csrf
+            @method('DELETE')
+
+            <button type="submit" class="btn btn-danger" title="Löschen"><i class="fas fa-trash"></i></button>
+        </form>
+    @endif
+@endsection
+
 @section('content')
-
-    <div class="row text-right mb-3">
-        <div class="col"></div>
-        <div class="col-sm col-sm-auto d-flex">
-            <a href="{{ url($contact->path . '/edit') }}" class="btn btn-primary"><i class="fas fa-edit"></i></a>
-            <a href="{{ url('/kontakte') }}" class="btn btn-secondary ml-1">Übersicht</a>
-            @if ($contact->isDeletable())
-                <form action="{{ url('/kontakte', $contact->id) }}" class="ml-1" method="POST">
-                    @csrf
-                    @method('DELETE')
-
-                    <button type="submit" class="btn btn-danger" title="Löschen"><i class="fas fa-trash"></i></button>
-                </form>
-            @endif
-        </div>
-    </div>
 
     <div class="row mb-5">
 

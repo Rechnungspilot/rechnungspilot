@@ -2,36 +2,33 @@
 
 @section('title', $expense->typeName . ' > ' . $expense->name ?: 'Noch nicht vergeben')
 
-@section('content')
-
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col"></div>
-            <div class="dropdown mr-1">
-                <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown">
-                    <i class="fas fa-ellipsis-h"></i> Mehr
-                </button>
-                <div class="dropdown-menu">
-                    <h6 class="dropdown-header">Anlegen</h6>
-                    <form action="{{ url('/ausgaben/aus', $expense->id) }}" method="POST">
-                        @csrf
-                        <button type="submit" class="dropdown-item pointer">Duplizieren</button>
-                    </form>
-                    <form action="{{ url('/ausgaben/aus', $expense->id) }}" method="POST">
-                        @csrf
-                        <input type="hidden" name="credit" value="1">
-                        <button type="submit" class="dropdown-item pointer">Gutschrift erstellen</button>
-                    </form>
-                    <h6 class="dropdown-header">Bearbeiten</h6>
-                    <button class="dropdown-item pointer" data-toggle="modal" data-target="#confirm-delete">Löschen</button>
-                </div>
-            </div>
-            @if ($expense->nextMainStatus)
-                <button class="btn btn-primary pointer mr-1" data-toggle="modal" data-target="#statusModal" data-status="{{ get_class($expense->nextMainStatus) }}">{{ ucfirst($expense->nextMainStatus->action) }}</button>
-            @endif
-            <a href="{{ url('/ausgaben') }}" class="btn btn-secondary">Übersicht</a>
+@section('buttons')
+    <div class="dropdown mr-1">
+        <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown">
+            <i class="fas fa-ellipsis-h"></i> Mehr
+        </button>
+        <div class="dropdown-menu">
+            <h6 class="dropdown-header">Anlegen</h6>
+            <form action="{{ url('/ausgaben/aus', $expense->id) }}" method="POST">
+                @csrf
+                <button type="submit" class="dropdown-item pointer">Duplizieren</button>
+            </form>
+            <form action="{{ url('/ausgaben/aus', $expense->id) }}" method="POST">
+                @csrf
+                <input type="hidden" name="credit" value="1">
+                <button type="submit" class="dropdown-item pointer">Gutschrift erstellen</button>
+            </form>
+            <h6 class="dropdown-header">Bearbeiten</h6>
+            <button class="dropdown-item pointer" data-toggle="modal" data-target="#confirm-delete">Löschen</button>
         </div>
     </div>
+    @if ($expense->nextMainStatus)
+        <button class="btn btn-primary pointer mr-1" data-toggle="modal" data-target="#statusModal" data-status="{{ get_class($expense->nextMainStatus) }}">{{ ucfirst($expense->nextMainStatus->action) }}</button>
+    @endif
+    <a href="{{ url('/ausgaben') }}" class="btn btn-secondary">Übersicht</a>
+@endsection
+
+@section('content')
 
     <h3>Allgemein</h3>
     <form action="{{ url('/ausgaben', $expense->id) }}" method="POST">

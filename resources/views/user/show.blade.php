@@ -2,24 +2,21 @@
 
 @section('title', 'Mitarbeiter > ' . $user->name)
 
+@section('buttons')
+    @if(!$user->password)
+        <form action="{{ url('/team/' . $user->id . '/einladen') }}" method="POST">
+            @csrf
+
+            <input id="email" type="hidden" class="form-control" name="email" value="{{ $user->email }}">
+            <button type="submit" class="btn btn-success">
+                Einladen
+            </button>
+        </form>
+    @endif
+    <a class="btn btn-secondary ml-1" href="{{ url('/team') }}" title="Übersicht"><i class="fas fa-fw fa-th-list"></i></a>
+@endsection
+
 @section('content')
-
-    <div class="row text-right mb-3">
-        <div class="col"></div>
-        <div class="d-flex col-sm col-sm-auto">
-            @if(!$user->password)
-                <form action="{{ url('/team/' . $user->id . '/einladen') }}" method="POST">
-                    @csrf
-
-                    <input id="email" type="hidden" class="form-control" name="email" value="{{ $user->email }}">
-                    <button type="submit" class="btn btn-success">
-                        Einladen
-                    </button>
-                </form>
-            @endif
-            <a class="btn btn-secondary ml-1" href="{{ url('/team') }}" title="Übersicht"><i class="fas fa-fw fa-th-list"></i></a>
-        </div>
-    </div>
 
     <h3>Allgemein</h3>
     <form action="{{ url('/team', $user->id) }}" method="POST">
