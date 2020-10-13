@@ -35,23 +35,25 @@
                 Lade Daten..
             </center>
         </div>
-        <table class="table table-hover table-striped bg-white" v-else-if="items.length">
-            <thead>
-                <tr>
-                    <th width="30%">Bezeichnung</th>
-                    <th width="10%">Type</th>
-                    <th width="10%">Standard</th>
-                    <th width="10%">Optionen</th>
-                    <th width="30%">Info</th>
-                    <th class="text-right" width="10%">Aktion</th>
-                </tr>
-            </thead>
-            <tbody>
-                <template v-for="(item, index) in items">
-                    <row :item="item" :input-types="inputTypes" :key="item.id" @deleted="remove(index)"></row>
-                </template>
-            </tbody>
-        </table>
+        <div class="table-responsive mt-3" v-else-if="items.length">
+            <table class="table table-hover table-striped bg-white">
+                <thead>
+                    <tr>
+                        <th width="75%">Bezeichnung</th>
+                        <th width="100">Type</th>
+                        <th width="75">Standard</th>
+                        <th width="25%">Optionen</th>
+                        <th width="150">Info</th>
+                        <th class="text-right" width="100">Aktion</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <template v-for="(item, index) in items">
+                        <row :item="item" :input-types="inputTypes" :key="item.id" @deleted="remove(index)"></row>
+                    </template>
+                </tbody>
+            </table>
+        </div>
         <div class="alert alert-dark" v-else><center>Keine individuellen Felder vorhanden</center></div>
     </div>
 </template>

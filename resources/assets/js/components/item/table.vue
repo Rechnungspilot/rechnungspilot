@@ -1,33 +1,34 @@
 <template>
     <div>
-        <div class="container-fluid">
-            <div class="row mb-3" >
+        <div class="row mb-3">
+            <div class="col d-flex align-items-start mb-1 mb-sm-0">
                 <div class="form-group mb-0 mr-1">
-                    <input type="text" class="form-control" :class="'name' in errors ? 'is-invalid' : ''" v-model="name" placeholder="Neuer Artikel Name" @keydown.enter="create">
-                    <div class="invalid-feedback" v-text="'name' in errors ? errors.name[0] : ''"></div>
+                    <div>
+                        <input type="text" class="form-control" :class="'name' in errors ? 'is-invalid' : ''" v-model="form.name" placeholder="Name" @keydown.enter="create">
+                        <div class="invalid-feedback" v-text="'name' in errors ? errors.name[0] : ''"></div>
+                    </div>
                 </div>
-                <div class="form-group mb-0">
-                    <button class="btn btn-primary" @click="create"><i class="fas fa-plus-square"></i></button>
-                </div>
+                <button class="btn btn-primary" @click="create"><i class="fas fa-plus-square"></i></button>
             </div>
-            <div class="row">
+            <div class="col-auto d-flex">
                 <div class="form-group" style="margin-bottom: 0;">
-                    <input type="search" class="form-control" v-model="searchtext" @keyup="search" placeholder="suchen">
-                </div>&nbsp;
-                <button class="btn btn-outline-primary" @click="showFilter = !showFilter">+ Filter</button>
-            </div>
-            <form v-if="showFilter" id="filter" class="py-3">
-                <div  class="form-row">
-
-                    <filter-type :options="types" v-model="filter.type" @input="fetch"></filter-type>
-                    <filter-tags :options="tags" v-model="filter.tags" @input="fetch"></filter-tags>
-                    <filter-per-page v-model="filter.perPage" @input="fetch"></filter-per-page>
-
+                    <filter-search v-model="filter.searchtext" @input="search"></filter-search>
                 </div>
-            </form>
+                <button class="btn btn-secondary ml-1" @click="filter.show = !filter.show"><i class="fas fa-filter"></i></button>
+            </div>
         </div>
-        <br />
-        <div v-if="isLoading" class="p-5">
+
+        <form v-if="filter.show" id="filter" class="py-3">
+            <div  class="form-row">
+
+                <filter-type :options="types" v-model="filter.type" @input="search"></filter-type>
+                <filter-tags :options="tags" v-model="filter.tags" @input="search"></filter-tags>
+                <filter-per-page v-model="filter.perPage" @input="search"></filter-per-page>
+
+            </div>
+        </form>
+
+        <div v-if="isLoading" class="mt-3 p-5">
             <center>
                 <span style="font-size: 48px;">
                     <i class="fas fa-spinner fa-spin"></i><br />
@@ -35,30 +36,32 @@
                 Lade Daten..
             </center>
         </div>
-        <table class="table table-hover table-striped bg-white" v-else-if="items.length">
-            <thead>
-                <tr>
-                    <th width="5%">
-                        <label class="form-checkbox" for="checkall"></label>
-                        <input id="checkall" type="checkbox" v-model="selectAll">
-                    </th>
-                    <th class="text-right" width="5%">#</th>
-                    <th width="15%">Name</th>
-                    <th class="text-right" width="10%">Brutto</th>
-                    <th class="text-right" width="10%">Netto</th>
-                    <th width="10%">Einheit</th>
-                    <th width="10%">USt.</th>
-                    <th width="15%">Kategorien</th>
-                    <th class="text-right" width="10%">Umsatz</th>
-                    <th class="text-right" width="10%">Aktion</th>
-                </tr>
-            </thead>
-            <tbody>
-                <template v-for="(item, index) in items">
-                    <row :item="item" :key="item.id" :uri="uri" :selected="(selected.indexOf(item.id) == -1) ? false : true" @deleted="remove(index)" @input="toggleSelected"></row>
-                </template>
-            </tbody>
-        </table>
+
+        <div class="table-responsive mt-3" v-else-if="items.length">
+            <table class="table table-hover table-striped table-sm bg-white">
+                <thead>
+                    <tr>
+                        <th width="30">
+                            <label class="form-checkbox" for="checkall"></label>
+                            <input id="checkall" type="checkbox" v-model="selectAll">
+                        </th>
+                        <th class="text-right" width="85">#</th>
+                        <th width="100%">Name</th>
+                        <th class="text-right" width="75">Brutto</th>
+                        <th class="text-right" width="75">Netto</th>
+                        <th width="75">Einheit</th>
+                        <th width="75">USt.</th>
+                        <th class="text-right" width="75">Umsatz</th>
+                        <th class="text-right" width="125">Aktion</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <template v-for="(item, index) in items">
+                        <row :item="item" :key="item.id" :uri="uri" :selected="(selected.indexOf(item.id) == -1) ? false : true" @deleted="remove(index)" @input="toggleSelected"></row>
+                    </template>
+                </tbody>
+            </table>
+        </div>
         <div class="alert alert-dark" v-else><center>Keine Artikel vorhanden</center></div>
         <nav aria-label="Page navigation example">
             <ul class="pagination" v-show="paginate.lastPage > 1">
@@ -96,27 +99,35 @@
             'types'
         ],
 
+        computed: {
+            page() {
+                return this.form.page;
+            },
+        },
+
         data () {
             return {
                 uri: '/artikel',
                 items: [],
                 isLoading: true,
-                showFilter: true,
-                searchtext: '',
                 searchTimeout: null,
-                page: 1,
                 paginate: {
                     nextPageUrl: null,
                     prevPageUrl: null,
                     lastPage: 0,
                 },
                 filter: {
+                    show: false,
+                    searchtext: '',
+                    page: 1,
                     tags: [],
                     type: -1,
                     perPage: 25,
                 },
+                form: {
+                    name: '',
+                },
                 selected: [],
-                name: '',
                 errors: {},
             };
         },
@@ -162,7 +173,9 @@
             fetch() {
                 var component = this;
                 component.isLoading = true;
-                axios.get(this.uri + '?searchtext=' + component.searchtext + '&page=' + component.page + '&tags=' + component.filter.tags + '&perPage=' + component.filter.perPage + '&type=' + component.filter.type)
+                axios.get(component.uri, {
+                    params: component.filter
+                })
                     .then(function (response) {
                         component.items = response.data.data;
                         component.page = response.data.current_page;
@@ -175,16 +188,9 @@
                         console.log(error);
                     });
             },
-            search () {
-                var component = this;
-                if (component.searchTimeout)
-                {
-                    clearTimeout(component.searchTimeout);
-                    component.searchTimeout = null;
-                }
-                component.searchTimeout = setTimeout(function () {
-                    component.fetch()
-                }, 300);
+            search() {
+                this.filter.page = 1;
+                this.fetch();
             },
             remove(index) {
                 this.items.splice(index, 1);

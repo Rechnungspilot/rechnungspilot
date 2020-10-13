@@ -17,10 +17,10 @@
 
 @section('content')
 
-    <div class="row mb-5">
+    <div class="row mb-3">
 
-        <div class="col-md-6">
-            <div class="card mb-5">
+        <div class="col-lg-6">
+            <div class="card mb-3">
                 <div class="card-header">{{ $contact->name }}</div>
 
                 <div class="card-body">
@@ -169,9 +169,9 @@
 
         </div>
 
-        <div class="col-md-6">
+        <div class="col-lg-6">
 
-            <div class="card mb-5">
+            <div class="card mb-3">
                 <div class="card-header">Umsatz</div>
                 <div class="card-body">
                     <contact-revenue-chart :model="{{ json_encode($contact) }}"></contact-revenue-chart>
@@ -182,21 +182,21 @@
 
     </div>
 
-    <div class="card mb-5">
+    <div class="card mb-3">
         <div class="card-header">Ansprechpartner</div>
         <div class="card-body">
             <person-table contact-id="{{ $contact->id}}"></person-table>
         </div>
     </div>
 
-    <div class="card mb-5">
+    <div class="card mb-3">
         <div class="card-header">Aufgaben</div>
         <div class="card-body">
             <appointment-table type="kontakte" :model="{{ json_encode($contact) }}" :initial-contact="{{ json_encode($contact) }}" :users="{{ json_encode($users) }}"></appointment-table>
         </div>
     </div>
 
-    <div class="card mb-5">
+    <div class="card mb-3">
         <div class="card-header">Interaktionen</div>
         <div class="card-body">
             <interaction-table :model="{{ json_encode($contact) }}"></interaction-table>
@@ -204,7 +204,7 @@
     </div>
 
     @if(count($contact->receipts))
-        <div class="card mb-5">
+        <div class="card mb-3">
             <div class="card-header">Historie</div>
             <div class="card-body">
                 <table class="table table-hover table-striped">
@@ -256,7 +256,7 @@
     @endif
 
     @if(count($contact->abos))
-        <div class="card mb-5">
+        <div class="card mb-3">
             <div class="card-header">Abos</div>
             <div class="card-body">
                 <table class="table table-hover table-striped">
@@ -306,14 +306,14 @@
         </div>
     @endif
 
-    <div class="card mb-5">
+    <div class="card mb-3">
         <div class="card-header">Dateien</div>
         <div class="card-body">
             <userfileable-table uri="/kontakte" :model="{{ json_encode($contact) }}" token="{{ csrf_token() }}"></userfileable-table>
         </div>
     </div>
 
-    <div class="card mb-5">
+    <div class="card mb-3">
         <div class="card-header">Kommentare</div>
         <div class="card-body">
             <comments uri="/kontakte" :item="{{ json_encode($contact) }}"></comments>

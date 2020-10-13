@@ -35,14 +35,10 @@
 
             <div class="row">
 
-                <div class="col-12 col-md-4 col-lg-2">
-
-                    <h4>Allgemein</h4>
-
-                </div>
-                <div class="col-12 col-md-8 col-lg-10 px-0">
+                <div class="col-12 col-lg-6">
 
                     <div class="card mb-3">
+                        <div class="card-header">Allgemein</div>
                         <div class="card-body">
 
                             <div class="form-group row">
@@ -154,21 +150,16 @@
                                 </div>
                             </div>
 
+                            <tag-select class="my-2" :selected="{{ json_encode($contact->tags) }}" type="kontakte" type_id="{{ $contact->id }}"></tag-select>
+
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="row">
-
-                <div class="col-12 col-md-4 col-lg-2">
-
-                    <h4>Kontakt</h4>
-
-                </div>
-                <div class="col-12 col-md-8 col-lg-10 px-0">
+                <div class="col-12 col-lg-6">
 
                     <div class="card mb-3">
+                        <div class="card-header">Kontakt</div>
                         <div class="card-body">
 
                             <div class="form-group row">
@@ -234,22 +225,8 @@
                         </div>
                     </div>
 
-                    <tag-select class="my-2" :selected="{{ json_encode($contact->tags) }}" type="kontakte" type_id="{{ $contact->id }}"></tag-select>
-
-                </div>
-            </div>
-
-            <div class="row">
-
-                <div class="col-12 col-md-4 col-lg-2">
-
-                    <h4>Bank</h4>
-
-                </div>
-                <div class="col-12 col-md-8 col-lg-10 px-0">
-
-
                     <div class="card mb-3">
+                        <div class="card-header">Bankdaten</div>
                         <div class="card-body">
 
                             <div class="form-group row">
@@ -291,19 +268,11 @@
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="row">
-
-                <div class="col-12 col-md-4 col-lg-2">
-
-                    <h4>Belege</h4>
-
-                </div>
-                <div class="col-12 col-md-8 col-lg-10 px-0">
-
+                <div class="col-12 col-lg-6">
 
                     <div class="card mb-3">
+                        <div class="card-header">Belege</div>
                         <div class="card-body">
 
                             <div class="form-group row">
@@ -407,18 +376,10 @@
 
                 </div>
 
-            </div>
-
-            <div class="row">
-
-                <div class="col-12 col-md-4 col-lg-2">
-
-                    <h4>Buchhaltung</h4>
-
-                </div>
-                <div class="col-12 col-md-8 col-lg-10 px-0">
+                <div class="col-12 col-lg-6">
 
                     <div class="card mb-3">
+                        <div class="card-header">Buchhaltung</div>
                         <div class="card-body">
 
                             <div class="form-group row">
@@ -448,12 +409,12 @@
                         </div>
                     </div>
 
-                </div>
+                    @include('customfieldvalue.edit', ['model' => $contact])
 
+                </div>
 
             </div>
 
-            @include('customfieldvalue.edit', ['model' => $contact])
 
             <div class="row my-5"><div class="col"></div></div>
 

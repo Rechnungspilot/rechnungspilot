@@ -38,6 +38,7 @@ class Item extends Model
     protected $appends = [
         'tagsString',
         'path',
+        'tags_badges',
     ];
 
     protected $casts = [
