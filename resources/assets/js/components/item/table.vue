@@ -84,6 +84,7 @@
     import filterTags from "../filter/tags.vue";
     import filterType from "../filter/itemtype.vue";
     import filterPerPage from "../filter/perPage.vue";
+    import filterSearch from "../filter/search.vue";
 
     export default {
 
@@ -91,19 +92,14 @@
             row,
             filterTags,
             filterType,
-            filterPerPage
+            filterPerPage,
+            filterSearch,
         },
 
         props: [
             'tags',
             'types'
         ],
-
-        computed: {
-            page() {
-                return this.form.page;
-            },
-        },
 
         data () {
             return {
@@ -145,6 +141,9 @@
         },
 
         computed: {
+            page() {
+                return this.filter.page;
+            },
             selectAll: {
                 get: function () {
                     return this.items.length ? this.items.length == this.selected.length : false;
@@ -178,7 +177,7 @@
                 })
                     .then(function (response) {
                         component.items = response.data.data;
-                        component.page = response.data.current_page;
+                        component.filter.page = response.data.current_page;
                         component.paginate.nextPageUrl = response.data.next_page_url;
                         component.paginate.prevPageUrl = response.data.prev_page_url;
                         component.paginate.lastPage = response.data.last_page;

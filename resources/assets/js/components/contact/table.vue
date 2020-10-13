@@ -1,25 +1,29 @@
 <template>
     <div>
-        <div class="container-fluid">
-            <div class="row mb-3" >
-                <button class="btn btn-primary" @click="create"><i class="fas fa-plus-square"></i></button>
-            </div>
-            <div class="row">
-                <div class="form-group" style="margin-bottom: 0;">
-                    <input type="search" class="form-control" v-model="searchtext" @keyup="search" placeholder="suchen">
-                </div>&nbsp;
-                <button class="btn btn-outline-primary" @click="showFilter = !showFilter">+ Filter</button>
-            </div>
-            <form v-if="showFilter" id="filter" class="py-3">
-                <div  class="form-row">
-
-                    <filter-tags :options="tags" v-model="filter.tags" @input="fetch"></filter-tags>
-                    <filter-per-page v-model="filter.perPage" @input="fetch"></filter-per-page>
+        <div class="row mb-3">
+            <div class="col d-flex align-items-start mb-1 mb-sm-0">
+                <div class="form-group mb-0 mr-1">
 
                 </div>
-            </form>
+                <button class="btn btn-primary" @click="create"><i class="fas fa-plus-square"></i></button>
+            </div>
+            <div class="col-auto d-flex">
+                <div class="form-group" style="margin-bottom: 0;">
+                    <filter-search v-model="filter.searchtext" @input="search"></filter-search>
+                </div>
+                <button class="btn btn-secondary ml-1" @click="filter.show = !filter.show"><i class="fas fa-filter"></i></button>
+            </div>
         </div>
-        <br />
+
+        <form v-if="filter.show" id="filter" class="py-3">
+            <div  class="form-row">
+
+                <filter-tags :options="tags" v-model="filter.tags" @input="fetch"></filter-tags>
+                <filter-per-page v-model="filter.perPage" @input="fetch"></filter-per-page>
+
+            </div>
+        </form>
+
         <div v-if="isLoading" class="p-5">
             <center>
                 <span style="font-size: 48px;">
@@ -28,26 +32,23 @@
                 Lade Daten..
             </center>
         </div>
-        <table class="table table-hover table-striped bg-white" v-else-if="items.length">
+        <table class="table table-hover table-striped table-sm bg-white" v-else-if="items.length">
             <thead>
                 <tr>
-                    <th width="5%">
+                    <th width="30">
                         <label class="form-checkbox" for="checkall"></label>
                         <input id="checkall" type="checkbox" v-model="selectAll">
                     </th>
-                    <th width="15%">Name</th>
-                    <th width="15%">Straße</th>
-                    <th width="10%">PLZ</th>
-                    <th width="15%">Ort</th>
-                    <th width="15%">Tags</th>
-                    <th width="15%">Umsatz</th>
-                    <th class="text-right" width="10%">Aktion</th>
+                    <th width="40%">Name</th>
+                    <th width="30%">Straße</th>
+                    <th width="50">PLZ</th>
+                    <th width="30%">Ort</th>
+                    <th width="100">Umsatz</th>
+                    <th class="text-right" width="125">Aktion</th>
                 </tr>
             </thead>
             <tbody>
-                <template v-for="(item, index) in items">
-                    <row :item="item" :key="item.id" :uri="uri" :selected="(selected.indexOf(item.id) == -1) ? false : true" @deleted="remove(index)" @input="toggleSelected"></row>
-                </template>
+                <row :item="item" :key="item.id" :uri="uri" :selected="(selected.indexOf(item.id) == -1) ? false : true" v-for="(item, index) in items" @deleted="remove(index)" @input="toggleSelected"></row>
             </tbody>
         </table>
         <div class="alert alert-dark" v-else><center>Keine Kontakte vorhanden</center></div>
@@ -71,6 +72,7 @@
     import row from "./row.vue";
     import filterTags from "../filter/tags.vue";
     import filterPerPage from "../filter/perPage.vue";
+    import filterSearch from "../filter/search.vue";
 
     export default {
 
@@ -78,6 +80,7 @@
             row,
             filterTags,
             filterPerPage,
+            filterSearch,
         },
 
         props: [
@@ -89,18 +92,18 @@
                 uri: '/kontakte',
                 items: [],
                 isLoading: true,
-                showFilter: true,
-                searchtext: '',
                 searchTimeout: null,
-                page: 1,
                 paginate: {
                     nextPageUrl: null,
                     prevPageUrl: null,
                     lastPage: 0,
                 },
                 filter: {
+                    page: 1,
+                    show: false,
                     tags: [],
                     perPage: 25,
+                    searchtext: '',
                 },
                 selected: [],
             };
@@ -119,6 +122,9 @@
         },
 
         computed: {
+            page() {
+                return this.filter.page;
+            },
             selectAll: {
                 get: function () {
                     return this.items.length ? this.items.length == this.selected.length : false;
@@ -145,10 +151,12 @@
             fetch() {
                 var component = this;
                 component.isLoading = true;
-                axios.get(this.uri + '?searchtext=' + component.searchtext + '&page=' + component.page + '&tags=' + component.filter.tags + '&perPage=' + component.filter.perPage)
+                axios.get(this.uri, {
+                    params: component.filter
+                })
                     .then(function (response) {
                         component.items = response.data.data;
-                        component.page = response.data.current_page;
+                        component.filter.page = response.data.current_page;
                         component.paginate.nextPageUrl = response.data.next_page_url;
                         component.paginate.prevPageUrl = response.data.prev_page_url;
                         component.paginate.lastPage = response.data.last_page;
@@ -158,16 +166,9 @@
                         console.log(error);
                     });
             },
-            search () {
-                var component = this;
-                if (component.searchTimeout)
-                {
-                    clearTimeout(component.searchTimeout);
-                    component.searchTimeout = null;
-                }
-                component.searchTimeout = setTimeout(function () {
-                    component.fetch()
-                }, 300);
+            search() {
+                this.filter.page = 1;
+                this.fetch();
             },
             remove(index) {
                 this.items.splice(index, 1);

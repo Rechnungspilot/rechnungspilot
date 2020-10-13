@@ -34,6 +34,7 @@ class Contact extends Model
         'name',
         'path',
         'link',
+        'tags_badges',
     ];
 
     protected $fillable = [
