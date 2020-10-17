@@ -1,5 +1,7 @@
 const mix = require('laravel-mix');
 
+require('laravel-mix-tailwind');
+
 /*
  |--------------------------------------------------------------------------
  | Mix Asset Management
@@ -21,7 +23,8 @@ mix.js('resources/assets/js/app.js', 'public/js')
         'vue-datetime',
         'vue-multiselect',
         'weekstart',
-    ]);
+    ])
+    .tailwind();
 
 if (mix.inProduction()) {
     mix.version();
