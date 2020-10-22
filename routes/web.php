@@ -41,11 +41,6 @@ Route::post('/contact', 'Guests\ContactController@store');
 
 Auth::routes();
 
-
-
-// Deployment
-Route::post('deploy', 'DeploymentController@store');
-
 Route::middleware(['guest', 'signed'])->group(function () {
     Route::get('rechnungen/keepseven/create', 'Receipts\Invoices\KeepsevenController@create')->name('receipt.invoice.keepseven.create');
     Route::post('rechnungen/keepseven', 'Receipts\Invoices\KeepsevenController@store')->name('receipt.invoice.keepseven.store');

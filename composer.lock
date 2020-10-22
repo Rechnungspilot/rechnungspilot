@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1d93405401a000915d7dd91d45a6d41e",
+    "content-hash": "fd242238950b9720fe05e1a8dce4ad19",
     "packages": [
         {
             "name": "ajcastro/eager-load-pivot-relations",
@@ -228,13 +228,50 @@
                 }
             ],
             "description": "A simple eloquent trait that allows relationships to be accessed through child models.",
-            "funding": [
+            "time": "2020-03-03T13:45:17+00:00"
+        },
+        {
+            "name": "danielsundermeier/laravel-deploy",
+            "version": "0.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/danielsundermeier/laravel-deploy.git",
+                "reference": "752221c58e2cccf49b6cbd9fd3ff3c0c3dae3ced"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/danielsundermeier/laravel-deploy/zipball/752221c58e2cccf49b6cbd9fd3ff3c0c3dae3ced",
+                "reference": "752221c58e2cccf49b6cbd9fd3ff3c0c3dae3ced",
+                "shasum": ""
+            },
+            "require-dev": {
+                "orchestra/testbench": "^5.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "D15r\\Deployment\\DeploymentServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "D15r\\Deployment\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
                 {
-                    "url": "https://github.com/calebporzio",
-                    "type": "github"
+                    "name": "Daniel Sundermeier",
+                    "email": "packages@d15r.de"
                 }
             ],
-            "time": "2020-03-03T13:45:17+00:00"
+            "description": "Description.",
+            "time": "2020-10-22T04:48:59+00:00"
         },
         {
             "name": "dnoegel/php-xdg-base-dir",
@@ -2652,12 +2689,12 @@
             "version": "v1.1.1",
             "source": {
                 "type": "git",
-                "url": "https://github.com/nrk/predis.git",
+                "url": "https://github.com/predis/predis.git",
                 "reference": "f0210e38881631afeafb56ab43405a92cafd9fd1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nrk/predis/zipball/f0210e38881631afeafb56ab43405a92cafd9fd1",
+                "url": "https://api.github.com/repos/predis/predis/zipball/f0210e38881631afeafb56ab43405a92cafd9fd1",
                 "reference": "f0210e38881631afeafb56ab43405a92cafd9fd1",
                 "shasum": ""
             },
@@ -5541,9 +5578,9 @@
             "authors": [
                 {
                     "name": "Marcel Pociot",
+                    "role": "Developer",
                     "email": "marcel@beyondco.de",
-                    "homepage": "https://beyondco.de",
-                    "role": "Developer"
+                    "homepage": "https://beyondco.de"
                 }
             ],
             "description": "Symfony Var-Dump Server for Laravel",
@@ -6624,6 +6661,7 @@
             "keywords": [
                 "tokenizer"
             ],
+            "abandoned": true,
             "time": "2019-09-17T06:23:10+00:00"
         },
         {
