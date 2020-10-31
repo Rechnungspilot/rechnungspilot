@@ -11,9 +11,11 @@ use App\Receipts\Statuses\Overdue;
 use App\Receipts\Statuses\Payed;
 use App\Receipts\Statuses\Payment;
 use App\Receipts\Statuses\Received;
+use App\Receipts\Statuses\Send;
 use App\Receipts\Statuses\Viewed;
 use App\Receipts\Term;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 use Parental\HasParent;
 
 class Expense extends Receipt
@@ -99,6 +101,29 @@ class Expense extends Receipt
 
         return $expense;
 
+    }
+
+    public static function outstandingBalance()
+    {
+        $sql = "SELECT
+                    COUNT(*) AS count,
+                    SUM(receipts.outstanding) AS amount
+                FROM
+                    receipts
+                WHERE
+                    receipts.company_id = :company_id AND
+                    receipts.type = :type AND
+                    receipts.latest_status_type IN (:status_send, :status_viewed, :status_overdue, :status_payment)";
+        $data = DB::select($sql, [
+            'company_id' => auth()->user()->company_id,
+            'type' => self::class,
+            'status_send' => Send::class,
+            'status_viewed' => Viewed::class,
+            'status_overdue' => Overdue::class,
+            'status_payment' => Payment::class,
+        ]);
+
+        return $data[0];
     }
 
     public function getNextMainStatusAttribute()

@@ -9,95 +9,31 @@
         <div class="col">
 
             <div class="card h-100">
-                <div class="card-header"><a class="text-body" href="{{ url('/anfragen') }}">Anfragen</a></div>
+                <div class="card-header d-flex justify-content-between">
+                    <div>Offene Rechnungen</div>
+                    <a class="text-body" href="{{ url('/forderungen') }}"><i class="fas fa-arrow-right"></i></a>
+                </div>
                 <div class="card-body">
-                    @if(count($inquiriesCount) == 0)
-                        <p>Keine offenen Anfragen</p>
-                    @else
-                        <div class="row">
-                            @foreach ($inquiriesCount as $count)
-                                <div class="col">
-                                    <div>
-                                        <div class="text-center text-muted">{{ $count->latest_status_type::NAME }}</div>
-                                    </div>
-                                    <div>
-                                        <div class="text-center">{{ $count->count }}</div>
-                                    </div>
-                                </div>
-                            @endforeach
-                        </div>
-                    @endif
+                    <div class="text-primary font-weight-bold" style="font-size: 20px;">{{ number_format($outstanding_invoices->amount / 100, 2, ',', '.') }} €</div>
+                    <div class="text-muted">{{ $outstanding_invoices->count }} {{ $outstanding_invoices->count == 1 ? 'Rechnung' : 'Rechnungen' }}</div>
                 </div>
             </div>
-
         </div>
 
         <div class="col">
 
             <div class="card h-100">
-                <div class="card-header"><a class="text-body" href="{{ url('/angebote') }}">Offene Angebote</a></div>
+                <div class="card-header d-flex justify-content-between">
+                    <div>Offene Ausgaben</div>
+                    <a class="text-body" href="{{ url('/verbindlichkeiten') }}"><i class="fas fa-arrow-right"></i></a>
+                </div>
                 <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-8">
-                            <div class="text-muted">Betrag</div>
-                            <div>{{ number_format($openQuotes->amount / 100, 2, ',', '.') }} €</div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="text-muted">Anzahl</div>
-                            <div>{{ $openQuotes->count }}</div>
-                        </div>
-                    </div>
+                    <div class="text-primary font-weight-bold" style="font-size: 20px;">{{ number_format($outstanding_expenses->amount / 100, 2, ',', '.') }} €</div>
+                    <div class="text-muted">{{ $outstanding_expenses->count }}  {{ $outstanding_expenses->count == 1 ? 'Ausgabe' : 'Ausgaben' }}</div>
                 </div>
             </div>
 
         </div>
-
-        <div class="col">
-
-            <div class="card h-100">
-                <div class="card-header"><a class="text-body" href="{{ url('/auftraege') }}">Aufträge</a></div>
-                <div class="card-body">
-                    @if(count($orderCount) == 0)
-                        <p class="text-center">Keine offenen Aufträge</p>
-                    @else
-                        <div class="row">
-                            @foreach ($orderCount as $count)
-                                <div class="col">
-                                    <div>
-                                        <div class="text-center text-muted">{{ $count->latest_status_type::NAME }}</div>
-                                    </div>
-                                    <div>
-                                        <div class="text-center">{{ $count->count }}</div>
-                                    </div>
-                                </div>
-                            @endforeach
-                        </div>
-                    @endif
-                </div>
-            </div>
-
-        </div>
-
-        <div class="col">
-
-            <div class="card h-100">
-                <div class="card-header"><a class="text-body" href="{{ url('/rechnungen') }}">Offene Rechnungen</a></div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-8">
-                            <div class="text-muted">Betrag</div>
-                            <div>{{ number_format($outstandingInvoices->amount / 100, 2, ',', '.') }} €</div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="text-muted">Anzahl</div>
-                            <div>{{ $outstandingInvoices->count }}</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-
     </div>
 
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Receipts\Expense;
 use App\Receipts\Inquiries\Inquiry;
 use App\Receipts\Invoice;
 use App\Receipts\Quote;
@@ -46,9 +47,8 @@ class HomeController extends Controller
             ->get();
 
         return view('home')
-            ->with('outstandingInvoices', Invoice::outstandingBalance())
-            ->with('openQuotes', Quote::open())
-            ->with('inquiriesCount', $inquiries_count)
+            ->with('outstanding_invoices', Invoice::outstandingBalance())
+            ->with('outstanding_expenses', Expense::outstandingBalance())
             ->with('orderCount', $order_count);
     }
 }
