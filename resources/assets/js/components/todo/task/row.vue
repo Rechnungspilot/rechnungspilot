@@ -13,11 +13,9 @@
             <div class="text-muted" v-else-if="item.todoable_type == 'App\\Projects\\Section'">
                 Projekt: <a class="text-muted" :href="item.todoable.project.path">{{ item.todoable.project.name }} > {{ item.todoable.name }}</a>
             </div>
+            <div v-html="item.tags_badges"></div>
         </td>
-        <td class="align-middle">
-            {{ item.user_id > 0 ? item.team.name : 'Nicht zugewiesen' }}
-        </td>
-        <td class="align-middle">{{ item.tagsString }}</td>
+        <td class="align-middle" v-if="options.show_team">{{ item.user_id > 0 ? item.team.name : 'Nicht zugewiesen' }}</td>
         <td class="align-middle text-right">
             <div class="btn-group btn-group-sm" role="group">
                 <button type="button" class="btn btn-secondary" title="Anzeigen" @click="link(false)"><i class="fas fa-fw fa-eye"></i></button>
@@ -33,10 +31,21 @@
 
     export default {
 
-        props: [
-            'item',
-            'uri',
-        ],
+        props: {
+            item: {
+                required: true,
+                type: Object,
+            },
+            uri: {
+                required:true,
+                type: String,
+            },
+            options: {
+                required: false,
+                type: Object,
+                default: {},
+            },
+        },
 
         data () {
             return {

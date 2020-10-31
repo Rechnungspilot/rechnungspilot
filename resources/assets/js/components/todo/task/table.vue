@@ -32,16 +32,15 @@
         <table class="table table-hover table-striped bg-white" v-else-if="items.length">
             <thead>
                 <tr>
-                    <th width="10%"></th>
-                    <th width="35%">Bezeichnung</th>
-                    <th width="20%">Mitarbeiter</th>
-                    <th width="25%">Tags</th>
-                    <th class="text-right" width="10%">Aktion</th>
+                    <th width="35"></th>
+                    <th width="50%">Bezeichnung</th>
+                    <th width="50%" v-if="options.show_team">Mitarbeiter</th>
+                    <th class="text-right" width="115">Aktion</th>
                 </tr>
             </thead>
             <tbody>
                 <template v-for="(item, index) in items">
-                    <row :item="item" :key="item.id" :uri="uri" @deleted="remove(index)"></row>
+                    <row :item="item" :key="item.id" :uri="uri" :options="options" @deleted="remove(index)"></row>
                 </template>
             </tbody>
         </table>
@@ -79,13 +78,33 @@
             filterPerPage,
         },
 
-        props:[
-            'filterTags',
-            'filterTeam',
-            'contactId',
-            'hideFilter',
-            'teamId',
-        ],
+        props: {
+            filterTags: {
+                required: false,
+                type: Array,
+                default: function () { return []; },
+            },
+            filterTeam: {
+                required: false,
+                type: Array,
+                default: function () { return []; },
+            },
+            contactId: {
+                required: false,
+                type: Number,
+                default: 0,
+            },
+            hideFilter: {
+                required: false,
+                type: String,
+                default: '0',
+            },
+            teamId: {
+                required: false,
+                type: Number,
+                default: 0,
+            },
+        },
 
         data () {
             return {
@@ -99,6 +118,9 @@
                     nextPageUrl: null,
                     prevPageUrl: null,
                     lastPage: 0,
+                },
+                options: {
+                    show_team: (this.teamId == 0),
                 },
                 filter: {
                     completed: -1,

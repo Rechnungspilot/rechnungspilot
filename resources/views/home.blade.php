@@ -74,8 +74,10 @@
         <div class="col">
 
             <div class="card mb-3">
-                <div class="card-header"><a class="text-body" href="{{ url('/aufgaben') }}">Aufgaben</a></div>
-
+                <div class="card-header d-flex justify-content-between">
+                    <div>Aufgaben</div>
+                    <a class="text-body" href="{{ url('/aufgaben') }}"><i class="fas fa-arrow-right"></i></a>
+                </div>
                 <div class="card-body">
                     <task-table hide-filter="1" :team-id="1"></task-table>
                 </div>

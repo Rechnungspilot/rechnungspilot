@@ -11076,11 +11076,23 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['item', 'uri'],
+  props: {
+    item: {
+      required: true,
+      type: Object
+    },
+    uri: {
+      required: true,
+      type: String
+    },
+    options: {
+      required: false,
+      type: Object,
+      "default": {}
+    }
+  },
   data: function data() {
     return {
       id: this.item.id,
@@ -11191,7 +11203,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 
 
 
@@ -11205,7 +11216,37 @@ __webpack_require__.r(__webpack_exports__);
     filterTeam: _filter_team_vue__WEBPACK_IMPORTED_MODULE_3__["default"],
     filterPerPage: _filter_perPage_vue__WEBPACK_IMPORTED_MODULE_4__["default"]
   },
-  props: ['filterTags', 'filterTeam', 'contactId', 'hideFilter', 'teamId'],
+  props: {
+    filterTags: {
+      required: false,
+      type: Array,
+      "default": function _default() {
+        return [];
+      }
+    },
+    filterTeam: {
+      required: false,
+      type: Array,
+      "default": function _default() {
+        return [];
+      }
+    },
+    contactId: {
+      required: false,
+      type: Number,
+      "default": 0
+    },
+    hideFilter: {
+      required: false,
+      type: String,
+      "default": '0'
+    },
+    teamId: {
+      required: false,
+      type: Number,
+      "default": 0
+    }
+  },
   data: function data() {
     return {
       uri: '/aufgaben',
@@ -11218,6 +11259,9 @@ __webpack_require__.r(__webpack_exports__);
         nextPageUrl: null,
         prevPageUrl: null,
         lastPage: 0
+      },
+      options: {
+        show_team: this.teamId == 0
       },
       filter: {
         completed: -1,
@@ -61081,22 +61125,20 @@ var render = function() {
               ]
             )
           ])
-        : _vm._e()
+        : _vm._e(),
+      _vm._v(" "),
+      _c("div", { domProps: { innerHTML: _vm._s(_vm.item.tags_badges) } })
     ]),
     _vm._v(" "),
-    _c("td", { staticClass: "align-middle" }, [
-      _vm._v(
-        "\n        " +
-          _vm._s(
-            _vm.item.user_id > 0 ? _vm.item.team.name : "Nicht zugewiesen"
-          ) +
-          "\n    "
-      )
-    ]),
-    _vm._v(" "),
-    _c("td", { staticClass: "align-middle" }, [
-      _vm._v(_vm._s(_vm.item.tagsString))
-    ]),
+    _vm.options.show_team
+      ? _c("td", { staticClass: "align-middle" }, [
+          _vm._v(
+            _vm._s(
+              _vm.item.user_id > 0 ? _vm.item.team.name : "Nicht zugewiesen"
+            )
+          )
+        ])
+      : _vm._e(),
     _vm._v(" "),
     _c("td", { staticClass: "align-middle text-right" }, [
       _c(
@@ -61326,7 +61368,25 @@ var render = function() {
           "table",
           { staticClass: "table table-hover table-striped bg-white" },
           [
-            _vm._m(0),
+            _c("thead", [
+              _c("tr", [
+                _c("th", { attrs: { width: "35" } }),
+                _vm._v(" "),
+                _c("th", { attrs: { width: "50%" } }, [_vm._v("Bezeichnung")]),
+                _vm._v(" "),
+                _vm.options.show_team
+                  ? _c("th", { attrs: { width: "50%" } }, [
+                      _vm._v("Mitarbeiter")
+                    ])
+                  : _vm._e(),
+                _vm._v(" "),
+                _c(
+                  "th",
+                  { staticClass: "text-right", attrs: { width: "115" } },
+                  [_vm._v("Aktion")]
+                )
+              ])
+            ]),
             _vm._v(" "),
             _c(
               "tbody",
@@ -61335,7 +61395,7 @@ var render = function() {
                   return [
                     _c("row", {
                       key: item.id,
-                      attrs: { item: item, uri: _vm.uri },
+                      attrs: { item: item, uri: _vm.uri, options: _vm.options },
                       on: {
                         deleted: function($event) {
                           return _vm.remove(index)
@@ -61461,28 +61521,7 @@ var render = function() {
     ])
   ])
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("thead", [
-      _c("tr", [
-        _c("th", { attrs: { width: "10%" } }),
-        _vm._v(" "),
-        _c("th", { attrs: { width: "35%" } }, [_vm._v("Bezeichnung")]),
-        _vm._v(" "),
-        _c("th", { attrs: { width: "20%" } }, [_vm._v("Mitarbeiter")]),
-        _vm._v(" "),
-        _c("th", { attrs: { width: "25%" } }, [_vm._v("Tags")]),
-        _vm._v(" "),
-        _c("th", { staticClass: "text-right", attrs: { width: "10%" } }, [
-          _vm._v("Aktion")
-        ])
-      ])
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
