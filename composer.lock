@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "fd242238950b9720fe05e1a8dce4ad19",
+    "content-hash": "44ac5ac92eea40a1cc0be717fca0c6fb",
     "packages": [
         {
             "name": "ajcastro/eager-load-pivot-relations",
@@ -2123,16 +2123,16 @@
         },
         {
             "name": "nemiah/php-fints",
-            "version": "2.1.0",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nemiah/phpFinTS.git",
-                "reference": "7796f4ad31c3a29b67ababb82904bd8dba00355b"
+                "reference": "cd245a06db57a0f4e00b33a733fdc49e902424e6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nemiah/phpFinTS/zipball/7796f4ad31c3a29b67ababb82904bd8dba00355b",
-                "reference": "7796f4ad31c3a29b67ababb82904bd8dba00355b",
+                "url": "https://api.github.com/repos/nemiah/phpFinTS/zipball/cd245a06db57a0f4e00b33a733fdc49e902424e6",
+                "reference": "cd245a06db57a0f4e00b33a733fdc49e902424e6",
                 "shasum": ""
             },
             "require": {
@@ -2163,7 +2163,7 @@
             ],
             "description": "PHP Library for the protocols fints and hbci",
             "homepage": "https://github.com/nemiah/phpFinTS",
-            "time": "2020-04-10T13:05:55+00:00"
+            "time": "2020-09-26T19:08:54+00:00"
         },
         {
             "name": "nesbot/carbon",
@@ -5770,6 +5770,7 @@
                 "faker",
                 "fixtures"
             ],
+            "abandoned": true,
             "time": "2019-12-12T13:22:17+00:00"
         },
         {
@@ -7464,7 +7465,9 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": [],
+    "stability-flags": {
+        "nemiah/php-fints": 20
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
