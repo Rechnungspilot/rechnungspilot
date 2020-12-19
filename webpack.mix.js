@@ -23,8 +23,11 @@ mix.js('resources/assets/js/app.js', 'public/js')
         'vue-datetime',
         'vue-multiselect',
         'weekstart',
-    ])
+    ]);
+
+mix.sass('resources/assets/sass/d15r.scss', 'public/css')
     .tailwind();
+
 
 if (mix.inProduction()) {
     mix.version();
