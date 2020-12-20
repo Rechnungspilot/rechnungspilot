@@ -103,8 +103,9 @@
       <p class="mt-8 text-xl text-gray-500 leading-8">
         Es macht mir Spaß mein Leben mit <a href="#software" class="underline hover:text-gray-500 hover:bg-gray-100">Software</a> und <a href="#automation" class="underline hover:text-gray-500 hover:bg-gray-100">Automatisierungen</a> zu vereinfachen.
         Ich möchte alles automatisieren, damit sich jeder auf seine Leidenschaft konzentrieren kann (<a href="https://danielsundermeier.gitbook.io/knowledge/masterplan/masterplan" class="underline hover:text-gray-500 hover:bg-gray-100">Masterplan</a>).
+        Ich versuche mein <a href="https://danielsundermeier.gitbook.io/knowledge/leben/leben" class="underline hover:text-gray-500 hover:bg-gray-100">Leben</a> so einfach und angenehm wie möglich zu gestalten.
         Ich veröffentliche meine Gedanken in meinen <a href="https://danielsundermeier.gitbook.io/knowledge/" class="underline hover:text-gray-500 hover:bg-gray-100">Notizen</a>. Du bist herzlich eingeladen mit mir darüber zu <a href="#contact" class="underline hover:text-gray-500 hover:bg-gray-100">diskutieren</a>.
-        Du findest meine Projekte auf <a href="https://github.com/danielsundermeier" class="underline hover:text-gray-500 hover:bg-gray-100">Github</a>.
+        Meine anderen Projekte findest Du bei <a href="https://github.com/danielsundermeier" class="underline hover:text-gray-500 hover:bg-gray-100">Github</a>.
       </p>
     </div>
   </div>
