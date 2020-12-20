@@ -100,12 +100,17 @@
       <h1>
         <span class="mt-2 block text-3xl leading-8 font-extrabold tracking-tight text-gray-900 sm:text-4xl">Hi, ich bin Daniel</span>
       </h1>
-      <p class="mt-8 text-xl text-gray-500 leading-8">Es macht mir Spaß mein Leben mit Software und Automatisierungen zu vereinfachen. Ich möchte alles automatisieren, damit sich jeder auf seine Leidenschaft konzentrieren kann.</p>
+      <p class="mt-8 text-xl text-gray-500 leading-8">
+        Es macht mir Spaß mein Leben mit <a href="#software" class="underline hover:text-gray-500 hover:bg-gray-100">Software</a> und <a href="#automation" class="underline hover:text-gray-500 hover:bg-gray-100">Automatisierungen</a> zu vereinfachen.
+        Ich möchte alles automatisieren, damit sich jeder auf seine Leidenschaft konzentrieren kann (<a href="https://danielsundermeier.gitbook.io/knowledge/masterplan/masterplan" class="underline hover:text-gray-500 hover:bg-gray-100">Masterplan</a>).
+        Ich veröffentliche meine Gedanken in meinen <a href="https://danielsundermeier.gitbook.io/knowledge/" class="underline hover:text-gray-500 hover:bg-gray-100">Notizen</a>. Du bist herzlich eingeladen mit mir darüber zu <a href="#contact" class="underline hover:text-gray-500 hover:bg-gray-100">diskutieren</a>.
+        Du findest meine Projekte auf <a href="https://github.com/danielsundermeier" class="underline hover:text-gray-500 hover:bg-gray-100">Github</a>.
+      </p>
     </div>
   </div>
 </div>
 
-<div class="bg-white">
+<div class="bg-white" id="software">
   <div class="max-w-7xl mx-auto py-16 px-4 sm:px-6 lg:py-24 lg:px-8 lg:grid lg:grid-cols-3 lg:gap-x-8">
     <div>
       <h2 class="text-base font-semibold text-indigo-600 uppercase tracking-wide">Programmieren</h2>
@@ -163,7 +168,7 @@
   </div>
 </div>
 
-<div class="bg-gray-300">
+<div class="bg-gray-300" id="automation">
   <div class="max-w-7xl mx-auto py-16 px-4 sm:px-6 lg:py-24 lg:px-8 lg:grid lg:grid-cols-3 lg:gap-x-8">
     <div>
       <h2 class="text-base font-semibold text-indigo-600 uppercase tracking-wide">Automation</h2>
