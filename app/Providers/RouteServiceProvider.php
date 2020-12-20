@@ -62,6 +62,11 @@ class RouteServiceProvider extends ServiceProvider
              ->middleware('web')
              ->namespace($this->namespace)
              ->group(base_path('routes/web.php'));
+
+        Route::domain('https://d15r.de')
+             ->middleware('web')
+             ->namespace($this->namespace)
+             ->group(base_path('routes/d15r.php'));
     }
 
     /**

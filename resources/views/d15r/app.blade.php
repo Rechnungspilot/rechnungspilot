@@ -100,7 +100,7 @@
       <h1>
         <span class="mt-2 block text-3xl leading-8 font-extrabold tracking-tight text-gray-900 sm:text-4xl">Hi, ich bin Daniel</span>
       </h1>
-      <p class="mt-8 text-xl text-gray-500 leading-8">Es macht mir Spaß mein Leben mit Software und Automatisierungen zu vereinfachen.</p>
+      <p class="mt-8 text-xl text-gray-500 leading-8">Es macht mir Spaß mein Leben mit Software und Automatisierungen zu vereinfachen. Ich möchte alles automatisieren, damit sich jeder auf seine Leidenschaft konzentrieren kann.</p>
     </div>
   </div>
 </div>
