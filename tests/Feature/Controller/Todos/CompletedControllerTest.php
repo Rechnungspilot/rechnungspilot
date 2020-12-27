@@ -70,14 +70,12 @@ class CompletedControllerTest extends TestCase
             'company_id' => $this->user->company_id
         ]);
 
-        $now = now()->format('Y-m-d H:i:s');
         $response = $this->json('POST', route($this->baseRouteName . '.store', ['todo' => $todo->id]), []);
         $response->assertStatus(Response::HTTP_OK)
             ->assertJsonStructure(['id', 'name'])
             ->assertJson([
                 'company_id' => $this->user->company_id,
                 'completer_id' => $this->user->id,
-                'completed_at' => $now,
                 'completed' => true,
             ]);
     }

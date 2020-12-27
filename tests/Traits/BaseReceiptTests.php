@@ -9,7 +9,7 @@ use App\Receipts\Receipt;
 use App\Receipts\Statuses\Draft;
 use App\Receipts\Term;
 use App\Unit;
-use Illuminate\Foundation\Testing\TestResponse;
+use Illuminate\Testing\TestResponse;
 use Illuminate\Http\Response;
 
 trait BaseReceiptTests

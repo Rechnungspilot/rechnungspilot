@@ -67,7 +67,7 @@ class Userfile extends Model
         $attributes['name'] = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
         $attributes['extension'] = $file->extension();
         $attributes['original_name'] = $file->getClientOriginalName();
-        $attributes['size'] = $file->getClientSize();
+        $attributes['size'] = $file->getSize();
         $attributes['user_id'] = auth()->user()->id;
         if (! is_null($fileable))
         {

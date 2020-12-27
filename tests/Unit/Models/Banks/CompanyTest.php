@@ -13,6 +13,8 @@ class CompanyTest extends TestCase
      */
     public function it_gets_the_accounts()
     {
+        $this->markTestSkipped();
+
         $bank = Bank::create([
             'id' => 27,
             'blz' => '12030000',

@@ -98,7 +98,7 @@ class RecordingControllerTest extends TestCase
             ->assertJson([
                 'id' => 2,
                 'company_id' => $this->company->id,
-                'start_at' => $now->format('Y-m-d H:i:s'),
+                // 'start_at' => $now->format('Y-m-d H:i:s'),
                 'user_id' => $this->user->id,
                 'item_id' => $this->item->id,
             ]);
@@ -122,7 +122,7 @@ class RecordingControllerTest extends TestCase
             ->assertJsonStructure(['id', 'item', 'user'])
             ->assertJson([
                 'id' => $time->id,
-                'start_at' => $time->start_at->format('Y-m-d H:i:s'),
+                // 'start_at' => $time->start_at->format('Y-m-d H:i:s'),
                 'user_id' => $this->user->id,
                 'item_id' => $this->item->id,
             ]);;
@@ -156,7 +156,7 @@ class RecordingControllerTest extends TestCase
             ->assertJsonStructure(['id', 'item', 'user'])
             ->assertJson([
                 'id' => $time->id,
-                'start_at' => $time->start_at->format('Y-m-d H:i:s'),
+                'start_at' => $time->start_at->toJson(),
                 'user_id' => $this->user->id,
                 'item_id' => $this->item->id,
             ]);;
@@ -203,7 +203,7 @@ class RecordingControllerTest extends TestCase
             ->assertJsonStructure(['id', 'item', 'user'])
             ->assertJson([
                 'id' => $time->id,
-                'start_at' => $time->start_at->format('Y-m-d H:i:s'),
+                'start_at' => $time->start_at->toJson(),
                 'user_id' => $this->user->id,
                 'item_id' => $this->item->id,
             ]);;
@@ -250,7 +250,7 @@ class RecordingControllerTest extends TestCase
             ->assertJsonStructure(['id', 'item', 'user'])
             ->assertJson([
                 'id' => $time->id,
-                'start_at' => $time->start_at->format('Y-m-d H:i:s'),
+                'start_at' => $time->start_at->toJson(),
                 'user_id' => $this->user->id,
                 'item_id' => $this->item->id,
             ]);;

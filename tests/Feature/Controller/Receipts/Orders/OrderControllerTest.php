@@ -4,7 +4,7 @@ namespace Tests\Feature\Controller\Receipts\Orders;
 
 use App\Receipts\Order;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\TestResponse;
+use Illuminate\Testing\TestResponse;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Http\Response;
 use Tests\TestCase;
