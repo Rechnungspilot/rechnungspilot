@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Controller\CutomFields;
+namespace Tests\Feature\Controller\CustomFields;
 
 use App\Contacts\Contact;
 use App\Models\CustomFields\CustomField;

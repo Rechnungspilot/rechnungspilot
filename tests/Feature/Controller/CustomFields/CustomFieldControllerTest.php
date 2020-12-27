@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Controller\Customfields;
+namespace Tests\Feature\Controller\CustomFields;
 
 use App\Models\CustomFields\CustomField;
 use App\Receipts\Invoice;
