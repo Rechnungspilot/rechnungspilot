@@ -424,6 +424,11 @@ class Receipt extends Model
         return $this->statuses->contains('type', Overdue::class);
     }
 
+    protected function serializeDate(\DateTimeInterface $date)
+    {
+        return $date->format('Y-m-d H:i:s');
+    }
+
     public function getUriAttribute()
     {
         return $this->uri;
