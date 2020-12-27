@@ -21,10 +21,10 @@ class CreateBankCompanyTable extends Migration
             $table->string('username');
             $table->string('pin');
 
+            $table->timestamps();
+
             $table->foreign('company_id')->references('id')->on('companies');
             $table->foreign('bank_id')->references('id')->on('banks');
-
-            $table->timestamps();
         });
     }
 

@@ -25,6 +25,15 @@
                             <div class="invalid-feedback" v-text="'pin' in errors ? errors.pin[0] : ''"></div>
                         </div>
                         <button class="btn btn-secondary" v-if="bank != null" @click="connect">Verbinden</button>
+                        <div v-if="tan.show">
+                            <div v-html="tan.html"></div>
+                            <div class="form-group">
+                                <label>Tan</label>
+                                <input type="text" v-model="tan.tan" class="form-control" :class="'tan' in errors ? 'is-invalid' : ''" placeholder="Tan für Onlinebanking" autofocus></input>
+                                <div class="invalid-feedback" v-text="'tan' in errors ? errors.tan[0] : ''"></div>
+                            </div>
+                            <button class="btn btn-secondary" @click="submitTan">Tan absenden</button>
+                        </div>
                         <div class="mt-3" v-if="accounts.length">
                             <h5>Konten</h5>
                             <table class="table">
@@ -88,6 +97,12 @@
                 banks: [],
                 searchTimeout: null,
                 date: moment().startOf('month').format(),
+                tan: {
+                    action: null,
+                    html: '',
+                    needed: false,
+                    tan: '',
+                },
             };
         },
 
@@ -100,8 +115,8 @@
                     accounts: component.accountsSelected,
                     }).then( function (response) {
                         component.bank = null;
-                        component.username = '';
-                        component.pin = '';
+                        // component.username = '';
+                        // component.pin = '';
                         component.accounts = [];
                         component.accountsSelected = [];
                         for (var index in response.data) {
@@ -135,10 +150,15 @@
                         username: component.username,
                         pin: component.pin,
                     }).then( function (response) {
-                        component.bankCompanyId = response.data.bank_company_id;
-                        for (var index in response.data.accounts) {
-                            component.accounts.push(response.data.accounts[index]);
-                            component.accountsSelected.push(response.data.accounts[index]);
+                        console.log(response.data.tan);
+                        component.tan = response.data.tan;
+
+                        if (! component.tan.show) {
+                            component.bankCompanyId = response.data.bank_company_id;
+                            for (var index in response.data.accounts) {
+                                component.accounts.push(response.data.accounts[index]);
+                                component.accountsSelected.push(response.data.accounts[index]);
+                            }
                         }
                     }).catch( function (error) {
                         component.errors = error.response.data.errors;
@@ -146,13 +166,19 @@
                         component.accountsSelected = [];
                 });
             },
+            submitTan() {
+                var component = this;
+                axios.post(component.uri + '/konten/' + component.bankCompanyId + '/tan', component.tan)
+                    .then(function (response) {
+                        console.log(response);
+                        // component.connect();
+                    });
+            },
             toggleAccount(index, account) {
-                if (this.accountsSelected[index] == null)
-                {
+                if (this.accountsSelected[index] == null) {
                     Vue.set(this.accountsSelected, index, account);
                 }
-                else
-                {
+                else {
                     Vue.set(this.accountsSelected, index, null);
                 }
             },
@@ -161,8 +187,8 @@
             },
             clear() {
                 this.bankCompanyId = 0;
-                this.username = '';
-                this.pin = '';
+                // this.username = '';
+                // this.pin = '';
                 this.accounts = [];
                 this.accountsSelected = [];
             },

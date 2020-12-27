@@ -2257,6 +2257,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 
 
 
@@ -2296,9 +2298,9 @@ __webpack_require__.r(__webpack_exports__);
         date: moment__WEBPACK_IMPORTED_MODULE_0___default()(component.date).format('DD.MM.YYYY'),
         accounts: component.accountsSelected
       }).then(function (response) {
-        component.bank = null;
-        component.username = '';
-        component.pin = '';
+        component.bank = null; // component.username = '';
+        // component.pin = '';
+
         component.accounts = [];
         component.accountsSelected = [];
 
@@ -2334,7 +2336,8 @@ __webpack_require__.r(__webpack_exports__);
         username: component.username,
         pin: component.pin
       }).then(function (response) {
-        component.tan = response.tan;
+        console.log(response.data.tan);
+        component.tan = response.data.tan;
 
         if (!component.tan.show) {
           component.bankCompanyId = response.data.bank_company_id;
@@ -2369,9 +2372,9 @@ __webpack_require__.r(__webpack_exports__);
       return "".concat(name, " - BLZ: ").concat(blz);
     },
     clear: function clear() {
-      this.bankCompanyId = 0;
-      this.username = '';
-      this.pin = '';
+      this.bankCompanyId = 0; // this.username = '';
+      // this.pin = '';
+
       this.accounts = [];
       this.accountsSelected = [];
     }
@@ -46784,71 +46787,62 @@ var render = function() {
                   )
                 : _vm._e(),
               _vm._v(" "),
-              _c(
-                "div",
-                {
-                  directives: [
-                    {
-                      name: "show",
-                      rawName: "v-show",
-                      value: _vm.tan.show,
-                      expression: "tan.show"
-                    }
-                  ]
-                },
-                [
-                  _c("div", {
-                    domProps: { innerHTML: _vm._s(_vm.tan_request) }
-                  }),
-                  _vm._v(" "),
-                  _c("label", [_vm._v("Tan")]),
-                  _vm._v(" "),
-                  _c("input", {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.tan.tan,
-                        expression: "tan.tan"
-                      }
-                    ],
-                    staticClass: "form-control",
-                    class: "tan" in _vm.errors ? "is-invalid" : "",
-                    attrs: {
-                      type: "text",
-                      placeholder: "Tan für Onlinebanking",
-                      autofocus: ""
-                    },
-                    domProps: { value: _vm.tan.tan },
-                    on: {
-                      input: function($event) {
-                        if ($event.target.composing) {
-                          return
+              _vm.tan.show
+                ? _c("div", [
+                    _c("div", {
+                      domProps: { innerHTML: _vm._s(_vm.tan.html) }
+                    }),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "form-group" }, [
+                      _c("label", [_vm._v("Tan")]),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.tan.tan,
+                            expression: "tan.tan"
+                          }
+                        ],
+                        staticClass: "form-control",
+                        class: "tan" in _vm.errors ? "is-invalid" : "",
+                        attrs: {
+                          type: "text",
+                          placeholder: "Tan für Onlinebanking",
+                          autofocus: ""
+                        },
+                        domProps: { value: _vm.tan.tan },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(_vm.tan, "tan", $event.target.value)
+                          }
                         }
-                        _vm.$set(_vm.tan, "tan", $event.target.value)
-                      }
-                    }
-                  }),
-                  _vm._v(" "),
-                  _c("div", {
-                    staticClass: "invalid-feedback",
-                    domProps: {
-                      textContent: _vm._s(
-                        "tan" in _vm.errors ? _vm.errors.tan[0] : ""
-                      )
-                    }
-                  }),
-                  _vm._v(" "),
-                  _c(
-                    "button",
-                    {
-                      staticClass: "btn btn-secondary",
-                      on: { click: _vm.submitTan }
-                    },
-                    [_vm._v("Tan absenden")]
-                  )
-                ]
-              ),
+                      }),
+                      _vm._v(" "),
+                      _c("div", {
+                        staticClass: "invalid-feedback",
+                        domProps: {
+                          textContent: _vm._s(
+                            "tan" in _vm.errors ? _vm.errors.tan[0] : ""
+                          )
+                        }
+                      })
+                    ]),
+                    _vm._v(" "),
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-secondary",
+                        on: { click: _vm.submitTan }
+                      },
+                      [_vm._v("Tan absenden")]
+                    )
+                  ])
+                : _vm._e(),
               _vm._v(" "),
               _vm.accounts.length
                 ? _c("div", { staticClass: "mt-3" }, [

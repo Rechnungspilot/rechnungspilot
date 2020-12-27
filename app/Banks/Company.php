@@ -2,12 +2,14 @@
 
 namespace App\Banks;
 
+use App\Exceptions\Banks\NeedsTanException;
 use App\Traits\HasCompany;
 use Carbon\Carbon;
 use Fhp\FinTs;
 use Fhp\Model\SEPAAccount;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Storage;
 
 class Company extends Pivot
 {
@@ -19,8 +21,12 @@ class Company extends Pivot
      * @var bool
      */
     public $incrementing = true;
-    protected $fints;
+
     public $table = 'bank_company';
+
+    protected $appends = [
+        //
+    ];
 
     protected $fillable = [
         'bank_id',
@@ -31,7 +37,7 @@ class Company extends Pivot
 
     public function bank()
     {
-        return $this->belongsTo('App\Banks\Bank');
+        return $this->belongsTo('App\Banks\Bank', 'bank_id');
     }
 
     public function getUsernameAttribute()
@@ -54,19 +60,47 @@ class Company extends Pivot
         $this->attributes['pin'] = Crypt::encryptString($value);
     }
 
+    public function getActionAttribute()
+    {
+        return $this->action;
+    }
+
     public function accounts()
     {
         return $this->hasMany('App\Banks\Accounts');
     }
 
+
     public function getSepaAccounts()
     {
-        return $this->getFints()->getSEPAAccounts();
+        $getSepaAccounts = \Fhp\Action\GetSEPAAccounts::create();
+        $this->getFints()->execute($getSepaAccounts);
+
+        return $getSepaAccounts->getAccounts();
     }
 
     public function getStatementOfAccount(SEPAAccount $account, Carbon $from, Carbon $to)
     {
         return $this->getFints()->getStatementOfAccount($account, $from, $to);
+    }
+
+    public function getTanModes() : array
+    {
+        $tanModes = $this->fints->getTanModes();
+        if (empty($tanModes)) {
+            return [];
+        }
+
+        return $tanModes;
+    }
+
+    public function getTanModeNames(array $tanModes) : array
+    {
+        $tanModeNames = array_map(function (\Fhp\Model\TanMode $tanMode) {
+            return $tanMode->getName();
+        }, $tanModes);
+
+        return $tanModeNames;
     }
 
     protected function getFints()
@@ -76,20 +110,84 @@ class Company extends Pivot
             return $this->fints;
         }
 
-        $this->fints = new FinTs(
-            $this->bank->url,
-            443,
-            $this->bank->blz,
-            $this->username,
-            $this->pin,
-            null,
-            config('app.fhp_registration_no'),
-            '1.0'
-        );
+        $this->options = new \Fhp\Options\FinTsOptions();
+        $this->options->url = $this->bank->url; // HBCI / FinTS Url can be found here: https://www.hbci-zka.de/institute/institut_auswahl.htm (use the PIN/TAN URL)
+        $this->options->bankCode = $this->bank->blz; // Your bank code / Bankleitzahl
+        $this->options->productName = config('app.fhp_registration_no'); // The number you receive after registration / FinTS-Registrierungsnummer
+        $this->options->productVersion = '1.0'; // Your own Software product version
+        $this->credentials = \Fhp\Options\Credentials::create($this->username, $this->pin); // This is NOT the PIN of your bank card!
+        $this->fints = \Fhp\FinTs::new($this->options, $this->credentials);
 
-        $variables = $this->fints->getVariables();
-        $this->fints->setTANMechanism(array_keys($variables->tanModes)[0]);
+        $tanModes = $this->getTanModes();
+        if (count($tanModes)) {
+            $tanModeIndex = array_keys($tanModes)[0];
+            $tanMode = $tanModes[$tanModeIndex];
+            if ($tanMode->needsTanMedium()) {
+                $tanMedia = $this->fints->getTanMedia($tanMode);
+                if (empty($tanMedia)) {
+                    echo 'Your bank did not provide any TAN media, even though it requires selecting one!';
+                    return;
+                }
+
+                $tanMediaNames = array_map(function (\Fhp\Model\TanMedium $tanMedium) {
+                    return $tanMedium->getName();
+                }, $tanMedia);
+                $tanMediumIndex = array_keys($tanMediaNames)[0];
+                $tanMedium = $tanMedia[$tanMediumIndex];
+            }
+            else {
+                $tanMedium = null;
+            }
+            $this->fints->selectTanMode($tanMode, $tanMedium);
+        }
+
+        $login = $this->fints->login();
+        $this->action = $login;
+        $this->fints = null;
+        if ($login->needsTan()) {
+            $e = new NeedsTanException('Aktion braucht eine TAN', $login);
+            throw $e;
+        }
 
         return $this->fints;
+    }
+
+    public function requestTan(\Fhp\BaseAction $action)
+    {
+        // Find out what sort of TAN we need, tell the user about it.
+        $tanRequest = $action->getTanRequest();
+        echo 'The bank requested a TAN, asking: ' . $tanRequest->getChallenge() . "\n";
+        if ($tanRequest->getTanMediumName() !== null) {
+            echo 'Please use this device: ' . $tanRequest->getTanMediumName() . "\n";
+        }
+
+        // Challenge Image for PhotoTan/ChipTan
+        if ($tanRequest->getChallengeHhdUc()) {
+            $challengeImage = new \Fhp\Model\TanRequestChallengeImage(
+                $tanRequest->getChallengeHhdUc()
+            );
+            echo 'There is a challenge image.' . PHP_EOL;
+            // Save the challenge image somewhere
+            // Alternative: HTML sample code
+            echo '<img src="data:' . htmlspecialchars($challengeImage->getMimeType()) . ';base64,' . base64_encode($challengeImage->getData()) . '" />' . PHP_EOL;
+        }
+
+        // Optional: Instead of printing the above to the console, you can relay the information (challenge and TAN medium)
+        // to the user in any other way (through your REST API, a push notification, ...). If waiting for the TAN requires
+        // you to interrupt this PHP execution and the TAN will arrive in a fresh (HTTP/REST/...) request, you can do so:
+        // $persistedAction = serialize($action);
+        // $persistedFints = $this->getFints()->persist();
+
+        // These are two strings (watch out, they are NOT necessarily UTF-8 encoded), which you can store anywhere.
+        // This example code stores them in a text file, but you might write them to your database (use a BLOB, not a
+        // CHAR/TEXT field to allow for arbitrary encoding) or in some other storage (possibly base64-encoded to make it
+        // ASCII).
+
+        // Storage::put('state.txt', serialize([$persistedFints, $persistedAction]));
+    }
+
+    public function submitTan(string $tan, $action = null)
+    {
+        return $this->fints->submitTan($action, $tan);
     }
 }

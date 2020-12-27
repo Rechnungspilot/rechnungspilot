@@ -12,6 +12,8 @@ class Bank extends Model
 {
     protected $fints;
 
+    protected $guarded = [];
+
     public function scopeSearch(Builder $query, string $searchtext) : Builder
     {
         if ($searchtext == '') {

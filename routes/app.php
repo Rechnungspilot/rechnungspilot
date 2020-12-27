@@ -171,6 +171,9 @@ Route::middleware(['auth', 'company.locked'])->group(function () {
     Route::get('bank', 'BankController@index');
     Route::post('bank', 'BankController@store');
 
+    Route::post('bank/konten/{bank_company}/tan', 'Banks\TanController@store');
+
+    Route::get('bank/konten', 'BankCompanyController@index');
     Route::post('bank/konten', 'BankCompanyController@store');
 
     // Belege

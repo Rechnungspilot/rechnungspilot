@@ -41,6 +41,7 @@ class BankController extends Controller
      */
     public function store(Request $request)
     {
+
         $validatedData = $request->validate([
             'bank_id' => 'required',
             'username' => 'required',
@@ -58,14 +59,16 @@ class BankController extends Controller
                 break;
             }
         }
-        if (is_null($bankCompany))
-        {
+        if (is_null($bankCompany)) {
             $bankCompany = Company::make($validatedData);
             $bankCompany->bank = Bank::find($validatedData['bank_id']);
         }
+        $accounts = [];
         try
         {
-            $accounts = [];
+            // $e = new \App\Exceptions\Banks\NeedsTanException('Aktion braucht eine TAN', null);
+            // throw $e;
+
             $sepaAccounts = $bankCompany->getSEPAAccounts();
             foreach ($sepaAccounts as $key => $sepaAccount) {
                 $accounts[] = [
@@ -81,6 +84,12 @@ class BankController extends Controller
             $bankCompany->save();
 
             return [
+                'tan' => [
+                    'action' => null,
+                    'html' => '',
+                    'show' => false,
+                    'tan' => '',
+                ],
                 'bank_company_id' => $bankCompany->id,
                 'accounts' => $accounts,
             ];
@@ -91,6 +100,21 @@ class BankController extends Controller
                'pin' => [ $exc->getMessage() ],
             ]);
             throw $error;
+        }
+        catch(\App\Exceptions\Banks\NeedsTanException $exc)
+        {
+            $action = $exc->action();
+
+            return [
+                'tan' => [
+                    'action' => $action,
+                    'html' => $bankCompany->requestTan($action),
+                    'show' => true,
+                    'tan' => '',
+                ],
+                'bank_company_id' => $bankCompany->id,
+                'accounts' => $accounts,
+            ];
         }
     }
 
