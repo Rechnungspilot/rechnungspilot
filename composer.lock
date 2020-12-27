@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "677e73f45ad1b4fa295ff313621b75ae",
+    "content-hash": "248b966b5ac2bc028940b519254246f3",
     "packages": [
         {
             "name": "ajcastro/eager-load-pivot-relations",
@@ -2509,16 +2509,16 @@
         },
         {
             "name": "nemiah/php-fints",
-            "version": "3.0.0",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nemiah/phpFinTS.git",
-                "reference": "9b93d6e9ed407680729d642e1afe79daaa6e704c"
+                "reference": "fd95e483571dc05488835a953e7952ff2edeaead"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nemiah/phpFinTS/zipball/9b93d6e9ed407680729d642e1afe79daaa6e704c",
-                "reference": "9b93d6e9ed407680729d642e1afe79daaa6e704c",
+                "url": "https://api.github.com/repos/nemiah/phpFinTS/zipball/fd95e483571dc05488835a953e7952ff2edeaead",
+                "reference": "fd95e483571dc05488835a953e7952ff2edeaead",
                 "shasum": ""
             },
             "require": {
@@ -2536,6 +2536,7 @@
                 "monolog/monolog": "Allow sending log messages to a variety of different handlers",
                 "nemiah/php-sepa-xml": "dev-master"
             },
+            "default-branch": true,
             "type": "library",
             "autoload": {
                 "psr-0": {
@@ -2553,7 +2554,7 @@
                 "issues": "https://github.com/nemiah/phpFinTS/issues",
                 "source": "https://github.com/nemiah/phpFinTS/tree/master"
             },
-            "time": "2020-08-17T07:47:18+00:00"
+            "time": "2020-12-22T13:16:56+00:00"
         },
         {
             "name": "nesbot/carbon",

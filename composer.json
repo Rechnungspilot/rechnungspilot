@@ -21,7 +21,7 @@
         "laravel/ui": "^3.0",
         "laravelcollective/html": "^6.0",
         "league/flysystem-aws-s3-v3": "~1.0",
-        "nemiah/php-fints": "@dev",
+        "nemiah/php-fints": "dev-master",
         "niklasravnsborg/laravel-pdf": "^4.0",
         "spatie/laravel-cookie-consent": "^2.10",
         "spatie/laravel-permission": "^3.0",
