@@ -12,7 +12,7 @@
         "ajcastro/eager-load-pivot-relations": "^0.2.1",
         "calebporzio/parental": "^0.10.0",
         "danielsundermeier/laravel-deploy": "^0.1.0",
-        "doctrine/dbal": "^2.9",
+        "doctrine/dbal": "^3.0",
         "fideloper/proxy": "^4.0",
         "laravel/framework": "^6.0",
         "laravel/horizon": "^3.0",
