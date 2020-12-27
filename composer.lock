@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "44ac5ac92eea40a1cc0be717fca0c6fb",
+    "content-hash": "6e2274bd5d0828ccc997e5282c25202b",
     "packages": [
         {
             "name": "ajcastro/eager-load-pivot-relations",
@@ -2241,16 +2241,16 @@
         },
         {
             "name": "nemiah/php-fints",
-            "version": "dev-master",
+            "version": "3.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nemiah/phpFinTS.git",
-                "reference": "bd116cc22aa229ecd1768d46ac492f522749d860"
+                "reference": "9b93d6e9ed407680729d642e1afe79daaa6e704c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nemiah/phpFinTS/zipball/bd116cc22aa229ecd1768d46ac492f522749d860",
-                "reference": "bd116cc22aa229ecd1768d46ac492f522749d860",
+                "url": "https://api.github.com/repos/nemiah/phpFinTS/zipball/9b93d6e9ed407680729d642e1afe79daaa6e704c",
+                "reference": "9b93d6e9ed407680729d642e1afe79daaa6e704c",
                 "shasum": ""
             },
             "require": {
@@ -2281,7 +2281,11 @@
             ],
             "description": "PHP Library for the protocols fints and hbci",
             "homepage": "https://github.com/nemiah/phpFinTS",
-            "time": "2020-11-18T20:22:38+00:00"
+            "support": {
+                "issues": "https://github.com/nemiah/phpFinTS/issues",
+                "source": "https://github.com/nemiah/phpFinTS/tree/master"
+            },
+            "time": "2020-08-17T07:47:18+00:00"
         },
         {
             "name": "nesbot/carbon",
@@ -7924,5 +7928,5 @@
         "php": "^7.1.3"
     },
     "platform-dev": [],
-    "plugin-api-version": "1.1.0"
+    "plugin-api-version": "2.0.0"
 }
