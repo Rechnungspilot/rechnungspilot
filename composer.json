@@ -12,6 +12,7 @@
         "ajcastro/eager-load-pivot-relations": "^0.2.1",
         "calebporzio/parental": "^0.11.0",
         "danielsundermeier/laravel-deploy": "^0.1.0",
+        "danielsundermeier/laravel-model-labels": "dev-master",
         "doctrine/dbal": "^3.0.0",
         "fideloper/proxy": "^4.0",
         "laravel/framework": "^8.0",
@@ -76,5 +77,11 @@
         "post-create-project-cmd": [
             "@php artisan key:generate --ansi"
         ]
+    },
+    "repositories": {
+        "danielsundermeier/laravel-model-labels": {
+            "type": "path",
+            "url": "packages/danielsundermeier/laravel-model-labels"
+        }
     }
 }

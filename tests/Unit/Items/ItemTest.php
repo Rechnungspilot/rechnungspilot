@@ -300,5 +300,13 @@ class ItemTest extends TestCase
         $this->assertTrue($item->isDirty('unit_cost'), 'new value');
     }
 
-
+    /**
+     * @test
+     */
+    public function it_has_labels()
+    {
+        $this->assertEquals('Artikel', Item::label());
+        $this->assertEquals('Artikel', Item::label(1));
+        $this->assertEquals('Artikel', Item::label(2));
+    }
 }

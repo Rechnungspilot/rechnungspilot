@@ -12,16 +12,28 @@ use App\Traits\HasCustomFields;
 use App\Traits\HasTags;
 use App\Unit;
 use Carbon\CarbonPeriod;
+use D15r\ModelLabels\Traits\HasLabels;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
 class Item extends Model
 {
-    use HasCompany, HasCustomFields, HasTags, HasComments;
+    use HasComments,
+        HasCompany,
+        HasCustomFields,
+        HasLabels,
+        HasTags;
 
     const DECIMALS = [0,1,2,3];
 
     const DEFAULT_NAME = 'Neuer Artikel';
+
+    const LABELS = [
+        'nominativ' => [
+            'singular' => 'Artikel',
+            'plural' => 'Artikel'
+        ],
+    ];
 
     const TYPE_ITEM = 0;
     const TYPE_SERVICE = 1;
