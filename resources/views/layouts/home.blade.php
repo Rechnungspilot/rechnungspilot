@@ -32,9 +32,11 @@
 
                       </ul>
                       <ul class="navbar-nav ml-auto mt-0">
-                          <li class="nav-item">
-                              <a class="nav-link" href="{{ route('home.features')}}">Funktionen</span></a>
-                          </li>
+                          @if(false)
+                              <li class="nav-item">
+                                  <a class="nav-link" href="{{ route('home.features')}}">Funktionen</span></a>
+                              </li>
+                          @endif
                           @guest
                               <li class="nav-item">
                                   <a class="nav-link text-primary" href="{{ route('register') }}">Jetzt testen</a>
