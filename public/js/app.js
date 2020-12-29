@@ -3816,6 +3816,7 @@ __webpack_require__.r(__webpack_exports__);
             type: 'column',
             yAxis: 0,
             data: component.payed,
+            color: '#90ed7d',
             stack: 'invoice',
             index: 0,
             tooltip: {
@@ -3872,6 +3873,7 @@ __webpack_require__.r(__webpack_exports__);
             type: 'column',
             yAxis: 0,
             data: component.expenses,
+            color: '#f45b5b',
             stack: 'expenses',
             tooltip: {
               pointFormat: 'Ausgaben: <b>{point.y:.2f} €</b>'
