@@ -85,6 +85,7 @@ class Receipt extends Model
         'text_above',
         'text_below',
         'type',
+        'settings_type',
     ];
 
     public $dateName = 'Datum';

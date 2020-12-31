@@ -34,11 +34,14 @@ class Abo extends Receipt
 
     public $dateName = 'Datum';
 
+    public $settings_type;
+
     public function childCreated()
     {
         $today = today();
 
         $this->settings()->create([
+            'type' => $this->settings_type,
             'company_id' => $this->company_id,
             'active' => false,
             'interval_value' => static::DEFAULT_INTERVAL['value'],
@@ -97,6 +100,24 @@ class Abo extends Receipt
         return $abo;
     }
 
+    public function toReceipt()
+    {
+        $receipts = [];
+        foreach ($this->contacts as $key => $contact) {
+            $receipt = $this->settings->type::from($this, [
+                'contact' => $contact,
+            ]);
+            if ($this->settings->send_mail == 1) {
+                $receipt->send();
+            }
+            $receipts[] = $receipt;
+        }
+
+        $this->settings->setNextAt();
+
+        return $receipts;
+    }
+
     public function toInvoice()
     {
         $invoices = [];
@@ -137,6 +158,11 @@ class Abo extends Receipt
     public function getContactLinkStringAttribute() : string
     {
         return $this->contacts->implode('link', ', ');
+    }
+
+    public function setSettingsTypeAttribute($value)
+    {
+        $this->settings_type = $value;
     }
 
     public function contacts()

@@ -8921,11 +8921,11 @@ __webpack_require__.r(__webpack_exports__);
     filterTags: _filter_tags_vue__WEBPACK_IMPORTED_MODULE_3__["default"],
     filterSearch: _filter_search_vue__WEBPACK_IMPORTED_MODULE_4__["default"]
   },
-  props: ['contacts', 'initialFilter', 'labels', 'statuses', 'tags'],
+  props: ['contacts', 'initialFilter', 'labels', 'statuses', 'tags', 'type'],
   data: function data() {
     return {
       action: '0',
-      uri: this.labels.uri,
+      uri: this.labels.uri + (this.type ? '/' + this.type : ''),
       items: [],
       isLoading: true,
       page: 1,

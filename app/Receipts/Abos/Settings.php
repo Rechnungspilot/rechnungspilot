@@ -40,6 +40,7 @@ class Settings extends Model
         'next_at',
         'send_mail',
         'start_at',
+        'type',
     ];
 
     protected $table = 'abo_settings';

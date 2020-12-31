@@ -17,6 +17,7 @@ class CreateAboSettingsTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('company_id');
             $table->unsignedInteger('abo_id');
+            $table->string('type');
 
             $table->boolean('active')->default(false);
             $table->boolean('send_mail')->default(false);

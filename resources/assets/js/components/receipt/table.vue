@@ -106,12 +106,13 @@
             'labels',
             'statuses',
             'tags',
+            'type',
         ],
 
         data () {
             return {
                 action: '0',
-                uri: this.labels.uri,
+                uri: this.labels.uri + (this.type ? '/' + this.type : ''),
                 items: [],
                 isLoading: true,
                 page: 1,

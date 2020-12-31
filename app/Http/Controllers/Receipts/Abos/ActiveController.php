@@ -42,7 +42,7 @@ class ActiveController extends Controller
 
         if ($abo->settings->next_at <= today())
         {
-            $abo->toInvoice();
+            $receipt = $abo->toReceipt();
         }
 
         return back()

@@ -3,6 +3,7 @@
 @section('title', 'Ausgaben')
 
 @section('content')
+    <a class="btn btn-secondary btn-sm" href="{{ url('/abos/expense') }}">Abos</a>
     <a href="{{ url('/kategorien/ausgaben') }}" class="btn btn-secondary btn-sm">Kategorien</a>
     <a href="{{ url('/terms/ausgaben') }}" class="btn btn-secondary btn-sm">Zahlungsbedingungen</a>
     <br /><br />

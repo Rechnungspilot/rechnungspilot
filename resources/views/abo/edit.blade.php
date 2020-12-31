@@ -24,7 +24,7 @@
             @if ($abo->nextMainStatus)
                 <button class="btn btn-primary pointer mr-1" data-toggle="modal" data-target="#statusModal" data-status="{{ get_class($abo->nextMainStatus) }}">{{ ucfirst($abo->nextMainStatus->action) }}</button>
             @endif
-            <a href="{{ url('/abos') }}" class="btn btn-secondary">Übersicht</a>
+            <a href="{{ url('/abos/' . strtolower(class_basename($abo->settings->type))) }}" class="btn btn-secondary">Übersicht</a>
         </div>
     </div>
 

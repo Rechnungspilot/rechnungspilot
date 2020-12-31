@@ -82,12 +82,12 @@ Route::middleware(['auth', 'company.locked'])->group(function () {
     Route::resource('zugriffsrollen', 'RoleController');
 
     // Abos
-    Route::get('abos', 'Receipts\Abos\AboController@index')->name('receipt.abo.index');
-    Route::post('abos', 'Receipts\Abos\AboController@store')->name('receipt.abo.store');
-    Route::get('abos/{abo}', 'Receipts\Abos\AboController@show')->name('receipt.abo.show');
-    Route::get('abos/{abo}/edit', 'Receipts\Abos\AboController@edit')->name('receipt.abo.edit');
-    Route::put('abos/{abo}', 'Receipts\Abos\AboController@update')->name('receipt.abo.update');
-    Route::delete('abos/{abo}', 'Receipts\Abos\AboController@destroy')->name('receipt.abo.destroy');
+    Route::get('abos/{abo}', 'Receipts\Abos\AboController@show')->name('receipt.abo.show')->where('abo', '[0-9]+');
+    Route::get('abos/{abo}/edit', 'Receipts\Abos\AboController@edit')->name('receipt.abo.edit')->where('abo', '[0-9]+');
+    Route::put('abos/{abo}', 'Receipts\Abos\AboController@update')->name('receipt.abo.update')->where('abo', '[0-9]+');
+    Route::delete('abos/{abo}', 'Receipts\Abos\AboController@destroy')->name('receipt.abo.destroy')->where('abo', '[0-9]+');
+    Route::get('abos/{type}', 'Receipts\Abos\AboController@index')->name('receipt.abo.index');
+    Route::post('abos/{type}', 'Receipts\Abos\AboController@store')->name('receipt.abo.store');
 
     Route::post('abos/{abo}/aktiv', 'Receipts\Abos\ActiveController@store')->name('receipt.abo.active.store');
     Route::delete('abos/{abo}/aktiv', 'Receipts\Abos\ActiveController@destroy')->name('receipt.abo.active.destroy');

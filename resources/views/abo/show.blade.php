@@ -21,7 +21,7 @@
                     <button class="btn btn-success" title="Aktivieren"><i class="fas fa-fw fa-play"></i></button>
                 </form>
             @endif
-            <a href="{{ url('/abos') }}" class="btn btn-secondary ml-1">Übersicht</a>
+            <a href="{{ url('/abos/' . strtolower(class_basename($abo->settings->type))) }}" class="btn btn-secondary ml-1">Übersicht</a>
         </div>
     </div>
 

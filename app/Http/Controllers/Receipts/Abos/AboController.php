@@ -25,10 +25,19 @@ class AboController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index(Request $request, string $type)
     {
         if ($request->wantsJson()) {
-            return Abo::with(['contact', 'status'])
+
+            $class_name = 'App\\Receipts\\' . ucfirst($type);
+
+            return Abo::select('receipts.*')
+                ->with([
+                    'contact',
+                    'status'
+                ])
+                ->join('abo_settings', 'abo_settings.abo_id', 'receipts.id')
+                ->where('abo_settings.type', $class_name)
                 ->search($request->input('searchtext'))
                 ->contact($request->input('contact_id'))
                 ->status($request->input('status_type'))
@@ -41,7 +50,8 @@ class AboController extends Controller
             ->with('contacts', Contact::all())
             ->with('statuses', Abo::AVAILABLE_STATUSES)
             ->with('labels', Abo::labels())
-            ->with('tags', Tag::withType('abos')->get());
+            ->with('tags', Tag::withType('abos')->get())
+            ->with('type', $type);
     }
 
     /**
@@ -60,9 +70,10 @@ class AboController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, string $type)
     {
         $receipt = Abo::create([
+            'settings_type' => 'App\\Receipts\\' . ucfirst($type),
             'address' => NULL,
             'company_id' => auth()->user()->company_id,
         ]);
