@@ -54,19 +54,24 @@ class RouteServiceProvider extends ServiceProvider
     protected function mapWebRoutes()
     {
         Route::domain($this->baseDomain(''))
-             ->middleware('web')
-             ->namespace($this->namespace)
-             ->group(base_path('routes/web.php'));
+            ->middleware('web')
+            ->namespace($this->namespace)
+            ->group(base_path('routes/web.php'));
 
         Route::domain($this->baseDomain('www'))
-             ->middleware('web')
-             ->namespace($this->namespace)
-             ->group(base_path('routes/web.php'));
+            ->middleware('web')
+            ->namespace($this->namespace)
+            ->group(base_path('routes/web.php'));
 
         Route::domain('https://d15r.de')
-             ->middleware('web')
-             ->namespace($this->namespace)
-             ->group(base_path('routes/d15r.php'));
+            ->middleware('web')
+            ->namespace($this->namespace)
+            ->group(base_path('routes/d15r.php'));
+
+        Route::domain('https://www.d15r.de')
+            ->middleware('web')
+            ->namespace($this->namespace)
+            ->group(base_path('routes/d15r.php'));
     }
 
     /**
