@@ -92,6 +92,7 @@
                 </ul>
             </ul>
 
+            <div class="px-3 text-white text-center"><p>by <a href="https://d15r.de" target="_blank">D15r</a></p></div>
             <div class="bg-secondary text-white p-2 d-flex justify-content-around">
                 <a class="text-white" href="{{ route('impressum') }}">Impressum & Datenschutz</a>
             </div>

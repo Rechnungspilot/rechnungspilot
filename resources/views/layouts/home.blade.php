@@ -62,8 +62,10 @@
 
     <footer class="p-5 bg-dark text-white">
         <div class="container text-center">
-            <div>Rechnungspilot</div>
-            <a class="text-white" href="/impressum">Impressum & Datenschutz</a>
+            <div class="container text-center d-flex justify-content-between">
+                <div>Rechnungspilot - made with <i class="fas fa-fw fa-heart"></i> by <a class="text-white" href="https://d15r.de" target="_blank">D15r</a></div>
+                <a class="text-white" href="/impressum">Impressum & Datenschutz</a>
+            </div>
         </div>
     </footer>
 </body>
