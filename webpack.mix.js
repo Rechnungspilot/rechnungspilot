@@ -28,6 +28,8 @@ mix.js('resources/assets/js/app.js', 'public/js')
 mix.sass('resources/assets/sass/d15r.scss', 'public/css')
     .tailwind();
 
+mix.sass('resources/assets/sass/hof-sundermeier.scss', 'public/css')
+    .tailwind();
 
 if (mix.inProduction()) {
     mix.version();

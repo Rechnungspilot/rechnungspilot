@@ -72,6 +72,16 @@ class RouteServiceProvider extends ServiceProvider
             ->middleware('web')
             ->namespace($this->namespace)
             ->group(base_path('routes/d15r.php'));
+
+        Route::domain('https://hof-sundermeier.de')
+            ->middleware('web')
+            ->namespace($this->namespace)
+            ->group(base_path('routes/hof-sundermeier.php'));
+
+        Route::domain('https://www.hof-sundermeier.de')
+            ->middleware('web')
+            ->namespace($this->namespace)
+            ->group(base_path('routes/hof-sundermeier.php'));
     }
 
     /**

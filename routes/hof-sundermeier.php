@@ -21,35 +21,12 @@ use Illuminate\Support\Facades\Storage;
 |
 */
 
-Route::get('/', function () {
-    return view('home.start');
-})->name('home.start');
-
-Route::get('/funktionen', function () {
-    return view('home.features');
-})->name('home.features');
-
-Route::get('/preise', function () {
-    return view('home.pricing');
-})->name('home.pricing');
-
 Route::get('/impressum', function () {
     return view('impressum');
 })->name('impressum');
 
 Route::post('/contact', 'Guests\ContactController@store');
 
-Auth::routes();
-
-Route::get('/d15r', function () {
-    return view('d15r.app');
-});
-
-Route::get('/hof-sundermeier', function () {
+Route::get('/', function () {
     return view('hof-sundermeier.app');
-});
-
-Route::middleware(['guest', 'signed'])->group(function () {
-    Route::get('rechnungen/keepseven/create', 'Receipts\Invoices\KeepsevenController@create')->name('receipt.invoice.keepseven.create');
-    Route::post('rechnungen/keepseven', 'Receipts\Invoices\KeepsevenController@store')->name('receipt.invoice.keepseven.store');
 });

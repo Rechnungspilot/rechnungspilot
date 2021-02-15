@@ -17536,3 +17536,19 @@ table tr.priority-2 {
   left: 0;
   right: 0;
 }
+
+.letter-avatar {
+  width: 33px;
+  height: 33px;
+  justify-content: center;
+  align-items: center;
+  display: inline-flex;
+  border-radius: 9999px;
+  background-color: #6b7280;
+}
+
+.letter-avatar > span {
+  color: white;
+  line-height: 1;
+  font-weight: 500;
+}
