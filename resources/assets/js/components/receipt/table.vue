@@ -60,6 +60,9 @@
                             <select class="form-control" v-model="action">
                                 <option value="0">Aktion</option>
                                 <option value="downloadPdfs">PDFs herunterladen</option>
+                                <optgroup label="Export">
+                                    <option value="exportDatevEinzeln">Datev</option>
+                                </optgroup>
                             </select>
                         </td>
                     </tr>
@@ -228,6 +231,21 @@
                     })
                     .catch(function (error) {
                         Vue.error('PDFs konnten nicht erstellt werden!');
+                    })
+                    .then( function() {
+                        component.action = '0';
+                });
+            },
+            exportDatevEinzeln() {
+                var component = this;
+                axios.post('belege/exporte/datev/einzeln', {
+                    receipt_ids: component.selected,
+                })
+                    .then(function (response) {
+                        location.href = response.data.path;
+                    })
+                    .catch(function (error) {
+                        Vue.error('Export konnte nicht erstellt werden!');
                     })
                     .then( function() {
                         component.action = '0';

@@ -191,6 +191,8 @@ Route::middleware(['auth', 'company.locked'])->group(function () {
     Route::get('belege/vorlage/{receipt?}', 'DraftController@show');
     Route::get('belege/pdf/{receipt}', 'DraftController@pdf');
 
+    Route::post('belege/exporte/datev/einzeln', 'Receipts\\Exports\\Datev\\SingleController@index');
+
     Route::post('belege/status/{receipt}', 'StatusController@store');
     Route::post('belege/{receipt}/status/create', 'StatusController@create');
     Route::delete('belege/status/{status}', 'StatusController@destroy');
