@@ -9,6 +9,41 @@
         @method('PUT')
 
         <div class="card mb-3">
+            <div class="card-header">Datev</div>
+            <div class="card-body">
+                <div class="form-group">
+                    <label for="datev_beraternummer">Beraternummer</label>
+                    <input type="text" class="form-control {{ ($errors->has('datev_beraternummer') ? 'is-invalid' : '') }}" id="datev_beraternummer" name="datev_beraternummer" value="{{ old('datev_beraternummer') ?? $company->datev_beraternummer }}">
+                    @if ($errors->has('datev_beraternummer'))
+                        <div class="invalid-feedback">
+                            {{ $errors->first('datev_beraternummer') }}
+                        </div>
+                    @endif
+                </div>
+
+                <div class="form-group">
+                    <label for="datev_mandantennummer">Mandantennummer</label>
+                    <input type="text" class="form-control {{ ($errors->has('datev_mandantennummer') ? 'is-invalid' : '') }}" id="datev_mandantennummer" name="datev_mandantennummer" value="{{ old('datev_mandantennummer') ?? $company->datev_mandantennummer }}">
+                    @if ($errors->has('datev_mandantennummer'))
+                        <div class="invalid-feedback">
+                            {{ $errors->first('datev_mandantennummer') }}
+                        </div>
+                    @endif
+                </div>
+
+                <div class="form-group">
+                    <label for="datev_mandantennummer">Sachkontenlänge</label>
+                    <input type="text" class="form-control {{ ($errors->has('datev_sachkontenlaenge') ? 'is-invalid' : '') }}" id="datev_sachkontenlaenge" name="datev_sachkontenlaenge" value="{{ old('datev_sachkontenlaenge') ?? $company->datev_sachkontenlaenge }}">
+                    @if ($errors->has('datev_sachkontenlaenge'))
+                        <div class="invalid-feedback">
+                            {{ $errors->first('datev_sachkontenlaenge') }}
+                        </div>
+                    @endif
+                </div>
+            </div>
+        </div>
+
+        <div class="card mb-3">
             <div class="card-header">Debitorenkonten</div>
             <div class="card-body">
                 <div class="form-group">

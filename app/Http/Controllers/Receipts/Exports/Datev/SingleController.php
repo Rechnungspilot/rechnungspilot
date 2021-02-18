@@ -21,7 +21,7 @@ class SingleController extends Controller
             'items.item',
         ])->find($attributes['receipt_ids']);
 
-        $path = Datev::invoices($receipts);
+        $path = Datev::invoices(auth()->user()->company, $receipts);
 
         return [
             'path' => Storage::disk('public')->url($path),

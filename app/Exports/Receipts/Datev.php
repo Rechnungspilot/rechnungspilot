@@ -2,13 +2,14 @@
 
 namespace App\Exports\Receipts;
 
+use App\Company;
 use App\Support\Csv;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
 
 class Datev
 {
-    public static function invoices(Collection $receipts) : string
+    public static function invoices(Company $company, Collection $receipts) : string
     {
         $path = 'EXTF_Buchungsstapel.csv';
 
@@ -27,10 +28,10 @@ class Datev
             'SV',
             '',
             '',
-            'BERATER',
-            'MANDANT',
+            $company->datev_beraternummer,
+            $company->datev_mandantennummer,
             $export_start->format('Y0101'),
-            'SACHKONTENLAENGE',
+            $company->datev_sachkontenlaenge,
             $export_start->format('Ymd'),
             $export_end->format('Ymd'),
             'Rechnungspilot',

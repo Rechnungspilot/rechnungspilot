@@ -15,7 +15,8 @@ class DatevTest extends TestCase
     public function it_can_export_invoices()
     {
         $receipts = new Collection();
-        $path = Datev::invoices($receipts);
+        $company = Company::make();
+        $path = Datev::invoices($company, $receipts);
         $csv = Storage::disk('public')->get($path);
 
         dump($csv);

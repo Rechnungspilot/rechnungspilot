@@ -30,6 +30,9 @@ class AccountingController extends Controller
     public function update(Request $request)
     {
         $validatedData = $request->validate([
+            'datev_beraternummer' => 'nullable|numeric',
+            'datev_mandantennummer' => 'nullable|numeric',
+            'datev_sachkontenlaenge' => 'nullable|numeric',
             'debitor_account_number_mode' => 'required|numeric',
             'creditor_account_number_mode' => 'required|numeric',
             'default_debitor_account_number' => 'required|numeric',
