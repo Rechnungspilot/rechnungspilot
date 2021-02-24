@@ -59,7 +59,7 @@ class Unit extends Model
             'name' => 'Kilogramm',
         ]);
 
-        self::create([
+        $unit = self::create([
             'abbreviation' => 'h',
             'company_id' => $companyId,
             'name' => 'Stunden',

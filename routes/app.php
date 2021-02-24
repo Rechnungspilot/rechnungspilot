@@ -425,7 +425,10 @@ Route::middleware(['auth'])->group(function () {
 Route::middleware(['auth', 'admin'])->group(function () {
     // Firmen
     Route::get('firmen', 'CompanyController@index');
+    Route::post('firmen', 'CompanyController@store')->name('companies.store');
     Route::get('firmen/{company}', 'CompanyController@show');
+
+    Route::put('firmen/{company}/switch', 'Companies\SwitchController@update')->name('companies.switch.update');
 
     // Guthaben
     Route::get('guthaben', 'BalanceController@index');

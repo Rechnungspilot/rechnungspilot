@@ -13,8 +13,10 @@ class UsersTableSeeder extends Seeder
      */
     public function run()
     {
+        $company_id = 1;
+
         $user = factory(App\User::class)->create([
-            'company_id' => 1,
+            'company_id' => $company_id,
             'email' => 'daniel@rechnungspilot.de',
             'firstname' => 'Daniel',
             'password' => Hash::make('password'),
@@ -22,5 +24,7 @@ class UsersTableSeeder extends Seeder
         ]);
 
         $user->syncRoles(1);
+
+        $user->companies()->attach($company_id);
     }
 }

@@ -2,11 +2,13 @@
 
 namespace App;
 
+use App\Company;
 use App\Traits\HasComments;
 use App\Traits\HasCompany;
 use App\Traits\HasTags;
 use App\Traits\HasUserfiles;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Hash;
@@ -118,6 +120,11 @@ class User extends Authenticatable
     public function isDeletable() : bool
     {
         return true;
+    }
+
+    public function companies() : BelongsToMany
+    {
+        return $this->belongsToMany(Company::class);
     }
 
     public function scopeSearch($query, $searchtext)

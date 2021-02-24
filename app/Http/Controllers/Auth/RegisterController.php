@@ -69,9 +69,14 @@ class RegisterController extends Controller
     public function register(Request $request)
     {
         $validatedData = $this->validator($request->all())->validate();
-        $validatedData['company_id'] = $this->createCompany($validatedData)->id;
 
-        event(new Registered($user = $this->create($validatedData)));
+        $company = $this->createCompany($validatedData);
+        $validatedData['company_id'] = $company->id;
+
+        $user = $this->create($validatedData);
+        $user->companies()->attach($company->id);
+
+        event(new Registered($user));
 
         Mail::to(config('app.email'))
             ->queue(new CompanyRegistered($user));

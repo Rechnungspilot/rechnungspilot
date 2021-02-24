@@ -6,6 +6,7 @@ use App\Receipts\Abos\Abo;
 use App\Receipts\Income;
 use App\Receipts\Invoice;
 use App\Receipts\Statuses\Draft;
+use App\Scopes\HasCompanyScope;
 use App\Traits\HasComments;
 use App\Traits\HasCompany;
 use App\Traits\HasCustomFields;
@@ -337,7 +338,7 @@ class Item extends Model
 
     public static function setup(int $companyId)
     {
-        $units = Unit::where('company_id', $companyId)->get();
+        $units = Unit::withoutGlobalScope(HasCompanyScope::class)->where('company_id', $companyId)->get();
 
         self::create([
             'company_id' => $companyId,

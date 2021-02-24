@@ -3,6 +3,7 @@
 namespace App\Receipts\Duns;
 
 use App\Item;
+use App\Scopes\HasCompanyScope;
 use App\Traits\HasCompany;
 use Illuminate\Database\Eloquent\Model;
 
@@ -58,7 +59,7 @@ class Level extends Model
 
     public static function setup(int $companyId)
     {
-        $item = Item::where('company_id', $companyId)
+        $item = Item::withoutGlobalScope(HasCompanyScope::class)->where('company_id', $companyId)
             ->where('name', 'Mahngebühr')
             ->first();
 

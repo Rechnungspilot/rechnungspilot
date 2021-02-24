@@ -60,10 +60,10 @@ class CompaniesTableSeeder extends Seeder
         //     'postcode' => 30167,
         // ]);
 
-        $company = factory('App\Company')->create([
-            'name' => 'serienguide.tv',
-        ]);
+        // $company = factory('App\Company')->create([
+        //     'name' => 'serienguide.tv',
+        // ]);
 
-        $company->setup();
+        // $company->setup();
     }
 }

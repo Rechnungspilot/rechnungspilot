@@ -18,10 +18,6 @@ class Role extends \Spatie\Permission\Models\Role
             throw RoleAlreadyExists::create($attributes['name'], $attributes['guard_name']);
         }
 
-        if (isNotLumen() && app()::VERSION < '5.4') {
-            return parent::create($attributes);
-        }
-
         return static::query()->create($attributes);
     }
 }

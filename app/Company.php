@@ -13,6 +13,7 @@ use App\Receipts\Term;
 use App\Templates\Template;
 use App\Traits\HasComments;
 use App\Unit;
+use App\User;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
@@ -109,6 +110,11 @@ class Company extends Model
     public function transactions()
     {
         return $this->morphMany('App\Transaction', 'transactionable');
+    }
+
+    public function users() : BelongsToMany
+    {
+        return $this->belongsToMany(User::class);
     }
 
     public function lock()

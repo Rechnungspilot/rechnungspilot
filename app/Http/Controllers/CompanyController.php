@@ -14,7 +14,8 @@ class CompanyController extends Controller
      */
     public function index()
     {
-        $companies = Company::all();
+        $user = auth()->user();
+        $companies = $user->companies()->orderBy('name', 'ASC')->get();
 
         return view('company.index')
             ->with('companies', $companies);
@@ -38,7 +39,32 @@ class CompanyController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $user = auth()->user();
+
+        $company = Company::create([
+            'email' => $user->email,
+            'name' => 'Meine Firma',
+            'abo_name_format' => '#DATUM-JJ#-#NUMMER-4#',
+            'invoice_name_format' => '#DATUM-JJ#-#NUMMER-4#',
+            'order_name_format' => '#DATUM-JJ#-#NUMMER-4#',
+            'quote_name_format' => '#DATUM-JJ#-#NUMMER-4#',
+            'delivery_name_format' => '#DATUM-JJ#-#NUMMER-4#',
+            'expense_name_format' => '#DATUM-JJ#-#NUMMER-4#',
+            'price' => 10,
+            // 'charging_start_at' => $charge_at,
+            // 'charging_next_at' => $charge_at,
+        ]);
+
+        $company->setup();
+
+        $user->companies()->attach($company->id);
+
+        if ($request->wantsJson()) {
+            return $company;
+        }
+
+        return back()
+            ->with('status', 'Firma angelegt');
     }
 
     /**
