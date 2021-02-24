@@ -110,7 +110,9 @@ class Receipt extends Model
                 $model->date = now()->startOfDay();
             }
 
-            $model->number = self::nextNumber($model->date);
+            if (is_null($model->number)) {
+                $model->number = self::nextNumber($model->date);
+            }
             $model->setName();
 
             if (! $model->date_due) {
@@ -674,6 +676,11 @@ class Receipt extends Model
 
     public function setName()
     {
+        if ($this->number == 0) {
+            $this->name = 'Vorläufig';
+            return;
+        }
+
         // Parameter string $format replace Placeholder
         $placeholder = [
             '#NUMMER#',

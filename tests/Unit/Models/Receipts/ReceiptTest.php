@@ -17,6 +17,28 @@ class ReceiptTest extends TestCase
     /**
      * @test
      */
+    public function it_sets_its_name_after_been_created()
+    {
+        $invoice = factory(Invoice::class)->create();
+        $this->assertEquals(1, $invoice->number);
+        $this->assertEquals(date('Y') . '-0001', $invoice->name);
+    }
+
+    /**
+     * @test
+     */
+    public function it_sets_its_name_to_vorlaeufig_when_number_is_zero_after_been_created()
+    {
+        $invoice = factory(Invoice::class)->create([
+            'number' => 0
+        ]);
+        $this->assertEquals(0, $invoice->number);
+        $this->assertEquals('Vorläufig', $invoice->name);
+    }
+
+    /**
+     * @test
+     */
     public function it_gets_the_status_draft_after_it_is_created()
     {
         $invoice = factory(Invoice::class)->create();
