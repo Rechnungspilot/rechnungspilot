@@ -385,6 +385,9 @@ Route::middleware(['auth', 'company.locked'])->group(function () {
     Route::put('textbausteine/{boilerplate}', 'BoilerplateController@update');
     Route::delete('textbausteine/{boilerplate}', 'BoilerplateController@destroy');
 
+    // PersonalAccessToken
+    Route::resource('tokens', 'Auth\ApiTokenController');
+
     // Umsatz
     Route::get('umsatz', 'CompanyRevenueController@index');
 

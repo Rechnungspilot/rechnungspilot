@@ -7,18 +7,25 @@ use App\Traits\HasComments;
 use App\Traits\HasCompany;
 use App\Traits\HasTags;
 use App\Traits\HasUserfiles;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Contracts\Auth\MustVerifyAEmail;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Str;
+use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
-    use HasComments, HasCompany, HasRoles, HasTags, Notifiable, HasUserfiles;
+    use HasApiTokens,
+        HasComments,
+        HasCompany,
+        HasRoles,
+        HasTags,
+        Notifiable,
+        HasUserfiles;
 
     protected $appends = [
         'initials',
