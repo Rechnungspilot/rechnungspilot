@@ -27,6 +27,7 @@ class CreateItemsTable extends Migration
             $table->integer('revenue')->default(0);
             $table->unsignedTinyInteger('type')->default(0);
             $table->unsignedInteger('duration')->default(0);
+            $table->unsignedMediumInteger('expense_account_number')->default(0);
             $table->unsignedMediumInteger('revenue_account_number')->default(0);
             $table->unsignedMediumInteger('cost_center')->default(0);
 
