@@ -3,6 +3,10 @@
 namespace App\Exports\Receipts;
 
 use App\Company;
+use App\Receipts\Expense;
+use App\Receipts\Invoice;
+use App\Receipts\Item;
+use App\Receipts\Receipt;
 use App\Support\Csv;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
@@ -13,8 +17,8 @@ class Datev
     {
         $path = 'EXTF_Buchungsstapel.csv';
 
-        $export_start = $receipts->min('date');
-        $export_end = $receipts->max('date');
+        $export_start = $receipts->min('date')->startOfMonth();
+        $export_end = $receipts->max('date')->endOfMonth();
 
         $csv = new Csv();
         $csv->row([
@@ -167,13 +171,13 @@ class Datev
             foreach ($receipt->items as $item) {
                 $csv->row([
                     number_format(abs($item->gross / 100), 2, ',', ''),
-                    ($item->gross < 0 ? 'H' : 'S'),
+                    self::sollHaben($receipt, $item),
                     '',
                     '',
                     '',
                     '',
                     $receipt->contact->number,
-                    $item->item->revenue_account_number,
+                    self::accountNumber($receipt, $item),
                     $item->datev_tax_code, // Steuerschluessel
                     $receipt->date->format('dm'),
                     $receipt->name,
@@ -288,5 +292,25 @@ class Datev
         $csv->save(Storage::disk('public')->path($path));
 
         return $path;
+    }
+
+    protected static function sollHaben(Receipt $receipt, Item $item) : string
+    {
+        $class_name = get_class($receipt);
+        switch($class_name) {
+            case Invoice::class: return ($item->gross < 0 ? 'H' : 'S'); break;
+            case Expense::class: return ($item->gross < 0 ? 'S' : 'H'); break;
+            default: return ''; break;
+        }
+    }
+
+    protected static function accountNumber(Receipt $receipt, Item $item) : int
+    {
+        $class_name = get_class($receipt);
+        switch($class_name) {
+            case Invoice::class: return $item->item->revenue_account_number; break;
+            case Expense::class: return $item->item->expense_account_number; break;
+            default: return 0; break;
+        }
     }
 }
