@@ -147,6 +147,16 @@
         </div>
 
         <div class="form-group">
+            <label for="expense_account_number">Buchungskonto Ausgabe</label>
+            <input type="text" class="form-control {{ ($errors->has('expense_account_number') ? 'is-invalid' : '') }}" id="expense_account_number" name="expense_account_number" value="{{ $item->expense_account_number }}">
+            @if ($errors->has('expense_account_number'))
+                <div class="invalid-feedback">
+                    {{ $errors->first('expense_account_number') }}
+                </div>
+            @endif
+        </div>
+
+        <div class="form-group">
             <label for="revenue_account_number">Erlöskonto</label>
             <input type="text" class="form-control {{ ($errors->has('revenue_account_number') ? 'is-invalid' : '') }}" id="revenue_account_number" name="revenue_account_number" value="{{ $item->revenue_account_number }}">
             @if ($errors->has('revenue_account_number'))

@@ -142,6 +142,7 @@ class ItemController extends Controller
             'unit_id' => 'required|integer',
             'unit_cost' => 'required|formated_number',
             'unit_price' => 'required|formated_number',
+            'expense_account_number' => 'required|numeric',
             'revenue_account_number' => 'required|numeric',
             'cost_center' => 'required|numeric',
             'duration_hour' => 'required|integer|min:0',

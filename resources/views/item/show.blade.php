@@ -89,6 +89,12 @@
                         <div class="col-label">&nbsp;</div>
                         <div class="col-value"></div>
                     </div>
+                    @if($item->expense_account_number)
+                        <div class="row">
+                            <div class="col-label"><b>Buchungskonto Ausgabe</b></div>
+                            <div class="col-value">{{ $item->expense_account_number }}</div>
+                        </div>
+                    @endif
                     @if($item->revenue_account_number)
                         <div class="row">
                             <div class="col-label"><b>Erlöskonto</b></div>

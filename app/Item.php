@@ -72,6 +72,7 @@ class Item extends Model
         'duration',
         'name',
         'number',
+        'expense_account_number',
         'revenue_account_number',
         'tax',
         'type',

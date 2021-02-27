@@ -119,6 +119,7 @@
                                 <span class="d-xs-none d-sm-none d-md-inline d-lg-inline d-xl-inline">{{ Auth::user()->name }}</span>
                             </a>
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
+                                <a class="dropdown-item" href="{{ route('tokens.index') }}">API Tokens</a>
                                 <a class="dropdown-item" href="{{ url('/aufgaben') }}">Aufgaben</a>
                                 <a class="dropdown-item" href="{{ url('/kalender') }}">Kalender</a>
                                 <a class="dropdown-item" href="{{ url('/zeiten') }}">Zeiten</a>
