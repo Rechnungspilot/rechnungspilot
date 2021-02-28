@@ -53,3 +53,7 @@ Route::middleware(['guest', 'signed'])->group(function () {
     Route::get('rechnungen/keepseven/create', 'Receipts\Invoices\KeepsevenController@create')->name('receipt.invoice.keepseven.create');
     Route::post('rechnungen/keepseven', 'Receipts\Invoices\KeepsevenController@store')->name('receipt.invoice.keepseven.store');
 });
+
+Route::middleware(['auth:sanctum'])->group(function () {
+    Route::apiResource('api/companies.invoices', 'Api\Receipts\InvoiceController');
+});

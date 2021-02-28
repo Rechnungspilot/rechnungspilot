@@ -383,7 +383,7 @@ class Receipt extends Model
             'quantity' => $attributes['quantity'] ?? 1,
             'discount' => 0,
             'tax' => $item->tax,
-            'unit_price' => $item->unit_price,
+            'unit_price' => $attributes['unit_price'] ?? $item->unit_price,
         ]);
 
         if (! is_null($receiptable))

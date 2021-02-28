@@ -9,6 +9,7 @@ use App\Item;
 use App\Projects\Project;
 use App\Receipts\Boilerplate;
 use App\Receipts\Duns\Level;
+use App\Receipts\Receipt;
 use App\Receipts\Term;
 use App\Templates\Template;
 use App\Traits\HasComments;
@@ -16,6 +17,7 @@ use App\Unit;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Company extends Model
 {
@@ -100,6 +102,16 @@ class Company extends Model
             ->using('App\Banks\Company')
             ->withPivot('id', 'username', 'pin')
             ->withTimestamps();
+    }
+
+    public function receipts() : HasMany
+    {
+        return $this->hasMany(Receipt::class, 'company_id');
+    }
+
+    public function invoices()
+    {
+        return $this->hasMany(\App\Receipts\Invoice::class, 'company_id');
     }
 
     public function prices()

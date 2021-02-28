@@ -24,6 +24,8 @@ abstract class TestCase extends BaseTestCase
 
         $this->user = factory(User::class)->create();
         $this->company = $this->user->company;
+
+        $this->company->setup();
     }
 
     public function signIn(User $user = null)
