@@ -42,7 +42,7 @@ Route::post('/contact', 'Guests\ContactController@store');
 Auth::routes();
 
 Route::get('/d15r', function () {
-    return view('d15r.app');
+    return view('d15r.home');
 });
 
 Route::get('/hof-sundermeier', function () {

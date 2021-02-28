@@ -28,5 +28,5 @@ Route::get('/impressum', function () {
 Route::post('/contact', 'Guests\ContactController@store');
 
 Route::get('/', function () {
-    return view('d15r.app');
+    return view('d15r.home');
 });
