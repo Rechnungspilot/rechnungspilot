@@ -18,48 +18,47 @@
 </head>
 <body>
     <div class="navbar-full">
-          <nav class="navbar fixed-top navbar-expand-md navbar-light navbar-laravel py-3">
-              <div class="container">
-                  <a class="navbar-brand" href="{{ route('home.start')}}">
-                      {{ config('app.name', 'Laravel') }}
-                  </a>
-                  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
-                      <span class="navbar-toggler-icon"></span>
-                  </button>
+        <nav class="navbar fixed-top navbar-expand-md navbar-light navbar-laravel py-3">
+            <div class="container">
+                <a class="navbar-brand" href="{{ route('home.start')}}">
+                    {{ config('app.name', 'Laravel') }}
+                </a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
 
-                  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                      <ul class="navbar-nav mr-auto mt-0">
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav mr-auto mt-0">
 
-                      </ul>
-                      <ul class="navbar-nav ml-auto mt-0">
-                          @if(false)
-                              <li class="nav-item">
-                                  <a class="nav-link" href="{{ route('home.features')}}">Funktionen</span></a>
-                              </li>
-                          @endif
-                          @guest
-                              <li class="nav-item">
-                                  <a class="nav-link text-primary" href="{{ route('register') }}">Jetzt testen</a>
-                              </li>
-                              <li class="nav-item">
+                    </ul>
+                    <ul class="navbar-nav ml-auto mt-0">
+                        @if(false)
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('home.features')}}">Funktionen</span></a>
+                            </li>
+                        @endif
+                        @guest
+                            <li class="nav-item">
+                                <a class="nav-link text-primary" href="{{ route('register') }}">Jetzt testen</a>
+                            </li>
+                            <li class="nav-item">
                                   <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
-                              </li>
-                          @else
-                              <li class="nav-item dropdown">
-                                  <a class="nav-link" href="{{ route('app')}}">
-                                      {{ Auth::user()->name }}
-                                  </a>
-                              </li>
-                          @endguest
-                      </ul>
-                  </div>
-              </div>
-          </nav>
+                            </li>
+                        @else
+                            <li class="nav-item dropdown">
+                                <a class="nav-link" href="{{ route('app')}}">
+                                    {{ Auth::user()->name }}
+                                </a>
+                            </li>
+                        @endguest
+                    </ul>
+                </div>
+            </div>
+        </nav>
     </div>
     <main class="mt-5 py-4">
         @yield('content')
     </main>
-
     <footer class="p-5 bg-dark text-white">
         <div class="container text-center">
             <div class="container text-center d-flex justify-content-between">
