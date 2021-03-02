@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Banks;
 use App\Banks\Company;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class TanController extends Controller
 {
@@ -36,7 +37,7 @@ class TanController extends Controller
      */
     public function store(Request $request, Company $bank_company)
     {
-        return $bank_company->submitTan($request->input('tan'), $request->input('action'));
+        return $bank_company->submitTan($request->input('tan'), $request->input('action_path'));
     }
 
     /**

@@ -2283,7 +2283,7 @@ __webpack_require__.r(__webpack_exports__);
       searchTimeout: null,
       date: moment__WEBPACK_IMPORTED_MODULE_0___default()().startOf('month').format(),
       tan: {
-        action: null,
+        action_path: null,
         html: '',
         needed: false,
         tan: ''
@@ -2338,10 +2338,9 @@ __webpack_require__.r(__webpack_exports__);
       }).then(function (response) {
         console.log(response.data.tan);
         component.tan = response.data.tan;
+        component.bankCompanyId = response.data.bank_company_id;
 
         if (!component.tan.show) {
-          component.bankCompanyId = response.data.bank_company_id;
-
           for (var index in response.data.accounts) {
             component.accounts.push(response.data.accounts[index]);
             component.accountsSelected.push(response.data.accounts[index]);
@@ -2356,7 +2355,8 @@ __webpack_require__.r(__webpack_exports__);
     submitTan: function submitTan() {
       var component = this;
       axios.post(component.uri + '/konten/' + component.bankCompanyId + '/tan', component.tan).then(function (response) {
-        console.log(response); // component.connect();
+        console.log(response); // TODO: antwort überprüfen
+        // component.connect();
       });
     },
     toggleAccount: function toggleAccount(index, account) {

@@ -5,10 +5,12 @@ namespace App\Exceptions\Banks;
 class NeedsTanException extends \Exception
 {
     private $action;
+    private $path;
 
-    public function __construct($message, $action)
+    public function __construct($message, $action, $path)
     {
         $this->action = $action;
+        $this->path = $path;
         parent::__construct($message);
     }
 
@@ -16,4 +18,10 @@ class NeedsTanException extends \Exception
     {
         return $this->action;
     }
+
+    public function path()
+    {
+        return $this->path;
+    }
+
 }

@@ -6,6 +6,7 @@ use App\Banks\Bank;
 use App\Banks\Company;
 use Fhp\Dialog\Exception\FailedRequestException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class BankController extends Controller
 {
@@ -41,7 +42,6 @@ class BankController extends Controller
      */
     public function store(Request $request)
     {
-
         $validatedData = $request->validate([
             'bank_id' => 'required',
             'username' => 'required',
@@ -53,8 +53,7 @@ class BankController extends Controller
         $bankCompanies = Company::with('bank')->where('bank_id', $validatedData['bank_id'])->get();
         $bankCompany = null;
         foreach ($bankCompanies as $key => $bank) {
-            if ($bank->username == $validatedData['username'])
-            {
+            if ($bank->username == $validatedData['username']) {
                 $bankCompany = $bank;
                 break;
             }
@@ -64,11 +63,12 @@ class BankController extends Controller
             $bankCompany->bank = Bank::find($validatedData['bank_id']);
         }
         $accounts = [];
+
+        unset($bankCompany->bank);
+        $bankCompany->save();
+
         try
         {
-            // $e = new \App\Exceptions\Banks\NeedsTanException('Aktion braucht eine TAN', null);
-            // throw $e;
-
             $sepaAccounts = $bankCompany->getSEPAAccounts();
             foreach ($sepaAccounts as $key => $sepaAccount) {
                 $accounts[] = [
@@ -80,12 +80,9 @@ class BankController extends Controller
                 ];
             }
 
-            unset($bankCompany->bank);
-            $bankCompany->save();
-
             return [
                 'tan' => [
-                    'action' => null,
+                    'action_path' => null,
                     'html' => '',
                     'show' => false,
                     'tan' => '',
@@ -103,12 +100,10 @@ class BankController extends Controller
         }
         catch(\App\Exceptions\Banks\NeedsTanException $exc)
         {
-            $action = $exc->action();
-
             return [
                 'tan' => [
-                    'action' => $action,
-                    'html' => $bankCompany->requestTan($action),
+                    'action_path' => $exc->path(),
+                    'html' => $bankCompany->requestTan($exc->action()),
                     'show' => true,
                     'tan' => '',
                 ],

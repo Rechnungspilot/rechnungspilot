@@ -103,21 +103,16 @@ class Company extends Pivot
         return $tanModeNames;
     }
 
-    protected function getFints()
-    {
-        if (!is_null($this->fints))
-        {
-            return $this->fints;
-        }
-
+    protected function setFints($persisted_instance = null) {
         $this->options = new \Fhp\Options\FinTsOptions();
         $this->options->url = $this->bank->url; // HBCI / FinTS Url can be found here: https://www.hbci-zka.de/institute/institut_auswahl.htm (use the PIN/TAN URL)
         $this->options->bankCode = $this->bank->blz; // Your bank code / Bankleitzahl
         $this->options->productName = config('app.fhp_registration_no'); // The number you receive after registration / FinTS-Registrierungsnummer
         $this->options->productVersion = '1.0'; // Your own Software product version
         $this->credentials = \Fhp\Options\Credentials::create($this->username, $this->pin); // This is NOT the PIN of your bank card!
-        $this->fints = \Fhp\FinTs::new($this->options, $this->credentials);
+        $this->fints = \Fhp\FinTs::new($this->options, $this->credentials, $persisted_instance);
 
+        // Tanmode und tanmedium in DB speichern
         $tanModes = $this->getTanModes();
         if (count($tanModes)) {
             $tanModeIndex = array_keys($tanModes)[0];
@@ -141,24 +136,47 @@ class Company extends Pivot
             $this->fints->selectTanMode($tanMode, $tanMedium);
         }
 
+        return $this->fints;
+    }
+
+    protected function login() {
         $login = $this->fints->login();
-        $this->action = $login;
-        $this->fints = null;
         if ($login->needsTan()) {
-            $e = new NeedsTanException('Aktion braucht eine TAN', $login);
+
+            $path = $this->id . '-' . now()->format('Y-m-d_H:i:s') . '-persistedaction.txt';
+            Storage::put($path, serialize([$this->fints->persist(), $login]));
+
+            $this->action = $login;
+            $this->fints = null;
+
+            $e = new NeedsTanException('Aktion braucht eine TAN', $login, $path);
             throw $e;
+
         }
+    }
+
+    protected function getFints()
+    {
+        if (!is_null($this->fints)) {
+            return $this->fints;
+        }
+
+        $this->setFints();
+
+        $this->login();
 
         return $this->fints;
     }
 
-    public function requestTan(\Fhp\BaseAction $action)
+    public function requestTan(\Fhp\BaseAction $action) : string
     {
+        $html = '';
+
         // Find out what sort of TAN we need, tell the user about it.
         $tanRequest = $action->getTanRequest();
-        echo 'The bank requested a TAN, asking: ' . $tanRequest->getChallenge() . "\n";
+        $html .= 'The bank requested a TAN, asking: ' . $tanRequest->getChallenge() . "\n";
         if ($tanRequest->getTanMediumName() !== null) {
-            echo 'Please use this device: ' . $tanRequest->getTanMediumName() . "\n";
+            $html .= 'Please use this device: ' . $tanRequest->getTanMediumName() . "\n";
         }
 
         // Challenge Image for PhotoTan/ChipTan
@@ -166,10 +184,10 @@ class Company extends Pivot
             $challengeImage = new \Fhp\Model\TanRequestChallengeImage(
                 $tanRequest->getChallengeHhdUc()
             );
-            echo 'There is a challenge image.' . PHP_EOL;
+            $html .= 'There is a challenge image.' . PHP_EOL;
             // Save the challenge image somewhere
             // Alternative: HTML sample code
-            echo '<img src="data:' . htmlspecialchars($challengeImage->getMimeType()) . ';base64,' . base64_encode($challengeImage->getData()) . '" />' . PHP_EOL;
+            $html .= '<img src="data:' . htmlspecialchars($challengeImage->getMimeType()) . ';base64,' . base64_encode($challengeImage->getData()) . '" />' . PHP_EOL;
         }
 
         // Optional: Instead of printing the above to the console, you can relay the information (challenge and TAN medium)
@@ -184,10 +202,17 @@ class Company extends Pivot
         // ASCII).
 
         // Storage::put('state.txt', serialize([$persistedFints, $persistedAction]));
+
+        return $html;
     }
 
-    public function submitTan(string $tan, $action = null)
+    public function submitTan(string $tan, string $path)
     {
-        return $this->fints->submitTan($action, $tan);
+        $restored_state = Storage::get($path);
+        list($persisted_instance, $persisted_action) = unserialize($restored_state);
+
+        $this->setFints($persisted_instance);
+
+        return $this->fints->submitTan($persisted_action, $tan);
     }
 }

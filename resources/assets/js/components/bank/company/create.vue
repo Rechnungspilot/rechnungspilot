@@ -98,7 +98,7 @@
                 searchTimeout: null,
                 date: moment().startOf('month').format(),
                 tan: {
-                    action: null,
+                    action_path: null,
                     html: '',
                     needed: false,
                     tan: '',
@@ -152,9 +152,8 @@
                     }).then( function (response) {
                         console.log(response.data.tan);
                         component.tan = response.data.tan;
-
+                        component.bankCompanyId = response.data.bank_company_id;
                         if (! component.tan.show) {
-                            component.bankCompanyId = response.data.bank_company_id;
                             for (var index in response.data.accounts) {
                                 component.accounts.push(response.data.accounts[index]);
                                 component.accountsSelected.push(response.data.accounts[index]);
@@ -171,6 +170,7 @@
                 axios.post(component.uri + '/konten/' + component.bankCompanyId + '/tan', component.tan)
                     .then(function (response) {
                         console.log(response);
+                        // TODO: antwort überprüfen
                         // component.connect();
                     });
             },

@@ -59,7 +59,7 @@
                 <p>Wir erarbeiten zusammen individuelle Lösungen, um deine Verwaltung so schlank wie möglich zu halten und bleiben dauerhaft in Kontakt um die Abläufe zu optimieren und anzupassen. Du sollst dich um dein Kerngeschäft kümmern können und deine Zeit nicht "Papierkram" verbingen.</p>
                 <p>Ich möchte einen engen, persönlichen Kontakt aufbauen und mich wirklich mit dir über deine Erfolge freuen. Deshalb betreue ich nur eine geringe Anzahl an Kunden. Mir geht es um Qualität anstatt Quantität!</p>
                 <p>Der Aufbau eines Unternehmens ist eine spannende und erfüllende Aufgabe und ich freue mich darauf Dich auf deiner Reise zu begleiten. Wenn Du das Gleiche möchtest, schreib mir eine <a href="#contact">Nachricht</a>.</p>
-                <p>Wenn Du mich erst beser kennenlernen möchtest, findest Du <a href="https://d15r.de/" target="_blank">hier</a> meine persönliche Homepage mit einer Auswahl meiner Projekte.</p>
+                <p>Wenn Du mich erst besser kennenlernen möchtest, findest Du <a href="https://d15r.de/" target="_blank">hier</a> meine persönliche Homepage mit einer Auswahl meiner Projekte.</p>
             </div>
         </div>
     </div>
