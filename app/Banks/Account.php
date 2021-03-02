@@ -14,7 +14,6 @@ class Account extends Model
     use HasCompany;
 
     protected $sepaAccount;
-    protected $bank;
 
     protected $uri = '/konten';
 
@@ -63,11 +62,9 @@ class Account extends Model
     {
         $transactions = [];
         $statements = $this->getStatements($from, $to);
-        foreach ($statements->getStatements() as $statement)
-        {
+        foreach ($statements->getStatements() as $statement) {
             $date = new Carbon($statement->getDate()->format('Y-m-d'));
-            foreach ($statement->getTransactions() as $SEPATransaction)
-            {
+            foreach ($statement->getTransactions() as $SEPATransaction) {
                 $transaction = Transaction::make([
                     'account_id' => $this->id,
                     'amount' => $SEPATransaction->getAmount() * 100,
@@ -79,8 +76,7 @@ class Account extends Model
                     'iban' => $SEPATransaction->getAccountnumber(),
                 ]);
 
-                if ($guessCompany == true)
-                {
+                if ($guessCompany == true) {
                     $transaction->guessCompany();
                 }
 
@@ -90,40 +86,33 @@ class Account extends Model
             }
         }
 
+        $this->bank->update([
+            'last_import_at' => now(),
+        ]);
+
         return $transactions;
     }
 
     public function getStatements(Carbon $from, Carbon $to)
     {
-        return $this->getBank()->getStatementOfAccount($this->getSepaAccount(), $from, $to);
-    }
-
-    protected function getBank()
-    {
-        // $bankCompany = $this->getRelation('bank');
-        // $bank = $bankCompany->getRelation('bank');
-        // $bank->pivot = $bankCompany;
-        return $this->getRelation('bank');
+        return $this->bank->getStatementOfAccount($this->getSepaAccount(), $from, $to);
     }
 
     protected function getSepaAccount() : SEPAAccount
     {
-        if (isset($this->sepaAccount))
-        {
+        if (isset($this->sepaAccount)) {
             return $this->sepaAccount;
         }
 
-        $sepaAccounts = $this->getBank()->getSepaAccounts();
+        $sepaAccounts = $this->bank->getSepaAccounts();
         foreach($sepaAccounts as $sepaAccount) {
-            if ($sepaAccount->getIban() == $this->iban)
-            {
+            if ($sepaAccount->getIban() == $this->iban) {
                 $this->sepaAccount = $sepaAccount;
                 break;
             }
         }
 
-        if (! isset($this->sepaAccount))
-        {
+        if (! isset($this->sepaAccount)) {
             throw new Exception('Account nicht gefunden');
         }
 

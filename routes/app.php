@@ -292,6 +292,7 @@ Route::middleware(['auth', 'company.locked'])->group(function () {
     Route::get('konten', 'AccountController@index');
     Route::post('konten', 'AccountController@store');
     Route::delete('konten/{account}', 'AccountController@destroy');
+    Route::get('konten/{account}/sync', 'Bank\Accounts\SyncController@show');
 
     // Kontakte
     Route::get('kontakte/adresse/{contact}', 'ContactAddressController@show');

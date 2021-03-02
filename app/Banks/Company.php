@@ -24,8 +24,16 @@ class Company extends Pivot
 
     public $table = 'bank_company';
 
+    protected $options;
+    protected $fints;
+    protected $credentials;
+
     protected $appends = [
         //
+    ];
+
+    protected $dates = [
+        'last_import_at',
     ];
 
     protected $fillable = [
@@ -33,6 +41,7 @@ class Company extends Pivot
         'company_id',
         'username',
         'pin',
+        'last_import_at',
     ];
 
     public function bank()
@@ -81,7 +90,10 @@ class Company extends Pivot
 
     public function getStatementOfAccount(SEPAAccount $account, Carbon $from, Carbon $to)
     {
-        return $this->getFints()->getStatementOfAccount($account, $from, $to);
+        $getStatement = \Fhp\Action\GetStatementOfAccount::create($account, $from, $to);
+        $this->getFints()->execute($getStatement);
+
+        return $getStatement->getStatement();
     }
 
     public function getTanModes() : array
@@ -141,18 +153,22 @@ class Company extends Pivot
 
     protected function login() {
         $login = $this->fints->login();
-        if ($login->needsTan()) {
+        $this->handleNeedsTan($login);
+    }
 
-            $path = $this->id . '-' . now()->format('Y-m-d_H:i:s') . '-persistedaction.txt';
-            Storage::put($path, serialize([$this->fints->persist(), $login]));
-
-            $this->action = $login;
-            $this->fints = null;
-
-            $e = new NeedsTanException('Aktion braucht eine TAN', $login, $path);
-            throw $e;
-
+    protected function handleNeedsTan(\Fhp\BaseAction $action) {
+        if (! $action->needsTan()) {
+            return;
         }
+
+        $path = $this->id . '-' . now()->format('Y-m-d_H:i:s') . '-persistedaction.txt';
+        Storage::put($path, serialize([$this->fints->persist(), $action]));
+
+        $this->action = $action;
+        $this->fints = null;
+
+        $e = new NeedsTanException('Aktion braucht eine TAN', $action, $path);
+        throw $e;
     }
 
     protected function getFints()
@@ -213,6 +229,10 @@ class Company extends Pivot
 
         $this->setFints($persisted_instance);
 
-        return $this->fints->submitTan($persisted_action, $tan);
+        $response = $this->fints->submitTan($persisted_action, $tan);
+
+        // TODO, wenn erfolgreich Datei löschen
+
+        return $response;
     }
 }

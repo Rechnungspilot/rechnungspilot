@@ -1,11 +1,17 @@
 <template>
     <div>
+        <tan-create :tan="tan" @success=""></tan-create>
         <div class="container-fluid">
             <div class="row">
-                <div class="form-group" style="margin-bottom: 0;">
-                    <input type="search" class="form-control" v-model="searchtext" @keyup="search" placeholder="suchen..">
-                </div>&nbsp;
-                <button class="btn btn-outline-primary" @click="showFilter = !showFilter">+ Filter</button>
+                <div class="col">
+                    <div class="form-group" style="margin-bottom: 0;">
+                        <input type="search" class="form-control" v-model="searchtext" @keyup="search" placeholder="suchen..">
+                    </div>
+                </div>
+                <div class="col-auto">
+                    <button class="btn btn-outline-primary" @click="showFilter = !showFilter">+ Filter</button>
+                    <button class="btn btn-outline-secondary" @click="sync" v-show="hasBank"><i class="fas fa-fw fa-sync"></i></button>
+                </div>
             </div>
             <form v-if="showFilter" id="filter" class="py-3">
                 <div  class="form-row">
@@ -63,6 +69,7 @@
     import edit from "./edit.vue";
     import filterAccount from "../filter/account.vue";
     import filterTags from "../filter/tags.vue";
+    import tanCreate from "../bank/tan/create.vue";
 
     export default {
 
@@ -71,12 +78,23 @@
             edit,
             filterAccount,
             filterTags,
+            tanCreate,
         },
 
         props: [
             'accounts',
             'tags',
         ],
+
+        computed: {
+            currentAccount() {
+                var index = Object.keys(this.accounts).find(key => this.accounts[key]['id'] === this.filter.accountId);
+                return this.accounts[index];
+            },
+            hasBank() {
+                return (this.currentAccount.bank_company_id > 0);
+            }
+        },
 
         data () {
             return {
@@ -99,6 +117,13 @@
                 edit: {
                     item: [],
                     index: 0,
+                },
+                tan: {
+                    action_path: null,
+                    html: '',
+                    show: false,
+                    tan: '',
+                    bank_company_id: 0,
                 },
             };
         },
@@ -155,6 +180,22 @@
                 Vue.set(this.items, this.edit.index, transaction)
                 $('#transaction-edit').modal('hide');
             },
+            sync() {
+                var component = this;
+                console.log(component.currentAccount);
+                component.isLoading = true;
+
+                axios.get(component.currentAccount.path + '/sync')
+                    .then(function (response) {
+                        component.isLoading = false;
+                        component.tan = response.data.tan;
+                        Vue.success('Buchungen erfolgreich synchronisiert');
+                        component.fetch();
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+            }
         },
     };
 </script>

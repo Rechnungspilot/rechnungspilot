@@ -25,6 +25,7 @@ class TransactionController extends Controller
                 ->account($request->input('account_id') ?? 0)
                 ->company($request->input('company_id') ?? 0)
                 ->withAllTags($request->input('tags'), 'buchungen')
+                ->orderBy('date', 'DESC')
                 ->paginate($request->input('perPage'));
             foreach ($transactions as $key => $transaction) {
                 $transaction->append('tagsString');

@@ -1,14 +1,14 @@
 <template>
     <tr>
         <td class="align-middle">{{ date }}</td>
-        <td class="align-middle"></td>
+        <td class="align-middle">{{ item.name }}</td>
         <td class="align-middle" v-if="item.payments.length > 0">
             <div v-for="payment in item.payments">
                 <a :href="payment.receipt.path" class="text-body">{{ payment.receipt.name }} ({{ (payment.data['amount'] / 100).format(2, ',', '.') }} €)</a>
             </div>
         </td>
         <td class="align-middle" v-else>
-            Keine Zahlungen zugeordnet
+            {{ item.text }}
         </td>
         <td class="align-middle">{{ item.tagsString }}</td>
         <td class="align-middle" :class="{'text-danger': item.type == 'debit', 'text-success': item.type == 'credit'}">{{ amount.format(2, ',', '.') }}</td>

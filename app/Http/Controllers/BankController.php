@@ -91,15 +91,13 @@ class BankController extends Controller
                 'accounts' => $accounts,
             ];
         }
-        catch(FailedRequestException $exc)
-        {
+        catch(FailedRequestException $exc) {
             $error = \Illuminate\Validation\ValidationException::withMessages([
                'pin' => [ $exc->getMessage() ],
             ]);
             throw $error;
         }
-        catch(\App\Exceptions\Banks\NeedsTanException $exc)
-        {
+        catch(\App\Exceptions\Banks\NeedsTanException $exc) {
             return [
                 'tan' => [
                     'action_path' => $exc->path(),
