@@ -96,14 +96,15 @@
             </div>
             <div class="card-body d-flex flex-column align-items-center justify-content-center">
                 <span class="display-4">100 € / Monat</span>
-                <p>Keine Vertragslaufzeit, versteckten Kosten oder ähnliches</p>
+                <small>Keine Vertragslaufzeit, Kündigungsfrist oder versteckten Kosten</small>
+                <p>Fängst Du gerade erst an? Schreib mir, wir finden eine Lösung!</p>
             </div>
         </div>
         <div class="card mb-4 shadow-sm">
             <div class="card-header">
                 <h4 class="my-0 font-weight-normal">Was ich dir biete</h4>
             </div>
-            <div class="card-body d-flex flex-column">
+            <div class="card-body d-flex flex-column align-items-center justify-content-center">
                 <p>Persönlicher Kontakt per Telefon, Videokonferenz, E-Mail, ...</p>
                 <p>Individuelle Lösungen für deine Anforderungen</p>
                 <p>Kurze Dienstwege & kurzfristige Umsetzung</p>
