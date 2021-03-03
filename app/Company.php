@@ -96,6 +96,11 @@ class Company extends Model
         return $this->hasMany('App\Banks\Accounts');
     }
 
+    public function contacts() : HasMany
+    {
+        return $this->hasMany(Contact::class, 'company_id');
+    }
+
     public function banks()
     {
         return $this->belongsToMany('App\Banks\Bank')
@@ -112,6 +117,11 @@ class Company extends Model
     public function invoices()
     {
         return $this->hasMany(\App\Receipts\Invoice::class, 'company_id');
+    }
+
+    public function items()
+    {
+        return $this->hasMany(\App\Item::class, 'company_id');
     }
 
     public function prices()

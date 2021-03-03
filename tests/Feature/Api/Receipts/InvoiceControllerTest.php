@@ -24,7 +24,7 @@ class InvoiceControllerTest extends TestCase
             'contact_id' => $contact->id,
         ]);
 
-        $response = $this->get(route('companies.invoices.index', [
+        $response = $this->get(route('api.companies.invoices.index', [
             'company' => $this->user->company_id
         ]));
     }
@@ -49,7 +49,7 @@ class InvoiceControllerTest extends TestCase
             'contact_id' => $contact->id,
         ]);
 
-        $response = $this->post(route('companies.invoices.store', [
+        $response = $this->post(route('api.companies.invoices.store', [
             'company' => $this->user->company_id
         ]), [
             'receipt' => [

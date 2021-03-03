@@ -54,6 +54,8 @@ Route::middleware(['guest', 'signed'])->group(function () {
     Route::post('rechnungen/keepseven', 'Receipts\Invoices\KeepsevenController@store')->name('receipt.invoice.keepseven.store');
 });
 
-Route::middleware(['auth:sanctum'])->group(function () {
-    Route::apiResource('api/companies.invoices', 'Api\Receipts\InvoiceController');
+Route::middleware(['auth:sanctum'])->prefix('api')->group(function () {
+    Route::apiResource('companies.invoices', 'Api\Receipts\InvoiceController', ['as' => 'api']);
+    Route::apiResource('companies.contacts', 'Api\Contacts\ContactController', ['as' => 'api']);
+    Route::apiResource('companies.items.lines', 'Api\Items\LineController', ['as' => 'api']);
 });
