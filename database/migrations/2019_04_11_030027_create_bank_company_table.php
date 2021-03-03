@@ -21,7 +21,7 @@ class CreateBankCompanyTable extends Migration
             $table->string('username');
             $table->string('pin');
 
-            $this->dateTime('last_import_at')->nullable();
+            $table->dateTime('last_import_at')->nullable();
 
             $table->timestamps();
 

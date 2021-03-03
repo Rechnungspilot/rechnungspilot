@@ -75,8 +75,7 @@ class Todo extends Model
 
         static::creating(function($model)
         {
-            if (! isset($model->creator_id))
-            {
+            if (! isset($model->creator_id)) {
                 $model->creator_id = Auth::id() ?? null;
             }
 

@@ -205,12 +205,16 @@ class AboController extends Controller
      */
     public function destroy(Request $request, Abo $abo)
     {
+        $type = $abo->settings->type::SLUG;
+
         $abo->delete();
 
         if ($request->wantsJson()) {
             return;
         }
 
-        return redirect(route('receipt.abo.index'));
+        return redirect(route('receipt.abo.index', [
+            'type' => $type
+        ]));
     }
 }

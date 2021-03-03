@@ -38,12 +38,14 @@ class ContactControllerTest extends TestCase
      */
     public function a_user_can_not_see_contacts_of_an_other_company()
     {
+        $existing_count = Contact::where('company_id', $this->user->company_id)->count();
+
         $contactOfADifferentCompany = factory(Contact::class)->create();
 
         $this->a_user_can_not_see_things_from_a_different_company(['kontakte' => $contactOfADifferentCompany->id]);
 
         $response = $this->json('get', route($this->baseRouteName . '.index'))
-            ->assertJsonCount(0, 'data');
+            ->assertJsonCount($existing_count, 'data');
     }
 
     /**
@@ -59,11 +61,14 @@ class ContactControllerTest extends TestCase
      */
     public function a_user_can_get_a_paginated_collection_of_items()
     {
-        $contacts = factory(Contact::class, 3)->create([
+        $existing_count = Contact::where('company_id', $this->user->company_id)->count();
+        $count = 3;
+
+        $contacts = factory(Contact::class, $count)->create([
             'company_id' => $this->user->company_id
         ]);
 
-        $this->getPaginatedCollection();
+        $this->getPaginatedCollection([], ($existing_count + $count));
     }
 
     /**
@@ -82,14 +87,18 @@ class ContactControllerTest extends TestCase
         $this->signIn();
 
         $response = $this->post(route($this->baseRouteName . '.store'));
+
+        $contact = Contact::where('company_id', $this->user->company_id)->orderBy('id', 'DESC')->first();
+        $existing_count = Contact::where('company_id', $this->user->company_id)->count();
+
         $response->assertStatus(Response::HTTP_FOUND)
-            ->assertRedirect(route($this->baseRouteName . '.show', ['kontakte' => 1]));
+            ->assertRedirect(route($this->baseRouteName . '.show', ['kontakte' => $contact->id]));
 
         $this->assertDatabaseHas('contacts', [
-            'id' => 1,
+            'id' => $contact->id,
             'firstname' => 'Neuer',
             'lastname' => 'Kunde',
-            'number' => 1,
+            'number' => $existing_count,
         ]);
 
         $response = $this->json('POST', route($this->baseRouteName . '.store'), []);
@@ -98,7 +107,7 @@ class ContactControllerTest extends TestCase
             ->assertJson([
                 'company_id' => $this->user->company_id,
                 'name' => 'Kunde, Neuer',
-                'number' => 2
+                'number' => ($existing_count + 1)
             ]);
     }
 
@@ -135,20 +144,24 @@ class ContactControllerTest extends TestCase
         $this->signIn();
 
         $response = $this->post(route($this->baseRouteName . '.store'));
+
+        $contact = Contact::where('company_id', $this->user->company_id)->orderBy('id', 'DESC')->first();
+        $existing_count = Contact::where('company_id', $this->user->company_id)->count();
+
         $response->assertStatus(Response::HTTP_FOUND)
-            ->assertRedirect(route($this->baseRouteName . '.show', ['kontakte' => 1]));
+            ->assertRedirect(route($this->baseRouteName . '.show', ['kontakte' => $contact->id]));
 
         $this->assertDatabaseHas('contacts', [
-            'id' => 1,
+            'id' => $contact->id,
             'firstname' => 'Neuer',
             'lastname' => 'Kunde',
-            'number' => 1,
+            'number' => $existing_count,
         ]);
 
         $this->assertDatabaseHas('custom_field_values', [
             'company_id' => $this->user->company_id,
             'custom_field_id' => $defaultCustomfield->id,
-            'customfieldable_id' => 1,
+            'customfieldable_id' => $contact->id,
             'customfieldable_type' => Contact::class,
             'value' => null,
         ]);
@@ -156,7 +169,7 @@ class ContactControllerTest extends TestCase
         $this->assertDatabaseHas('custom_field_values', [
             'company_id' => $this->user->company_id,
             'custom_field_id' => $defaultCustomfieldWithDefaultValue->id,
-            'customfieldable_id' => 1,
+            'customfieldable_id' => $contact->id,
             'customfieldable_type' => Contact::class,
             'value' => $defaultValue,
         ]);

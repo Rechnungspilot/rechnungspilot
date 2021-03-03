@@ -74,8 +74,7 @@ class ItemController extends Controller
             'tax' => 0.19,
         ]);
 
-        if ($request->wantsJson())
-        {
+        if ($request->wantsJson()) {
             return $item->load('unit');
         }
 

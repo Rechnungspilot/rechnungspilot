@@ -5,6 +5,7 @@
 use App\Company;
 use App\Contacts\Contact;
 use App\Receipts\Abos\Abo;
+use App\Receipts\Invoice;
 use Faker\Generator as Faker;
 
 $factory->define(Abo::class, function (Faker $faker) {
@@ -13,6 +14,7 @@ $factory->define(Abo::class, function (Faker $faker) {
         'company_id' => $company->id,
     ]);
     return [
+        'settings_type' => Invoice::class,
         'number' => Abo::nextNumber(now()),
         'company_id' => $company->id,
         'contact_id' => $contact->id,

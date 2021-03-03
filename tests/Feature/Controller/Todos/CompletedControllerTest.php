@@ -59,7 +59,6 @@ class CompletedControllerTest extends TestCase
         $response->assertStatus(Response::HTTP_FOUND);
 
         $this->assertDatabaseHas('todos', [
-            'id' => 1,
             'company_id' => $this->user->company_id,
             'completer_id' => $this->user->id,
             'completed_at' => $now,

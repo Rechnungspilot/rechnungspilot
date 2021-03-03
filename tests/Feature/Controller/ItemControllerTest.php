@@ -22,9 +22,11 @@ class ItemControllerTest extends TestCase
     {
         parent::setUp();
 
-        $this->unit = factory(Unit::class)->create([
+        factory(Unit::class)->create([
             'company_id' => $this->user->company_id,
         ]);
+
+        $this->unit = Unit::where('company_id', $this->user->company_id)->first();
     }
 
     /**
@@ -63,6 +65,9 @@ class ItemControllerTest extends TestCase
      */
     public function a_user_can_get_a_paginated_collection_of_items()
     {
+        $existing_count = Item::where('company_id', $this->user->company_id)->count();
+        $count = 3;
+
         $this->signIn($this->user);
 
         $products = [];
@@ -82,7 +87,7 @@ class ItemControllerTest extends TestCase
                 'data',
                 'total',
             ])
-            ->assertJsonCount(3, 'data');
+            ->assertJsonCount($existing_count + $count, 'data');
     }
 
     /**
@@ -104,20 +109,28 @@ class ItemControllerTest extends TestCase
     {
         $this->signIn($this->user);
 
-        $response = $this->post(route($this->baseRouteName . '.store'), [
-            'name' => 'Beispielartikel',
+        $name = 'Neuer Artikel';
+
+        $this->assertDatabaseMissing('items', [
+            'name' => $name,
         ]);
-        $response->assertStatus(302)
-            ->assertRedirect(route($this->baseRouteName . '.show', ['artikel' => 1]));
+
+        $response = $this->post(route($this->baseRouteName . '.store'), [
+            'name' => $name,
+        ]);
 
         $this->assertDatabaseHas('items', [
-            'id' => 1,
-            'name' => 'Beispielartikel',
+            'name' => $name,
         ]);
+
+        $item = Item::where('name', $name)->first();
+
+        $response->assertStatus(302)
+            ->assertRedirect(route($this->baseRouteName . '.show', ['artikel' => $item->id]));
 
         $this->assertDatabaseHas('item_price', [
             'company_id' => 1,
-            'item_id' => 1,
+            'item_id' => $item->id,
             'start_at' => '1970-01-01 00:00:00',
             'unit_cost' => '0',
             'unit_price' => '0',
@@ -200,6 +213,7 @@ class ItemControllerTest extends TestCase
             'duration_minute' => 30,
             'name' => $item->name . ' updated',
             'number' => '',
+            'expense_account_number' => '1',
             'revenue_account_number' => '1',
             'tax' => 0.07,
             'type' => '1',

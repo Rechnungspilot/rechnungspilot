@@ -94,8 +94,7 @@ class TodoController extends Controller
             'user_id' => auth()->user()->id,
         ];
 
-        if ($request->has('todo_id'))
-        {
+        if ($request->has('todo_id')) {
             $attributes['todoable_type'] = Todo::class;
             $attributes['todoable_id'] = $request->input('todo_id');
         }
@@ -103,8 +102,7 @@ class TodoController extends Controller
         $todo = Todo::create($attributes)
             ->load(['team']);
 
-        if ($todo->isInProject())
-        {
+        if ($todo->isInProject()) {
             $todo->project->cache();
         }
 

@@ -37,12 +37,14 @@ class TodoControllerTest extends TestCase
      */
     public function a_user_can_not_see_todos_of_an_other_company()
     {
+        $existing_todos_count = Todo::where('company_id', $this->user->company_id)->count();
+
         $modelOfADifferentCompany = factory($this->className)->create();
 
         $this->a_user_can_not_see_things_from_a_different_company(['todo' => $modelOfADifferentCompany->id]);
 
         $response = $this->json('get', route($this->baseRouteName . '.index'))
-            ->assertJsonCount(0, 'data');
+            ->assertJsonCount($existing_todos_count, 'data');
     }
 
     /**
@@ -58,11 +60,14 @@ class TodoControllerTest extends TestCase
      */
     public function a_user_can_get_a_paginated_collection_of_items()
     {
-        factory($this->className, 3)->create([
+        $existing_todos_count = Todo::where('company_id', $this->user->company_id)->count();
+        $todos_count = 3;
+
+        factory($this->className, $todos_count)->create([
             'company_id' => $this->user->company_id
         ]);
 
-        $this->getPaginatedCollection();
+        $this->getPaginatedCollection([], ($existing_todos_count + $todos_count));
     }
 
     /**
@@ -84,7 +89,6 @@ class TodoControllerTest extends TestCase
         $response->assertStatus(Response::HTTP_CREATED);
 
         $this->assertDatabaseHas('todos', [
-            'id' => 1,
             'company_id' => $this->user->company_id,
             'priority' => Todo::DEFAULT_PRIORITY,
             'creator_id' => $this->user->id,

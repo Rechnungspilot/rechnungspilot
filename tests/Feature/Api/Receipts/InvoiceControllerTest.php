@@ -27,8 +27,6 @@ class InvoiceControllerTest extends TestCase
         $response = $this->get(route('companies.invoices.index', [
             'company' => $this->user->company_id
         ]));
-
-        dump($response->json());
     }
 
     /**
@@ -72,7 +70,5 @@ class InvoiceControllerTest extends TestCase
                 ],
             ],
         ]);
-
-        dump($response->json());
     }
 }

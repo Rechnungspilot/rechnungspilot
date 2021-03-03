@@ -5,12 +5,13 @@ namespace Tests\Feature\Controller\Receipts\Abos;
 use App\Contacts\Contact;
 use App\Receipts\Abos\Abo;
 use App\Receipts\Abos\Settings;
+use App\Receipts\Invoice;
 use App\Receipts\Receipt;
 use App\Receipts\Statuses\Created;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Testing\TestResponse;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Http\Response;
+use Illuminate\Testing\TestResponse;
 use Tests\TestCase;
 use Tests\Traits\BaseReceiptTests;
 
@@ -26,18 +27,82 @@ class AboControllerTest extends TestCase
     /**
      * @test
      */
+    public function guest_can_not_access_the_following_routes()
+    {
+        $id = factory($this->getClassName())->create()->id;
+
+        $actions = [
+            'index' => ['type' => 'rechnungen'],
+            'store' => ['type' => 'rechnungen'],
+            'show' => ['type' => 'rechnungen', $this->getBaseRouteParameter() => $id],
+            'edit' => ['type' => 'rechnungen', $this->getBaseRouteParameter() => $id],
+            'update' => ['type' => 'rechnungen', $this->getBaseRouteParameter() => $id],
+            'destroy' => ['type' => 'rechnungen', $this->getBaseRouteParameter() => $id],
+        ];
+        $this->a_guest_can_not_access($actions);
+    }
+
+    /**
+     * @test
+     */
+    public function a_user_can_not_see_receipts_of_an_other_company()
+    {
+        $modelOfADifferentCompany = factory($this->getClassName())->create();
+
+        $this->a_user_can_not_see_things_from_a_different_company([$this->getBaseRouteParameter() => $modelOfADifferentCompany->id]);
+
+        $response = $this->json('get', route($this->getBaseRouteName() . '.index', [
+            'type' => 'rechnungen'
+        ]))
+            ->assertStatus(Response::HTTP_OK)
+            ->assertJsonCount(0, 'data');
+    }
+
+    /**
+     * @test
+     */
+    public function a_user_can_see_the_index_view()
+    {
+        $this->getIndexViewResponse([
+            'type' => 'rechnungen'
+        ]);
+    }
+
+    /**
+     * @test
+     */
+    public function a_user_can_get_a_paginated_collection_of_invoices()
+    {
+        $receipt = $this->createReceipt();
+        $this->createReceipt();
+        $this->createReceipt();
+
+        $this->getPaginatedCollection([
+            'type' => 'invoice'
+        ]);
+    }
+
+    /**
+     * @test
+     */
     public function a_user_can_create_a_receipt()
     {
         $this->withoutExceptionHandling();
+
+        $route = route($this->getBaseRouteName() . '.store', [
+            'type' => 'rechnungen',
+        ]);
 
         $this->signIn();
 
         $firstContact = Contact::first();
         $now = now()->startOfDay();
 
-        $response = $this->post(route($this->getBaseRouteName() . '.store'))
+        $response = $this->post($route)
             ->assertStatus(Response::HTTP_FOUND)
-            ->assertRedirect(route($this->getBaseRouteName() . '.' . $this->getRedirectRouteAction(), [$this->getBaseRouteParameter() => 1]));
+            ->assertRedirect(route($this->getBaseRouteName() . '.' . $this->getRedirectRouteAction(), [
+                $this->getBaseRouteParameter() => 1
+            ]));
 
         $this->assertDatabaseHas('receipts', [
             'id' => 1,
@@ -72,7 +137,7 @@ class AboControllerTest extends TestCase
 
         $this->assertCount(0, $abo->contacts, 'contacts count');
 
-        $response = $this->json('POST', route($this->getBaseRouteName() . '.store'), [])
+        $response = $this->json('POST', $route, [])
             ->assertStatus(Response::HTTP_CREATED)
             ->assertJsonStructure(['id', 'name'])
             ->assertJson([
@@ -88,6 +153,10 @@ class AboControllerTest extends TestCase
     {
         $this->withoutExceptionHandling();
 
+        $route = route($this->getBaseRouteName() . '.store', [
+            'type' => 'rechnungen',
+        ]);
+
         $this->signIn();
 
         $contact = factory(Contact::class)->create([
@@ -96,7 +165,7 @@ class AboControllerTest extends TestCase
 
         $this->assertCount(0, Receipt::all());
 
-        $response = $this->post(route($this->getBaseRouteName() . '.store'), ['contact_id' => $contact->id])
+        $response = $this->post($route, ['contact_id' => $contact->id])
             ->assertStatus(Response::HTTP_FOUND)
             ->assertRedirect(route($this->getBaseRouteName() . '.' . $this->getRedirectRouteAction(), [$this->getBaseRouteParameter() => 1]));
 
@@ -115,7 +184,7 @@ class AboControllerTest extends TestCase
             'contact_id' => $contact->id,
         ]);
 
-        $response = $this->json('POST', route($this->getBaseRouteName() . '.store'), ['contact_id' => $contact->id])
+        $response = $this->json('POST', $route, ['contact_id' => $contact->id])
             ->assertStatus(Response::HTTP_CREATED)
             ->assertJsonStructure(['id', 'name'])
             ->assertJson([
@@ -138,9 +207,14 @@ class AboControllerTest extends TestCase
         $abo = $this->createReceipt();
         $now = now()->startOfDay();
 
+        $route = route($this->getBaseRouteName() . '.update', [
+            'type' => 'rechnungen',
+            $this->getBaseRouteParameter() => $abo->id
+        ]);
+
         $this->signIn($this->user);
 
-        $response = $this->put(route($this->getBaseRouteName() . '.update', [$this->getBaseRouteParameter() => $abo->id]), [
+        $response = $this->put($route, [
             'email' => '',
             'interval_unit' => 'days',
             'interval_value' => 1,
@@ -177,6 +251,33 @@ class AboControllerTest extends TestCase
             'last_at' => null,
             'last_count' => 0,
             'last_type' => 0,
+        ]);
+    }
+
+    /**
+     * @test
+     */
+    public function a_user_can_delete_a_receipt_if_it_is_deletable()
+    {
+        $this->withoutExceptionHandling();
+
+        $model = $this->createReceipt();
+
+        $this->deleteModel($model, [
+            'type' => 'rechnungen',
+            $this->getBaseRouteParameter() => $model->id
+        ])
+            ->assertRedirect(route($this->getBaseRouteName() . '.index', [
+                'type' => 'rechnungen',
+            ]));
+    }
+
+    protected function createReceipt() : Receipt
+    {
+        return Abo::create([
+            'company_id' => $this->user->company_id,
+            'settings_type' => Invoice::class,
+            'contact_id' => $this->contact->id,
         ]);
     }
 }

@@ -37,6 +37,8 @@ class ContactControllerTest extends TestCase
      */
     public function a_user_can_not_see_todos_of_an_other_company()
     {
+        $existing_count = Contact::where('company_id', $this->user->company_id)->count();
+
         $todoOfADifferentCompany = factory($this->className)->create();
         $contactOfADifferentCompany = factory(Contact::class)->create([
             'company_id' => $todoOfADifferentCompany->company_id,
@@ -55,7 +57,7 @@ class ContactControllerTest extends TestCase
 
         $response = $this->json('get', route($this->baseRouteName . '.index'))
             ->assertStatus(Response::HTTP_OK)
-            ->assertJsonCount(0);
+            ->assertJsonCount($existing_count);
     }
 
     /**
@@ -63,19 +65,22 @@ class ContactControllerTest extends TestCase
      */
     public function a_user_can_get_a_collection_of_contacts()
     {
+        $existing_count = Contact::where('company_id', $this->user->company_id)->count();
+        $count = 3;
+
         $this->withoutExceptionHandling();
 
         $this->signIn();
 
-        $contacts = factory(Contact::class, 3)->create([
+        $contacts = factory(Contact::class, $count)->create([
             'company_id' => $this->user->company_id,
         ]);
 
-        $this->assertCount(3, Contact::all());
+        $this->assertCount($existing_count + $count, Contact::all());
 
         $response = $this->get(route($this->baseRouteName . '.index'))
             ->assertStatus(Response::HTTP_OK)
-            ->assertJsonCount(3);
+            ->assertJsonCount($existing_count + $count);
     }
 
     /**
