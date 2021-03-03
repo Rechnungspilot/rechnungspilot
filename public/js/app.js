@@ -11756,7 +11756,7 @@ __webpack_require__.r(__webpack_exports__);
     return {
       uri: '/buchungen',
       items: [],
-      receiptIds: {},
+      receiptIds: [],
       originalReceiptIds: [],
       amount: 0,
       amountAssigned: 0,
@@ -11813,12 +11813,15 @@ __webpack_require__.r(__webpack_exports__);
         component.$emit('updated', response.data);
       });
     },
+    handleInputAmount: function handleInputAmount(receiptId, outstanding) {
+      this.checkCompleted(receiptId, outstanding);
+      this.setAmountAssigned();
+    },
     isSelected: function isSelected(receiptId) {
       return receiptId in this.receiptIds;
     },
     checkCompleted: function checkCompleted(receiptId, outstanding) {
       outstanding /= 100;
-      console.log(this.receiptIds[receiptId].amount, outstanding);
 
       if (this.receiptIds[receiptId].amount == outstanding) {
         this.receiptIds[receiptId].completed = true;
@@ -11829,6 +11832,7 @@ __webpack_require__.r(__webpack_exports__);
     setAmount: function setAmount(receiptId, amount) {
       this.receiptIds[receiptId].amount = amount / 100;
       this.receiptIds[receiptId].completed = true;
+      this.setAmountAssigned();
     },
     setAmountAssigned: function setAmountAssigned() {
       this.amountAssigned = 0;
@@ -11839,7 +11843,8 @@ __webpack_require__.r(__webpack_exports__);
     },
     toggleReceiptId: function toggleReceiptId(receiptId, outstanding) {
       if (this.isSelected(receiptId)) {
-        this.receiptIds.splice(receiptId, 1);
+        // this.receiptIds.splice(receiptId, 1);
+        delete this.receiptIds[receiptId];
       } else {
         var index = this.originalReceiptIds.indexOf(receiptId);
 
@@ -62452,7 +62457,7 @@ var render = function() {
                                     ? _c("currency-input", {
                                         on: {
                                           input: function($event) {
-                                            return _vm.checkCompleted(
+                                            return _vm.handleInputAmount(
                                               payment.receipt.id,
                                               payment.receipt.outstanding
                                             )
@@ -62748,7 +62753,7 @@ var render = function() {
                                       ? _c("currency-input", {
                                           on: {
                                             input: function($event) {
-                                              return _vm.checkCompleted(
+                                              return _vm.handleInputAmount(
                                                 item.id,
                                                 item.outstanding
                                               )

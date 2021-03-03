@@ -50,7 +50,7 @@
                                         <td class="align-middle" @click="toggleReceiptId(payment.receipt.id, payment.receipt.outstanding)">{{ dateFormat(payment.receipt.dateDue) }}</td>
                                         <td class="align-middle text-right" @click="toggleReceiptId(payment.receipt.id, payment.receipt.outstanding)">{{ (payment.receipt.gross / 100).format(2, ',', '.') }}</td>
                                         <td class="align-middle text-right" @click="setAmount(payment.receipt.id, payment.receipt.outstanding)">{{ (payment.receipt.outstanding / 100).format(2, ',', '.') }}</td>
-                                        <td class="align-middle"><currency-input v-model="receiptIds[payment.receipt.id].amount" v-if="isSelected(payment.receipt.id)" @input="checkCompleted(payment.receipt.id, payment.receipt.outstanding)"></currency-input></td>
+                                        <td class="align-middle"><currency-input v-model="receiptIds[payment.receipt.id].amount" v-if="isSelected(payment.receipt.id)" @input="handleInputAmount(payment.receipt.id, payment.receipt.outstanding)"></currency-input></td>
                                         <td class="align-middle">
                                             <label class="form-checkbox"></label>
                                             <input type="checkbox" v-model="receiptIds[payment.receipt.id].completed" v-if="isSelected(payment.receipt.id)">
@@ -72,7 +72,7 @@
                                         <td class="align-middle" @click="toggleReceiptId(item.id, item.outstanding)">{{ dateFormat(item.dateDue) }}</td>
                                         <td class="align-middle text-right" @click="toggleReceiptId(item.id, item.outstanding)">{{ (item.gross / 100).format(2, ',', '.') }}</td>
                                         <td class="align-middle text-right" @click="setAmount(item.id, item.outstanding)">{{ (item.outstanding / 100).format(2, ',', '.') }}</td>
-                                        <td class="align-middle"><currency-input v-model="receiptIds[item.id].amount" v-if="isSelected(item.id)" @input="checkCompleted(item.id, item.outstanding)"></currency-input></td>
+                                        <td class="align-middle"><currency-input v-model="receiptIds[item.id].amount" v-if="isSelected(item.id)" @input="handleInputAmount(item.id, item.outstanding)"></currency-input></td>
                                         <td class="align-middle">
                                             <label class="form-checkbox"></label>
                                             <input type="checkbox" v-model="receiptIds[item.id].completed" v-if="isSelected(item.id)">
@@ -122,7 +122,7 @@
             return {
                 uri: '/buchungen',
                 items: [],
-                receiptIds: {},
+                receiptIds: [],
                 originalReceiptIds: [],
                 amount: 0,
                 amountAssigned: 0,
@@ -182,12 +182,15 @@
                     component.$emit('updated', response.data);
                 });
             },
+            handleInputAmount(receiptId, outstanding) {
+                this.checkCompleted(receiptId, outstanding);
+                this.setAmountAssigned();
+            },
             isSelected(receiptId) {
                 return receiptId in this.receiptIds;
             },
             checkCompleted(receiptId, outstanding) {
                 outstanding /= 100;
-                console.log(this.receiptIds[receiptId].amount, outstanding);
                 if (this.receiptIds[receiptId].amount == outstanding) {
                     this.receiptIds[receiptId].completed = true;
                 }
@@ -198,6 +201,7 @@
             setAmount(receiptId, amount) {
                 this.receiptIds[receiptId].amount = amount / 100;
                 this.receiptIds[receiptId].completed = true;
+                this.setAmountAssigned();
             },
             setAmountAssigned() {
                 this.amountAssigned = 0;
@@ -207,7 +211,8 @@
             },
             toggleReceiptId(receiptId, outstanding) {
                 if (this.isSelected(receiptId)) {
-                    this.receiptIds.splice(receiptId, 1);
+                    // this.receiptIds.splice(receiptId, 1);
+                    delete this.receiptIds[receiptId];
                 }
                 else {
                     var index = this.originalReceiptIds.indexOf(receiptId);
