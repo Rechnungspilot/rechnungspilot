@@ -24,6 +24,7 @@ class CreateTransactionsTable extends Migration
             $table->string('type');
             $table->unsignedInteger('amount');
             $table->date('date');
+            $table->text('reference')->default('');
             $table->text('text')->default('');
             $table->string('name')->default('');
             $table->string('iban')->default('');

@@ -25,6 +25,7 @@ class Transaction extends Model
         'amount',
         'company_id',
         'date',
+        'reference',
         'text',
         'transactionable_id',
         'transactionable_type',
@@ -57,8 +58,7 @@ class Transaction extends Model
         {
             list($text, $companyId) = explode(' ', $matches[0]);
             $company = Company::find((int) $companyId);
-            if ($company)
-            {
+            if ($company) {
                 $this->transactionable_type = Company::class;
                 $this->transactionable_id = $company->id;
                 $amount = $this->amount * ($this->type == 'credit' ? 1 : -1);

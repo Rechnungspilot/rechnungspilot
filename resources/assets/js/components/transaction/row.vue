@@ -8,7 +8,7 @@
             </div>
         </td>
         <td class="align-middle" v-else>
-            {{ item.text }}
+            {{ item.reference }}
         </td>
         <td class="align-middle">{{ item.tagsString }}</td>
         <td class="align-middle" :class="{'text-danger': item.type == 'debit', 'text-success': item.type == 'credit'}">{{ amount.format(2, ',', '.') }}</td>

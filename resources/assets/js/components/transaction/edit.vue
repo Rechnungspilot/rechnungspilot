@@ -79,6 +79,18 @@
                                         </td>
                                     </tr>
                                 </tbody>
+                                <tfoot v-show="amountAssigned > 0">
+                                    <td class="align-middle"></td>
+                                    <td class="align-middle"></td>
+                                    <td class="align-middle"></td>
+                                    <td class="align-middle"></td>
+                                    <td class="align-middle"></td>
+                                    <td class="align-middle"></td>
+                                    <td class="align-middle"></td>
+                                    <td class="align-middle">{{ amountAssigned.format(2, ',', '.') }} (übrig: {{ amountAvailable.format(2, ',', '.') }})</td>
+                                    <td class="align-middle"></td>
+                                    <td class="align-middle"></td>
+                                </tfoot>
                             </table>
                         </div>
                     </div>
@@ -113,13 +125,21 @@
                 receiptIds: {},
                 originalReceiptIds: [],
                 amount: 0,
+                amountAssigned: 0,
                 date: "0",
                 errors: {},
             };
         },
 
+        computed: {
+            amountAvailable() {
+                return Math.max(this.amount - this.amountAssigned, 0);
+            }
+        },
+
         watch: {
             transaction (newValue, oldValue) {
+                this.fetch();
                 this.amount = newValue.amount / 100;
                 this.date = moment.parseZone(newValue.date).format();
                 this.receiptIds = [];
@@ -131,6 +151,7 @@
                     });
                     this.originalReceiptIds.push(newValue.payments[index].receipt.id);
                 }
+                this.setAmountAssigned();
             },
         },
 
@@ -141,7 +162,9 @@
         methods: {
             fetch() {
                 var component = this;
-                axios.get(this.uri + '/belege')
+                axios.get(this.uri + '/belege', {
+                    params: component.transaction
+                })
                     .then( function (response) {
                         component.items = response.data;
                 });
@@ -165,19 +188,22 @@
             checkCompleted(receiptId, outstanding) {
                 outstanding /= 100;
                 console.log(this.receiptIds[receiptId].amount, outstanding);
-                if (this.receiptIds[receiptId].amount == outstanding)
-                {
+                if (this.receiptIds[receiptId].amount == outstanding) {
                     this.receiptIds[receiptId].completed = true;
                 }
-                else
-                {
+                else {
                     this.receiptIds[receiptId].completed = false;
                 }
             },
             setAmount(receiptId, amount) {
                 this.receiptIds[receiptId].amount = amount / 100;
                 this.receiptIds[receiptId].completed = true;
-
+            },
+            setAmountAssigned() {
+                this.amountAssigned = 0;
+                for (var index in this.receiptIds) {
+                    this.amountAssigned += this.receiptIds[index].amount || 0;
+                }
             },
             toggleReceiptId(receiptId, outstanding) {
                 if (this.isSelected(receiptId)) {
@@ -185,8 +211,8 @@
                 }
                 else {
                     var index = this.originalReceiptIds.indexOf(receiptId);
-                    if (index == -1)
-                    {
+                    if (index == -1) {
+                        outstanding = Math.min(outstanding, this.amountAvailable * 100);
                         var paymentId = 0;
                         var completed = true;
                     }
@@ -201,6 +227,7 @@
                         payment_id: paymentId,
                     });
                 }
+                this.setAmountAssigned();
             },
         },
 

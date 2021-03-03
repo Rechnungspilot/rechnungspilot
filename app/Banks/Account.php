@@ -8,6 +8,7 @@ use App\Transaction;
 use Carbon\Carbon;
 use Fhp\Model\SEPAAccount;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Arr;
 
 class Account extends Model
 {
@@ -70,6 +71,7 @@ class Account extends Model
                     'amount' => $SEPATransaction->getAmount() * 100,
                     'company_id' => $this->company_id,
                     'date' => $date,
+                    'reference' => Arr::get(explode("SVWZ+", $SEPATransaction->getDescription1()), 1, ''),
                     'text' => $SEPATransaction->getDescription1() . "\n" . $SEPATransaction->getDescription2(),
                     'type' => $SEPATransaction->getCreditDebit(),
                     'name' => $SEPATransaction->getName(),

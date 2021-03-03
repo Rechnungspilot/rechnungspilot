@@ -20,10 +20,7 @@ class ReceiptController extends Controller
         if ($request->wantsJson()) {
             return Receipt::with(['contact'])
                 ->where('outstanding', '>', 0)
-                ->whereIn('type', [
-                    Invoice::class,
-                    Expense::class,
-                ])
+                ->where('type', $request->input('type') == 'credit' ? Invoice::class : Expense::class)
                 ->orderBy('date', 'DESC')
                 ->get();
         }

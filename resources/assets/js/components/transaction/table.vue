@@ -182,7 +182,6 @@
             },
             sync() {
                 var component = this;
-                console.log(component.currentAccount);
                 component.isLoading = true;
 
                 axios.get(component.currentAccount.path + '/sync')
