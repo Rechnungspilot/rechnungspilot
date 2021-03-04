@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Company;
 use App\Contacts\Contact;
 use App\Item;
+use App\Receipts\Expense;
 use App\Receipts\Invoice;
 use App\Receipts\Item as ReceiptItem;
 use App\Receipts\Receipt;
@@ -43,9 +44,19 @@ class DraftController extends Controller
 
         $files = [];
         foreach ($receipts as $receipt) {
+            $class_name = get_class($receipt);
             $filename = Str::slug($receipt->name) . '.pdf';
-            $receipt->pdf()->save($path . $filename);
-            $zip->addFile($path . $filename, $filename);
+            if ($class_name == Invoice::class) {
+                $receipt->pdf()->save($path . $filename);
+                $zip->addFile($path . $filename, $filename);
+            }
+            elseif ($class_name == Expense::class) {
+                if (is_null($receipt->previewFile)) {
+                    continue;
+                }
+                copy($receipt->previewFile->url, $path . $filename);
+                $zip->addFile($path . $filename, $filename);
+            }
             $files[] = $path . $filename;
         }
 
