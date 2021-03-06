@@ -18,7 +18,10 @@ class Unit extends Model
     const ROUTE_NAME = 'items.units';
 
     protected $appends = [
-        //
+        'create_path',
+        'edit_path',
+        'index_path',
+        'path',
     ];
 
     protected $fillable = [
