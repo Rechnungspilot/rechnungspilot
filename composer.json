@@ -13,7 +13,7 @@
         "calebporzio/parental": "^0.11.0",
         "danielsundermeier/laravel-deploy": "^0.1.0",
         "danielsundermeier/laravel-model-labels": "dev-master",
-        "danielsundermeier/laravel-model-path": "dev-master",
+        "danielsundermeier/laravel-model-path": "^0.3.0",
         "doctrine/dbal": "^3.0.0",
         "facade/ignition": "^2.5",
         "fideloper/proxy": "^4.0",
@@ -82,10 +82,6 @@
         ]
     },
     "repositories": {
-        "danielsundermeier/laravel-model-path": {
-            "type": "path",
-            "url": "packages/danielsundermeier/laravel-model-path"
-        },
         "danielsundermeier/laravel-model-labels": {
             "type": "path",
             "url": "packages/danielsundermeier/laravel-model-labels"

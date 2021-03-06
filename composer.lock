@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3e79103a89cad2716e0f5164566ff70a",
+    "content-hash": "12ad8dc2810dee47bbe275a42266a1d6",
     "packages": [
         {
             "name": "ajcastro/eager-load-pivot-relations",
@@ -404,11 +404,17 @@
         },
         {
             "name": "danielsundermeier/laravel-model-path",
-            "version": "dev-master",
-            "dist": {
-                "type": "path",
-                "url": "packages/danielsundermeier/laravel-model-path",
+            "version": "0.3.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/danielsundermeier/laravel-model-path.git",
                 "reference": "70c1973617568343975d8d5e6eb8e5375bc5f7ff"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/danielsundermeier/laravel-model-path/zipball/70c1973617568343975d8d5e6eb8e5375bc5f7ff",
+                "reference": "70c1973617568343975d8d5e6eb8e5375bc5f7ff",
+                "shasum": ""
             },
             "type": "library",
             "autoload": {
@@ -416,11 +422,7 @@
                     "D15r\\ModelPath\\": "src/"
                 }
             },
-            "autoload-dev": {
-                "psr-4": {
-                    "D15r\\ModelPath\\Tests\\": "tests/"
-                }
-            },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -431,9 +433,11 @@
                 }
             ],
             "description": "Description.",
-            "transport-options": {
-                "relative": true
-            }
+            "support": {
+                "issues": "https://github.com/danielsundermeier/laravel-model-path/issues",
+                "source": "https://github.com/danielsundermeier/laravel-model-path/tree/0.3.0"
+            },
+            "time": "2021-03-03T00:44:56+00:00"
         },
         {
             "name": "dnoegel/php-xdg-base-dir",
@@ -9166,7 +9170,6 @@
     "minimum-stability": "dev",
     "stability-flags": {
         "danielsundermeier/laravel-model-labels": 20,
-        "danielsundermeier/laravel-model-path": 20,
         "nemiah/php-fints": 20
     },
     "prefer-stable": true,
