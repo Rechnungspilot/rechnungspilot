@@ -49,6 +49,12 @@ Route::get('/hof-sundermeier', function () {
     return view('hof-sundermeier.app');
 });
 
+Route::middleware(['auth', 'company.locked'])->group(function () {
+
+
+
+});
+
 Route::middleware(['guest', 'signed'])->group(function () {
     Route::get('rechnungen/keepseven/create', 'Receipts\Invoices\KeepsevenController@create')->name('receipt.invoice.keepseven.create');
     Route::post('rechnungen/keepseven', 'Receipts\Invoices\KeepsevenController@store')->name('receipt.invoice.keepseven.store');

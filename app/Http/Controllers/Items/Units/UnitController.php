@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Items\Units;
 
+use App\Http\Controllers\Controller;
 use App\Unit;
 use Illuminate\Http\Request;
 
@@ -19,7 +20,8 @@ class UnitController extends Controller
                 ->get();
         }
 
-        return view('unit.index');
+        return view(Unit::ROUTE_NAME . '.index')
+            ->with('index_path', Unit::indexPath());
     }
 
     /**
@@ -89,6 +91,8 @@ class UnitController extends Controller
         ]);
 
         $unit->update($validatedData);
+
+        return $unit;
     }
 
     /**

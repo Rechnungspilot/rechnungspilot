@@ -125,7 +125,7 @@ Vue.component('todo-edit', require('./pages/todo/edit.vue').default);
 Vue.component('todo-show', require('./pages/todo/show.vue').default);
 Vue.component('transaction-company-table', require('./components/transaction/company/table.vue').default);
 Vue.component('transaction-table', require('./components/transaction/table.vue').default);
-Vue.component('unit-table', require('./components/unit/table.vue').default);
+Vue.component('items-units-table', require('./components/items/units/table.vue').default);
 Vue.component('user-table', require('./components/user/table.vue').default);
 Vue.component('userfile-table', require('./components/userfile/table.vue').default);
 Vue.component('userfileable-receipt-single', require('./components/receipt/userfile/index.vue').default);

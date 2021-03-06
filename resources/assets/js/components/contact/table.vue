@@ -16,7 +16,7 @@
         </div>
 
         <form v-if="filter.show" id="filter" class="py-3">
-            <div  class="form-row">
+            <div class="form-row">
 
                 <filter-tags :options="tags" v-model="filter.tags" @input="fetch"></filter-tags>
                 <filter-per-page v-model="filter.perPage" @input="fetch"></filter-per-page>

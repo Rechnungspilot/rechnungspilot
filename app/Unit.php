@@ -2,12 +2,24 @@
 
 namespace App;
 
+use App\Item;
 use App\Traits\HasCompany;
+use D15r\ModelLabels\Traits\HasLabels;
+use D15r\ModelPath\Traits\HasModelPath;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Unit extends Model
 {
-    use HasCompany;
+    use HasCompany,
+        HasLabels,
+        HasModelPath;
+
+    const ROUTE_NAME = 'items.units';
+
+    protected $appends = [
+        //
+    ];
 
     protected $fillable = [
         'abbreviation',
@@ -15,14 +27,31 @@ class Unit extends Model
         'name',
     ];
 
-    public function items()
+    public static function labels() : array
     {
-        return $this->hasMany('App\Item');
+        return [
+            'nominativ' => [
+                'singular' => 'Einheit',
+                'plural' => 'Einheiten',
+            ],
+        ];
     }
 
-    public function isDeleteable()
+    public function items() : HasMany
     {
-        return ! $this->items()->exists();
+        return $this->hasMany(Item::class, 'unit_id');
+    }
+
+    public function isDeleteable() : bool
+    {
+        return (! $this->items()->exists());
+    }
+
+    public function getRouteParameterAttribute() : array
+    {
+        return [
+            'unit' => $this->id,
+        ];
     }
 
     public function scopeSearch($query, $searchtext)

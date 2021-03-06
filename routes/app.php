@@ -419,6 +419,8 @@ Route::middleware(['auth', 'company.locked'])->group(function () {
 
     include('raw.php');
 
+    Route::resource('items/units', 'Items\Units\UnitController', ['as' => 'items']);
+
 });
 
 Route::middleware(['auth'])->group(function () {

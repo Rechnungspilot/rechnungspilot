@@ -31,7 +31,8 @@ class ItemController extends Controller
 
         return view('item.index')
             ->with('tags', Tag::withType('artikel')->get())
-            ->with('types', Item::TYPES);
+            ->with('types', Item::TYPES)
+            ->with('units_path', Unit::indexPath());
     }
 
     /**

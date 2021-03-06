@@ -29,13 +29,6 @@ class Item extends Model
 
     const DEFAULT_NAME = 'Neuer Artikel';
 
-    const LABELS = [
-        'nominativ' => [
-            'singular' => 'Artikel',
-            'plural' => 'Artikel'
-        ],
-    ];
-
     const TYPE_ITEM = 0;
     const TYPE_SERVICE = 1;
 
@@ -131,6 +124,16 @@ class Item extends Model
 
             return true;
         });
+    }
+
+    public static function labels() : array
+    {
+        return [
+            'nominativ' => [
+                'singular' => 'Artikel',
+                'plural' => 'Artikel',
+            ],
+        ];
     }
 
     public function revenueByMonth()
