@@ -1,57 +1,42 @@
 <template>
-    <div>
-        <div class="row mb-3">
-            <div class="col d-flex align-items-start mb-1 mb-sm-0">
-                <div class="form-group mb-0 mr-1">
-                    <input-text v-model="form.name" placeholder="Name" :error="error('name')" @keydown.enter="create"></input-text>
-                </div>
-                <div class="form-group mb-0 mr-1">
-                    <input-text v-model="form.abbreviation" placeholder="Abkürzung" :error="error('abbreviation')" @keydown.enter="create"></input-text>
-                </div>
-                <button class="btn btn-primary btn-sm" @click="create"><i class="fas fa-plus-square"></i></button>
+    <table-base :is-loading="isLoading" :items-length="items.length" :has-filter="true" @searching="search($event)" @creating="create">
+
+        <template v-slot:form>
+            <div class="form-group mb-0 mr-1">
+                <input-text v-model="form.name" placeholder="Name" :error="error('name')" @keydown.enter="create"></input-text>
             </div>
-            <div class="col-auto d-flex">
-                <div class="form-group" style="margin-bottom: 0;">
-                    <filter-search v-model="filter.searchtext" @input="search"></filter-search>
-                </div>
-                <button class="btn btn-secondary ml-1" @click="filter.show = !filter.show" v-if="false"><i class="fas fa-filter"></i></button>
+            <div class="form-group mb-0 mr-1">
+                <input-text v-model="form.abbreviation" placeholder="Abkürzung" :error="error('abbreviation')" @keydown.enter="create"></input-text>
             </div>
-        </div>
-        <div v-if="isLoading" class="p-5">
-            <center>
-                <span style="font-size: 48px;">
-                    <i class="fas fa-spinner fa-spin"></i><br />
-                </span>
-                Lade Daten..
-            </center>
-        </div>
-        <table class="table table-fixed table-hover table-striped table-sm bg-white" v-else-if="items.length">
-            <thead>
-                <tr>
-                    <th width="80%">Bezeichnung</th>
-                    <th class="d-none d-sm-table-cell" width="20%">Abkürzung</th>
-                    <th class="text-right" width="100">Aktion</th>
-                </tr>
-            </thead>
-            <tbody>
-                <row :item="item" :key="item.id" v-for="(item, index) in items" @deleted="deleted(index)" @updated="updated(index, $event)"></row>
-            </tbody>
-        </table>
-        <div class="alert alert-dark" v-else><center>Keine Einheiten vorhanden</center></div>
-    </div>
+        </template>
+
+        <template v-slot:thead>
+            <tr>
+                <th width="80%">Bezeichnung</th>
+                <th class="d-none d-sm-table-cell" width="20%">Abkürzung</th>
+                <th class="text-right" width="100">Aktion</th>
+            </tr>
+        </template>
+
+        <template v-slot:tbody>
+            <row :item="item" :key="item.id" v-for="(item, index) in items" @deleted="deleted(index)" @updated="updated(index, $event)"></row>
+        </template>
+
+    </table-base>
+
 </template>
 
 <script>
-    import row from "./row.vue";
+    import row from './row.vue';
     import inputText from '../../form/input/text.vue';
-    import filterSearch from "../../filter/search.vue";
+    import tableBase from '../../tables/base.vue';
 
     export default {
 
         components: {
             row,
             inputText,
-            filterSearch
+            tableBase,
         },
 
         props: {
@@ -123,7 +108,8 @@
                         console.log(error);
                     });
             },
-            search () {
+            search (searchtext) {
+                this.filter.searchtext = searchtext;
                 this.fetch();
             },
             deleted(index) {
