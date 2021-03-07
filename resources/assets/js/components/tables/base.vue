@@ -38,6 +38,19 @@
             </tbody>
         </table>
         <div class="alert alert-dark" v-else><center>Keine Einheiten vorhanden</center></div>
+        <nav aria-label="Page navigation example">
+            <ul class="pagination" v-show="paginate.lastPage > 1">
+                <li class="page-item" v-show="paginate.prevPageUrl">
+                    <a class="page-link" href="#" @click.prevent="$emit('paginating', paginate.currentPage - 1)">Previous</a>
+                </li>
+
+                <li class="page-item" v-for="n in paginate.lastPage" v-bind:class="{ active: (n == paginate.currentPage) }"><a class="page-link" href="#" @click.prevent="$emit('paginating', n)">{{ n }}</a></li>
+
+                <li class="page-item" v-show="paginate.nextPageUrl">
+                    <a class="page-link" href="#" @click.prevent="$emit('paginating', paginate.currentPage + 1)">Next</a>
+                </li>
+            </ul>
+        </nav>
     </div>
 </template>
 
@@ -64,6 +77,15 @@
                 type: Boolean,
                 required: false,
                 default: false,
+            },
+            paginate: {
+                type: Object,
+                required: false,
+                default () {
+                    return {
+
+                    }
+                },
             },
         },
 

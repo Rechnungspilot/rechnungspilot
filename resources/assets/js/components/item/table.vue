@@ -1,6 +1,6 @@
 <template>
 
-    <table-paginated :is-loading="isLoading" :paginate="paginate" :items-length="items.length" :has-filter="hasFilter()" @creating="create" @paginating="filter.page = $event" @searching="searching($event)">
+    <table-base :is-loading="isLoading" :paginate="paginate" :items-length="items.length" :has-filter="hasFilter()" @creating="create" @paginating="filter.page = $event" @searching="searching($event)">
 
         <template v-slot:form>
             <div class="form-group mb-0 mr-1">
@@ -37,7 +37,7 @@
             <row :item="item" :key="item.id" :is-selected="isSelected(item.id)" v-for="(item, index) in items" @deleted="deleted(index)" @input="toggleSelected"></row>
         </template>
 
-    </table-paginated>
+    </table-base>
 
 </template>
 
@@ -47,7 +47,7 @@
     import filterType from "../filter/itemtype.vue";
     import filterPerPage from "../filter/perPage.vue";
     import inputText from '../form/input/text.vue';
-    import tablePaginated from '../tables/paginated.vue';
+    import tableBase from '../tables/base.vue';
 
     import { baseMixin } from "../../mixins/tables/base.js";
     import { paginatedMixin } from "../../mixins/tables/paginated.js";
@@ -61,7 +61,7 @@
             filterType,
             filterPerPage,
             inputText,
-            tablePaginated
+            tableBase
         },
 
         mixins: [
