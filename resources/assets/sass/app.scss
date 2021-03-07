@@ -276,5 +276,28 @@ table tr.priority-2 {
     font-weight: 500;
 }
 
+.multiselect {
+    font-size: 0.7875rem;
+}
+
+.multiselect__tags {
+    min-height: 0 !important;
+    @apply form-control form-control-sm
+}
+
+.multiselect__select {
+    height: calc(1.5em + 0.5rem + 2px);
+    width: calc(1.5em + 0.5rem);
+}
+
+.multiselect__placeholder {
+    font-size: 0.7875rem;
+}
+
+.multiselect__input {
+    min-height: 16px;
+    font-size: 0.7875rem;
+}
+
 
 
