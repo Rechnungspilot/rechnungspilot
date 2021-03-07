@@ -22,6 +22,21 @@ trait HasCustomFields
         });
     }
 
+    public static function indexPathCustomfields() : string
+    {
+        return route('customfield.index', [
+            'type' => self::TYPE,
+        ]);
+    }
+
+    public function getCustomfieldsPathAttribute()
+    {
+        return route('customfieldvalue.index', [
+            'model' => $this->id,
+            'type' => self::TYPE,
+        ]);
+    }
+
     public function customfields() : MorphMany
     {
         return $this->morphMany(CustomFieldValue::class, 'customfieldable')

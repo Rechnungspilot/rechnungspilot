@@ -1,6 +1,6 @@
 <div class="modal fade" tabindex="-1" role="dialog" id="create-customfield">
     <div class="modal-dialog" role="document">
-        <form action="{{ route('customfieldvalue.store', ['type' => substr($model->uri, 1), 'model' => $model->id]) }}" id="form-create-customfield" method="POST">
+        <form action="{{ route('customfieldvalue.store', ['type' => $model::TYPE, 'model' => $model->id]) }}" id="form-create-customfield" method="POST">
             @csrf
 
             <div class="modal-content">

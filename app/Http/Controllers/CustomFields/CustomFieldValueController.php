@@ -17,8 +17,7 @@ class CustomFieldValueController extends Controller
      */
     public function index(Request $request, string $type, Model $model)
     {
-        if ($request->wantsJson())
-        {
+        if ($request->wantsJson()) {
             return $model->customfields()
                 ->with('customfield')
                 ->get();

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\CustomFields;
 
 use App\Http\Controllers\Controller;
 use App\Models\CustomFields\CustomField;
+use App\Support\Type;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -16,9 +17,10 @@ class CustomFieldController extends Controller
      */
     public function index(Request $request, string $type)
     {
-        if ($request->wantsJson())
-        {
-            return CustomField::where('for', $type)
+        $class = Type::class($type);
+
+        if ($request->wantsJson()) {
+            return CustomField::where('for', $class)
                 ->search($request->input('searchtext'))
                 ->orderBy('name', 'ASC')
                 ->get();
@@ -53,7 +55,7 @@ class CustomFieldController extends Controller
         ]);
 
         $validatedData['company_id'] = auth()->user()->company_id;
-        $validatedData['for'] = $type;
+        $validatedData['for'] = Type::class($type);
         $validatedData['options'] = [];
 
         return CustomField::create($validatedData);
@@ -128,13 +130,14 @@ class CustomFieldController extends Controller
             $customfield->delete();
         }
 
-        if ($request->wantsJson())
-        {
+        if ($request->wantsJson()) {
             return [
                 'deleted' => $isDeletable,
             ];
         }
 
-        return redirect(route('customfield.index', ['type' => $customfield->for]));
+        return redirect(route('customfield.index', [
+            'type' => Type::type($customfield->for),
+        ]));
     }
 }
