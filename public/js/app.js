@@ -59562,57 +59562,60 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _vm.allTags.length
-    ? _c(
-        "div",
-        [
-          _c(
-            "label",
-            {
-              directives: [
-                {
-                  name: "show",
-                  rawName: "v-show",
-                  value: _vm.label,
-                  expression: "label"
-                }
-              ],
-              staticClass: "col-form-label col-form-label-sm"
-            },
-            [_vm._v("Kategorien")]
-          ),
-          _vm._v(" "),
-          _c("multiselect", {
-            attrs: {
-              "track-by": "id",
-              label: "name",
-              options: _vm.allTags,
-              multiple: true,
-              "close-on-select": false,
-              "clear-on-select": false,
-              "preserve-search": true
-            },
-            on: {
-              select: function($event) {
-                return _vm.create($event)
-              },
-              remove: function($event) {
-                return _vm.destroy($event)
-              },
-              input: function($event) {
-                return _vm.$emit("input", _vm.value)
+    ? _c("div", { staticClass: "form-group row" }, [
+        _c(
+          "label",
+          {
+            directives: [
+              {
+                name: "show",
+                rawName: "v-show",
+                value: _vm.label,
+                expression: "label"
               }
-            },
-            model: {
-              value: _vm.value,
-              callback: function($$v) {
-                _vm.value = $$v
+            ],
+            staticClass: "col-sm-4 col-form-label col-form-label-sm"
+          },
+          [_vm._v("Kategorien")]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          { staticClass: "col-sm-8" },
+          [
+            _c("multiselect", {
+              attrs: {
+                "track-by": "id",
+                label: "name",
+                options: _vm.allTags,
+                multiple: true,
+                "close-on-select": false,
+                "clear-on-select": false,
+                "preserve-search": true
               },
-              expression: "value"
-            }
-          })
-        ],
-        1
-      )
+              on: {
+                select: function($event) {
+                  return _vm.create($event)
+                },
+                remove: function($event) {
+                  return _vm.destroy($event)
+                },
+                input: function($event) {
+                  return _vm.$emit("input", _vm.value)
+                }
+              },
+              model: {
+                value: _vm.value,
+                callback: function($$v) {
+                  _vm.value = $$v
+                },
+                expression: "value"
+              }
+            })
+          ],
+          1
+        )
+      ])
     : _vm._e()
 }
 var staticRenderFns = []

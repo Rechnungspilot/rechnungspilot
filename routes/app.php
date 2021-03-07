@@ -75,7 +75,6 @@ Route::middleware(['auth', 'company.locked'])->group(function () {
 
     Route::get('/home', 'HomeController@index')->name('home');
 
-    Route::resource('artikel', 'ItemController');
     Route::resource('berechtigungen', 'PermissionController');
     Route::resource('kontakte', 'ContactController');
     Route::resource('team', 'Users\UserController');
@@ -420,6 +419,7 @@ Route::middleware(['auth', 'company.locked'])->group(function () {
     include('raw.php');
 
     Route::resource('items/units', 'Items\Units\UnitController', ['as' => 'items']);
+    Route::resource(Item::ROUTE_NAME, 'Items\ItemController');
 
 });
 

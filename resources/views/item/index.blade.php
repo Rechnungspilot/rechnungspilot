@@ -10,6 +10,6 @@
     <a href="{{ url('/import/artikel') }}" class="btn btn-secondary btn-sm">Import</a>
     <br /><br />
 
-    <item-table index-path="/artikel" :tags="{{ json_encode($tags) }}" :types="{{ json_encode($types) }}"></item-table>
+    <item-table index-path="{{ \App\Item::indexPath() }}" :tags="{{ json_encode($tags) }}" :types="{{ json_encode($types) }}"></item-table>
 
 @endsection

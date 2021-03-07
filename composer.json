@@ -13,7 +13,7 @@
         "calebporzio/parental": "^0.11.0",
         "danielsundermeier/laravel-deploy": "^0.1.0",
         "danielsundermeier/laravel-model-labels": "dev-master",
-        "danielsundermeier/laravel-model-path": "^0.3.0",
+        "danielsundermeier/laravel-model-path": "^0.4.1",
         "doctrine/dbal": "^3.0.0",
         "facade/ignition": "^2.5",
         "fideloper/proxy": "^4.0",

@@ -66,7 +66,7 @@
                 <a href="{{ url('/projekte') }}"><li>Projekte</li></a>
                 <a href="" data-toggle="collapse" data-target="#nav-stammdaten"><li class="d-flex align-items-center justify-content-between line-height-base">Stammdaten<i class="fas fa-caret-right"></i></li></a>
                 <ul id="nav-stammdaten" class="collapse">
-                    <a href="{{ url('/artikel') }}"><li>Artikel</li></a>
+                    <a href="{{ \App\Item::indexPath() }}"><li>{{ \App\Item::label() }}</li></a>
                     <a href="{{ url('/dateien') }}"><li>Dateien</li></a>
                     <a href="{{ url('/kontakte') }}"><li>Kontakte</li></a>
                     <a href="{{ url('/konten') }}"><li>Konten</li></a>

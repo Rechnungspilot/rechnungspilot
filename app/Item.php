@@ -14,6 +14,7 @@ use App\Traits\HasTags;
 use App\Unit;
 use Carbon\CarbonPeriod;
 use D15r\ModelLabels\Traits\HasLabels;
+use D15r\ModelPath\Traits\HasModelPath;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
@@ -23,6 +24,7 @@ class Item extends Model
         HasCompany,
         HasCustomFields,
         HasLabels,
+        HasModelPath,
         HasTags;
 
     const DECIMALS = [0,1,2,3];
@@ -33,6 +35,8 @@ class Item extends Model
     const TYPE_SERVICE = 1;
 
     const PRICE_DECIMALS = 6;
+
+    const ROUTE_NAME = 'items';
 
     const TYPES = [
         self::TYPE_ITEM => 'Artikel',
@@ -229,11 +233,6 @@ class Item extends Model
     public function getGrossInCentsAttribute()
     {
         return ($this->gross * 100);
-    }
-
-    public function getPathAttribute()
-    {
-        return $this->uri . '/' . $this->id;
     }
 
     public function getDurationHourAttribute()

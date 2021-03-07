@@ -3,14 +3,34 @@
 @section('title', 'Kontakte > ' . $contact->name)
 
 @section('buttons')
-    <a href="{{ url($contact->path . '/edit') }}" class="btn btn-primary"><i class="fas fa-edit"></i></a>
-    <a href="{{ url('/kontakte') }}" class="btn btn-secondary ml-1">Übersicht</a>
+    <div class="dropdown">
+        <button type="button" class="btn btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown">
+            <i class="fas fa-ellipsis-h"></i> Mehr
+        </button>
+        <div class="dropdown-menu">
+            <h6 class="dropdown-header">Anlegen</h6>
+            <form action="{{ url('/angebote') }}" method="POST">
+                @csrf
+                <input type="hidden" name="contact_id" value="{{ $contact->id }}">
+                <button type="submit" class="dropdown-item pointer">Angebot erstellen</button>
+            </form>
+            <form action="{{ url('/rechnungen') }}" method="POST">
+                @csrf
+                <input type="hidden" name="contact_id" value="{{ $contact->id }}">
+                <button type="submit" class="dropdown-item pointer">Rechnung erstellen</button>
+            </form>
+            <h6 class="dropdown-header">Bearbeiten</h6>
+            <button class="dropdown-item pointer" data-toggle="modal" data-target="#confirm-delete">Löschen</button>
+        </div>
+    </div>
+    <a href="{{ url($contact->path . '/edit') }}" class="btn btn-primary btn-sm ml-1"><i class="fas fa-edit"></i></a>
+    <a href="{{ url('/kontakte') }}" class="btn btn-secondary btn-sm ml-1">Übersicht</a>
     @if ($contact->isDeletable())
         <form action="{{ url('/kontakte', $contact->id) }}" class="ml-1" method="POST">
             @csrf
             @method('DELETE')
 
-            <button type="submit" class="btn btn-danger" title="Löschen"><i class="fas fa-trash"></i></button>
+            <button type="submit" class="btn btn-danger btn-sm" title="Löschen"><i class="fas fa-trash"></i></button>
         </form>
     @endif
 @endsection

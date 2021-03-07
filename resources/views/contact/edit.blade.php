@@ -3,26 +3,6 @@
 @section('title', 'Kontakte > ' . $contact->name)
 
 @section('buttons')
-    <div class="dropdown">
-        <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown">
-            <i class="fas fa-ellipsis-h"></i> Mehr
-        </button>
-        <div class="dropdown-menu">
-            <h6 class="dropdown-header">Anlegen</h6>
-            <form action="{{ url('/angebote') }}" method="POST">
-                @csrf
-                <input type="hidden" name="contact_id" value="{{ $contact->id }}">
-                <button type="submit" class="dropdown-item pointer">Angebot erstellen</button>
-            </form>
-            <form action="{{ url('/rechnungen') }}" method="POST">
-                @csrf
-                <input type="hidden" name="contact_id" value="{{ $contact->id }}">
-                <button type="submit" class="dropdown-item pointer">Rechnung erstellen</button>
-            </form>
-            <h6 class="dropdown-header">Bearbeiten</h6>
-            <button class="dropdown-item pointer" data-toggle="modal" data-target="#confirm-delete">Löschen</button>
-        </div>
-    </div>
     <a href="{{ url('/kontakte') }}" class="btn btn-secondary ml-1">Übersicht</a>
 @endsection
 

@@ -1,9 +1,9 @@
 <template>
-    <div v-if="allTags.length">
-        <label class="col-form-label col-form-label-sm" v-show="label">Kategorien</label>
-        <multiselect v-model="value" track-by="id" label="name" :options="allTags" :multiple="true" :close-on-select="false" :clear-on-select="false" :preserve-search="true" @select="create($event)" @remove="destroy($event)" @input="$emit('input', value)">
-
-        </multiselect>
+    <div class="form-group row" v-if="allTags.length">
+        <label class="col-sm-4 col-form-label col-form-label-sm" v-show="label">Kategorien</label>
+        <div class="col-sm-8">
+            <multiselect v-model="value" track-by="id" label="name" :options="allTags" :multiple="true" :close-on-select="false" :clear-on-select="false" :preserve-search="true" @select="create($event)" @remove="destroy($event)" @input="$emit('input', value)"></multiselect>
+        </div>
     </div>
 </template>
 

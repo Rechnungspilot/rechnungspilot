@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Items;
 
+use App\Http\Controllers\Controller;
 use App\Item;
 use App\Models\CustomFields\CustomField;
 use App\Tag;
@@ -79,7 +80,7 @@ class ItemController extends Controller
             return $item->load('unit');
         }
 
-        return redirect('/artikel/' . $item->getRouteKey());
+        return redirect($item->path);
     }
 
     /**
@@ -109,12 +110,12 @@ class ItemController extends Controller
      * @param  \App\Item  $item
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Item $item)
     {
-        $item = Item::with([
+        $item->load([
             'customfields',
             'unit',
-        ])->findOrFail($id);
+        ]);
 
         return view('item.edit')
             ->with('item', $item)
@@ -131,7 +132,7 @@ class ItemController extends Controller
      * @param  \App\Item  $item
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Item $artikel)
+    public function update(Request $request, Item $item)
     {
         $validatedData = $request->validate([
             'description' => 'nullable|string',
@@ -150,13 +151,13 @@ class ItemController extends Controller
             'decimals' => 'required|integer',
         ]);
 
-        $artikel->customfields->validate($request)
+        $item->customfields->validate($request)
             ->update();
 
-        $artikel->setDuration($validatedData['duration_hour'], $validatedData['duration_minute']);
-        $artikel->update($validatedData);
+        $item->setDuration($validatedData['duration_hour'], $validatedData['duration_minute']);
+        $item->update($validatedData);
 
-        return redirect($artikel->path)
+        return redirect($item->path)
             ->with('status', 'Änderungen gespeichert!');
     }
 
@@ -166,14 +167,14 @@ class ItemController extends Controller
      * @param  \App\Item  $item
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request, Item $artikel)
+    public function destroy(Request $request, Item $item)
     {
 
-        $isDeletable = $artikel->isDeletable();
+        $isDeletable = $item->isDeletable();
         if ($isDeletable)
         {
-            $artikel->prices()->delete();
-            $artikel->delete();
+            $item->prices()->delete();
+            $item->delete();
         }
 
         if ($request->wantsJson())

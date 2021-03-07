@@ -3,21 +3,21 @@
 @section('title', 'Artikel > ' . $item->name)
 
 @section('buttons')
-    <a href="{{ url($item->path . '/edit') }}" class="btn btn-primary"><i class="fas fa-edit"></i></a>
-    <a href="{{ url('/artikel') }}" class="btn btn-secondary ml-1">Übersicht</a>
+    <a href="{{ $item->edit_path }}" class="btn btn-primary btn-sm"><i class="fas fa-edit"></i></a>
+    <a href="{{ $item->index_path }}" class="btn btn-secondary btn-sm ml-1">Übersicht</a>
     @if($item->isDeletable())
-        <form action="{{ route('artikel.destroy', ['artikel' => $item->id]) }}" class="ml-1" method="POST">
+        <form action="{{ $item->path }}" class="ml-1" method="POST">
             @csrf
             @method('DELETE')
 
-            <button type="submit" class="btn btn-danger"><i class="fas fa-fw fa-fw fa-trash"></i></button>
+            <button type="submit" class="btn btn-danger btn-sm"><i class="fas fa-fw fa-fw fa-trash"></i></button>
         </form>
     @endif
 @endsection
 
 @section('content')
 
-    <div class="card mb-5">
+    <div class="card mb-3">
         <div class="card-header">{{ $item->name }}</div>
 
         <div class="card-body">
@@ -113,7 +113,7 @@
         </div>
     </div>
 
-    <div class="card mb-5">
+    <div class="card mb-3">
         <div class="card-header">Umsatz</div>
         <div class="card-body">
             <item-revenue-chart :model="{{ json_encode($item) }}"></item-revenue-chart>
@@ -121,7 +121,7 @@
     </div>
 
     @if(count($item->receiptItems))
-        <div class="card mb-5">
+        <div class="card mb-3">
             <div class="card-header">Historie</div>
             <div class="card-body">
                 <table class="table table-hover table-striped">
@@ -176,10 +176,10 @@
         </div>
     @endif
 
-    <div class="card mb-5">
+    <div class="card mb-3">
         <div class="card-header">Kommentare</div>
         <div class="card-body">
-            <comments uri="/artikel" :item="{{ json_encode($item) }}"></comments>
+            <comments uri="{{ $item->uri }}" :item="{{ json_encode($item) }}"></comments>
         </div>
     </div>
 
