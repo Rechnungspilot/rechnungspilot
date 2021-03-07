@@ -50632,7 +50632,7 @@ var render = function() {
               expression: "value"
             }
           ],
-          staticClass: "form-control",
+          staticClass: "form-control form-control-sm",
           attrs: { id: "filter-itemtype" },
           on: {
             change: [
@@ -50708,7 +50708,7 @@ var render = function() {
               expression: "value"
             }
           ],
-          staticClass: "form-control",
+          staticClass: "form-control form-control-sm",
           attrs: { id: "filter-per-page" },
           on: {
             change: [
@@ -52090,7 +52090,7 @@ var render = function() {
         _vm.filter.page = $event
       },
       searching: function($event) {
-        return _vm.search($event)
+        return _vm.searching($event)
       }
     },
     scopedSlots: _vm._u([
@@ -52138,7 +52138,7 @@ var render = function() {
               attrs: { options: _vm.types },
               on: {
                 input: function($event) {
-                  return _vm.search(_vm.filter.searchtext)
+                  return _vm.search()
                 }
               },
               model: {
@@ -52154,7 +52154,7 @@ var render = function() {
               attrs: { options: _vm.tags },
               on: {
                 input: function($event) {
-                  return _vm.search(_vm.filter.searchtext)
+                  return _vm.search()
                 }
               },
               model: {
@@ -52169,7 +52169,7 @@ var render = function() {
             _c("filter-per-page", {
               on: {
                 input: function($event) {
-                  return _vm.search(_vm.filter.searchtext)
+                  return _vm.search()
                 }
               },
               model: {
@@ -52459,7 +52459,7 @@ var render = function() {
     },
     on: {
       searching: function($event) {
-        return _vm.search($event)
+        return _vm.searching($event)
       },
       creating: _vm.create
     },
@@ -59279,7 +59279,10 @@ var render = function() {
                   on: {
                     click: function($event) {
                       $event.preventDefault()
-                      return _vm.$emit("paginating", _vm.paginate.currentPage--)
+                      return _vm.$emit(
+                        "paginating",
+                        _vm.paginate.currentPage - 1
+                      )
                     }
                   }
                 },
@@ -59336,7 +59339,10 @@ var render = function() {
                   on: {
                     click: function($event) {
                       $event.preventDefault()
-                      return _vm.$emit("paginating", _vm.paginate.currentPage++)
+                      return _vm.$emit(
+                        "paginating",
+                        _vm.paginate.currentPage + 1
+                      )
                     }
                   }
                 },
@@ -90030,8 +90036,12 @@ var baseMixin = {
     hasFilter: function hasFilter() {
       return Object.keys(this.filter).length > 2;
     },
-    search: function search(searchtext) {
+    searching: function searching(searchtext) {
       this.filter.searchtext = searchtext;
+      this.search();
+    },
+    search: function search() {
+      this.filter.page = 1;
       this.fetch();
     },
     deleted: function deleted(index) {
@@ -90158,9 +90168,12 @@ var paginatedMixin = {
     hasFilter: function hasFilter() {
       return Object.keys(this.filter).length > 3;
     },
-    search: function search(searchtext) {
-      this.filter.page = 1;
+    searching: function searching(searchtext) {
       this.filter.searchtext = searchtext;
+      this.search();
+    },
+    search: function search() {
+      this.filter.page = 1;
       this.fetch();
     },
     deleted: function deleted(index) {

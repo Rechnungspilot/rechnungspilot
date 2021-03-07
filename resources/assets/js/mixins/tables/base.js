@@ -72,8 +72,12 @@ export const baseMixin = {
         hasFilter() {
             return (Object.keys(this.filter).length > 2);
         },
-        search(searchtext) {
+        searching(searchtext) {
             this.filter.searchtext = searchtext;
+            this.search();
+        },
+        search() {
+            this.filter.page = 1;
             this.fetch();
         },
         deleted(index) {

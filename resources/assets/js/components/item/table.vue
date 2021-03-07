@@ -1,6 +1,6 @@
 <template>
 
-    <table-paginated :is-loading="isLoading" :paginate="paginate" :items-length="items.length" :has-filter="hasFilter()" @creating="create" @paginating="filter.page = $event" @searching="search($event)">
+    <table-paginated :is-loading="isLoading" :paginate="paginate" :items-length="items.length" :has-filter="hasFilter()" @creating="create" @paginating="filter.page = $event" @searching="searching($event)">
 
         <template v-slot:form>
             <div class="form-group mb-0 mr-1">
@@ -10,9 +10,9 @@
 
         <template v-slot:filter>
 
-            <filter-type :options="types" v-model="filter.type" @input="search(filter.searchtext)"></filter-type>
-            <filter-tags :options="tags" v-model="filter.tags" @input="search(filter.searchtext)"></filter-tags>
-            <filter-per-page v-model="filter.perPage" @input="search(filter.searchtext)"></filter-per-page>
+            <filter-type :options="types" v-model="filter.type" @input="search()"></filter-type>
+            <filter-tags :options="tags" v-model="filter.tags" @input="search()"></filter-tags>
+            <filter-per-page v-model="filter.perPage" @input="search()"></filter-per-page>
 
         </template>
 
