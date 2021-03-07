@@ -1,4 +1,4 @@
-export const baseMixin = {
+export const paginatedMixin = {
 
     props: {
         indexPath: {
@@ -11,6 +11,7 @@ export const baseMixin = {
         return {
             errors: {},
             filter: {
+                page: 1,
                 show: false,
                 searchtext: '',
             },
@@ -19,6 +20,13 @@ export const baseMixin = {
             },
             isLoading: true,
             items: [],
+            paginate: {
+                nextPageUrl: null,
+                prevPageUrl: null,
+                lastPage: 0,
+                currentPage: 0,
+            },
+            selected: [],
         };
     },
 
@@ -28,14 +36,39 @@ export const baseMixin = {
 
     },
 
+    watch: {
+        page () {
+            this.fetch();
+        },
+    },
+
+    computed: {
+        page() {
+            return this.filter.page;
+        },
+        selectAll: {
+            get: function () {
+                return this.items.length ? this.items.length == this.selected.length : false;
+            },
+            set: function (value) {
+                this.selected = [];
+                if (value) {
+                    for (let i in this.items) {
+                        this.selected.push(this.items[i].id);
+                    }
+                }
+            },
+        },
+    },
+
     methods: {
         create() {
             var component = this;
             axios.post(this.indexPath, component.form)
                 .then(function (response) {
                     component.resetForm();
-                    component.items.unshift(response.data);
                     Vue.successCreate(response.data);
+                    location.href = response.data.edit_path;
             })
                 .catch(function (error) {
                     component.errors = error.response.data.errors;
@@ -61,7 +94,12 @@ export const baseMixin = {
                 params: component.filter
             })
                 .then(function (response) {
-                    component.items = response.data;
+                    component.items = response.data.data;
+                    component.filter.page = response.data.current_page;
+                    component.paginate.nextPageUrl = response.data.next_page_url;
+                    component.paginate.prevPageUrl = response.data.prev_page_url;
+                    component.paginate.lastPage = response.data.last_page;
+                    component.paginate.currentPage = response.data.current_page;
                     component.isLoading = false;
                 })
                 .catch(function (error) {
@@ -70,9 +108,10 @@ export const baseMixin = {
                 });
         },
         hasFilter() {
-            return (Object.keys(this.filter).length > 2);
+            return (Object.keys(this.filter).length > 3);
         },
         search(searchtext) {
+            this.filter.page = 1;
             this.filter.searchtext = searchtext;
             this.fetch();
         },
@@ -84,6 +123,15 @@ export const baseMixin = {
         updated(index, item) {
             Vue.set(this.items, index, item);
             Vue.successUpdate(item);
+        },
+        toggleSelected (id) {
+            var index = this.selected.indexOf(id);
+            if (index == -1) {
+                this.selected.push(id);
+            }
+            else {
+                this.selected.splice(index, 1);
+            }
         },
     },
 };

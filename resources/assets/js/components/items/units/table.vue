@@ -1,4 +1,5 @@
 <template>
+
     <table-base :is-loading="isLoading" :items-length="items.length" :has-filter="hasFilter()" @searching="search($event)" @creating="create">
 
         <template v-slot:form>
@@ -42,7 +43,7 @@
         },
 
         mixins: [
-            baseMixin
+            baseMixin,
         ],
 
         data () {
