@@ -6027,12 +6027,9 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _form_input_text_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../form/input/text.vue */ "./resources/assets/js/components/form/input/text.vue");
-//
-//
-//
-//
-//
+/* harmony import */ var _tables_rows_editable__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../tables/rows/editable */ "./resources/assets/js/components/tables/rows/editable.vue");
+/* harmony import */ var _form_input_text_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../form/input/text.vue */ "./resources/assets/js/components/form/input/text.vue");
+/* harmony import */ var _mixins_tables_rows_editable_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../mixins/tables/rows/editable.js */ "./resources/assets/js/mixins/tables/rows/editable.js");
 //
 //
 //
@@ -6056,45 +6053,25 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 
+
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
-    inputText: _form_input_text_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
+    editable: _tables_rows_editable__WEBPACK_IMPORTED_MODULE_0__["default"],
+    inputText: _form_input_text_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
   },
-  props: {
-    item: {
-      type: Object,
-      required: true
-    }
+  mixins: [_mixins_tables_rows_editable_js__WEBPACK_IMPORTED_MODULE_2__["editableMixin"]],
+  props: {//
   },
   data: function data() {
     return {
-      isEditing: false,
       form: {
         name: this.item.name,
         abbreviation: this.item.abbreviation
-      },
-      errors: {}
+      }
     };
   },
-  methods: {
-    destroy: function destroy() {
-      axios["delete"](this.item.path);
-      this.$emit('deleted', this.item.id);
-    },
-    update: function update() {
-      var component = this;
-      axios.put(component.item.path, component.form).then(function (response) {
-        component.errors = {};
-        component.isEditing = false;
-        component.$emit('updated', response.data);
-      })["catch"](function (error) {
-        component.errors = error.response.data.errors;
-      });
-    },
-    error: function error(name) {
-      return name in this.errors ? this.errors[name][0] : '';
-    }
-  }
+  methods: {}
 });
 
 /***/ }),
@@ -9672,6 +9649,52 @@ __webpack_require__.r(__webpack_exports__);
         searchtext: ''
       }
     };
+  },
+  methods: {}
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/tables/rows/editable.vue?vue&type=script&lang=js&":
+/*!**************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/components/tables/rows/editable.vue?vue&type=script&lang=js& ***!
+  \**************************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  components: {},
+  props: {
+    isEditing: {
+      type: Boolean,
+      required: true
+    }
+  },
+  data: function data() {
+    return {};
   },
   methods: {}
 });
@@ -52461,160 +52484,123 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm.isEditing
-    ? _c("tr", [
-        _c(
-          "td",
-          { staticClass: "align-middle pointer" },
-          [
-            _c("input-text", {
-              attrs: { placeholder: "Name", error: _vm.error("name") },
-              on: {
-                keydown: function($event) {
-                  if (
-                    !$event.type.indexOf("key") &&
-                    _vm._k($event.keyCode, "enter", 13, $event.key, "Enter")
-                  ) {
-                    return null
+  return _c("editable", {
+    attrs: { "is-editing": _vm.isEditing },
+    on: {
+      editing: function($event) {
+        _vm.isEditing = $event
+      },
+      updating: function($event) {
+        return _vm.update()
+      },
+      destroying: function($event) {
+        return _vm.destroy()
+      }
+    },
+    scopedSlots: _vm._u([
+      {
+        key: "edit",
+        fn: function() {
+          return [
+            _c(
+              "td",
+              { staticClass: "align-middle pointer" },
+              [
+                _c("input-text", {
+                  attrs: { placeholder: "Name", error: _vm.error("name") },
+                  on: {
+                    keydown: function($event) {
+                      if (
+                        !$event.type.indexOf("key") &&
+                        _vm._k($event.keyCode, "enter", 13, $event.key, "Enter")
+                      ) {
+                        return null
+                      }
+                      return _vm.update($event)
+                    }
+                  },
+                  model: {
+                    value: _vm.form.name,
+                    callback: function($$v) {
+                      _vm.$set(_vm.form, "name", $$v)
+                    },
+                    expression: "form.name"
                   }
-                  return _vm.update($event)
+                })
+              ],
+              1
+            ),
+            _vm._v(" "),
+            _c(
+              "td",
+              { staticClass: "align-middle d-none d-sm-table-cell pointer" },
+              [
+                _c("input-text", {
+                  attrs: {
+                    placeholder: "Abkürzung",
+                    error: _vm.error("abbreviation")
+                  },
+                  on: {
+                    keydown: function($event) {
+                      if (
+                        !$event.type.indexOf("key") &&
+                        _vm._k($event.keyCode, "enter", 13, $event.key, "Enter")
+                      ) {
+                        return null
+                      }
+                      return _vm.update($event)
+                    }
+                  },
+                  model: {
+                    value: _vm.form.abbreviation,
+                    callback: function($$v) {
+                      _vm.$set(_vm.form, "abbreviation", $$v)
+                    },
+                    expression: "form.abbreviation"
+                  }
+                })
+              ],
+              1
+            )
+          ]
+        },
+        proxy: true
+      },
+      {
+        key: "show",
+        fn: function() {
+          return [
+            _c(
+              "td",
+              {
+                staticClass: "align-middle pointer",
+                on: {
+                  click: function($event) {
+                    _vm.isEditing = true
+                  }
                 }
               },
-              model: {
-                value: _vm.form.name,
-                callback: function($$v) {
-                  _vm.$set(_vm.form, "name", $$v)
-                },
-                expression: "form.name"
-              }
-            })
-          ],
-          1
-        ),
-        _vm._v(" "),
-        _c(
-          "td",
-          { staticClass: "align-middle d-none d-sm-table-cell pointer" },
-          [
-            _c("input-text", {
-              attrs: {
-                placeholder: "Abkürzung",
-                error: _vm.error("abbreviation")
-              },
-              on: {
-                keydown: function($event) {
-                  if (
-                    !$event.type.indexOf("key") &&
-                    _vm._k($event.keyCode, "enter", 13, $event.key, "Enter")
-                  ) {
-                    return null
+              [_vm._v(_vm._s(_vm.item.name))]
+            ),
+            _vm._v(" "),
+            _c(
+              "td",
+              {
+                staticClass: "align-middle d-none d-sm-table-cell pointer",
+                on: {
+                  click: function($event) {
+                    _vm.isEditing = true
                   }
-                  return _vm.update($event)
                 }
               },
-              model: {
-                value: _vm.form.abbreviation,
-                callback: function($$v) {
-                  _vm.$set(_vm.form, "abbreviation", $$v)
-                },
-                expression: "form.abbreviation"
-              }
-            })
-          ],
-          1
-        ),
-        _vm._v(" "),
-        _c("td", { staticClass: "align-middle text-right" }, [
-          _c(
-            "div",
-            { staticClass: "btn-group btn-group-sm", attrs: { role: "group" } },
-            [
-              _c(
-                "button",
-                {
-                  staticClass: "btn btn-primary",
-                  attrs: { type: "button", title: "Speichern" },
-                  on: { click: _vm.update }
-                },
-                [_c("i", { staticClass: "fas fa-fw fa-save" })]
-              ),
-              _vm._v(" "),
-              _c(
-                "button",
-                {
-                  staticClass: "btn btn-secondary",
-                  attrs: { type: "button", title: "Abbrechen" },
-                  on: {
-                    click: function($event) {
-                      _vm.isEditing = false
-                    }
-                  }
-                },
-                [_c("i", { staticClass: "fas fa-fw fa-times" })]
-              )
-            ]
-          )
-        ])
-      ])
-    : _c("tr", [
-        _c(
-          "td",
-          {
-            staticClass: "align-middle pointer",
-            on: {
-              click: function($event) {
-                _vm.isEditing = true
-              }
-            }
-          },
-          [_vm._v(_vm._s(_vm.item.name))]
-        ),
-        _vm._v(" "),
-        _c(
-          "td",
-          {
-            staticClass: "align-middle d-none d-sm-table-cell pointer",
-            on: {
-              click: function($event) {
-                _vm.isEditing = true
-              }
-            }
-          },
-          [_vm._v(_vm._s(_vm.item.abbreviation))]
-        ),
-        _vm._v(" "),
-        _c("td", { staticClass: "align-middle text-right" }, [
-          _c(
-            "div",
-            { staticClass: "btn-group btn-group-sm", attrs: { role: "group" } },
-            [
-              _c(
-                "button",
-                {
-                  staticClass: "btn btn-secondary",
-                  attrs: { type: "button", title: "Bearbeiten" },
-                  on: {
-                    click: function($event) {
-                      _vm.isEditing = true
-                    }
-                  }
-                },
-                [_c("i", { staticClass: "fas fa-fw fa-edit" })]
-              ),
-              _vm._v(" "),
-              _c(
-                "button",
-                {
-                  staticClass: "btn btn-secondary",
-                  attrs: { type: "button", title: "Löschen" },
-                  on: { click: _vm.destroy }
-                },
-                [_c("i", { staticClass: "fas fa-fw fa-trash" })]
-              )
-            ]
-          )
-        ])
-      ])
+              [_vm._v(_vm._s(_vm.item.abbreviation))]
+            )
+          ]
+        },
+        proxy: true
+      }
+    ])
+  })
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -59301,6 +59287,122 @@ var render = function() {
           1
         )
   ])
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/tables/rows/editable.vue?vue&type=template&id=56caf372&":
+/*!******************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/components/tables/rows/editable.vue?vue&type=template&id=56caf372& ***!
+  \******************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _vm.isEditing
+    ? _c(
+        "tr",
+        [
+          _vm._t("edit"),
+          _vm._v(" "),
+          _c("td", { staticClass: "align-middle text-right" }, [
+            _c(
+              "div",
+              {
+                staticClass: "btn-group btn-group-sm",
+                attrs: { role: "group" }
+              },
+              [
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-primary",
+                    attrs: { type: "button", title: "Speichern" },
+                    on: {
+                      click: function($event) {
+                        return _vm.$emit("updating")
+                      }
+                    }
+                  },
+                  [_c("i", { staticClass: "fas fa-fw fa-save" })]
+                ),
+                _vm._v(" "),
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-secondary",
+                    attrs: { type: "button", title: "Abbrechen" },
+                    on: {
+                      click: function($event) {
+                        return _vm.$emit("editing", false)
+                      }
+                    }
+                  },
+                  [_c("i", { staticClass: "fas fa-fw fa-times" })]
+                )
+              ]
+            )
+          ])
+        ],
+        2
+      )
+    : _c(
+        "tr",
+        [
+          _vm._t("show"),
+          _vm._v(" "),
+          _c("td", { staticClass: "align-middle text-right" }, [
+            _c(
+              "div",
+              {
+                staticClass: "btn-group btn-group-sm",
+                attrs: { role: "group" }
+              },
+              [
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-secondary",
+                    attrs: { type: "button", title: "Bearbeiten" },
+                    on: {
+                      click: function($event) {
+                        return _vm.$emit("editing", true)
+                      }
+                    }
+                  },
+                  [_c("i", { staticClass: "fas fa-fw fa-edit" })]
+                ),
+                _vm._v(" "),
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-secondary",
+                    attrs: { type: "button", title: "Löschen" },
+                    on: {
+                      click: function($event) {
+                        return _vm.$emit("destroying")
+                      }
+                    }
+                  },
+                  [_c("i", { staticClass: "fas fa-fw fa-trash" })]
+                )
+              ]
+            )
+          ])
+        ],
+        2
+      )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -87527,6 +87629,75 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/assets/js/components/tables/rows/editable.vue":
+/*!*****************************************************************!*\
+  !*** ./resources/assets/js/components/tables/rows/editable.vue ***!
+  \*****************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _editable_vue_vue_type_template_id_56caf372___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./editable.vue?vue&type=template&id=56caf372& */ "./resources/assets/js/components/tables/rows/editable.vue?vue&type=template&id=56caf372&");
+/* harmony import */ var _editable_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./editable.vue?vue&type=script&lang=js& */ "./resources/assets/js/components/tables/rows/editable.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _editable_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _editable_vue_vue_type_template_id_56caf372___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _editable_vue_vue_type_template_id_56caf372___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/assets/js/components/tables/rows/editable.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/assets/js/components/tables/rows/editable.vue?vue&type=script&lang=js&":
+/*!******************************************************************************************!*\
+  !*** ./resources/assets/js/components/tables/rows/editable.vue?vue&type=script&lang=js& ***!
+  \******************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_editable_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../../node_modules/vue-loader/lib??vue-loader-options!./editable.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/tables/rows/editable.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_editable_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/assets/js/components/tables/rows/editable.vue?vue&type=template&id=56caf372&":
+/*!************************************************************************************************!*\
+  !*** ./resources/assets/js/components/tables/rows/editable.vue?vue&type=template&id=56caf372& ***!
+  \************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_editable_vue_vue_type_template_id_56caf372___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../../node_modules/vue-loader/lib??vue-loader-options!./editable.vue?vue&type=template&id=56caf372& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/tables/rows/editable.vue?vue&type=template&id=56caf372&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_editable_vue_vue_type_template_id_56caf372___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_editable_vue_vue_type_template_id_56caf372___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
 /***/ "./resources/assets/js/components/tag/row.vue":
 /*!****************************************************!*\
   !*** ./resources/assets/js/components/tag/row.vue ***!
@@ -89740,6 +89911,53 @@ var baseMixin = {
     updated: function updated(index, item) {
       Vue.set(this.items, index, item);
       Vue.successUpdate(item);
+    }
+  }
+};
+
+/***/ }),
+
+/***/ "./resources/assets/js/mixins/tables/rows/editable.js":
+/*!************************************************************!*\
+  !*** ./resources/assets/js/mixins/tables/rows/editable.js ***!
+  \************************************************************/
+/*! exports provided: editableMixin */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "editableMixin", function() { return editableMixin; });
+var editableMixin = {
+  props: {
+    item: {
+      type: Object,
+      required: true
+    }
+  },
+  data: function data() {
+    return {
+      errors: {},
+      form: {},
+      isEditing: false
+    };
+  },
+  methods: {
+    destroy: function destroy() {
+      axios["delete"](this.item.path);
+      this.$emit('deleted', this.item.id);
+    },
+    error: function error(name) {
+      return name in this.errors ? this.errors[name][0] : '';
+    },
+    update: function update() {
+      var component = this;
+      axios.put(component.item.path, component.form).then(function (response) {
+        component.errors = {};
+        component.isEditing = false;
+        component.$emit('updated', response.data);
+      })["catch"](function (error) {
+        component.errors = error.response.data.errors;
+      });
     }
   }
 };
