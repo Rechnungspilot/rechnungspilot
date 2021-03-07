@@ -127,6 +127,9 @@ export const paginatedMixin = {
             Vue.set(this.items, index, item);
             Vue.successUpdate(item);
         },
+        isSelected(id) {
+            return ((this.selected.indexOf(id) == -1) ? false : true);
+        },
         toggleSelected (id) {
             var index = this.selected.indexOf(id);
             if (index == -1) {

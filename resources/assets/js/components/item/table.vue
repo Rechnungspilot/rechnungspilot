@@ -34,7 +34,7 @@
         </template>
 
         <template v-slot:tbody>
-            <row :item="item" :key="item.id" :uri="indexPath" :selected="(selected.indexOf(item.id) == -1) ? false : true" v-for="(item, index) in items" @deleted="deleted(index)" @input="toggleSelected"></row>
+            <row :item="item" :key="item.id" :is-selected="isSelected(item.id)" v-for="(item, index) in items" @deleted="deleted(index)" @input="toggleSelected"></row>
         </template>
 
     </table-paginated>

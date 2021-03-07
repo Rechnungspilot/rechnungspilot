@@ -5761,6 +5761,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _tables_rows_show__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../tables/rows/show */ "./resources/assets/js/components/tables/rows/show.vue");
 //
 //
 //
@@ -5787,11 +5788,25 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['item', 'uri', 'selected'],
+  components: {
+    show: _tables_rows_show__WEBPACK_IMPORTED_MODULE_0__["default"]
+  },
+  props: {
+    item: {
+      type: Object,
+      required: true
+    },
+    isSelected: {
+      type: Boolean,
+      required: false,
+      "default": false
+    }
+  },
   data: function data() {
-    return {
-      id: this.item.id
+    return {//
     };
   },
   methods: {
@@ -9695,6 +9710,57 @@ __webpack_require__.r(__webpack_exports__);
     return {};
   },
   methods: {}
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/tables/rows/show.vue?vue&type=script&lang=js&":
+/*!**********************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/components/tables/rows/show.vue?vue&type=script&lang=js& ***!
+  \**********************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  components: {//
+  },
+  props: {
+    item: {
+      type: Object,
+      required: true
+    },
+    isSelected: {
+      type: Boolean,
+      required: false,
+      "default": false
+    }
+  },
+  data: function data() {
+    return {};
+  },
+  methods: {
+    edit: function edit() {
+      location.href = this.item.edit_path;
+    },
+    show: function show() {
+      location.href = this.item.path;
+    }
+  }
 });
 
 /***/ }),
@@ -51944,116 +52010,116 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("tr", [
-    _c("th", { staticClass: "align-middle" }, [
-      _c("label", { staticClass: "form-checkbox" }),
-      _vm._v(" "),
-      _c("input", {
-        attrs: { type: "checkbox", number: "" },
-        domProps: { checked: _vm.selected, value: _vm.id },
-        on: {
-          change: function($event) {
-            return _vm.$emit("input", _vm.id)
-          }
-        }
-      })
-    ]),
-    _vm._v(" "),
-    _c("td", { staticClass: "align-middle pointer", on: { click: _vm.show } }, [
-      _vm._v(_vm._s(_vm.item.number))
-    ]),
-    _vm._v(" "),
-    _c("td", { staticClass: "align-middle pointer", on: { click: _vm.show } }, [
-      _vm._v("\n        " + _vm._s(_vm.item.name) + "\n        "),
-      _c("div", { domProps: { innerHTML: _vm._s(_vm.item.tags_badges) } })
-    ]),
-    _vm._v(" "),
-    _c(
-      "td",
+  return _c("show", {
+    attrs: { item: _vm.item, "is-selected": _vm.isSelected },
+    on: {
+      destroying: function($event) {
+        return _vm.destroy()
+      }
+    },
+    scopedSlots: _vm._u([
       {
-        staticClass: "align-middle pointer text-right",
-        on: { click: _vm.show }
-      },
-      [
-        _vm._v(
-          _vm._s(
-            (
-              parseFloat(_vm.item.unit_price) *
-              (1 + parseFloat(_vm.item.tax))
-            ).format(2, ",", ".")
-          ) + " €"
-        )
-      ]
-    ),
-    _vm._v(" "),
-    _c(
-      "td",
-      {
-        staticClass: "align-middle pointer text-right",
-        on: { click: _vm.show }
-      },
-      [
-        _vm._v(
-          _vm._s(parseFloat(_vm.item.unit_price).format(2, ",", ".")) + " €"
-        )
-      ]
-    ),
-    _vm._v(" "),
-    _c("td", { staticClass: "align-middle pointer", on: { click: _vm.show } }, [
-      _vm._v(_vm._s(_vm.item.unit.abbreviation))
-    ]),
-    _vm._v(" "),
-    _c("td", { staticClass: "align-middle pointer", on: { click: _vm.show } }, [
-      _vm._v(_vm._s(_vm.item.tax * 100) + "%")
-    ]),
-    _vm._v(" "),
-    _c(
-      "td",
-      {
-        staticClass: "align-middle pointer text-right",
-        on: { click: _vm.show }
-      },
-      [_vm._v(_vm._s((_vm.item.revenue / 100).format(2, ",", ".")) + " €")]
-    ),
-    _vm._v(" "),
-    _c("td", { staticClass: "align-middle text-right" }, [
-      _c(
-        "div",
-        { staticClass: "btn-group btn-group-sm", attrs: { role: "group" } },
-        [
-          _c(
-            "button",
-            {
-              staticClass: "btn btn-secondary",
-              attrs: { type: "button", title: "Anzeigen" },
-              on: { click: _vm.show }
-            },
-            [_c("i", { staticClass: "fas fa-fw fa-eye" })]
-          ),
-          _vm._v(" "),
-          _c(
-            "button",
-            {
-              staticClass: "btn btn-secondary",
-              attrs: { type: "button", title: "Bearbeiten" },
-              on: { click: _vm.edit }
-            },
-            [_c("i", { staticClass: "fas fa-fw fa-edit" })]
-          ),
-          _vm._v(" "),
-          _c(
-            "button",
-            {
-              staticClass: "btn btn-secondary",
-              attrs: { type: "button", title: "Löschen" },
-              on: { click: _vm.destroy }
-            },
-            [_c("i", { staticClass: "fas fa-fw fa-trash" })]
-          )
-        ]
-      )
+        key: "show",
+        fn: function() {
+          return [
+            _c("td", { staticClass: "align-middle" }, [
+              _c("label", { staticClass: "form-checkbox" }),
+              _vm._v(" "),
+              _c("input", {
+                attrs: { type: "checkbox", number: "" },
+                domProps: { checked: _vm.isSelected },
+                on: {
+                  change: function($event) {
+                    return _vm.$emit("input", _vm.item.id)
+                  }
+                }
+              })
+            ]),
+            _vm._v(" "),
+            _c(
+              "td",
+              {
+                staticClass: "align-middle text-right pointer",
+                on: { click: _vm.show }
+              },
+              [_vm._v(_vm._s(_vm.item.number))]
+            ),
+            _vm._v(" "),
+            _c(
+              "td",
+              { staticClass: "align-middle pointer", on: { click: _vm.show } },
+              [
+                _vm._v(
+                  "\n            " + _vm._s(_vm.item.name) + "\n            "
+                ),
+                _c("div", {
+                  domProps: { innerHTML: _vm._s(_vm.item.tags_badges) }
+                })
+              ]
+            ),
+            _vm._v(" "),
+            _c(
+              "td",
+              {
+                staticClass: "align-middle pointer text-right",
+                on: { click: _vm.show }
+              },
+              [
+                _vm._v(
+                  _vm._s(
+                    (
+                      parseFloat(_vm.item.unit_price) *
+                      (1 + parseFloat(_vm.item.tax))
+                    ).format(2, ",", ".")
+                  ) + " €"
+                )
+              ]
+            ),
+            _vm._v(" "),
+            _c(
+              "td",
+              {
+                staticClass: "align-middle pointer text-right",
+                on: { click: _vm.show }
+              },
+              [
+                _vm._v(
+                  _vm._s(parseFloat(_vm.item.unit_price).format(2, ",", ".")) +
+                    " €"
+                )
+              ]
+            ),
+            _vm._v(" "),
+            _c(
+              "td",
+              { staticClass: "align-middle pointer", on: { click: _vm.show } },
+              [_vm._v(_vm._s(_vm.item.unit.abbreviation))]
+            ),
+            _vm._v(" "),
+            _c(
+              "td",
+              { staticClass: "align-middle pointer", on: { click: _vm.show } },
+              [_vm._v(_vm._s((_vm.item.tax * 100).format(1, ",", ".")) + " %")]
+            ),
+            _vm._v(" "),
+            _c(
+              "td",
+              {
+                staticClass: "align-middle pointer text-right",
+                on: { click: _vm.show }
+              },
+              [
+                _vm._v(
+                  _vm._s((_vm.item.revenue / 100).format(2, ",", ".")) + " €"
+                )
+              ]
+            )
+          ]
+        },
+        proxy: true
+      }
     ])
-  ])
+  })
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -52270,11 +52336,7 @@ var render = function() {
           return _vm._l(_vm.items, function(item, index) {
             return _c("row", {
               key: item.id,
-              attrs: {
-                item: item,
-                uri: _vm.indexPath,
-                selected: _vm.selected.indexOf(item.id) == -1 ? false : true
-              },
+              attrs: { item: item, "is-selected": _vm.isSelected(item.id) },
               on: {
                 deleted: function($event) {
                   return _vm.deleted(index)
@@ -59471,6 +59533,78 @@ var render = function() {
         ],
         2
       )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/tables/rows/show.vue?vue&type=template&id=1f60dbe0&":
+/*!**************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/components/tables/rows/show.vue?vue&type=template&id=1f60dbe0& ***!
+  \**************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "tr",
+    [
+      _vm._t("show"),
+      _vm._v(" "),
+      _c("td", { staticClass: "align-middle text-right" }, [
+        _c(
+          "div",
+          { staticClass: "btn-group btn-group-sm", attrs: { role: "group" } },
+          [
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-secondary",
+                attrs: { type: "button", title: "Anzeigen" },
+                on: { click: _vm.show }
+              },
+              [_c("i", { staticClass: "fas fa-fw fa-eye" })]
+            ),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-secondary",
+                attrs: { type: "button", title: "Bearbeiten" },
+                on: { click: _vm.edit }
+              },
+              [_c("i", { staticClass: "fas fa-fw fa-edit" })]
+            ),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-secondary",
+                attrs: { type: "button", title: "Löschen" },
+                on: {
+                  click: function($event) {
+                    return _vm.$emit("destroying")
+                  }
+                }
+              },
+              [_c("i", { staticClass: "fas fa-fw fa-trash" })]
+            )
+          ]
+        )
+      ])
+    ],
+    2
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -87835,6 +87969,75 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/assets/js/components/tables/rows/show.vue":
+/*!*************************************************************!*\
+  !*** ./resources/assets/js/components/tables/rows/show.vue ***!
+  \*************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _show_vue_vue_type_template_id_1f60dbe0___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./show.vue?vue&type=template&id=1f60dbe0& */ "./resources/assets/js/components/tables/rows/show.vue?vue&type=template&id=1f60dbe0&");
+/* harmony import */ var _show_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./show.vue?vue&type=script&lang=js& */ "./resources/assets/js/components/tables/rows/show.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _show_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _show_vue_vue_type_template_id_1f60dbe0___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _show_vue_vue_type_template_id_1f60dbe0___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/assets/js/components/tables/rows/show.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/assets/js/components/tables/rows/show.vue?vue&type=script&lang=js&":
+/*!**************************************************************************************!*\
+  !*** ./resources/assets/js/components/tables/rows/show.vue?vue&type=script&lang=js& ***!
+  \**************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_show_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../../node_modules/vue-loader/lib??vue-loader-options!./show.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/tables/rows/show.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_show_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/assets/js/components/tables/rows/show.vue?vue&type=template&id=1f60dbe0&":
+/*!********************************************************************************************!*\
+  !*** ./resources/assets/js/components/tables/rows/show.vue?vue&type=template&id=1f60dbe0& ***!
+  \********************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_show_vue_vue_type_template_id_1f60dbe0___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../../node_modules/vue-loader/lib??vue-loader-options!./show.vue?vue&type=template&id=1f60dbe0& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/tables/rows/show.vue?vue&type=template&id=1f60dbe0&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_show_vue_vue_type_template_id_1f60dbe0___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_show_vue_vue_type_template_id_1f60dbe0___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
 /***/ "./resources/assets/js/components/tag/row.vue":
 /*!****************************************************!*\
   !*** ./resources/assets/js/components/tag/row.vue ***!
@@ -90184,6 +90387,9 @@ var paginatedMixin = {
     updated: function updated(index, item) {
       Vue.set(this.items, index, item);
       Vue.successUpdate(item);
+    },
+    isSelected: function isSelected(id) {
+      return this.selected.indexOf(id) == -1 ? false : true;
     },
     toggleSelected: function toggleSelected(id) {
       var index = this.selected.indexOf(id);
