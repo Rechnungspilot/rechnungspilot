@@ -5840,8 +5840,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _filter_perPage_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../filter/perPage.vue */ "./resources/assets/js/components/filter/perPage.vue");
 /* harmony import */ var _form_input_text_vue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../form/input/text.vue */ "./resources/assets/js/components/form/input/text.vue");
 /* harmony import */ var _tables_paginated_vue__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../tables/paginated.vue */ "./resources/assets/js/components/tables/paginated.vue");
-/* harmony import */ var _mixins_tables_paginated_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../mixins/tables/paginated.js */ "./resources/assets/js/mixins/tables/paginated.js");
-/* harmony import */ var _mixins_selectable_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../mixins/selectable.js */ "./resources/assets/js/mixins/selectable.js");
+/* harmony import */ var _mixins_tables_base_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../mixins/tables/base.js */ "./resources/assets/js/mixins/tables/base.js");
+/* harmony import */ var _mixins_tables_paginated_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../mixins/tables/paginated.js */ "./resources/assets/js/mixins/tables/paginated.js");
+/* harmony import */ var _mixins_selectable_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../mixins/selectable.js */ "./resources/assets/js/mixins/selectable.js");
 //
 //
 //
@@ -5885,6 +5886,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+
 
 
 
@@ -5902,7 +5904,7 @@ __webpack_require__.r(__webpack_exports__);
     inputText: _form_input_text_vue__WEBPACK_IMPORTED_MODULE_4__["default"],
     tablePaginated: _tables_paginated_vue__WEBPACK_IMPORTED_MODULE_5__["default"]
   },
-  mixins: [_mixins_tables_paginated_js__WEBPACK_IMPORTED_MODULE_6__["paginatedMixin"], _mixins_selectable_js__WEBPACK_IMPORTED_MODULE_7__["selectableMixin"]],
+  mixins: [_mixins_tables_base_js__WEBPACK_IMPORTED_MODULE_6__["baseMixin"], _mixins_tables_paginated_js__WEBPACK_IMPORTED_MODULE_7__["paginatedMixin"], _mixins_selectable_js__WEBPACK_IMPORTED_MODULE_8__["selectableMixin"]],
   props: {
     tags: {
       type: Array
@@ -5922,7 +5924,10 @@ __webpack_require__.r(__webpack_exports__);
       }
     };
   },
-  methods: {//
+  methods: {
+    created: function created(item) {
+      location.href = item.edit_path;
+    }
   }
 });
 
@@ -90255,12 +90260,15 @@ var baseMixin = {
       var component = this;
       axios.post(this.indexPath, component.form).then(function (response) {
         component.resetForm();
-        component.items.unshift(response.data);
+        component.created(response.data);
         Vue.successCreate(response.data);
       })["catch"](function (error) {
         component.errors = error.response.data.errors;
         Vue.errorCreate();
       });
+    },
+    created: function created(item) {
+      this.items.unshift(item);
     },
     resetErrors: function resetErrors() {
       this.errors = {};
@@ -90281,12 +90289,15 @@ var baseMixin = {
       axios.get(component.indexPath, {
         params: component.filter
       }).then(function (response) {
-        component.items = response.data;
+        component.fetched(response);
         component.isLoading = false;
       })["catch"](function (error) {
         console.log(error);
         Vue.error('Datensätze konnten nicht geladen werden.');
       });
+    },
+    fetched: function fetched(response) {
+      this.items = response.data;
     },
     hasFilter: function hasFilter() {
       return Object.keys(this.filter).length > 2;
@@ -90324,34 +90335,18 @@ var baseMixin = {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "paginatedMixin", function() { return paginatedMixin; });
 var paginatedMixin = {
-  props: {
-    indexPath: {
-      type: String,
-      required: true
-    }
-  },
   data: function data() {
     return {
-      errors: {},
       filter: {
-        page: 1,
-        show: false,
-        searchtext: ''
+        page: 1
       },
-      form: {},
-      isLoading: true,
-      items: [],
       paginate: {
         nextPageUrl: null,
         prevPageUrl: null,
         lastPage: 0,
         currentPage: 0
-      },
-      selected: []
+      }
     };
-  },
-  mounted: function mounted() {
-    this.fetch();
   },
   watch: {
     page: function page() {
@@ -90364,67 +90359,13 @@ var paginatedMixin = {
     }
   },
   methods: {
-    create: function create() {
-      var component = this;
-      axios.post(this.indexPath, component.form).then(function (response) {
-        component.resetForm();
-        Vue.successCreate(response.data);
-        location.href = response.data.edit_path;
-      })["catch"](function (error) {
-        component.errors = error.response.data.errors;
-        Vue.errorCreate();
-      });
-    },
-    resetErrors: function resetErrors() {
-      this.errors = {};
-    },
-    resetForm: function resetForm() {
-      this.resetErrors();
-
-      for (var index in this.form) {
-        this.form[index] = '';
-      }
-    },
-    error: function error(name) {
-      return name in this.errors ? this.errors[name][0] : '';
-    },
-    fetch: function fetch() {
-      var component = this;
-      component.isLoading = true;
-      axios.get(component.indexPath, {
-        params: component.filter
-      }).then(function (response) {
-        component.items = response.data.data;
-        component.filter.page = response.data.current_page;
-        component.paginate.nextPageUrl = response.data.next_page_url;
-        component.paginate.prevPageUrl = response.data.prev_page_url;
-        component.paginate.lastPage = response.data.last_page;
-        component.paginate.currentPage = response.data.current_page;
-        component.isLoading = false;
-      })["catch"](function (error) {
-        console.log(error);
-        Vue.error('Datensätze konnten nicht geladen werden.');
-      });
-    },
-    hasFilter: function hasFilter() {
-      return Object.keys(this.filter).length > 3;
-    },
-    searching: function searching(searchtext) {
-      this.filter.searchtext = searchtext;
-      this.search();
-    },
-    search: function search() {
-      this.filter.page = 1;
-      this.fetch();
-    },
-    deleted: function deleted(index) {
-      var item = this.items[index];
-      this.items.splice(index, 1);
-      Vue.successDelete(item);
-    },
-    updated: function updated(index, item) {
-      Vue.set(this.items, index, item);
-      Vue.successUpdate(item);
+    fetched: function fetched(response) {
+      this.items = response.data.data;
+      this.filter.page = response.data.current_page;
+      this.paginate.nextPageUrl = response.data.next_page_url;
+      this.paginate.prevPageUrl = response.data.prev_page_url;
+      this.paginate.lastPage = response.data.last_page;
+      this.paginate.currentPage = response.data.current_page;
     }
   }
 };

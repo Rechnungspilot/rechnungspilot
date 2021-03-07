@@ -34,13 +34,16 @@ export const baseMixin = {
             axios.post(this.indexPath, component.form)
                 .then(function (response) {
                     component.resetForm();
-                    component.items.unshift(response.data);
+                    component.created(response.data);
                     Vue.successCreate(response.data);
             })
                 .catch(function (error) {
                     component.errors = error.response.data.errors;
                     Vue.errorCreate();
             });
+        },
+        created(item) {
+            this.items.unshift(item);
         },
         resetErrors() {
             this.errors = {};
@@ -61,13 +64,16 @@ export const baseMixin = {
                 params: component.filter
             })
                 .then(function (response) {
-                    component.items = response.data;
+                    component.fetched(response);
                     component.isLoading = false;
                 })
                 .catch(function (error) {
                     console.log(error);
                     Vue.error('Datensätze konnten nicht geladen werden.');
                 });
+        },
+        fetched(response) {
+            this.items = response.data;
         },
         hasFilter() {
             return (Object.keys(this.filter).length > 2);

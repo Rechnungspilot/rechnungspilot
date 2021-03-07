@@ -49,6 +49,7 @@
     import inputText from '../form/input/text.vue';
     import tablePaginated from '../tables/paginated.vue';
 
+    import { baseMixin } from "../../mixins/tables/base.js";
     import { paginatedMixin } from "../../mixins/tables/paginated.js";
     import { selectableMixin } from "../../mixins/selectable.js";
 
@@ -64,6 +65,7 @@
         },
 
         mixins: [
+            baseMixin,
             paginatedMixin,
             selectableMixin,
         ],
@@ -90,7 +92,9 @@
         },
 
         methods: {
-            //
+            created(item) {
+                location.href = item.edit_path;
+            },
         },
     };
 </script>
