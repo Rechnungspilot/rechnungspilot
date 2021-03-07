@@ -37,7 +37,7 @@
                 <slot name="tbody"></slot>
             </tbody>
         </table>
-        <div class="alert alert-dark" v-else><center>Keine Einheiten vorhanden</center></div>
+        <div class="alert alert-dark" v-else><center>Keine Datensätze vorhanden</center></div>
         <nav aria-label="Page navigation example">
             <ul class="pagination" v-show="paginate.lastPage > 1">
                 <li class="page-item" v-show="paginate.prevPageUrl">

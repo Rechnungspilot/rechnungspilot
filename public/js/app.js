@@ -5897,12 +5897,12 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
-    row: _row_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
     filterTags: _filter_tags_vue__WEBPACK_IMPORTED_MODULE_1__["default"],
     filterType: _filter_itemtype_vue__WEBPACK_IMPORTED_MODULE_2__["default"],
     filterPerPage: _filter_perPage_vue__WEBPACK_IMPORTED_MODULE_3__["default"],
     inputText: _form_input_text_vue__WEBPACK_IMPORTED_MODULE_4__["default"],
-    tableBase: _tables_base_vue__WEBPACK_IMPORTED_MODULE_5__["default"]
+    tableBase: _tables_base_vue__WEBPACK_IMPORTED_MODULE_5__["default"],
+    row: _row_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
   },
   mixins: [_mixins_tables_base_js__WEBPACK_IMPORTED_MODULE_6__["baseMixin"], _mixins_tables_paginated_js__WEBPACK_IMPORTED_MODULE_7__["paginatedMixin"], _mixins_selectable_js__WEBPACK_IMPORTED_MODULE_8__["selectableMixin"]],
   props: {
@@ -59095,7 +59095,7 @@ var render = function() {
       : _c(
           "div",
           { staticClass: "alert alert-dark" },
-          [_c("center", [_vm._v("Keine Einheiten vorhanden")])],
+          [_c("center", [_vm._v("Keine Datensätze vorhanden")])],
           1
         ),
     _vm._v(" "),
@@ -89953,6 +89953,8 @@ var selectableMixin = {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "baseMixin", function() { return baseMixin; });
 var baseMixin = {
+  components: {//
+  },
   props: {
     indexPath: {
       type: String,
