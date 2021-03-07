@@ -9,6 +9,21 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 trait HasTags
 {
+    public static function indexPathTags() : string
+    {
+        return route('tags.index', [
+            'type' => self::TYPE,
+        ]);
+    }
+
+    public function getTagsPathAttribute()
+    {
+        return route('taggable.index', [
+            'model' => $this->id,
+            'type' => self::TYPE,
+        ]);
+    }
+
     public function getTagsStringAttribute()
     {
         return $this->tags->pluck('name')->implode(', ');

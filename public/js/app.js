@@ -9776,7 +9776,24 @@ __webpack_require__.r(__webpack_exports__);
 //
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['selected', 'type', 'type_id', 'showLabel'],
+  props: {
+    selected: {
+      required: true
+    },
+    indexPath: {
+      type: String,
+      required: true
+    },
+    path: {
+      type: String,
+      required: true
+    },
+    showLabel: {
+      type: Boolean,
+      required: false,
+      "default": true
+    }
+  },
   components: {
     Multiselect: vue_multiselect__WEBPACK_IMPORTED_MODULE_0___default.a
   },
@@ -9798,17 +9815,17 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     fetchAllTags: function fetchAllTags() {
       var component = this;
-      axios.get('/kategorien/' + component.type).then(function (response) {
+      axios.get(component.indexPath).then(function (response) {
         component.allTags = response.data;
       });
     },
     create: function create(tag) {
       var component = this;
-      axios.post('/' + component.type + '/' + component.type_id + '/kategorien/' + tag.id).then(function (response) {});
+      axios.post(component.path + '/' + tag.id).then(function (response) {});
     },
     destroy: function destroy(tag) {
       var component = this;
-      axios["delete"]('/' + component.type + '/' + component.type_id + '/kategorien/' + tag.id).then(function (response) {});
+      axios["delete"](component.path + '/' + tag.id).then(function (response) {});
     }
   }
 });

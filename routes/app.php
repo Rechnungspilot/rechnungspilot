@@ -47,6 +47,7 @@ Route::bind('model', function ($id) {
         case 'abos': return Abo::findOrFail($id); break;
         case 'anfragen': return Inquiry::findOrFail($id); break;
         case 'angebote': return Receipt::findOrFail($id); break;
+        case 'items': return Item::findOrFail($id); break;
         case 'artikel': return Item::findOrFail($id); break;
         case 'aufgaben': return Todo::findOrFail($id); break;
         case 'auftraege': return Order::findOrFail($id); break;
@@ -354,6 +355,7 @@ Route::middleware(['auth', 'company.locked'])->group(function () {
 
 
     // Taggable
+    Route::get('{type}/{model}/tags', 'TaggableController@store')->name('taggable.index');
     Route::post('{type}/{model}/tags/{tag}', 'TaggableController@store')->name('taggable.store');
     Route::delete('{type}/{model}/tags/{tag}', 'TaggableController@destroy')->name('taggable.destroy');
 
@@ -361,6 +363,11 @@ Route::middleware(['auth', 'company.locked'])->group(function () {
     Route::delete('{type}/{model}/kategorien/{tag}', 'TaggableController@destroy')->name('taggable.destroy');
 
     // Tags
+    Route::get('{type}/tags', 'TagController@index')->name('tags.index');
+    Route::post('kategorien/{type}', 'TagController@store')->name('tags.store');
+    Route::put('kategorien/{tag}', 'TagController@update')->name('tags.update');
+    Route::delete('kategorien/{tag}', 'TagController@destroy')->name('tags.destroy');
+
     Route::get('kategorien/{type}', 'TagController@index')->name('tag.index');
     Route::post('kategorien/{type}', 'TagController@store')->name('tag.store');
     Route::put('kategorien/{tag}', 'TagController@update')->name('tag.update');

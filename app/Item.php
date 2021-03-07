@@ -37,6 +37,7 @@ class Item extends Model
     const PRICE_DECIMALS = 6;
 
     const ROUTE_NAME = 'items';
+    const TYPE = 'items';
 
     const TYPES = [
         self::TYPE_ITEM => 'Artikel',
@@ -128,6 +129,11 @@ class Item extends Model
 
             return true;
         });
+    }
+
+    public static function indexPathTags() : string
+    {
+        return self::indexPath() . '/tags';
     }
 
     public static function labels() : array
@@ -225,16 +231,6 @@ class Item extends Model
         return $this;
     }
 
-    public function getGrossAttribute()
-    {
-        return ($this->unit_price * (1 + $this->tax));
-    }
-
-    public function getGrossInCentsAttribute()
-    {
-        return ($this->gross * 100);
-    }
-
     public function getDurationHourAttribute()
     {
         return str_pad(floor($this->attributes['duration'] / 3600), 2, '0', STR_PAD_LEFT);
@@ -243,6 +239,16 @@ class Item extends Model
     public function getDurationMinuteAttribute()
     {
         return str_pad(floor(($this->attributes['duration'] / 60) % 60), 2, '0', STR_PAD_LEFT);
+    }
+
+    public function getGrossAttribute()
+    {
+        return ($this->unit_price * (1 + $this->tax));
+    }
+
+    public function getGrossInCentsAttribute()
+    {
+        return ($this->gross * 100);
     }
 
     public function getTypeNameAttribute()

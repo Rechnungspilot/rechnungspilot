@@ -172,7 +172,7 @@
                                 </div>
                             </div>
 
-                            <tag-select class="my-2" :selected="{{ json_encode($item->tags) }}" type="artikel" type_id="{{ $item->id }}"></tag-select>
+                            <tag-select class="my-2" :selected="{{ json_encode($item->tags) }}" index-path="{{ $item::indexPathTags() }}" path="{{ $item->tags_path }}"></tag-select>
 
                         </div>
 

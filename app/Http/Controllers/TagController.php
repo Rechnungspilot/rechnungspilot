@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Support\Type;
 use App\Tag;
 use Illuminate\Http\Request;
 
@@ -14,14 +15,17 @@ class TagController extends Controller
      */
     public function index(Request $request, string $type)
     {
+        $class = Type::class($type);
+
         if ($request->wantsJson()) {
-            return Tag::where('type', $type)
+            return Tag::where('type', $class)
                        ->search($request->input('searchtext'))
                        ->get();
         }
 
         return view('tag.index')
-            ->with('type', $type);
+            ->with('type', $type)
+            ->with('class', $class);
     }
 
     /**
@@ -48,6 +52,7 @@ class TagController extends Controller
         ]);
 
         $validatedData['company_id'] = auth()->user()->company_id;
+        $validatedData['type'] = Type::class($type);
 
         return Tag::create($validatedData);
     }

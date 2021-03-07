@@ -3,7 +3,7 @@
 @section('title', ucfirst($type) . ' > Tags')
 
 @section('buttons')
-    <a href="{{ url('/' . $type) }}" class="btn btn-secondary">Übersicht</a>
+    <a href="{{ $class::indexPath() }}" class="btn btn-secondary">{{ $class::label() }}</a>
 @endsection
 
 @section('content')

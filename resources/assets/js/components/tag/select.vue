@@ -12,7 +12,24 @@
 
     export default {
 
-        props: [ 'selected', 'type', 'type_id', 'showLabel' ],
+        props: {
+            selected: {
+                required: true,
+            },
+            indexPath: {
+                type: String,
+                required: true,
+            },
+            path: {
+                type: String,
+                required: true,
+            },
+            showLabel: {
+                type: Boolean,
+                required: false,
+                default: true,
+            },
+        },
 
         components: { Multiselect },
         data () {
@@ -36,21 +53,21 @@
         methods: {
             fetchAllTags() {
                 var component = this;
-                axios.get('/kategorien/' + component.type)
+                axios.get(component.indexPath)
                     .then( function (response) {
                         component.allTags = response.data;
                 });
             },
             create (tag) {
                 var component = this;
-                axios.post('/' + component.type + '/' + component.type_id + '/kategorien/' + tag.id)
+                axios.post(component.path + '/' + tag.id)
                     .then(function (response) {
 
                 });
             },
             destroy (tag) {
                 var component = this;
-                axios.delete('/' + component.type + '/' + component.type_id + '/kategorien/' + tag.id)
+                axios.delete(component.path + '/' + tag.id)
                     .then(function (response) {
 
                 });
