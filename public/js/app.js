@@ -6111,6 +6111,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _row_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./row.vue */ "./resources/assets/js/components/items/units/row.vue");
 /* harmony import */ var _form_input_text_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../form/input/text.vue */ "./resources/assets/js/components/form/input/text.vue");
 /* harmony import */ var _tables_base_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../tables/base.vue */ "./resources/assets/js/components/tables/base.vue");
+/* harmony import */ var _mixins_tables_base_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../mixins/tables/base.js */ "./resources/assets/js/mixins/tables/base.js");
 //
 //
 //
@@ -6139,6 +6140,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+
 
 
 
@@ -6148,80 +6150,16 @@ __webpack_require__.r(__webpack_exports__);
     inputText: _form_input_text_vue__WEBPACK_IMPORTED_MODULE_1__["default"],
     tableBase: _tables_base_vue__WEBPACK_IMPORTED_MODULE_2__["default"]
   },
-  props: {
-    indexPath: {
-      type: String,
-      required: true
-    }
-  },
+  mixins: [_mixins_tables_base_js__WEBPACK_IMPORTED_MODULE_3__["baseMixin"]],
   data: function data() {
     return {
-      errors: {},
-      filter: {
-        show: false,
-        searchtext: ''
+      filter: {//
       },
       form: {
         name: '',
         abbreviation: ''
-      },
-      isLoading: true,
-      items: []
-    };
-  },
-  mounted: function mounted() {
-    this.fetch();
-  },
-  methods: {
-    create: function create() {
-      var component = this;
-      axios.post(this.indexPath, component.form).then(function (response) {
-        component.resetForm();
-        component.items.unshift(response.data);
-        Vue.successCreate(response.data);
-      })["catch"](function (error) {
-        component.errors = error.response.data.errors;
-        Vue.errorCreate();
-      });
-    },
-    resetErrors: function resetErrors() {
-      this.errors = {};
-    },
-    resetForm: function resetForm() {
-      this.resetErrors();
-
-      for (var index in this.form) {
-        this.form[index] = '';
       }
-    },
-    error: function error(name) {
-      return name in this.errors ? this.errors[name][0] : '';
-    },
-    fetch: function fetch() {
-      var component = this;
-      component.isLoading = true;
-      axios.get(component.indexPath, {
-        params: component.filter
-      }).then(function (response) {
-        component.items = response.data;
-        component.isLoading = false;
-      })["catch"](function (error) {
-        console.log(error);
-      });
-    },
-    search: function search(searchtext) {
-      this.filter.searchtext = searchtext;
-      this.fetch();
-    },
-    deleted: function deleted(index) {
-      var item = this.items[index];
-      this.items.splice(index, 1);
-      Vue.successDelete(item);
-    },
-    updated: function updated(index, item) {
-      Vue.set(this.items, index, item);
-      Vue.successUpdate(item);
-    }
+    };
   }
 });
 
@@ -52704,7 +52642,7 @@ var render = function() {
     attrs: {
       "is-loading": _vm.isLoading,
       "items-length": _vm.items.length,
-      "has-filter": true
+      "has-filter": _vm.hasFilter()
     },
     on: {
       searching: function($event) {
@@ -89714,6 +89652,97 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_table_vue_vue_type_template_id_450f4437___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
+
+/***/ }),
+
+/***/ "./resources/assets/js/mixins/tables/base.js":
+/*!***************************************************!*\
+  !*** ./resources/assets/js/mixins/tables/base.js ***!
+  \***************************************************/
+/*! exports provided: baseMixin */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "baseMixin", function() { return baseMixin; });
+var baseMixin = {
+  props: {
+    indexPath: {
+      type: String,
+      required: true
+    }
+  },
+  data: function data() {
+    return {
+      errors: {},
+      filter: {
+        show: false,
+        searchtext: ''
+      },
+      form: {},
+      isLoading: true,
+      items: []
+    };
+  },
+  mounted: function mounted() {
+    this.fetch();
+  },
+  methods: {
+    create: function create() {
+      var component = this;
+      axios.post(this.indexPath, component.form).then(function (response) {
+        component.resetForm();
+        component.items.unshift(response.data);
+        Vue.successCreate(response.data);
+      })["catch"](function (error) {
+        component.errors = error.response.data.errors;
+        Vue.errorCreate();
+      });
+    },
+    resetErrors: function resetErrors() {
+      this.errors = {};
+    },
+    resetForm: function resetForm() {
+      this.resetErrors();
+
+      for (var index in this.form) {
+        this.form[index] = '';
+      }
+    },
+    error: function error(name) {
+      return name in this.errors ? this.errors[name][0] : '';
+    },
+    fetch: function fetch() {
+      var component = this;
+      component.isLoading = true;
+      axios.get(component.indexPath, {
+        params: component.filter
+      }).then(function (response) {
+        component.items = response.data;
+        component.isLoading = false;
+      })["catch"](function (error) {
+        console.log(error);
+        Vue.error('Datensätze konnten nicht geholt werden.');
+      });
+    },
+    hasFilter: function hasFilter() {
+      return Object.keys(this.filter).length > 2;
+    },
+    search: function search(searchtext) {
+      this.filter.searchtext = searchtext;
+      this.fetch();
+    },
+    deleted: function deleted(index) {
+      var item = this.items[index];
+      this.items.splice(index, 1);
+      Vue.successDelete(item);
+    },
+    updated: function updated(index, item) {
+      Vue.set(this.items, index, item);
+      Vue.successUpdate(item);
+    }
+  }
+};
 
 /***/ }),
 
