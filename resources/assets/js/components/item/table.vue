@@ -50,7 +50,7 @@
     import tablePaginated from '../tables/paginated.vue';
 
     import { paginatedMixin } from "../../mixins/tables/paginated.js";
-
+    import { selectableMixin } from "../../mixins/selectable.js";
 
     export default {
 
@@ -65,6 +65,7 @@
 
         mixins: [
             paginatedMixin,
+            selectableMixin,
         ],
 
         props: {

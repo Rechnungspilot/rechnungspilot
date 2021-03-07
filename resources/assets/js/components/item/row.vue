@@ -26,7 +26,7 @@
 </template>
 
 <script>
-    import show from '../tables/rows/show';
+    import show from '../tables/rows/show.vue';
 
     export default {
 

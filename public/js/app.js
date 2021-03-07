@@ -5761,7 +5761,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _tables_rows_show__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../tables/rows/show */ "./resources/assets/js/components/tables/rows/show.vue");
+/* harmony import */ var _tables_rows_show_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../tables/rows/show.vue */ "./resources/assets/js/components/tables/rows/show.vue");
 //
 //
 //
@@ -5792,7 +5792,7 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
-    show: _tables_rows_show__WEBPACK_IMPORTED_MODULE_0__["default"]
+    show: _tables_rows_show_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
   },
   props: {
     item: {
@@ -5841,6 +5841,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _form_input_text_vue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../form/input/text.vue */ "./resources/assets/js/components/form/input/text.vue");
 /* harmony import */ var _tables_paginated_vue__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../tables/paginated.vue */ "./resources/assets/js/components/tables/paginated.vue");
 /* harmony import */ var _mixins_tables_paginated_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../mixins/tables/paginated.js */ "./resources/assets/js/mixins/tables/paginated.js");
+/* harmony import */ var _mixins_selectable_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../mixins/selectable.js */ "./resources/assets/js/mixins/selectable.js");
 //
 //
 //
@@ -5884,6 +5885,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+
 
 
 
@@ -5900,7 +5902,7 @@ __webpack_require__.r(__webpack_exports__);
     inputText: _form_input_text_vue__WEBPACK_IMPORTED_MODULE_4__["default"],
     tablePaginated: _tables_paginated_vue__WEBPACK_IMPORTED_MODULE_5__["default"]
   },
-  mixins: [_mixins_tables_paginated_js__WEBPACK_IMPORTED_MODULE_6__["paginatedMixin"]],
+  mixins: [_mixins_tables_paginated_js__WEBPACK_IMPORTED_MODULE_6__["paginatedMixin"], _mixins_selectable_js__WEBPACK_IMPORTED_MODULE_7__["selectableMixin"]],
   props: {
     tags: {
       type: Array
@@ -90166,6 +90168,56 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/assets/js/mixins/selectable.js":
+/*!**************************************************!*\
+  !*** ./resources/assets/js/mixins/selectable.js ***!
+  \**************************************************/
+/*! exports provided: selectableMixin */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectableMixin", function() { return selectableMixin; });
+var selectableMixin = {
+  computed: {
+    selectAll: {
+      get: function get() {
+        return this.items.length ? this.items.length == this.selected.length : false;
+      },
+      set: function set(value) {
+        this.selected = [];
+
+        if (value) {
+          for (var i in this.items) {
+            this.selected.push(this.items[i].id);
+          }
+        }
+      }
+    }
+  },
+  data: function data() {
+    return {
+      selected: []
+    };
+  },
+  methods: {
+    isSelected: function isSelected(id) {
+      return this.selected.indexOf(id) == -1 ? false : true;
+    },
+    toggleSelected: function toggleSelected(id) {
+      var index = this.selected.indexOf(id);
+
+      if (index == -1) {
+        this.selected.push(id);
+      } else {
+        this.selected.splice(index, 1);
+      }
+    }
+  }
+};
+
+/***/ }),
+
 /***/ "./resources/assets/js/mixins/tables/base.js":
 /*!***************************************************!*\
   !*** ./resources/assets/js/mixins/tables/base.js ***!
@@ -90309,20 +90361,6 @@ var paginatedMixin = {
   computed: {
     page: function page() {
       return this.filter.page;
-    },
-    selectAll: {
-      get: function get() {
-        return this.items.length ? this.items.length == this.selected.length : false;
-      },
-      set: function set(value) {
-        this.selected = [];
-
-        if (value) {
-          for (var i in this.items) {
-            this.selected.push(this.items[i].id);
-          }
-        }
-      }
     }
   },
   methods: {
@@ -90387,18 +90425,6 @@ var paginatedMixin = {
     updated: function updated(index, item) {
       Vue.set(this.items, index, item);
       Vue.successUpdate(item);
-    },
-    isSelected: function isSelected(id) {
-      return this.selected.indexOf(id) == -1 ? false : true;
-    },
-    toggleSelected: function toggleSelected(id) {
-      var index = this.selected.indexOf(id);
-
-      if (index == -1) {
-        this.selected.push(id);
-      } else {
-        this.selected.splice(index, 1);
-      }
     }
   }
 };
