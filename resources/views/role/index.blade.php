@@ -2,21 +2,25 @@
 
 @section('title', 'Zugriffsrollen')
 
+@section('buttons')
+    <a href="{{ \App\User::indexPath() }}" class="btn btn-secondary btn-sm">Übersicht</a>
+@endsection
+
 @section('content')
 
-    <form action="/zugriffsrollen" method="POST">
-        @csrf
+    <div class="mb-3">
+        <form action="/zugriffsrollen" method="POST">
+            @csrf
 
-        <button type="submit" class="btn btn-primary" role="button">Anlegen</button>
-    </form>
+            <button type="submit" class="btn btn-primary btn-sm" role="button"><i class="fas fa-plus-square"></i></button>
+        </form>
+    </div>
 
-    <br /><br />
-    <table class="table table-hover table-striped bg-white">
+    <table class="table table-fixed table-hover table-striped table-sm bg-white">
 
         <thead>
             <tr>
                 <th width="90%">Name</th>
-                <th class="text-right" width="10%">Aktion</th>
             </tr>
 
         </thead>
@@ -27,13 +31,6 @@
 
                 <tr>
                     <td class="align-middle"><a href="zugriffsrollen/{{ $role->getRouteKey() }}">{{ $role->name }}</a></td>
-                    <td class="text-right">
-                        <div class="btn-group btn-group-sm" role="group">
-                            <button type="button" class="btn btn-secondary">Left</button>
-                            <button type="button" class="btn btn-secondary">Middle</button>
-                            <button type="button" class="btn btn-secondary">Right</button>
-                        </div>
-                    </td>
                 </tr>
 
             @endforeach

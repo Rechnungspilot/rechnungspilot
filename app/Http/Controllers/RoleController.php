@@ -53,13 +53,16 @@ class RoleController extends Controller
      */
     public function show($id)
     {
-        $role = Role::with('permissions')->findOrFail($id);
+        $role = Role::with([
+            'permissions'
+        ])->findOrFail($id);
+
         $permissions = Permission::orderBy('group', 'ASC')->orderBy('action', 'ASC')->get();
         $grouped = $permissions->groupBy('group');
 
         return view('role.show')
-                    ->with('role', $role)
-                    ->with('permissions', $grouped);
+            ->with('role', $role)
+            ->with('permissions', $grouped);
     }
 
     /**
