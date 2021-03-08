@@ -96,5 +96,6 @@
                 location.href = item.edit_path;
             },
         },
+
     };
 </script>

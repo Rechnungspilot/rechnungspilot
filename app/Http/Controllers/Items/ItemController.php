@@ -24,14 +24,14 @@ class ItemController extends Controller
                 'unit',
                 ])->search($request->input('searchtext'))
                 ->type($request->input('type'))
-                ->withAllTags($request->input('tags'), 'artikel')
+                ->withAllTags($request->input('tags'), Item::class)
                 ->orderBy('number', 'ASC')
                 ->orderBy('name', 'ASC')
                 ->paginate($request->input('perPage'));
         }
 
         return view('item.index')
-            ->with('tags', Tag::withType('artikel')->get())
+            ->with('tags', Tag::withType(Item::class)->get())
             ->with('types', Item::TYPES)
             ->with('units_path', Unit::indexPath());
     }

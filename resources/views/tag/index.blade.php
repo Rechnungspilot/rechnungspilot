@@ -1,6 +1,6 @@
 @extends('layouts.layout')
 
-@section('title', ucfirst($type) . ' > Tags')
+@section('title', $class::label() . ' > Tags')
 
 @section('buttons')
     <a href="{{ $class::indexPath() }}" class="btn btn-secondary">{{ $class::label() }}</a>

@@ -25,7 +25,7 @@ class ContactController extends Controller
             $contacts = Contact::with([
                 'tags'
                 ])->search($request->input('searchtext'))
-                ->withAllTags($request->input('tags'), 'kontakte')
+                ->withAllTags($request->input('tags'), Contact::class)
                 ->orderBy('company', 'DESC')
                 ->paginate($request->input('perPage'));
             foreach ($contacts as $key => $contact) {
@@ -36,7 +36,7 @@ class ContactController extends Controller
         }
 
         return view('contact.index')
-            ->with('tags', Tag::withType('kontakte')->get());
+            ->with('tags', Tag::withType(Contact::class)->get());
     }
 
     /**
@@ -126,7 +126,7 @@ class ContactController extends Controller
         return view('contact.edit')
             ->with('contact', $contact)
             ->with('customfields', CustomField::for($contact))
-            ->with('tags', Tag::withType('kontakte')->get())
+            ->with('tags', Tag::withType(Contact::class)->get())
             ->with('terms', Term::where('type', Invoice::class)
                 ->orderBy('name', 'ASC')
                 ->get()
@@ -193,13 +193,11 @@ class ContactController extends Controller
     public function destroy(Request $request, Contact $contact)
     {
         $isDeletable = $contact->isDeletable();
-        if ($isDeletable)
-        {
+        if ($isDeletable) {
             $contact->delete();
         }
 
-        if ($request->wantsJson())
-        {
+        if ($request->wantsJson()) {
             return;
         }
 

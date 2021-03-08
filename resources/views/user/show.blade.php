@@ -1,10 +1,10 @@
 @extends('layouts.layout')
 
-@section('title', 'Mitarbeiter > ' . $user->name)
+@section('title', $user->label() . ' > ' . $user->name)
 
 @section('buttons')
     @if(!$user->password)
-        <form action="{{ url('/team/' . $user->id . '/einladen') }}" method="POST">
+        <form action="{{ $user->path . '/einladen' }}" method="POST">
             @csrf
 
             <input id="email" type="hidden" class="form-control" name="email" value="{{ $user->email }}">
@@ -13,165 +13,116 @@
             </button>
         </form>
     @endif
-    <a class="btn btn-secondary ml-1" href="{{ url('/team') }}" title="Übersicht"><i class="fas fa-fw fa-th-list"></i></a>
+    <a href="{{ $user->edit_path }}" class="btn btn-primary btn-sm"><i class="fas fa-edit"></i></a>
+    <a class="btn btn-secondary btn-sm ml-1" href="{{ $user->index_path }}" title="Übersicht">Übersicht</a>
 @endsection
 
 @section('content')
 
-    <h3>Allgemein</h3>
-    <form action="{{ url('/team', $user->id) }}" method="POST">
-        @csrf
-        @method('PUT')
+    <div class="card mb-3">
+        <div class="card-header">{{ $user->name }}</div>
 
-        <div class="form-group">
-            <label for="number">Personalnummer</label>
-            <input type="text" class="form-control {{ ($errors->has('name') ? 'is-invalid' : '') }}" id="number" name="number" value="{{ $user->number }}">
-            @if ($errors->has('number'))
-                <div class="invalid-feedback">
-                    {{ $errors->first('number') }}
-                </div>
-            @endif
-        </div>
+        <div class="card-body">
 
-        <div class="form-group">
-            <label for="lastname">Nachname</label>
-            <input type="text" class="form-control {{ ($errors->has('lastname') ? 'is-invalid' : '') }}" id="lastname" name="lastname" value="{{ $user->lastname }}">
-            @if ($errors->has('lastname'))
-                <div class="invalid-feedback">
-                    {{ $errors->first('lastname') }}
-                </div>
-            @endif
-        </div>
+            <div class="row">
 
-        <div class="form-group">
-            <label for="firstname">Vorname</label>
-            <input type="text" class="form-control {{ ($errors->has('firstname') ? 'is-invalid' : '') }}" id="firstname" name="firstname" value="{{ $user->firstname }}">
-            @if ($errors->has('firstname'))
-                <div class="invalid-feedback">
-                    {{ $errors->first('firstname') }}
-                </div>
-            @endif
-        </div>
+                <div class="col-md-6">
 
-        <div class="form-group">
-            <label for="hex_color_code">Farbe</label>
-            <input type="color" class="form-control {{ ($errors->has('hex_color_code') ? 'is-invalid' : '') }}" id="hex_color_code" name="hex_color_code" value="{{ $user->hex_color_code }}">
-            @if ($errors->has('hex_color_code'))
-                <div class="invalid-feedback">
-                    {{ $errors->first('hex_color_code') }}
-                </div>
-            @endif
-        </div>
+                    @if ($user->number)
+                        <div class="row">
+                            <div class="col-label"><b>Personalnummer</b></div>
+                            <div class="col-value">{{ $user->number }}</div>
+                        </div>
+                    @endif
+                    <div class="row">
+                        <div class="col-label"><b>Name</b></div>
+                        <div class="col-value">{{ $user->name }}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-label"><b>Kategorien</b></div>
+                        <div class="col-value">{{ $user->tagsString ?: 'Keine Kategorien vergeben' }}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-label"><b>Zugriffsrollen</b></div>
+                        <div class="col-value">{{ $user->roles_string }}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-label">&nbsp;</div>
+                        <div class="col-value"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-label"><b>Farbe</b></div>
+                        <div class="col-value p-1"><div class="p-2" style="background-color: {{ $user->hex_color_code }}"></div></div>
+                    </div>
 
-        <div class="form-group">
-            <label for="address">Straße</label>
-            <input type="text" class="form-control {{ ($errors->has('address') ? 'is-invalid' : '') }}" id="address" name="address" value="{{ old('address') ?? $user->address }}">
-            @if ($errors->has('address'))
-                <div class="invalid-feedback">
-                    {{ $errors->first('address') }}
                 </div>
-            @endif
-        </div>
 
-        <div class="form-group">
-            <label for="postcode">PLZ</label>
-            <input type="text" class="form-control {{ ($errors->has('postcode') ? 'is-invalid' : '') }}" id="postcode" name="postcode" value="{{ old('postcode') ?? $user->postcode }}">
-            @if ($errors->has('postcode'))
-                <div class="invalid-feedback">
-                    {{ $errors->first('postcode') }}
-                </div>
-            @endif
-        </div>
+                <div class="col-md-6">
 
-        <div class="form-group">
-            <label for="city">Stadt</label>
-            <input type="text" class="form-control {{ ($errors->has('city') ? 'is-invalid' : '') }}" id="city" name="city" value="{{ old('city') ?? $user->city }}">
-            @if ($errors->has('city'))
-                <div class="invalid-feedback">
-                    {{ $errors->first('city') }}
-                </div>
-            @endif
-        </div>
+                    <div class="row">
+                        <div class="col-label"><b>Telefon</b></div>
+                        <div class="col-value">{{ $user->phonenumber }}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-label"><b>Mobil</b></div>
+                        <div class="col-value">{{ $user->mobilenumber }}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-label"><b>E-Mail</b></div>
+                        <div class="col-value">{{ $user->email }}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-label">&nbsp;</div>
+                        <div class="col-value"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-label"><b>Anschrift</b></div>
+                        <div class="col-value">
+                            {{ $user->name }}<br />
+                            {{ $user->address }}<br />
+                            {{ $user->postcode }} {{ $user->city }}<br />
+                            {{ $user->country }}
+                        </div>
+                    </div>
 
-        <div class="form-group">
-            <label for="phonenumber">Telefon</label>
-            <input type="text" class="form-control {{ ($errors->has('phonenumber') ? 'is-invalid' : '') }}" id="phonenumber" name="phonenumber" value="{{ old('phonenumber') ?? $user->phonenumber }}">
-            @if ($errors->has('phonenumber'))
-                <div class="invalid-feedback">
-                    {{ $errors->first('phonenumber') }}
                 </div>
-            @endif
-        </div>
 
-        <div class="form-group">
-            <label for="mobilenumber">Mobil</label>
-            <input type="text" class="form-control {{ ($errors->has('mobilenumber') ? 'is-invalid' : '') }}" id="mobilenumber" name="mobilenumber" value="{{ old('mobilenumber') ?? $user->mobilenumber }}">
-            @if ($errors->has('mobilenumber'))
-                <div class="invalid-feedback">
-                    {{ $errors->first('mobilenumber') }}
-                </div>
-            @endif
-        </div>
-
-        <div class="form-group">
-            <label for="email">E-Mail</label>
-            <input type="text" class="form-control {{ ($errors->has('email') ? 'is-invalid' : '') }}" id="email" name="email" value="{{ $user->email }}">
-            @if ($errors->has('email'))
-                <div class="invalid-feedback">
-                    {{ $errors->first('email') }}
-                </div>
-            @endif
-        </div>
-
-        <div class="form-group">
-            <label for="bankname">Bank</label>
-            <input type="text" class="form-control {{ ($errors->has('bankname') ? 'is-invalid' : '') }}" id="bankname" name="bankname" value="{{ old('bankname') ?? $user->bankname }}">
-            @if ($errors->has('bankname'))
-                <div class="invalid-feedback">
-                    {{ $errors->first('bankname') }}
-                </div>
-            @endif
-        </div>
-
-        <div class="form-group">
-            <label for="bic">BIC</label>
-            <input type="text" class="form-control {{ ($errors->has('bic') ? 'is-invalid' : '') }}" id="bic" name="bic" value="{{ old('bic') ?? $user->bic }}">
-            @if ($errors->has('bic'))
-                <div class="invalid-feedback">
-                    {{ $errors->first('bic') }}
-                </div>
-            @endif
-        </div>
-
-        <div class="form-group">
-            <label for="iban">IBAN</label>
-            <input type="text" class="form-control {{ ($errors->has('iban') ? 'is-invalid' : '') }}" id="iban" name="iban" value="{{ old('iban') ?? $user->iban }}">
-            @if ($errors->has('iban'))
-                <div class="invalid-feedback">
-                    {{ $errors->first('iban') }}
-                </div>
-            @endif
-        </div>
-
-        <h3>Zugriffsrollen</h3>
-        @foreach($roles as $role)
-            <div class="form-group">
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="{{ $role->id }}" id="role-{{ $role->id }}" name="roles[]" {{ $user->hasRole($role) ? 'checked="checked"' : '' }}>
-                    <label class="form-check-label" for="role-{{ $role->id }}">
-                        {{ $role->name }}
-                    </label>
-                </div>
             </div>
-        @endforeach
 
-        <button type="submit" class="btn btn-primary">Speichern</button>
+        </div>
 
-    </form>
-    <br />
-    <tag-select class="my-2" :selected="{{ json_encode($user->tags) }}" type="team" type_id="{{ $user->id }}"></tag-select>
+    </div>
 
-    <userfileable-table uri="/team" :model="{{ json_encode($user) }}" token="{{ csrf_token() }}"></userfileable-table>
+    <div class="row">
 
-    <comments uri="/team" :item="{{ json_encode($user) }}"></comments>
+        <div class="col-md-6">
+
+            <div class="card mb-3">
+
+                <div class="card-body">
+
+                    <comments uri="/team" :item="{{ json_encode($user) }}"></comments>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-6">
+
+            <div class="card mb-3">
+
+                <div class="card-body">
+
+                    <userfileable-table uri="/team" :model="{{ json_encode($user) }}" token="{{ csrf_token() }}"></userfileable-table>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
 @endsection

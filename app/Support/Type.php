@@ -4,6 +4,7 @@ namespace App\Support;
 
 use App\Contacts\Contact;
 use App\Item;
+use App\User;
 use Illuminate\Support\Arr;
 
 class Type
@@ -11,6 +12,7 @@ class Type
     const ALL = [
         Contact::TYPE => Contact::class,
         Item::TYPE => Item::class,
+        User::TYPE => User::class,
     ];
 
     public static function class(string $type) : string

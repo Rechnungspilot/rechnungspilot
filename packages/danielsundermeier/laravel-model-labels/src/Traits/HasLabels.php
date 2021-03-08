@@ -19,7 +19,7 @@ trait HasLabels
         return ($count == 1 ? self::labels()[$case]['singular'] : self::labels()[$case]['plural']);
     }
 
-    protected static function labels(string $case) : array
+    protected static function labels() : array
     {
         return [
             'nominativ' => [

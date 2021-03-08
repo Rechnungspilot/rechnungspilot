@@ -5,18 +5,30 @@ namespace Tests\Unit\Models;
 use App\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
-use Tests\TestCase;
+use Tests\Unit\TestCase;
 
 class UserTest extends TestCase
 {
+    protected $class_name = User::class;
+
     /**
      * @test
      */
-    public function it_has_a_path()
+    public function it_has_model_paths()
     {
-        $user = factory(User::class)->create();
+        $model = factory($this->class_name)->create();
+        $route_parameter = [
+            'user' => $model->id,
+        ];
 
-        $this->assertEquals(route('team.show', ['team' => $user->id]), $user->path);
+        $routes = [
+            'index_path' => strtok(route($this->class_name::ROUTE_NAME . '.index', $route_parameter), '?'),
+            'create_path' => strtok(route($this->class_name::ROUTE_NAME . '.create', $route_parameter), '?'),
+            'path' => route($this->class_name::ROUTE_NAME . '.show', $route_parameter),
+            'edit_path' => route($this->class_name::ROUTE_NAME . '.edit', $route_parameter),
+        ];
+
+        $this->testModelPaths($model, $routes);
     }
 
     /**

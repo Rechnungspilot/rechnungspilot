@@ -1,41 +1,50 @@
 <template>
-    <tr>
-        <td class="align-middle pointer" @click="link">{{ item.name }}</td>
-        <td class="align-middle pointer" @click="link">{{ item.tagsString }}</td>
-        <td class="text-right">
-            <div class="btn-group btn-group-sm" role="group">
-                <button type="button" class="btn btn-secondary" title="Bearbeiten" @click="link"><i class="fas fa-fw fa-edit"></i></button>
-                <button type="button" class="btn btn-secondary" title="Löschen" @click="destroy"><i class="fas fa-fw fa-trash"></i></button>
-            </div>
-        </td>
-    </tr>
+
+    <show :item="item" :is-selected="isSelected" @destroying="destroy()">
+
+        <template v-slot:show>
+
+            <td class="align-middle">
+                <label class="form-checkbox"></label>
+                <input :checked="isSelected" type="checkbox" @change="$emit('input', item.id)" number>
+            </td>
+            <td class="align-middle pointer" @click="show">{{ item.name }}</td>
+            <td class="align-middle pointer" @click="show">{{ item.tagsString }}</td>
+
+        </template>
+
+    </show>
+
 </template>
 
 <script>
-    import moment from "moment";
+    import show from '../tables/rows/show.vue';
+
+    import { showMixin } from "../../mixins/tables/rows/show.js";
 
     export default {
 
-        props: [ 'item', 'uri' ],
+        components: {
+            show,
+        },
+
+        mixins: [
+            showMixin,
+        ],
+
+        props: {
+            //
+        },
 
         data () {
             return {
-                id: this.item.id,
+                //
             };
         },
 
-        computed: {
-
-        },
-
         methods: {
-            destroy() {
-                axios.delete('/' + this.uri + '/' + this.id);
-                this.$emit("deleted", this.id);
-            },
-            link () {
-                location.href = '/' + this.uri + '/' + this.id;
-            }
+
         },
+
     };
 </script>

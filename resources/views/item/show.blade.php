@@ -1,6 +1,6 @@
 @extends('layouts.layout')
 
-@section('title', 'Artikel > ' . $item->name)
+@section('title', $item->label() . ' > ' . $item->name)
 
 @section('buttons')
     <a href="{{ $item->edit_path }}" class="btn btn-primary btn-sm"><i class="fas fa-edit"></i></a>

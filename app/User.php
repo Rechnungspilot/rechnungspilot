@@ -7,6 +7,8 @@ use App\Traits\HasComments;
 use App\Traits\HasCompany;
 use App\Traits\HasTags;
 use App\Traits\HasUserfiles;
+use D15r\ModelLabels\Traits\HasLabels;
+use D15r\ModelPath\Traits\HasModelPath;
 use Illuminate\Contracts\Auth\MustVerifyAEmail;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -22,10 +24,15 @@ class User extends Authenticatable
     use HasApiTokens,
         HasComments,
         HasCompany,
+        HasLabels,
+        HasModelPath,
         HasRoles,
         HasTags,
         Notifiable,
         HasUserfiles;
+
+    const ROUTE_NAME = 'users';
+    const TYPE = 'users';
 
     protected $appends = [
         'initials',
@@ -89,6 +96,16 @@ class User extends Authenticatable
         });
     }
 
+    protected static function labels() : array
+    {
+        return [
+            'nominativ' => [
+                'singular' => 'Mitarbeiter',
+                'plural' => 'Mitarbeiter',
+            ],
+        ];
+    }
+
     public static function getFromUuid(string $uuid) : self
     {
         return self::where('uuid', $uuid)->firstOrFail();
@@ -117,11 +134,6 @@ class User extends Authenticatable
     public function getIsAdminAttribute()
     {
         return ($this->id === 1);
-    }
-
-    public function getPathAttribute()
-    {
-        return route('team.show', ['team' => $this->id]);
     }
 
     public function isDeletable() : bool

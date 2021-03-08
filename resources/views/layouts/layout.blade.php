@@ -70,7 +70,7 @@
                     <a href="{{ url('/dateien') }}"><li>Dateien</li></a>
                     <a href="{{ \App\Contacts\Contact::indexPath() }}"><li>{{ \App\Contacts\Contact::label() }}</li></a>
                     <a href="{{ url('/konten') }}"><li>Konten</li></a>
-                    <a href="{{ url('/team') }}"><li>Team</li></a>
+                    <a href="{{ \App\User::indexPath() }}"><li>{{ \App\User::label() }}</li></a>
                 </ul>
                 <a href="" data-toggle="collapse" data-target="#nav-buchhaltung"><li class="d-flex align-items-center justify-content-between line-height-base">Buchhaltung<i class="fas fa-caret-right"></i></li></a>
                 <ul id="nav-buchhaltung" class="collapse">

@@ -25,12 +25,12 @@ class UserController extends Controller
         if ($request->wantsJson()) {
             return User::with(['tags'])
                 ->search($request->input('searchtext'))
-                ->withAllTags($request->input('tags'), 'team')
+                ->withAllTags($request->input('tags'), User::class)
                 ->paginate(15);
         }
 
         return view('user.index')
-            ->with('tags', Tag::withType('team')->get());
+            ->with('tags', Tag::withType(User::class)->get());
     }
 
     /**
@@ -51,17 +51,17 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        $team = User::create([
+        $user = User::create([
             'company_id' => auth()->user()->company_id,
             'lastname' => 'Mitarbeiter',
             'firstname' => 'Neuer',
         ]);
 
         if ($request->wantsJson()) {
-            return $team;
+            return $user;
         }
 
-        return redirect('/team/' . $team->getRouteKey());
+        return redirect($user->path);
     }
 
     /**
@@ -70,13 +70,16 @@ class UserController extends Controller
      * @param  \App\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(User $user)
     {
-        $team = User::with(['roles', 'company', 'tags'])->findOrFail($id);
+        $user->load([
+            'roles',
+            'company',
+            'tags'
+        ]);
 
         return view('user.show')
-            ->with('user', $team)
-            ->with('roles', Role::all());
+            ->with('user', $user);
     }
 
     /**
@@ -85,9 +88,17 @@ class UserController extends Controller
      * @param  \App\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function edit(User $team)
+    public function edit(User $user)
     {
-        //
+        $user->load([
+            'roles',
+            'company',
+            'tags'
+        ]);
+
+        return view('user.edit')
+            ->with('user', $user)
+            ->with('roles', Role::all());
     }
 
     /**
@@ -97,14 +108,14 @@ class UserController extends Controller
      * @param  \App\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, User $team)
+    public function update(Request $request, User $user)
     {
         $validatedData = $request->validate([
             'address' => 'nullable|string|max:255',
             'bankname' => 'nullable|string|max:255',
             'bic' => 'nullable|string|max:255',
             'city' => 'nullable|string|max:255',
-            'email' => 'required|email|unique:users,email,' . $team->id,
+            'email' => 'required|email|unique:users,email,' . $user->id,
             'firstname' => 'nullable|string|max:255',
             'hex_color_code' => 'required|regex:/#([a-f0-9]{3}){1,2}\b/i',
             'iban' => 'nullable|string|max:255',
@@ -116,10 +127,11 @@ class UserController extends Controller
             'roles' => 'array',
         ]);
 
-        $team->syncRoles($validatedData['roles'] ?? []);
-        $team->update($validatedData);
+        $user->syncRoles($validatedData['roles'] ?? []);
+        $user->update($validatedData);
 
-        return back()->with('status', 'Mitarbeiter gespeichert!');
+        return redirect($user->path)
+            ->with('status', 'Mitarbeiter gespeichert!');
     }
 
     /**
@@ -128,14 +140,14 @@ class UserController extends Controller
      * @param  \App\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request, User $team)
+    public function destroy(Request $request, User $user)
     {
-        $team->delete();
+        $user->delete();
 
         if ($request->wantsJson()) {
             return;
         }
 
-        return redirect(route('team.index'));
+        return redirect($user->index_path);
     }
 }

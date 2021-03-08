@@ -1,6 +1,6 @@
 @extends('layouts.layout')
 
-@section('title', 'Artikel > ' . $item->name)
+@section('title', $item->label() . ' > ' . $item->name)
 
 @section('buttons')
     <a href="{{ url($item->path) }}" class="btn btn-secondary btn-sm">Artikel</a>
