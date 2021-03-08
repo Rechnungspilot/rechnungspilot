@@ -1,6 +1,6 @@
 @extends('layouts.layout')
 
-@section('title', 'Kontakte > ' . $contact->name)
+@section('title', $contact->label() . ' > ' . $contact->name)
 
 @section('buttons')
     <div class="dropdown">
@@ -23,10 +23,10 @@
             <button class="dropdown-item pointer" data-toggle="modal" data-target="#confirm-delete">Löschen</button>
         </div>
     </div>
-    <a href="{{ url($contact->path . '/edit') }}" class="btn btn-primary btn-sm ml-1"><i class="fas fa-edit"></i></a>
-    <a href="{{ url('/kontakte') }}" class="btn btn-secondary btn-sm ml-1">Übersicht</a>
+    <a href="{{ $contact->edit_path }}" class="btn btn-primary btn-sm ml-1"><i class="fas fa-edit"></i></a>
+    <a href="{{ $contact->index_path }}" class="btn btn-secondary btn-sm ml-1">Übersicht</a>
     @if ($contact->isDeletable())
-        <form action="{{ url('/kontakte', $contact->id) }}" class="ml-1" method="POST">
+        <form action="{{ $contact->path }}" class="ml-1" method="POST">
             @csrf
             @method('DELETE')
 

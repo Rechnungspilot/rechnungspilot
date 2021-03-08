@@ -28,22 +28,20 @@
 <script>
     import show from '../tables/rows/show.vue';
 
+    import { showMixin } from "../../mixins/tables/rows/show.js";
+
     export default {
 
         components: {
             show,
         },
 
+        mixins: [
+            showMixin,
+        ],
+
         props: {
-            item: {
-                type: Object,
-                required: true,
-            },
-            isSelected: {
-                type: Boolean,
-                required: false,
-                default: false,
-            },
+            //
         },
 
         data () {
@@ -53,16 +51,8 @@
         },
 
         methods: {
-            destroy() {
-                axios.delete(this.item.path);
-                this.$emit("deleted", this.id);
-            },
-            edit() {
-                location.href = this.item.path + '/edit';
-            },
-            show() {
-                location.href = this.item.path;
-            }
+
         },
+
     };
 </script>

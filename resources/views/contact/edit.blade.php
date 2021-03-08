@@ -1,15 +1,15 @@
 @extends('layouts.layout')
 
-@section('title', 'Kontakte > ' . $contact->name)
+@section('title', $contact->label() . ' > ' . $contact->name)
 
 @section('buttons')
-    <a href="{{ url('/kontakte') }}" class="btn btn-secondary ml-1">Übersicht</a>
+    <a href="{{ $contact->path }}" class="btn btn-secondary ml-1">Übersicht</a>
 @endsection
 
 @section('content')
     <div class="container-fluid">
 
-        <form action="{{ url('/kontakte', $contact->id) }}" method="POST">
+        <form action="{{ $contact->path }}" method="POST">
             @csrf
             @method('PUT')
 

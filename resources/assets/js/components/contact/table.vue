@@ -77,7 +77,9 @@
         },
 
         methods: {
-            //
+            created(item) {
+                location.href = item.edit_path;
+            },
         },
     };
 </script>

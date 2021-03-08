@@ -3975,6 +3975,7 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _tables_rows_show_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../tables/rows/show.vue */ "./resources/assets/js/components/tables/rows/show.vue");
+/* harmony import */ var _mixins_tables_rows_show_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../mixins/tables/rows/show.js */ "./resources/assets/js/mixins/tables/rows/show.js");
 //
 //
 //
@@ -4001,37 +4002,19 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
     show: _tables_rows_show_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
   },
-  props: {
-    item: {
-      type: Object,
-      required: true
-    },
-    isSelected: {
-      type: Boolean,
-      required: false,
-      "default": false
-    }
+  mixins: [_mixins_tables_rows_show_js__WEBPACK_IMPORTED_MODULE_1__["showMixin"]],
+  props: {//
   },
   data: function data() {
     return {//
     };
   },
-  methods: {
-    destroy: function destroy() {
-      axios["delete"](this.item.path);
-      this.$emit("deleted", this.id);
-    },
-    edit: function edit() {
-      location.href = this.item.path + '/edit';
-    },
-    show: function show() {
-      location.href = this.item.path;
-    }
-  }
+  methods: {}
 });
 
 /***/ }),
@@ -4118,7 +4101,10 @@ __webpack_require__.r(__webpack_exports__);
       }
     };
   },
-  methods: {//
+  methods: {
+    created: function created(item) {
+      location.href = item.edit_path;
+    }
   }
 });
 
@@ -5679,6 +5665,7 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _tables_rows_show_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../tables/rows/show.vue */ "./resources/assets/js/components/tables/rows/show.vue");
+/* harmony import */ var _mixins_tables_rows_show_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../mixins/tables/rows/show.js */ "./resources/assets/js/mixins/tables/rows/show.js");
 //
 //
 //
@@ -5707,37 +5694,19 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
     show: _tables_rows_show_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
   },
-  props: {
-    item: {
-      type: Object,
-      required: true
-    },
-    isSelected: {
-      type: Boolean,
-      required: false,
-      "default": false
-    }
+  mixins: [_mixins_tables_rows_show_js__WEBPACK_IMPORTED_MODULE_1__["showMixin"]],
+  props: {//
   },
   data: function data() {
     return {//
     };
   },
-  methods: {
-    destroy: function destroy() {
-      axios["delete"](this.item.path);
-      this.$emit("deleted", this.id);
-    },
-    edit: function edit() {
-      location.href = this.item.path + '/edit';
-    },
-    show: function show() {
-      location.href = this.item.path;
-    }
-  }
+  methods: {}
 });
 
 /***/ }),
@@ -89913,6 +89882,48 @@ var editableMixin = {
       })["catch"](function (error) {
         component.errors = error.response.data.errors;
       });
+    }
+  }
+};
+
+/***/ }),
+
+/***/ "./resources/assets/js/mixins/tables/rows/show.js":
+/*!********************************************************!*\
+  !*** ./resources/assets/js/mixins/tables/rows/show.js ***!
+  \********************************************************/
+/*! exports provided: showMixin */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "showMixin", function() { return showMixin; });
+var showMixin = {
+  props: {
+    item: {
+      type: Object,
+      required: true
+    },
+    isSelected: {
+      type: Boolean,
+      required: false,
+      "default": false
+    }
+  },
+  data: function data() {
+    return {//
+    };
+  },
+  methods: {
+    destroy: function destroy() {
+      axios["delete"](this.item.path);
+      this.$emit("deleted", this.item);
+    },
+    edit: function edit() {
+      location.href = this.item.path + '/edit';
+    },
+    show: function show() {
+      location.href = this.item.path;
     }
   }
 };
