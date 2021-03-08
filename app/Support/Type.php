@@ -2,12 +2,14 @@
 
 namespace App\Support;
 
+use App\Contacts\Contact;
 use App\Item;
 use Illuminate\Support\Arr;
 
 class Type
 {
     const ALL = [
+        Contact::TYPE => Contact::class,
         Item::TYPE => Item::class,
     ];
 

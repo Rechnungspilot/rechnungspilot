@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Controller;
+namespace Tests\Feature\Controller\Contacts;
 
 use App\Contacts\Contact;
 use App\Models\CustomFields\CustomField;
@@ -12,7 +12,7 @@ use Tests\TestCase;
 
 class ContactControllerTest extends TestCase
 {
-    protected $baseRouteName = 'kontakte';
+    protected $baseRouteName = 'contacts';
 
     /**
      * @test
@@ -25,10 +25,10 @@ class ContactControllerTest extends TestCase
             'index' => [],
             'create' => [],
             'store' => [],
-            'show' => ['kontakte' => $id],
-            'edit' => ['kontakte' => $id],
-            'update' => ['kontakte' => $id],
-            'destroy' => ['kontakte' => $id],
+            'show' => ['contact' => $id],
+            'edit' => ['contact' => $id],
+            'update' => ['contact' => $id],
+            'destroy' => ['contact' => $id],
         ];
         $this->a_guest_can_not_access($actions);
     }
@@ -42,7 +42,7 @@ class ContactControllerTest extends TestCase
 
         $contactOfADifferentCompany = factory(Contact::class)->create();
 
-        $this->a_user_can_not_see_things_from_a_different_company(['kontakte' => $contactOfADifferentCompany->id]);
+        $this->a_user_can_not_see_things_from_a_different_company(['contact' => $contactOfADifferentCompany->id]);
 
         $response = $this->json('get', route($this->baseRouteName . '.index'))
             ->assertJsonCount($existing_count, 'data');
@@ -92,7 +92,7 @@ class ContactControllerTest extends TestCase
         $existing_count = Contact::where('company_id', $this->user->company_id)->count();
 
         $response->assertStatus(Response::HTTP_FOUND)
-            ->assertRedirect(route($this->baseRouteName . '.show', ['kontakte' => $contact->id]));
+            ->assertRedirect(route($this->baseRouteName . '.edit', ['contact' => $contact->id]));
 
         $this->assertDatabaseHas('contacts', [
             'id' => $contact->id,
@@ -149,7 +149,7 @@ class ContactControllerTest extends TestCase
         $existing_count = Contact::where('company_id', $this->user->company_id)->count();
 
         $response->assertStatus(Response::HTTP_FOUND)
-            ->assertRedirect(route($this->baseRouteName . '.show', ['kontakte' => $contact->id]));
+            ->assertRedirect(route($this->baseRouteName . '.edit', ['contact' => $contact->id]));
 
         $this->assertDatabaseHas('contacts', [
             'id' => $contact->id,
@@ -184,7 +184,7 @@ class ContactControllerTest extends TestCase
             'company_id' => $this->user->company_id,
         ]);
 
-        $this->getShowViewResponse(['kontakte' => $contact->id]);
+        $this->getShowViewResponse(['contact' => $contact->id]);
     }
 
     /**
@@ -196,7 +196,7 @@ class ContactControllerTest extends TestCase
             'company_id' => $this->user->company_id,
         ]);
 
-        $this->getEditViewResponse(['kontakte' => $contact->id]);
+        $this->getEditViewResponse(['contact' => $contact->id]);
     }
 
     /**
@@ -210,7 +210,7 @@ class ContactControllerTest extends TestCase
 
         $this->signIn($this->user);
 
-        $response = $this->put(route($this->baseRouteName . '.update', ['kontakte' => $contact->id]), [
+        $response = $this->put(route($this->baseRouteName . '.update', ['contact' => $contact->id]), [
             'address' => '',
             'bankname' => '',
             'bic' => '',
@@ -339,7 +339,7 @@ class ContactControllerTest extends TestCase
             $data[$customfieldvalue->key] = $customfieldvalue->value . ' updated';
         }
 
-        $response = $this->put(route($this->baseRouteName . '.update', ['kontakte' => $contact->id]), $data);
+        $response = $this->put(route($this->baseRouteName . '.update', ['contact' => $contact->id]), $data);
 
         $response->assertStatus(Response::HTTP_FOUND)
             ->assertSessionHasNoErrors()
@@ -363,7 +363,7 @@ class ContactControllerTest extends TestCase
             'company_id' => $this->user->company_id,
         ]);
 
-        $this->deleteModel($model, ['kontakte' => $model->id])
+        $this->deleteModel($model, ['contact' => $model->id])
             ->assertRedirect(route($this->baseRouteName . '.index'));
     }
 }

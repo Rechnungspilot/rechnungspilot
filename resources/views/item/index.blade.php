@@ -1,6 +1,6 @@
 @extends('layouts.layout')
 
-@section('title', 'Artikel')
+@section('title', \App\Item::label())
 
 @section('content')
 

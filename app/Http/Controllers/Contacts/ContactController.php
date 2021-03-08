@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Contacts;
 
 use App\Contacts\Contact;
 use App\Http\Controllers\Controller;
@@ -79,12 +79,11 @@ class ContactController extends Controller
             'number' => Contact::nextNumber(),
         ]);
 
-        if ($request->wantsJson())
-        {
+        if ($request->wantsJson()) {
             return response()->json($contact->fresh(), 201);
         }
 
-        return redirect('/kontakte/' . $contact->getRouteKey());
+        return redirect($contact->edit_path);
     }
 
     /**
@@ -93,9 +92,9 @@ class ContactController extends Controller
      * @param  \App\contact  $contact
      * @return \Illuminate\Http\Response
      */
-    public function show(Contact $kontakte)
+    public function show(Contact $contact)
     {
-        $kontakte->load([
+        $contact->load([
             'abos',
             'customfields',
             'people',
@@ -104,7 +103,7 @@ class ContactController extends Controller
         ]);
 
         return view('contact.show')
-            ->with('contact', $kontakte)
+            ->with('contact', $contact)
             ->with('net', 0)
             ->with('tax_value', 0)
             ->with('gross', 0)
@@ -117,16 +116,16 @@ class ContactController extends Controller
      * @param  \App\contact  $contact
      * @return \Illuminate\Http\Response
      */
-    public function edit(Contact $kontakte)
+    public function edit(Contact $contact)
     {
-        $kontakte->load([
+        $contact->load([
             'customfields',
             'tags',
         ]);
 
         return view('contact.edit')
-            ->with('contact', $kontakte)
-            ->with('customfields', CustomField::for($kontakte))
+            ->with('contact', $contact)
+            ->with('customfields', CustomField::for($contact))
             ->with('tags', Tag::withType('kontakte')->get())
             ->with('terms', Term::where('type', Invoice::class)
                 ->orderBy('name', 'ASC')
@@ -146,7 +145,7 @@ class ContactController extends Controller
      * @param  \App\contact  $contact
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, contact $kontakte)
+    public function update(Request $request, contact $contact)
     {
         $validatedData = $request->validate([
             'address' => 'nullable|string|max:255',
@@ -176,12 +175,12 @@ class ContactController extends Controller
             'company_number' => 'nullable|string|max:255',
         ]);
 
-        $kontakte->customfields->validate($request)
+        $contact->customfields->validate($request)
             ->update();
 
-        $kontakte->update($validatedData);
+        $contact->update($validatedData);
 
-        return redirect($kontakte->path)
+        return redirect($contact->path)
             ->with('status', 'Änderungen gespeichert!');
     }
 
@@ -191,12 +190,12 @@ class ContactController extends Controller
      * @param  \App\contact  $contact
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request, Contact $kontakte)
+    public function destroy(Request $request, Contact $contact)
     {
-        $isDeletable = $kontakte->isDeletable();
+        $isDeletable = $contact->isDeletable();
         if ($isDeletable)
         {
-            $kontakte->delete();
+            $contact->delete();
         }
 
         if ($request->wantsJson())
@@ -204,7 +203,7 @@ class ContactController extends Controller
             return;
         }
 
-        return redirect('/kontakte')
+        return redirect($contact->index_path)
             ->with('status', 'Kontakt ' . ($isDeletable ? '' : ' nicht ') . ' gelöscht!');
     }
 }

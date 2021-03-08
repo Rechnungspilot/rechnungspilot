@@ -68,7 +68,7 @@
                 <ul id="nav-stammdaten" class="collapse">
                     <a href="{{ \App\Item::indexPath() }}"><li>{{ \App\Item::label() }}</li></a>
                     <a href="{{ url('/dateien') }}"><li>Dateien</li></a>
-                    <a href="{{ url('/kontakte') }}"><li>Kontakte</li></a>
+                    <a href="{{ \App\Contacts\Contact::indexPath() }}"><li>{{ \App\Contacts\Contact::label() }}</li></a>
                     <a href="{{ url('/konten') }}"><li>Konten</li></a>
                     <a href="{{ url('/team') }}"><li>Team</li></a>
                 </ul>

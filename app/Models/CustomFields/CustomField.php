@@ -83,7 +83,7 @@ class CustomField extends Model
 
     public static function getForFromModel(Model $model) : string
     {
-        return $model::class;
+        return get_class($model);
     }
 
     public function getInputTypeNameAttribute()

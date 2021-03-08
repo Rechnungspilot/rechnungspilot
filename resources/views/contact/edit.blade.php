@@ -130,7 +130,7 @@
                                 </div>
                             </div>
 
-                            <tag-select class="my-2" :selected="{{ json_encode($contact->tags) }}" type="kontakte" type_id="{{ $contact->id }}"></tag-select>
+                            <tag-select class="my-2" :selected="{{ json_encode($contact->tags) }}" index-path="{{ $contact::indexPathTags() }}" path="{{ $contact->tags_path }}"></tag-select>
 
                         </div>
                     </div>

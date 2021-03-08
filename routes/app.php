@@ -47,6 +47,7 @@ Route::bind('model', function ($id) {
         case 'abos': return Abo::findOrFail($id); break;
         case 'anfragen': return Inquiry::findOrFail($id); break;
         case 'angebote': return Receipt::findOrFail($id); break;
+        case 'contacts': return Contact::findOrFail($id); break;
         case 'items': return Item::findOrFail($id); break;
         case 'artikel': return Item::findOrFail($id); break;
         case 'aufgaben': return Todo::findOrFail($id); break;
@@ -426,6 +427,7 @@ Route::middleware(['auth', 'company.locked'])->group(function () {
     include('raw.php');
 
     Route::resource('items/units', 'Items\Units\UnitController', ['as' => 'items']);
+    Route::resource(Contact::ROUTE_NAME, 'Contacts\ContactController');
     Route::resource(Item::ROUTE_NAME, 'Items\ItemController');
 
 });

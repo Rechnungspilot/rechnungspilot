@@ -16,7 +16,7 @@ class ItemControllerTest extends TestCase
     protected $user;
     protected $unit;
 
-    protected $baseRouteName = 'artikel';
+    protected $baseRouteName = 'items';
 
     protected function setUp() : void
     {
@@ -40,10 +40,10 @@ class ItemControllerTest extends TestCase
             'index' => [],
             'create' => [],
             'store' => [],
-            'show' => ['artikel' => $id],
-            'edit' => ['artikel' => $id],
-            'update' => ['artikel' => $id],
-            'destroy' => ['artikel' => $id],
+            'show' => ['item' => $id],
+            'edit' => ['item' => $id],
+            'update' => ['item' => $id],
+            'destroy' => ['item' => $id],
         ];
         $this->a_guest_can_not_access($actions);
     }
@@ -126,7 +126,7 @@ class ItemControllerTest extends TestCase
         $item = Item::where('name', $name)->first();
 
         $response->assertStatus(302)
-            ->assertRedirect(route($this->baseRouteName . '.show', ['artikel' => $item->id]));
+            ->assertRedirect(route($this->baseRouteName . '.show', ['item' => $item->id]));
 
         $this->assertDatabaseHas('item_price', [
             'company_id' => 1,
@@ -155,7 +155,7 @@ class ItemControllerTest extends TestCase
 
         $item = $this->createItem();
 
-        $response = $this->get(route($this->baseRouteName . '.show', ['artikel' => $item->id]));
+        $response = $this->get(route($this->baseRouteName . '.show', ['item' => $item->id]));
 
         $response->assertStatus(200);
     }
@@ -169,7 +169,7 @@ class ItemControllerTest extends TestCase
 
         $item = $this->createItem();
 
-        $response = $this->get(route($this->baseRouteName . '.edit', ['artikel' => $item->id]));
+        $response = $this->get(route($this->baseRouteName . '.edit', ['item' => $item->id]));
 
         $response->assertStatus(200);
     }
@@ -191,7 +191,7 @@ class ItemControllerTest extends TestCase
 
         $this->signIn($this->user);
 
-        $response = $this->get(route($this->baseRouteName . '.show', ['artikel' => $item->id]));
+        $response = $this->get(route($this->baseRouteName . '.show', ['item' => $item->id]));
 
         $response->assertStatus(404);
     }
@@ -205,7 +205,7 @@ class ItemControllerTest extends TestCase
 
         $this->signIn($this->user);
 
-        $response = $this->put(route($this->baseRouteName . '.update', ['artikel' => $item->id]), [
+        $response = $this->put(route($this->baseRouteName . '.update', ['item' => $item->id]), [
             'cost_center' => '1',
             'decimals' => 2,
             'description' => '',
@@ -259,7 +259,7 @@ class ItemControllerTest extends TestCase
 
         $this->signIn($this->user);
 
-        $response = $this->put(route($this->baseRouteName . '.update', ['artikel' => $item->id]), [
+        $response = $this->put(route($this->baseRouteName . '.update', ['item' => $item->id]), [
             'name' => '',
         ]);
 
@@ -272,6 +272,8 @@ class ItemControllerTest extends TestCase
      */
     public function a_user_can_delete_an_item_if_it_is_deletable()
     {
+        $this->withoutExceptionHandling();
+
         $item = $this->createItem();
         $companyId = $item->company_id;
         $contact = factory(Contact::class)->create([
@@ -289,7 +291,7 @@ class ItemControllerTest extends TestCase
         $invoice->addItem($item);
         $this->assertCount(1, $item->receipts, 'item has 1 receipt');
 
-        $response = $this->delete(route($this->baseRouteName . '.destroy', ['artikel' => $item->id]));
+        $response = $this->delete(route($this->baseRouteName . '.destroy', ['item' => $item->id]));
 
         $response->assertStatus(302)
             ->assertRedirect(route($this->baseRouteName . '.index'));
@@ -308,7 +310,7 @@ class ItemControllerTest extends TestCase
 
         $this->signIn($this->user);
 
-        $response = $this->json('delete', route($this->baseRouteName . '.destroy', ['artikel' => $item->id]));
+        $response = $this->json('delete', route($this->baseRouteName . '.destroy', ['item' => $item->id]));
 
         $response->assertStatus(204);
 

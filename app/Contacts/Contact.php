@@ -16,6 +16,8 @@ use App\Traits\HasCustomFields;
 use App\Traits\HasTags;
 use App\Traits\HasUserfiles;
 use Carbon\CarbonPeriod;
+use D15r\ModelLabels\Traits\HasLabels;
+use D15r\ModelPath\Traits\HasModelPath;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -26,7 +28,17 @@ use Illuminate\Support\Facades\DB;
 
 class Contact extends Model
 {
-    use HasComments, HasCompany, HasCustomFields, HasTags, HasUserfiles, EagerLoadPivotTrait;
+    use HasComments,
+        HasCompany,
+        HasCustomFields,
+        HasLabels,
+        HasModelPath,
+        HasTags,
+        HasUserfiles,
+        EagerLoadPivotTrait;
+
+    const ROUTE_NAME = 'contacts';
+    const TYPE = 'contacts';
 
     public $uri = '/kontakte';
 
@@ -69,6 +81,16 @@ class Contact extends Model
         'creditor_account_number',
         'company_number',
     ];
+
+    public static function labels() : array
+    {
+        return [
+            'nominativ' => [
+                'singular' => 'Kontakt',
+                'plural' => 'Kontakte',
+            ],
+        ];
+    }
 
     static function nextNumber()
     {
@@ -117,11 +139,6 @@ class Contact extends Model
     public function setEmailReceiptAttribute($value)
     {
         $this->attributes['email_receipt'] = $value == -1 ? null : $value;
-    }
-
-    public function getPathAttribute()
-    {
-        return $this->uri . '/' . $this->id;
     }
 
     public function getLinkAttribute() : string

@@ -169,7 +169,6 @@ class ItemController extends Controller
      */
     public function destroy(Request $request, Item $item)
     {
-
         $isDeletable = $item->isDeletable();
         if ($isDeletable)
         {
@@ -182,7 +181,7 @@ class ItemController extends Controller
             return response()->json(null, 204);
         }
 
-        return redirect()->route('artikel.index')
+        return redirect($item->index_path)
             ->with('status', $isDeletable ? 'Artikel gelöscht' : 'Artikel konnte nicht gelöscht werden');
     }
 }

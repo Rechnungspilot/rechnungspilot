@@ -56,12 +56,12 @@
     export default {
 
         components: {
+            filterPerPage,
             filterTags,
             filterType,
-            filterPerPage,
             inputText,
-            tableBase,
             row,
+            tableBase,
         },
 
         mixins: [
