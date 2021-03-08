@@ -180,6 +180,12 @@ Route::middleware(['auth', 'company.locked'])->group(function () {
     Route::get('bank/konten', 'BankCompanyController@index');
     Route::post('bank/konten', 'BankCompanyController@store');
 
+    // Projektabschnitte Aufgaben
+    Route::get('projektabschnitte/{section}/aufgaben', 'Projects\TodoController@index');
+    Route::post('projektabschnitte/{section}/aufgaben', 'Projects\TodoController@store');
+    Route::get('projektabschnitte/{section}/aufgaben/{todo}', 'Projects\TodoController@show');
+    Route::put('projektabschnitte/{section}/aufgaben/{todo}', 'Projects\TodoController@update');
+
     // Belege
     Route::get('belege/{receipt}/artikel', 'Receipts\ItemController@index')->name('receipt.item.index');
     Route::post('belege/{receipt}/artikel', 'Receipts\ItemController@store')->name('receipt.item.store');
@@ -343,12 +349,6 @@ Route::middleware(['auth', 'company.locked'])->group(function () {
         Route::get('projekte/{project}/abschnitte/{section}', 'Projects\SectionController@show');
         Route::put('projekte/{project}/abschnitte/{section}', 'Projects\SectionController@update');
         Route::delete('projektabschnitte/{section}', 'Projects\SectionController@destroy');
-
-        // Aufgaben
-        Route::get('projektabschnitte/{section}/aufgaben', 'Projects\TodoController@index');
-        Route::post('projektabschnitte/{section}/aufgaben', 'Projects\TodoController@store');
-        Route::get('projektabschnitte/{section}/aufgaben/{todo}', 'Projects\TodoController@show');
-        Route::put('projektabschnitte/{section}/aufgaben/{todo}', 'Projects\TodoController@update');
 
         // Gruppen
         Route::get('projektgruppen', 'Projects\GroupController@index');

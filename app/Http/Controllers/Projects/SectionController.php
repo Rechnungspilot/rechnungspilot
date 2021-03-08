@@ -16,8 +16,7 @@ class SectionController extends Controller
      */
     public function index(Request $request, Project $project)
     {
-        if ($request->wantsJson())
-        {
+        if ($request->wantsJson()) {
             return $project->sections;
         }
     }
