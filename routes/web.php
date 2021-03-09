@@ -45,6 +45,10 @@ Route::get('/d15r', function () {
     return view('d15r.home');
 });
 
+Route::get('/d15r/notes/{path}', function (Illuminate\Http\Request $request, string $path) {
+    dump($path);
+})->where('path', '(.*)');
+
 Route::get('/hof-sundermeier', function () {
     return view('hof-sundermeier.app');
 });
