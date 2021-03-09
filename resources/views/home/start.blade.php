@@ -50,6 +50,19 @@
 
     <div class="card-deck mb-3">
         <div class="card mb-4 shadow-sm">
+
+            <div class="card-body d-flex flex-column align-items-center justify-content-center">
+                <blockquote class="blockquote">
+                    <p class="mb-0">Wir können ausschließlich positives berichten! Die Kommunikation und Zusammenarbeit macht große Freude und ist immer Zielführend. Ideen werden in rasanter Geschwindigkeit ausgearbeitet und hochwertig umgesetzt. Wir profitieren ungemein von der Zusammenarbeit und sind dementsprechend begeistert.</p>
+                    <footer class="blockquote-footer">Brian und Phil von <a href="https://keepseven.de/" target="_blank" rel=”nofollow”><cite title="Source Title">KeepSeven</cite></a></footer>
+                </blockquote>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="card-deck mb-3">
+        <div class="card mb-4 shadow-sm">
             <div class="card-header">
                 <h4 class="my-0 font-weight-normal">Meine Ziele</h4>
             </div>
