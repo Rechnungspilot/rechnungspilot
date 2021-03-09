@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Contacts;
 
 use App\Contacts\Contact;
+use App\Http\Controllers\Controller;
 use App\Receipts\Receipt;
 use Illuminate\Http\Request;
 
-class ContactRevenueController extends Controller
+class RevenueController extends Controller
 {
     /**
      * Display the specified resource.

@@ -306,8 +306,8 @@ Route::middleware(['auth', 'company.locked'])->group(function () {
     Route::get('konten/{account}/sync', 'Bank\Accounts\SyncController@show');
 
     // Kontakte
-    Route::get('kontakte/adresse/{contact}', 'ContactAddressController@show');
-    Route::get('kontakte/{contact}/umsatz', 'ContactRevenueController@show');
+    Route::get('contacts/{contact}/adress', 'Contacts\AddressController@show');
+    Route::get('contacts/{contact}/umsatz', 'Contacts\RevenueController@show');
 
     // Einnahmen
     Route::get('mahnungen', 'DunController@index');
