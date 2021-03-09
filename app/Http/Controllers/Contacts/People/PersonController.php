@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Contacts\People;
 
 use App\Contacts\Contact;
 use App\Contacts\Person;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 class PersonController extends Controller
@@ -54,7 +55,7 @@ class PersonController extends Controller
      * @param  \App\Contacts\Person  $person
      * @return \Illuminate\Http\Response
      */
-    public function show(Person $person)
+    public function show(Contact $contact, Person $person)
     {
         //
     }
@@ -65,9 +66,10 @@ class PersonController extends Controller
      * @param  \App\Contacts\Person  $person
      * @return \Illuminate\Http\Response
      */
-    public function edit(Person $person)
+    public function edit(Contact $contact, Person $person)
     {
         return view('contact.person.edit')
+            ->with('contact', $contact)
             ->with('person', $person);
     }
 
@@ -78,7 +80,7 @@ class PersonController extends Controller
      * @param  \App\Contacts\Person  $person
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Person $person)
+    public function update(Request $request, Contact $contact, Person $person)
     {
         $validatedData = $request->validate([
             'email' => 'nullable|email',
@@ -91,7 +93,7 @@ class PersonController extends Controller
         ]);
         $person->update($validatedData);
 
-        return back()
+        return redirect($contact->path)
             ->with('status', 'Ansprechpartner gespeichert!');
     }
 
@@ -101,7 +103,7 @@ class PersonController extends Controller
      * @param  \App\Contacts\Person  $person
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Person $person)
+    public function destroy(Request $request, Contact $contact, Person $person)
     {
         $person->delete();
     }

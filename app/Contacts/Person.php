@@ -3,11 +3,17 @@
 namespace App\Contacts;
 
 use App\Traits\HasCompany;
+use D15r\ModelLabels\Traits\HasLabels;
+use D15r\ModelPath\Traits\HasModelPath;
 use Illuminate\Database\Eloquent\Model;
 
 class Person extends Model
 {
-    use HasCompany;
+    use HasCompany,
+        HasLabels,
+        HasModelPath;
+
+    const ROUTE_NAME = 'contacts.people';
 
     protected $appends = [
         'name',
@@ -26,6 +32,16 @@ class Person extends Model
         'phonenumber',
         'title',
     ];
+
+    protected static function labels() : array
+    {
+        return [
+            'nominativ' => [
+                'singular' => 'Ansprechpartner',
+                'plural' => 'Ansprechpartner',
+            ],
+        ];
+    }
 
     public static function setDefault(self $person, string $type)
     {
@@ -46,6 +62,14 @@ class Person extends Model
     public function getNameAttribute()
     {
         return $this->lastname . ', ' . $this->firstname;
+    }
+
+    public function getRouteParameterAttribute() : array
+    {
+        return [
+            'contact' => $this->contact_id,
+            'person' => $this->id,
+        ];
     }
 
     public function scopeSearch($query, $searchtext)

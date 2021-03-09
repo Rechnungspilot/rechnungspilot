@@ -136,6 +136,13 @@ class Contact extends Model
 
     }
 
+    public function getPeoplePathAttribute() : string
+    {
+        return Person::indexPath([
+            'contact_id' => $this->id
+        ]);
+    }
+
     public function setEmailReceiptAttribute($value)
     {
         $this->attributes['email_receipt'] = $value == -1 ? null : $value;

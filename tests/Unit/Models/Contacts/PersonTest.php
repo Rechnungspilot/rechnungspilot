@@ -6,10 +6,40 @@ use App\Contacts\Contact;
 use App\Contacts\Person;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
-use Tests\TestCase;
+use Tests\Unit\TestCase;
 
 class PersonTest extends TestCase
 {
+    protected $class_name = Person::class;
+
+    /**
+     * @test
+     */
+    public function it_has_model_paths()
+    {
+        $contact = factory(Contact::class)->create();
+        $model = factory($this->class_name)->create([
+            'company_id' => $contact->company_id,
+            'contact_id' => $contact->id,
+        ]);
+
+        $route_parameter = [
+            'contact' => $model->contact_id,
+            'person' => $model->id,
+        ];
+
+        $routes = [
+            'index_path' => strtok(route($this->class_name::ROUTE_NAME . '.index', $route_parameter), '?'),
+            'create_path' => strtok(route($this->class_name::ROUTE_NAME . '.create', $route_parameter), '?'),
+            'path' => route($this->class_name::ROUTE_NAME . '.show', $route_parameter),
+            'edit_path' => route($this->class_name::ROUTE_NAME . '.edit', $route_parameter),
+        ];
+
+        $this->testModelPaths($model, $routes, [
+            'contact_id' => $model->contact_id,
+        ]);
+    }
+
     /**
      * @test
      */

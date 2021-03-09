@@ -2,6 +2,7 @@
 
 use App\Company;
 use App\Contacts\Contact;
+use App\Contacts\Person;
 use App\Item;
 use App\Items\Price;
 use App\Mail\CompanyRegistered;
@@ -81,7 +82,7 @@ Route::middleware(['auth', 'company.locked'])->group(function () {
     Route::get('/home', 'HomeController@index')->name('home');
 
     Route::resource('berechtigungen', 'PermissionController');
-    Route::resource('kontakte', 'ContactController');
+    Route::resource('kontakte', 'Contacts\ContactController');
     Route::resource('team', 'Users\UserController');
     Route::resource('zugriffsrollen', 'RoleController');
 
@@ -232,10 +233,10 @@ Route::middleware(['auth', 'company.locked'])->group(function () {
     Route::post('{type}/{model}/dateien', 'UserfileableController@store');
 
     // Einheiten
-    Route::get('einheiten', 'UnitController@index');
-    Route::post('einheiten', 'UnitController@store');
-    Route::put('einheiten/{unit}', 'UnitController@update');
-    Route::delete('einheiten/{unit}', 'UnitController@destroy');
+    Route::get('einheiten', 'Items\Units\UnitController@index');
+    Route::post('einheiten', 'Items\Units\UnitController@store');
+    Route::put('einheiten/{unit}', 'Items\Units\UnitController@update');
+    Route::delete('einheiten/{unit}', 'Items\Units\UnitController@destroy');
 
     // Einnahmen
     Route::get('einnahmen', 'IncomeController@index');
@@ -318,14 +319,15 @@ Route::middleware(['auth', 'company.locked'])->group(function () {
     Route::get('mahnungen/rechnungen', 'InvoiceDunController@index');
 
     // Ansprechpartner
-    Route::get('kontakte/{contact}/ansprechpartner', 'PersonController@index')->name('contact.person.index');
-    Route::post('kontakte/{contact}/ansprechpartner', 'PersonController@store')->name('contact.person.store');
-    Route::get('kontakte/ansprechpartner/{person}/edit', 'PersonController@edit')->name('contact.person.edit');
-    Route::put('kontakte/ansprechpartner/{person}', 'PersonController@update')->name('contact.person.update');
-    Route::delete('kontakte/ansprechpartner/{person}', 'PersonController@destroy')->name('contact.person.destroy');
+    Route::get('kontakte/{contact}/ansprechpartner', 'Contacts\People\PersonController@index')->name('contact.person.index');
+    Route::post('kontakte/{contact}/ansprechpartner', 'Contacts\People\PersonController@store')->name('contact.person.store');
+    Route::get('kontakte/ansprechpartner/{person}', 'Contacts\People\PersonController@show')->name('contact.person.show');
+    Route::get('kontakte/ansprechpartner/{person}/edit', 'Contacts\People\PersonController@edit')->name('contact.person.edit');
+    Route::put('kontakte/ansprechpartner/{person}', 'Contacts\People\PersonController@update')->name('contact.person.update');
+    Route::delete('kontakte/ansprechpartner/{person}', 'Contacts\People\PersonController@destroy')->name('contact.person.destroy');
 
-    Route::post('kontakte/ansprechpartner/{person}/default/{type}', 'PersonDefaultController@store');
-    Route::delete('kontakte/ansprechpartner/{person}/default/{type}', 'PersonDefaultController@destroy');
+    Route::post('kontakte/ansprechpartner/{person}/default/{type}', 'Contacts\People\DefaultController@store');
+    Route::delete('kontakte/ansprechpartner/{person}/default/{type}', 'Contacts\People\DefaultController@destroy');
 
     // Leiferscheine
     Route::get('lieferscheine', 'DeliveryController@index');
@@ -431,6 +433,9 @@ Route::middleware(['auth', 'company.locked'])->group(function () {
 
     Route::resource('items/units', 'Items\Units\UnitController', ['as' => 'items']);
     Route::resource(Contact::ROUTE_NAME, 'Contacts\ContactController');
+        Route::resource(Person::ROUTE_NAME, 'Contacts\People\PersonController');
+            Route::post('contacts/{contact}/people/{person}/default/{type}', 'Contacts\People\DefaultController@store');
+            Route::delete('contacts/{contact}/people/{person}/default/{type}', 'Contacts\People\DefaultController@destroy');
     Route::resource(Item::ROUTE_NAME, 'Items\ItemController');
     Route::resource(User::ROUTE_NAME, 'Users\UserController');
 

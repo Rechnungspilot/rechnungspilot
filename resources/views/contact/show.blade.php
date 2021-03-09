@@ -68,7 +68,7 @@
                             <div class="row my-3">
                                 <div class="col-md-12">
                                     <div class="dropdown">
-                                        <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <button class="btn btn-primary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                             <i class="fas fa-plus-square"></i>
                                         </button>
                                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
@@ -141,8 +141,6 @@
 
                         </div>
 
-
-
                         <div class="col-lg-6">
                             <div class="row">
                                 <div class="col-label"><b>Telefon</b></div>
@@ -205,7 +203,7 @@
     <div class="card mb-3">
         <div class="card-header">Ansprechpartner</div>
         <div class="card-body">
-            <person-table contact-id="{{ $contact->id}}"></person-table>
+            <person-table index-path="{{ $contact->people_path }}" contact-id="{{ $contact->id}}"></person-table>
         </div>
     </div>
 

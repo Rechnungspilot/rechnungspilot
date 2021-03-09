@@ -3,7 +3,7 @@
 @section('title', $contact->label() . ' > ' . $contact->name)
 
 @section('buttons')
-    <a href="{{ $contact->path }}" class="btn btn-secondary ml-1">Übersicht</a>
+    <a href="{{ $contact->path }}" class="btn btn-secondary btn-sm ml-1">Übersicht</a>
 @endsection
 
 @section('content')
@@ -398,7 +398,7 @@
         <div class="row my-5"><div class="col"></div></div>
 
         <div class="fixed-bottom bg-white p-3 text-right">
-            <button type="submit" class="btn btn-primary">Speichern</button>
+            <button type="submit" class="btn btn-primary btn-sm">Speichern</button>
         </div>
 
     </form>

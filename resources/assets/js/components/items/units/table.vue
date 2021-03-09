@@ -37,8 +37,8 @@
     export default {
 
         components: {
-            row,
             inputText,
+            row,
             tableBase,
         },
 

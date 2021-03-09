@@ -3616,6 +3616,8 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _tables_rows_show_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../tables/rows/show.vue */ "./resources/assets/js/components/tables/rows/show.vue");
+/* harmony import */ var _mixins_tables_rows_show_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../mixins/tables/rows/show.js */ "./resources/assets/js/mixins/tables/rows/show.js");
 //
 //
 //
@@ -3641,31 +3643,32 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+
+
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['item'],
+  components: {
+    show: _tables_rows_show_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
+  },
+  mixins: [_mixins_tables_rows_show_js__WEBPACK_IMPORTED_MODULE_1__["showMixin"]],
   data: function data() {
-    var uri = '/kontakte/ansprechpartner';
-    return {
-      id: this.item.id,
-      link: uri + '/' + this.item.id + '/edit',
-      uri: uri
-    };
+    return {};
   },
   methods: {
-    destroy: function destroy() {
-      axios["delete"](this.uri + '/' + this.id);
-      this.$emit("deleted", this.id);
-    },
     setDefault: function setDefault(type, event) {
       var component = this;
 
       if (event.target.checked) {
-        axios.post(this.uri + '/' + this.id + '/default/' + type).then(function (response) {
-          component.$emit("setDefault", type, component.id, event.target.checked);
+        axios.post(component.item.path + '/default/' + type).then(function (response) {
+          component.$emit('setDefault', type, component.item.id, event.target.checked);
+          Vue.success('Standard gesetzt');
         });
       } else {
-        axios["delete"](this.uri + '/' + this.id + '/default/' + type).then(function (response) {
-          component.$emit("setDefault", type, component.id, event.target.checked);
+        axios["delete"](component.item.path + '/default/' + type).then(function (response) {
+          component.$emit('setDefault', type, component.item.id, event.target.checked);
+          Vue.success('Standard entfernt');
         });
       }
     }
@@ -3684,6 +3687,8 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _row_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./row.vue */ "./resources/assets/js/components/contact/person/row.vue");
+/* harmony import */ var _tables_base_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../tables/base.vue */ "./resources/assets/js/components/tables/base.vue");
+/* harmony import */ var _mixins_tables_base_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../mixins/tables/base.js */ "./resources/assets/js/mixins/tables/base.js");
 //
 //
 //
@@ -3715,85 +3720,22 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
+
+
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
-    row: _row_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
+    row: _row_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
+    tableBase: _tables_base_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
   },
-  props: ['contactId'],
+  mixins: [_mixins_tables_base_js__WEBPACK_IMPORTED_MODULE_2__["baseMixin"]],
   data: function data() {
-    return {
-      uri: '/kontakte/' + this.contactId + '/ansprechpartner',
-      items: [],
-      isLoading: true,
-      showFilter: false,
-      searchtext: '',
-      searchTimeout: null,
-      filter: {},
-      errors: {}
-    };
-  },
-  mounted: function mounted() {
-    this.fetch();
+    return {};
   },
   methods: {
-    create: function create() {
-      var component = this;
-      axios.post(this.uri).then(function (response) {
-        component.items.unshift(response.data);
-      })["catch"](function (error) {
-        component.errors = error.response.data.errors;
-      });
-    },
-    fetch: function fetch() {
-      var component = this;
-      component.isLoading = true;
-      axios.get(this.uri + '?searchtext=' + component.searchtext).then(function (response) {
-        component.items = response.data;
-        component.isLoading = false;
-      })["catch"](function (error) {
-        console.log(error);
-      });
-    },
-    search: function search() {
-      var component = this;
-
-      if (component.searchTimeout) {
-        clearTimeout(component.searchTimeout);
-        component.searchTimeout = null;
-      }
-
-      component.searchTimeout = setTimeout(function () {
-        component.fetch();
-      }, 300);
-    },
-    remove: function remove(index) {
-      this.items.splice(index, 1);
-    },
-    setDefault: function setDefault(type, itemId, value) {
+    setDefault: function setDefault(type, item_id, value) {
       for (var key in this.items) {
-        this.items[key]['default_' + type] = this.items[key].id == itemId && value ? 1 : 0;
+        this.items[key]['default_' + type] = this.items[key].id == item_id && value ? 1 : 0;
       }
     }
   }
@@ -5925,8 +5867,8 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
-    row: _row_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
     inputText: _form_input_text_vue__WEBPACK_IMPORTED_MODULE_1__["default"],
+    row: _row_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
     tableBase: _tables_base_vue__WEBPACK_IMPORTED_MODULE_2__["default"]
   },
   mixins: [_mixins_tables_base_js__WEBPACK_IMPORTED_MODULE_3__["baseMixin"]],
@@ -9557,6 +9499,11 @@ __webpack_require__.r(__webpack_exports__);
       type: Boolean,
       required: false,
       "default": false
+    },
+    hasShowButton: {
+      type: Boolean,
+      required: false,
+      "default": true
     }
   },
   data: function data() {
@@ -48853,90 +48800,83 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("tr", [
-    _c("td", { staticClass: "align-middle pointer" }, [
-      _vm._v(_vm._s(_vm.item.title))
-    ]),
-    _vm._v(" "),
-    _c("td", { staticClass: "align-middle pointer" }, [
-      _vm._v(_vm._s(_vm.item.lastname))
-    ]),
-    _vm._v(" "),
-    _c("td", { staticClass: "align-middle pointer" }, [
-      _vm._v(_vm._s(_vm.item.firstname))
-    ]),
-    _vm._v(" "),
-    _c("td", { staticClass: "align-middle pointer" }, [
-      _vm._v(_vm._s(_vm.item.phonenumber))
-    ]),
-    _vm._v(" "),
-    _c("td", { staticClass: "align-middle pointer" }, [
-      _vm._v(_vm._s(_vm.item.mobilnumber))
-    ]),
-    _vm._v(" "),
-    _c("td", { staticClass: "align-middle pointer" }, [
-      _vm._v(_vm._s(_vm.item.email))
-    ]),
-    _vm._v(" "),
-    _c("td", { staticClass: "align-middle pointer" }, [
-      _vm._v(_vm._s(_vm.item.function))
-    ]),
-    _vm._v(" "),
-    _c("td", { staticClass: "align-middle pointer" }, [
-      _c("label", { staticClass: "form-checkbox" }),
-      _vm._v(" "),
-      _c("input", {
-        attrs: { type: "checkbox", number: "" },
-        domProps: { checked: _vm.item.default_quote },
-        on: {
-          change: function($event) {
-            return _vm.setDefault("quote", $event)
-          }
-        }
-      })
-    ]),
-    _vm._v(" "),
-    _c("td", { staticClass: "align-middle pointer" }, [
-      _c("label", { staticClass: "form-checkbox" }),
-      _vm._v(" "),
-      _c("input", {
-        attrs: { type: "checkbox", number: "" },
-        domProps: { checked: _vm.item.default_invoice },
-        on: {
-          change: function($event) {
-            return _vm.setDefault("invoice", $event)
-          }
-        }
-      })
-    ]),
-    _vm._v(" "),
-    _c("td", { staticClass: "text-right" }, [
-      _c(
-        "div",
-        { staticClass: "btn-group btn-group-sm", attrs: { role: "group" } },
-        [
-          _c(
-            "a",
-            {
-              staticClass: "btn btn-secondary",
-              attrs: { href: _vm.link, title: "Bearbeiten" }
-            },
-            [_c("i", { staticClass: "fas fa-edit" })]
-          ),
-          _vm._v(" "),
-          _c(
-            "button",
-            {
-              staticClass: "btn btn-secondary",
-              attrs: { type: "button", title: "Löschen" },
-              on: { click: _vm.destroy }
-            },
-            [_c("i", { staticClass: "fas fa-trash" })]
-          )
-        ]
-      )
+  return _c("show", {
+    attrs: {
+      item: _vm.item,
+      "is-selected": _vm.isSelected,
+      "has-show-button": false
+    },
+    on: {
+      destroying: function($event) {
+        return _vm.destroy()
+      }
+    },
+    scopedSlots: _vm._u([
+      {
+        key: "show",
+        fn: function() {
+          return [
+            _c("td", { staticClass: "align-middle pointer" }, [
+              _vm._v(_vm._s(_vm.item.title))
+            ]),
+            _vm._v(" "),
+            _c("td", { staticClass: "align-middle pointer" }, [
+              _vm._v(_vm._s(_vm.item.lastname))
+            ]),
+            _vm._v(" "),
+            _c("td", { staticClass: "align-middle pointer" }, [
+              _vm._v(_vm._s(_vm.item.firstname))
+            ]),
+            _vm._v(" "),
+            _c("td", { staticClass: "align-middle pointer" }, [
+              _vm._v(_vm._s(_vm.item.phonenumber))
+            ]),
+            _vm._v(" "),
+            _c("td", { staticClass: "align-middle pointer" }, [
+              _vm._v(_vm._s(_vm.item.mobilnumber))
+            ]),
+            _vm._v(" "),
+            _c("td", { staticClass: "align-middle pointer" }, [
+              _vm._v(_vm._s(_vm.item.email))
+            ]),
+            _vm._v(" "),
+            _c("td", { staticClass: "align-middle pointer" }, [
+              _vm._v(_vm._s(_vm.item.function))
+            ]),
+            _vm._v(" "),
+            _c("td", { staticClass: "align-middle pointer" }, [
+              _c("label", { staticClass: "form-checkbox" }),
+              _vm._v(" "),
+              _c("input", {
+                attrs: { type: "checkbox", number: "" },
+                domProps: { checked: _vm.item.default_quote },
+                on: {
+                  change: function($event) {
+                    return _vm.setDefault("quote", $event)
+                  }
+                }
+              })
+            ]),
+            _vm._v(" "),
+            _c("td", { staticClass: "align-middle pointer" }, [
+              _c("label", { staticClass: "form-checkbox" }),
+              _vm._v(" "),
+              _c("input", {
+                attrs: { type: "checkbox", number: "" },
+                domProps: { checked: _vm.item.default_invoice },
+                on: {
+                  change: function($event) {
+                    return _vm.setDefault("invoice", $event)
+                  }
+                }
+              })
+            ])
+          ]
+        },
+        proxy: true
+      }
     ])
-  ])
+  })
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -48960,184 +48900,118 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [
-    _c("div", { staticClass: "container-fluid" }, [
-      _c("div", { staticClass: "row mb-3" }, [
-        _c(
-          "div",
-          { staticClass: "form-group", staticStyle: { "margin-bottom": "0" } },
-          [
-            _c(
-              "button",
-              {
-                staticClass: "btn btn-primary",
-                attrs: { title: "Anlegen" },
-                on: { click: _vm.create }
-              },
-              [_c("i", { staticClass: "fas fa-plus-square" })]
-            )
+  return _c("table-base", {
+    attrs: {
+      "is-loading": _vm.isLoading,
+      "items-length": _vm.items.length,
+      "has-filter": _vm.hasFilter()
+    },
+    on: {
+      searching: function($event) {
+        return _vm.searching($event)
+      },
+      creating: _vm.create
+    },
+    scopedSlots: _vm._u([
+      {
+        key: "form",
+        fn: function() {
+          return undefined
+        },
+        proxy: true
+      },
+      {
+        key: "thead",
+        fn: function() {
+          return [
+            _c("tr", [
+              _c(
+                "th",
+                { staticClass: "align-middle", attrs: { width: "10%" } },
+                [_vm._v("Anrede")]
+              ),
+              _vm._v(" "),
+              _c(
+                "th",
+                { staticClass: "align-middle", attrs: { width: "15%" } },
+                [_vm._v("Nachname")]
+              ),
+              _vm._v(" "),
+              _c(
+                "th",
+                { staticClass: "align-middle", attrs: { width: "15%" } },
+                [_vm._v("Vorname")]
+              ),
+              _vm._v(" "),
+              _c(
+                "th",
+                { staticClass: "align-middle", attrs: { width: "10%" } },
+                [_vm._v("Telefon")]
+              ),
+              _vm._v(" "),
+              _c(
+                "th",
+                { staticClass: "align-middle", attrs: { width: "10%" } },
+                [_vm._v("Mobil")]
+              ),
+              _vm._v(" "),
+              _c(
+                "th",
+                { staticClass: "align-middle", attrs: { width: "15%" } },
+                [_vm._v("E-Mail")]
+              ),
+              _vm._v(" "),
+              _c(
+                "th",
+                { staticClass: "align-middle", attrs: { width: "9%" } },
+                [_vm._v("Funktion")]
+              ),
+              _vm._v(" "),
+              _c(
+                "th",
+                { staticClass: "align-middle", attrs: { width: "8%" } },
+                [_vm._v("Standard Angebot")]
+              ),
+              _vm._v(" "),
+              _c(
+                "th",
+                { staticClass: "align-middle", attrs: { width: "8%" } },
+                [_vm._v("Standard Rechnung")]
+              ),
+              _vm._v(" "),
+              _c("th", { staticClass: "text-right", attrs: { width: "100" } }, [
+                _vm._v("Aktion")
+              ])
+            ])
           ]
-        )
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "row" }, [
-        _c(
-          "div",
-          { staticClass: "form-group", staticStyle: { "margin-bottom": "0" } },
-          [
-            _c("input", {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.searchtext,
-                  expression: "searchtext"
-                }
-              ],
-              staticClass: "form-control",
-              attrs: { type: "search", placeholder: "suchen.." },
-              domProps: { value: _vm.searchtext },
+        },
+        proxy: true
+      },
+      {
+        key: "tbody",
+        fn: function() {
+          return _vm._l(_vm.items, function(item, index) {
+            return _c("row", {
+              key: item.id,
+              attrs: { item: item },
               on: {
-                keyup: _vm.search,
-                input: function($event) {
-                  if ($event.target.composing) {
-                    return
-                  }
-                  _vm.searchtext = $event.target.value
+                deleted: function($event) {
+                  return _vm.deleted(index)
+                },
+                setDefault: _vm.setDefault,
+                updated: function($event) {
+                  return _vm.updated(index, $event)
                 }
               }
             })
-          ]
-        ),
-        _vm._v(" \n            "),
-        _c(
-          "button",
-          {
-            staticClass: "btn btn-outline-primary",
-            on: {
-              click: function($event) {
-                _vm.showFilter = !_vm.showFilter
-              }
-            }
-          },
-          [_vm._v("+ Filter")]
-        )
-      ]),
-      _vm._v(" "),
-      _vm.showFilter
-        ? _c("form", {
-            staticStyle: { padding: "15px 0" },
-            attrs: { id: "filter" }
           })
-        : _vm._e()
-    ]),
-    _vm._v(" "),
-    _c("br"),
-    _vm._v(" "),
-    _vm.isLoading
-      ? _c(
-          "div",
-          { staticClass: "p-5" },
-          [
-            _c("center", [
-              _c("span", { staticStyle: { "font-size": "48px" } }, [
-                _c("i", { staticClass: "fas fa-spinner fa-spin" }),
-                _c("br")
-              ]),
-              _vm._v("\n            Lade Daten..\n        ")
-            ])
-          ],
-          1
-        )
-      : _vm.items.length
-      ? _c(
-          "table",
-          { staticClass: "table table-hover table-striped bg-white" },
-          [
-            _vm._m(0),
-            _vm._v(" "),
-            _c(
-              "tbody",
-              [
-                _vm._l(_vm.items, function(item, index) {
-                  return [
-                    _c("row", {
-                      key: item.id,
-                      attrs: { item: item },
-                      on: {
-                        deleted: function($event) {
-                          return _vm.remove(index)
-                        },
-                        setDefault: _vm.setDefault
-                      }
-                    })
-                  ]
-                })
-              ],
-              2
-            )
-          ]
-        )
-      : _c(
-          "div",
-          { staticClass: "alert alert-dark" },
-          [_c("center", [_vm._v("Keine Ansprechpartner vorhanden")])],
-          1
-        )
-  ])
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("thead", [
-      _c("tr", [
-        _c("th", { staticClass: "align-middle", attrs: { width: "5%" } }, [
-          _vm._v("Anrede")
-        ]),
-        _vm._v(" "),
-        _c("th", { staticClass: "align-middle", attrs: { width: "15%" } }, [
-          _vm._v("Nachname")
-        ]),
-        _vm._v(" "),
-        _c("th", { staticClass: "align-middle", attrs: { width: "15%" } }, [
-          _vm._v("Vorname")
-        ]),
-        _vm._v(" "),
-        _c("th", { staticClass: "align-middle", attrs: { width: "10%" } }, [
-          _vm._v("Telefon")
-        ]),
-        _vm._v(" "),
-        _c("th", { staticClass: "align-middle", attrs: { width: "10%" } }, [
-          _vm._v("Mobil")
-        ]),
-        _vm._v(" "),
-        _c("th", { staticClass: "align-middle", attrs: { width: "15%" } }, [
-          _vm._v("E-Mail")
-        ]),
-        _vm._v(" "),
-        _c("th", { staticClass: "align-middle", attrs: { width: "10%" } }, [
-          _vm._v("Funktion")
-        ]),
-        _vm._v(" "),
-        _c("th", { staticClass: "align-middle", attrs: { width: "5%" } }, [
-          _vm._v("Standard Angebot")
-        ]),
-        _vm._v(" "),
-        _c("th", { staticClass: "align-middle", attrs: { width: "5%" } }, [
-          _vm._v("Standard Rechnung")
-        ]),
-        _vm._v(" "),
-        _c(
-          "th",
-          { staticClass: "align-middle text-right", attrs: { width: "10%" } },
-          [_vm._v("Aktion")]
-        )
-      ])
+        },
+        proxy: true
+      }
     ])
-  }
-]
+  })
+}
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -59051,15 +58925,17 @@ var render = function() {
           "div",
           { staticClass: "btn-group btn-group-sm", attrs: { role: "group" } },
           [
-            _c(
-              "button",
-              {
-                staticClass: "btn btn-secondary",
-                attrs: { type: "button", title: "Anzeigen" },
-                on: { click: _vm.show }
-              },
-              [_c("i", { staticClass: "fas fa-fw fa-eye" })]
-            ),
+            _vm.hasShowButton
+              ? _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-secondary",
+                    attrs: { type: "button", title: "Anzeigen" },
+                    on: { click: _vm.show }
+                  },
+                  [_c("i", { staticClass: "fas fa-fw fa-eye" })]
+                )
+              : _vm._e(),
             _vm._v(" "),
             _c(
               "button",

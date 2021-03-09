@@ -14,12 +14,12 @@ use Tests\TestCase as BaseTestCase;
 
 abstract class TestCase extends BaseTestCase
 {
-    protected function testModelPaths(Model $model, array $routes)
+    protected function testModelPaths(Model $model, array $routes, array $attributes_for_index_path = [])
     {
         foreach ($routes as $route_name => $route) {
             if ($route_name == 'index_path') {
                 $class_name = get_class($model);
-                $this->testModelPath($class_name::indexPath(), $route);
+                $this->testModelPath($class_name::indexPath($attributes_for_index_path), $route);
             }
             $this->testModelPath($model->$route_name, $route);
         }
