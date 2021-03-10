@@ -200,142 +200,154 @@
 
     </div>
 
-    <div class="card mb-3">
-        <div class="card-header">Ansprechpartner</div>
-        <div class="card-body">
-            <person-table index-path="{{ $contact->people_path }}" contact-id="{{ $contact->id}}"></person-table>
-        </div>
-    </div>
+    <div class="row">
 
-    <div class="card mb-3">
-        <div class="card-header">Aufgaben</div>
-        <div class="card-body">
-            <appointment-table type="kontakte" :model="{{ json_encode($contact) }}" :initial-contact="{{ json_encode($contact) }}" :users="{{ json_encode($users) }}"></appointment-table>
-        </div>
-    </div>
+        <div class="col-lg-6">
 
-    <div class="card mb-3">
-        <div class="card-header">Interaktionen</div>
-        <div class="card-body">
-            <interaction-table :model="{{ json_encode($contact) }}"></interaction-table>
-        </div>
-    </div>
-
-    @if(count($contact->receipts))
-        <div class="card mb-3">
-            <div class="card-header">Historie</div>
-            <div class="card-body">
-                <table class="table table-hover table-striped">
-                    <thead>
-                        <tr>
-                            <th>Datum</th>
-                            <th>Vorgang</th>
-                            <th>Status</th>
-                            <th class="text-right">Netto</th>
-                            <th class="text-right">USt.</th>
-                            <th class="text-right">Brutto</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach($contact->receipts as $receipt)
-                            <?php
-                                $net += $receipt->net / 100;
-                                $tax_value += $receipt->tax_value;
-                                $gross += $receipt->gross / 100;
-                            ?>
-                            <tr>
-                                <td class="align-middle">{{ $receipt->date->format('d.m.Y') }}</td>
-                                <td class="align-middle">
-                                    <a href="{{ $receipt->path }}" target="_blank">
-                                        {{ $receipt->name }}
-                                    </a><br />
-                                    <span class="text-muted">{{ $receipt->typeName }}</span>
-                                </td>
-                                <td class="align-middle">{{ $receipt->status->name }}</td>
-                                <td class="align-middle text-right">{{ number_format($receipt->net, 2, ',', '.') }}</td>
-                                <td class="align-middle text-right">{{ number_format($receipt->unit_price, 2, ',', '.')  }}</td>
-                                <td class="align-middle text-right">{{ number_format($receipt->gross / 100, 2, ',', '.') }}</td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                    <tfoot>
-                         <tr>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td class="text-right">{{ number_format($net, 2, ',', '.') }}</td>
-                            <td class="text-right">{{ number_format($tax_value, 2, ',', '.') }}</td>
-                            <td class="text-right">{{ number_format($gross, 2, ',', '.') }}</td>
-                        </tr>
-                    </tfoot>
-                </table>
+            <div class="card mb-3">
+                <div class="card-header">Ansprechpartner</div>
+                <div class="card-body">
+                    <person-table index-path="{{ $contact->people_path }}" contact-id="{{ $contact->id}}"></person-table>
+                </div>
             </div>
-        </div>
-    @endif
 
-    @if(count($contact->abos))
-        <div class="card mb-3">
-            <div class="card-header">Abos</div>
-            <div class="card-body">
-                <table class="table table-hover table-striped">
-                    <thead>
-                        <tr>
-                            <th>Datum</th>
-                            <th>Abo</th>
-                            <th>Status</th>
-                            <th class="text-right">Netto</th>
-                            <th class="text-right">USt.</th>
-                            <th class="text-right">Brutto</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach($contact->abos as $receipt)
-                            <?php
-                                $net += $receipt->net / 100;
-                                $tax_value += $receipt->tax_value;
-                                $gross += $receipt->gross / 100;
-                            ?>
-                            <tr>
-                                <td class="align-middle">{{ $receipt->date->format('d.m.Y') }}</td>
-                                <td class="align-middle">
-                                    <a href="{{ $receipt->path }}" target="_blank">
-                                        {{ $receipt->name }}
-                                    </a>
-                                </td>
-                                <td class="align-middle">{{ $receipt->status->name }}</td>
-                                <td class="align-middle text-right">{{ number_format($receipt->net, 2, ',', '.') }}</td>
-                                <td class="align-middle text-right">{{ number_format($receipt->unit_price, 2, ',', '.')  }}</td>
-                                <td class="align-middle text-right">{{ number_format($receipt->gross / 100, 2, ',', '.') }}</td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                    <tfoot>
-                         <tr>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td class="text-right">{{ number_format($net, 2, ',', '.') }}</td>
-                            <td class="text-right">{{ number_format($tax_value, 2, ',', '.') }}</td>
-                            <td class="text-right">{{ number_format($gross, 2, ',', '.') }}</td>
-                        </tr>
-                    </tfoot>
-                </table>
+            <div class="card mb-3">
+                <div class="card-header">Kommentare</div>
+                <div class="card-body">
+                    <comments uri="/kontakte" :item="{{ json_encode($contact) }}"></comments>
+                </div>
             </div>
-        </div>
-    @endif
 
-    <div class="card mb-3">
-        <div class="card-header">Dateien</div>
-        <div class="card-body">
-            <userfileable-table uri="/kontakte" :model="{{ json_encode($contact) }}" token="{{ csrf_token() }}"></userfileable-table>
         </div>
-    </div>
 
-    <div class="card mb-3">
-        <div class="card-header">Kommentare</div>
-        <div class="card-body">
-            <comments uri="/kontakte" :item="{{ json_encode($contact) }}"></comments>
+        <div class="col-lg-6">
+
+            <div class="card mb-3">
+                <div class="card-header">Aufgaben</div>
+                <div class="card-body">
+                    <appointment-table type="kontakte" :model="{{ json_encode($contact) }}" :initial-contact="{{ json_encode($contact) }}" :users="{{ json_encode($users) }}"></appointment-table>
+                </div>
+            </div>
+
+            <div class="card mb-3">
+                <div class="card-header">Interaktionen</div>
+                <div class="card-body">
+                    <interaction-table :model="{{ json_encode($contact) }}"></interaction-table>
+                </div>
+            </div>
+
+            @if(count($contact->receipts))
+                <div class="card mb-3">
+                    <div class="card-header">Historie</div>
+                    <div class="card-body">
+                        <table class="table table-hover table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Datum</th>
+                                    <th>Vorgang</th>
+                                    <th>Status</th>
+                                    <th class="text-right">Netto</th>
+                                    <th class="text-right">USt.</th>
+                                    <th class="text-right">Brutto</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($contact->receipts as $receipt)
+                                    <?php
+                                        $net += $receipt->net / 100;
+                                        $tax_value += $receipt->tax_value;
+                                        $gross += $receipt->gross / 100;
+                                    ?>
+                                    <tr>
+                                        <td class="align-middle">{{ $receipt->date->format('d.m.Y') }}</td>
+                                        <td class="align-middle">
+                                            <a href="{{ $receipt->path }}" target="_blank">
+                                                {{ $receipt->name }}
+                                            </a><br />
+                                            <span class="text-muted">{{ $receipt->typeName }}</span>
+                                        </td>
+                                        <td class="align-middle">{{ $receipt->status->name }}</td>
+                                        <td class="align-middle text-right">{{ number_format($receipt->net, 2, ',', '.') }}</td>
+                                        <td class="align-middle text-right">{{ number_format($receipt->unit_price, 2, ',', '.')  }}</td>
+                                        <td class="align-middle text-right">{{ number_format($receipt->gross / 100, 2, ',', '.') }}</td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                            <tfoot>
+                                 <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td class="text-right">{{ number_format($net, 2, ',', '.') }}</td>
+                                    <td class="text-right">{{ number_format($tax_value, 2, ',', '.') }}</td>
+                                    <td class="text-right">{{ number_format($gross, 2, ',', '.') }}</td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            @endif
+
+            @if(count($contact->abos))
+                <div class="card mb-3">
+                    <div class="card-header">Abos</div>
+                    <div class="card-body">
+                        <table class="table table-hover table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Datum</th>
+                                    <th>Abo</th>
+                                    <th>Status</th>
+                                    <th class="text-right">Netto</th>
+                                    <th class="text-right">USt.</th>
+                                    <th class="text-right">Brutto</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($contact->abos as $receipt)
+                                    <?php
+                                        $net += $receipt->net / 100;
+                                        $tax_value += $receipt->tax_value;
+                                        $gross += $receipt->gross / 100;
+                                    ?>
+                                    <tr>
+                                        <td class="align-middle">{{ $receipt->date->format('d.m.Y') }}</td>
+                                        <td class="align-middle">
+                                            <a href="{{ $receipt->path }}" target="_blank">
+                                                {{ $receipt->name }}
+                                            </a>
+                                        </td>
+                                        <td class="align-middle">{{ $receipt->status->name }}</td>
+                                        <td class="align-middle text-right">{{ number_format($receipt->net, 2, ',', '.') }}</td>
+                                        <td class="align-middle text-right">{{ number_format($receipt->unit_price, 2, ',', '.')  }}</td>
+                                        <td class="align-middle text-right">{{ number_format($receipt->gross / 100, 2, ',', '.') }}</td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                            <tfoot>
+                                 <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td class="text-right">{{ number_format($net, 2, ',', '.') }}</td>
+                                    <td class="text-right">{{ number_format($tax_value, 2, ',', '.') }}</td>
+                                    <td class="text-right">{{ number_format($gross, 2, ',', '.') }}</td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            @endif
+
+            <div class="card mb-3">
+                <div class="card-header">Dateien</div>
+                <div class="card-body">
+                    <userfileable-table uri="/kontakte" :model="{{ json_encode($contact) }}" token="{{ csrf_token() }}"></userfileable-table>
+                </div>
+            </div>
+
         </div>
+
     </div>
 
 @endsection
