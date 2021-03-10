@@ -17,7 +17,7 @@
                 <div  class="form-row">
 
                     <filter-account :options="accounts" v-model="filter.accountId" @input="fetch"></filter-account>
-                    <filter-tags :options="tags" v-model="filter.tags" @input="fetch"></filter-tags>
+                    <!-- <filter-tags :options="tags" v-model="filter.tags" @input="fetch"></filter-tags> -->
 
                 </div>
             </form>

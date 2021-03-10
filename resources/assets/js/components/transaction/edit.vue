@@ -17,7 +17,7 @@
                             <label>Betrag</label>
                             <currency-input v-model="amount" :error="'amount' in errors ? errors.amount[0] : ''" :readonly="transaction.iban != ''"></currency-input>
                         </div>
-                        <tag-select class="my-2" :selected="transaction.tags" type="buchungen" :type_id="transaction.id" v-if="transaction != undefined"></tag-select>
+                        <!-- <tag-select class="my-2" :selected="transaction.tags" type="buchungen" :type_id="transaction.id" v-if="transaction != undefined"></tag-select> -->
                         <div class="table-responsive">
                             <table class="table table-striped table-hover">
                                 <thead>

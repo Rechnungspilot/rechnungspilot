@@ -29,7 +29,7 @@ class Company extends Pivot
     protected $credentials;
 
     protected $appends = [
-        //
+        'last_import_at_formatted',
     ];
 
     protected $dates = [
@@ -47,6 +47,11 @@ class Company extends Pivot
     public function bank()
     {
         return $this->belongsTo('App\Banks\Bank', 'bank_id');
+    }
+
+    public function getLastImportAtFormattedAttribute() : string
+    {
+        return (is_null($this->last_import_at) ? '' : $this->last_import_at->format('d.m.Y H:i'));
     }
 
     public function getUsernameAttribute()

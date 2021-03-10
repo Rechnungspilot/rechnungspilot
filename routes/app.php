@@ -300,12 +300,6 @@ Route::middleware(['auth', 'company.locked'])->group(function () {
     Route::get('{type}/{model}/kommentare', 'CommentController@index');
     Route::post('{type}/{model}/kommentare', 'CommentController@store');
 
-    // Konten
-    Route::get('konten', 'AccountController@index');
-    Route::post('konten', 'AccountController@store');
-    Route::delete('konten/{account}', 'AccountController@destroy');
-    Route::get('konten/{account}/sync', 'Bank\Accounts\SyncController@show');
-
     // Kontakte
     Route::get('contacts/{contact}/adress', 'Contacts\AddressController@show');
     Route::get('contacts/{contact}/umsatz', 'Contacts\RevenueController@show');
@@ -432,6 +426,8 @@ Route::middleware(['auth', 'company.locked'])->group(function () {
 
     include('raw.php');
 
+    Route::resource('banks/accounts', 'Banks\Accounts\AccountController', ['as' => 'banks']);
+        Route::get('banks/accounts/{account}/sync', 'Banks\Accounts\SyncController@show')->name('banks.accounts.sync');
     Route::resource('items/units', 'Items\Units\UnitController', ['as' => 'items']);
     Route::resource(Contact::ROUTE_NAME, 'Contacts\ContactController');
         Route::resource(Person::ROUTE_NAME, 'Contacts\People\PersonController');

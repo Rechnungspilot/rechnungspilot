@@ -1859,20 +1859,24 @@ __webpack_require__.r(__webpack_exports__);
   components: {
     currencyInput: _form_input_currency_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
   },
-  props: ['transaction'],
+  props: {
+    uri: {
+      required: true,
+      type: String
+    }
+  },
   data: function data() {
     return {
-      uri: '/konten',
-      name: '',
+      form: {
+        name: ''
+      },
       errors: {}
     };
   },
   methods: {
     create: function create() {
       var component = this;
-      axios.post(component.uri, {
-        name: component.name
-      }).then(function (response) {
+      axios.post(component.uri, component.form).then(function (response) {
         component.errors = {};
         component.name = '';
         component.$emit('created', response.data);
@@ -1895,6 +1899,9 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _tables_rows_editable__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../tables/rows/editable */ "./resources/assets/js/components/tables/rows/editable.vue");
+/* harmony import */ var _form_input_text_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../form/input/text.vue */ "./resources/assets/js/components/form/input/text.vue");
+/* harmony import */ var _mixins_tables_rows_editable_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../mixins/tables/rows/editable.js */ "./resources/assets/js/mixins/tables/rows/editable.js");
 //
 //
 //
@@ -1912,36 +1919,31 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['item', 'uri'],
+  components: {
+    editable: _tables_rows_editable__WEBPACK_IMPORTED_MODULE_0__["default"],
+    inputText: _form_input_text_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
+  },
+  mixins: [_mixins_tables_rows_editable_js__WEBPACK_IMPORTED_MODULE_2__["editableMixin"]],
   data: function data() {
     return {
-      id: this.item.id,
-      companyId: this.item.transactionable_id,
-      transactionableId: this.item.transactionable_id
+      form: {
+        name: this.item.name
+      }
     };
   },
-  computed: {
-    date: function date() {
-      return moment(this.item.date).format('DD.MM.YYYY');
-    }
-  },
-  methods: {
-    create: function create() {
-      var component = this;
-      axios.put(component.uri + '/' + component.item.id, {
-        transactionable_id: component.companyId
-      }).then(function (response) {
-        component.transactionableId = component.companyId;
-        component.$emit("updated", response.data);
-      });
-    },
-    destroy: function destroy() {
-      var component = this;
-      axios["delete"](component.item.path).then(function (response) {
-        component.$emit('deleted');
-      })["catch"](function (error) {});
-    }
+  methods: {//
   }
 });
 
@@ -2019,7 +2021,7 @@ __webpack_require__.r(__webpack_exports__);
   props: ['accounts', 'tags'],
   data: function data() {
     return {
-      uri: '/konten',
+      uri: '/banks/accounts',
       items: [],
       isLoading: true
     };
@@ -2038,9 +2040,12 @@ __webpack_require__.r(__webpack_exports__);
     },
     created: function created(account) {
       this.items.push(account);
+      Vue.successCreate(account);
     },
-    remove: function remove(index) {
+    deleted: function deleted(index) {
+      var item = this.items[index];
       this.items.splice(index, 1);
+      Vue.successDelete(item);
     },
     fetch: function fetch() {
       var component = this;
@@ -2051,6 +2056,10 @@ __webpack_require__.r(__webpack_exports__);
       })["catch"](function (error) {
         console.log(error);
       });
+    },
+    updated: function updated(index, item) {
+      Vue.set(this.items, index, item);
+      Vue.successUpdate(item);
     }
   }
 });
@@ -46070,20 +46079,20 @@ var render = function() {
                     {
                       name: "model",
                       rawName: "v-model",
-                      value: _vm.name,
-                      expression: "name"
+                      value: _vm.form.name,
+                      expression: "form.name"
                     }
                   ],
                   staticClass: "form-control",
                   class: "name" in _vm.errors ? "is-invalid" : "",
                   attrs: { placeholder: "Name des Kontos", autofocus: "" },
-                  domProps: { value: _vm.name },
+                  domProps: { value: _vm.form.name },
                   on: {
                     input: function($event) {
                       if ($event.target.composing) {
                         return
                       }
-                      _vm.name = $event.target.value
+                      _vm.$set(_vm.form, "name", $event.target.value)
                     }
                   }
                 }),
@@ -46171,51 +46180,147 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("tr", [
-    _c("td", { staticClass: "align-middle" }, [
-      _vm._v("\n        " + _vm._s(_vm.item.name) + "\n        "),
-      _vm.item.bank_company_id > 0
-        ? _c("div", { staticClass: "text-muted" }, [
-            _vm._v(_vm._s(_vm.item.bank.bank.name))
-          ])
-        : _vm._e()
-    ]),
-    _vm._v(" "),
-    _c("td", { staticClass: "align-middle text-right" }, [
-      _vm._v(_vm._s(_vm.item.amount.format(2, ",", ".")))
-    ]),
-    _vm._v(" "),
-    _c("td"),
-    _vm._v(" "),
-    _c("td", { staticClass: "align-middle text-right" }, [
-      _c("div", { staticClass: "btn-group btn-group-sm" }, [
-        _vm._m(0),
-        _vm._v(" "),
-        _c(
-          "button",
-          {
-            staticClass: "btn btn-secondary",
-            attrs: { title: "Löschen" },
-            on: { click: _vm.destroy }
-          },
-          [_c("i", { staticClass: "fas fa-fw fa-trash" })]
-        )
-      ])
+  return _c("editable", {
+    attrs: { "is-editing": _vm.isEditing },
+    on: {
+      editing: function($event) {
+        _vm.isEditing = $event
+      },
+      updating: function($event) {
+        return _vm.update()
+      },
+      destroying: function($event) {
+        return _vm.destroy()
+      }
+    },
+    scopedSlots: _vm._u([
+      {
+        key: "edit",
+        fn: function() {
+          return [
+            _c(
+              "td",
+              { staticClass: "align-middle pointer" },
+              [
+                _c("input-text", {
+                  attrs: { placeholder: "Name", error: _vm.error("name") },
+                  on: {
+                    keydown: function($event) {
+                      if (
+                        !$event.type.indexOf("key") &&
+                        _vm._k($event.keyCode, "enter", 13, $event.key, "Enter")
+                      ) {
+                        return null
+                      }
+                      return _vm.update($event)
+                    }
+                  },
+                  model: {
+                    value: _vm.form.name,
+                    callback: function($$v) {
+                      _vm.$set(_vm.form, "name", $$v)
+                    },
+                    expression: "form.name"
+                  }
+                })
+              ],
+              1
+            ),
+            _vm._v(" "),
+            _c(
+              "td",
+              {
+                staticClass: "align-middle text-right pointer",
+                on: {
+                  click: function($event) {
+                    _vm.isEditing = true
+                  }
+                }
+              },
+              [
+                _vm._v(
+                  _vm._s(
+                    _vm.item.bank
+                      ? (_vm.item.amount / 100).format(2, ",", ".") + " €"
+                      : "-"
+                  )
+                )
+              ]
+            ),
+            _vm._v(" "),
+            _c("td", { staticClass: "align-middle text-right pointer" }, [
+              _vm._v(
+                _vm._s(
+                  _vm.item.bank ? _vm.item.bank.last_import_at_formatted : ""
+                )
+              )
+            ])
+          ]
+        },
+        proxy: true
+      },
+      {
+        key: "show",
+        fn: function() {
+          return [
+            _c(
+              "td",
+              {
+                staticClass: "align-middle pointer",
+                on: {
+                  click: function($event) {
+                    _vm.isEditing = true
+                  }
+                }
+              },
+              [
+                _vm._v(
+                  "\n            " + _vm._s(_vm.item.name) + "\n            "
+                ),
+                _vm.item.bank_company_id > 0
+                  ? _c("div", { staticClass: "text-muted" }, [
+                      _vm._v(_vm._s(_vm.item.bank.bank.name))
+                    ])
+                  : _vm._e()
+              ]
+            ),
+            _vm._v(" "),
+            _c(
+              "td",
+              {
+                staticClass: "align-middle text-right pointer",
+                on: {
+                  click: function($event) {
+                    _vm.isEditing = true
+                  }
+                }
+              },
+              [
+                _vm._v(
+                  _vm._s(
+                    _vm.item.bank
+                      ? (_vm.item.amount / 100).format(2, ",", ".") + " €"
+                      : "-"
+                  )
+                )
+              ]
+            ),
+            _vm._v(" "),
+            _c("td", { staticClass: "align-middle text-right pointer" }, [
+              _vm._v(
+                _vm._s(
+                  _vm.item.bank ? _vm.item.bank.last_import_at_formatted : ""
+                )
+              )
+            ])
+          ]
+        },
+        proxy: true
+      }
     ])
-  ])
+  })
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "button",
-      { staticClass: "btn btn-secondary", attrs: { title: "Bearbeiten" } },
-      [_c("i", { staticClass: "fas fa-fw fa-edit" })]
-    )
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -46308,7 +46413,9 @@ var render = function() {
         ? _c("div", { staticClass: "table-responsive" }, [
             _c(
               "table",
-              { staticClass: "table table-hover table-striped bg-white" },
+              {
+                staticClass: "table table-hover table-striped table-sm bg-white"
+              },
               [
                 _vm._m(1),
                 _vm._v(" "),
@@ -46320,10 +46427,10 @@ var render = function() {
                       attrs: { item: item, uri: _vm.uri },
                       on: {
                         updated: function($event) {
-                          return _vm.update(index, $event)
+                          return _vm.updated(index, $event)
                         },
                         deleted: function($event) {
-                          return _vm.remove(index)
+                          return _vm.deleted(index)
                         }
                       }
                     })
@@ -46341,6 +46448,7 @@ var render = function() {
           ),
       _vm._v(" "),
       _c("create", {
+        attrs: { uri: _vm.uri },
         on: {
           created: function($event) {
             return _vm.created($event)
@@ -46391,7 +46499,9 @@ var staticRenderFns = [
           _vm._v("Saldo")
         ]),
         _vm._v(" "),
-        _c("th", { staticClass: "text-right", attrs: { width: "60%" } }),
+        _c("th", { staticClass: "text-right", attrs: { width: "60%" } }, [
+          _vm._v("Letzter Import")
+        ]),
         _vm._v(" "),
         _c("th", { staticClass: "text-right", attrs: { width: "10%" } }, [
           _vm._v("Aktion")
@@ -62380,81 +62490,372 @@ var render = function() {
           _c("div", { staticClass: "modal-content" }, [
             _vm._m(0),
             _vm._v(" "),
-            _c(
-              "div",
-              { staticClass: "modal-body" },
-              [
-                _c(
-                  "div",
-                  { staticClass: "form-group" },
-                  [
-                    _c("label", [_vm._v("Datum")]),
-                    _vm._v(" "),
-                    _c("datetime", {
-                      attrs: {
-                        "input-class": "form-control",
-                        format: "dd.MM.yyyy"
+            _c("div", { staticClass: "modal-body" }, [
+              _c(
+                "div",
+                { staticClass: "form-group" },
+                [
+                  _c("label", [_vm._v("Datum")]),
+                  _vm._v(" "),
+                  _c("datetime", {
+                    attrs: {
+                      "input-class": "form-control",
+                      format: "dd.MM.yyyy"
+                    },
+                    model: {
+                      value: _vm.date,
+                      callback: function($$v) {
+                        _vm.date = $$v
                       },
-                      model: {
-                        value: _vm.date,
-                        callback: function($$v) {
-                          _vm.date = $$v
-                        },
-                        expression: "date"
-                      }
-                    })
-                  ],
-                  1
-                ),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  { staticClass: "form-group" },
-                  [
-                    _c("label", [_vm._v("Betrag")]),
-                    _vm._v(" "),
-                    _c("currency-input", {
-                      attrs: {
-                        error:
-                          "amount" in _vm.errors ? _vm.errors.amount[0] : "",
-                        readonly: _vm.transaction.iban != ""
+                      expression: "date"
+                    }
+                  })
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "div",
+                { staticClass: "form-group" },
+                [
+                  _c("label", [_vm._v("Betrag")]),
+                  _vm._v(" "),
+                  _c("currency-input", {
+                    attrs: {
+                      error: "amount" in _vm.errors ? _vm.errors.amount[0] : "",
+                      readonly: _vm.transaction.iban != ""
+                    },
+                    model: {
+                      value: _vm.amount,
+                      callback: function($$v) {
+                        _vm.amount = $$v
                       },
-                      model: {
-                        value: _vm.amount,
-                        callback: function($$v) {
-                          _vm.amount = $$v
-                        },
-                        expression: "amount"
-                      }
-                    })
-                  ],
-                  1
-                ),
-                _vm._v(" "),
-                _vm.transaction != undefined
-                  ? _c("tag-select", {
-                      staticClass: "my-2",
-                      attrs: {
-                        selected: _vm.transaction.tags,
-                        type: "buchungen",
-                        type_id: _vm.transaction.id
-                      }
-                    })
-                  : _vm._e(),
-                _vm._v(" "),
-                _c("div", { staticClass: "table-responsive" }, [
-                  _c(
-                    "table",
-                    { staticClass: "table table-striped table-hover" },
-                    [
-                      _vm._m(1),
-                      _vm._v(" "),
-                      _c(
-                        "tbody",
-                        [
-                          _vm._l(_vm.transaction.payments, function(payment) {
-                            return _c("tr", { staticClass: "pointer" }, [
+                      expression: "amount"
+                    }
+                  })
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c("div", { staticClass: "table-responsive" }, [
+                _c(
+                  "table",
+                  { staticClass: "table table-striped table-hover" },
+                  [
+                    _vm._m(1),
+                    _vm._v(" "),
+                    _c(
+                      "tbody",
+                      [
+                        _vm._l(_vm.transaction.payments, function(payment) {
+                          return _c("tr", { staticClass: "pointer" }, [
+                            _vm.isSelected(payment.receipt.id)
+                              ? _c(
+                                  "td",
+                                  {
+                                    staticClass: "align-middle text-center",
+                                    on: {
+                                      click: function($event) {
+                                        return _vm.toggleReceiptId(
+                                          payment.receipt.id,
+                                          payment.receipt.outstanding
+                                        )
+                                      }
+                                    }
+                                  },
+                                  [
+                                    _c("i", {
+                                      staticClass:
+                                        "fas fa-fw fa-check-circle text-success"
+                                    })
+                                  ]
+                                )
+                              : _c(
+                                  "td",
+                                  {
+                                    staticClass: "align-middle text-center",
+                                    on: {
+                                      click: function($event) {
+                                        return _vm.toggleReceiptId(
+                                          payment.receipt.id,
+                                          payment.receipt.outstanding
+                                        )
+                                      }
+                                    }
+                                  },
+                                  [
+                                    _c("i", {
+                                      staticClass:
+                                        "fas fa-fw fa-circle text-light"
+                                    })
+                                  ]
+                                ),
+                            _vm._v(" "),
+                            _c(
+                              "td",
+                              {
+                                staticClass: "align-middle",
+                                on: {
+                                  click: function($event) {
+                                    return _vm.toggleReceiptId(
+                                      payment.receipt.id,
+                                      payment.receipt.outstanding
+                                    )
+                                  }
+                                }
+                              },
+                              [
+                                _vm._v(
+                                  "\n                                        " +
+                                    _vm._s(payment.receipt.name)
+                                ),
+                                _c("br"),
+                                _vm._v(" "),
+                                _c("span", { staticClass: "text-muted" }, [
+                                  _vm._v(_vm._s(payment.receipt.typeName))
+                                ])
+                              ]
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "td",
+                              {
+                                staticClass: "align-middle",
+                                on: {
+                                  click: function($event) {
+                                    return _vm.toggleReceiptId(
+                                      payment.receipt.id,
+                                      payment.receipt.outstanding
+                                    )
+                                  }
+                                }
+                              },
+                              [_vm._v(_vm._s(payment.receipt.contact.name))]
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "td",
+                              {
+                                staticClass: "align-middle",
+                                on: {
+                                  click: function($event) {
+                                    return _vm.toggleReceiptId(
+                                      payment.receipt.id,
+                                      payment.receipt.outstanding
+                                    )
+                                  }
+                                }
+                              },
+                              [
+                                _vm._v(
+                                  _vm._s(_vm.dateFormat(payment.receipt.date))
+                                )
+                              ]
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "td",
+                              {
+                                staticClass: "align-middle",
+                                on: {
+                                  click: function($event) {
+                                    return _vm.toggleReceiptId(
+                                      payment.receipt.id,
+                                      payment.receipt.outstanding
+                                    )
+                                  }
+                                }
+                              },
+                              [
+                                _vm._v(
+                                  _vm._s(
+                                    _vm.dateFormat(payment.receipt.dateDue)
+                                  )
+                                )
+                              ]
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "td",
+                              {
+                                staticClass: "align-middle text-right",
+                                on: {
+                                  click: function($event) {
+                                    return _vm.toggleReceiptId(
+                                      payment.receipt.id,
+                                      payment.receipt.outstanding
+                                    )
+                                  }
+                                }
+                              },
+                              [
+                                _vm._v(
+                                  _vm._s(
+                                    (payment.receipt.gross / 100).format(
+                                      2,
+                                      ",",
+                                      "."
+                                    )
+                                  )
+                                )
+                              ]
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "td",
+                              {
+                                staticClass: "align-middle text-right",
+                                on: {
+                                  click: function($event) {
+                                    return _vm.setAmount(
+                                      payment.receipt.id,
+                                      payment.receipt.outstanding
+                                    )
+                                  }
+                                }
+                              },
+                              [
+                                _vm._v(
+                                  _vm._s(
+                                    (payment.receipt.outstanding / 100).format(
+                                      2,
+                                      ",",
+                                      "."
+                                    )
+                                  )
+                                )
+                              ]
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "td",
+                              { staticClass: "align-middle" },
+                              [
+                                _vm.isSelected(payment.receipt.id)
+                                  ? _c("currency-input", {
+                                      on: {
+                                        input: function($event) {
+                                          return _vm.handleInputAmount(
+                                            payment.receipt.id,
+                                            payment.receipt.outstanding
+                                          )
+                                        }
+                                      },
+                                      model: {
+                                        value:
+                                          _vm.receiptIds[payment.receipt.id]
+                                            .amount,
+                                        callback: function($$v) {
+                                          _vm.$set(
+                                            _vm.receiptIds[payment.receipt.id],
+                                            "amount",
+                                            $$v
+                                          )
+                                        },
+                                        expression:
+                                          "receiptIds[payment.receipt.id].amount"
+                                      }
+                                    })
+                                  : _vm._e()
+                              ],
+                              1
+                            ),
+                            _vm._v(" "),
+                            _c("td", { staticClass: "align-middle" }, [
+                              _c("label", { staticClass: "form-checkbox" }),
+                              _vm._v(" "),
                               _vm.isSelected(payment.receipt.id)
+                                ? _c("input", {
+                                    directives: [
+                                      {
+                                        name: "model",
+                                        rawName: "v-model",
+                                        value:
+                                          _vm.receiptIds[payment.receipt.id]
+                                            .completed,
+                                        expression:
+                                          "receiptIds[payment.receipt.id].completed"
+                                      }
+                                    ],
+                                    attrs: { type: "checkbox" },
+                                    domProps: {
+                                      checked: Array.isArray(
+                                        _vm.receiptIds[payment.receipt.id]
+                                          .completed
+                                      )
+                                        ? _vm._i(
+                                            _vm.receiptIds[payment.receipt.id]
+                                              .completed,
+                                            null
+                                          ) > -1
+                                        : _vm.receiptIds[payment.receipt.id]
+                                            .completed
+                                    },
+                                    on: {
+                                      change: function($event) {
+                                        var $$a =
+                                            _vm.receiptIds[payment.receipt.id]
+                                              .completed,
+                                          $$el = $event.target,
+                                          $$c = $$el.checked ? true : false
+                                        if (Array.isArray($$a)) {
+                                          var $$v = null,
+                                            $$i = _vm._i($$a, $$v)
+                                          if ($$el.checked) {
+                                            $$i < 0 &&
+                                              _vm.$set(
+                                                _vm.receiptIds[
+                                                  payment.receipt.id
+                                                ],
+                                                "completed",
+                                                $$a.concat([$$v])
+                                              )
+                                          } else {
+                                            $$i > -1 &&
+                                              _vm.$set(
+                                                _vm.receiptIds[
+                                                  payment.receipt.id
+                                                ],
+                                                "completed",
+                                                $$a
+                                                  .slice(0, $$i)
+                                                  .concat($$a.slice($$i + 1))
+                                              )
+                                          }
+                                        } else {
+                                          _vm.$set(
+                                            _vm.receiptIds[payment.receipt.id],
+                                            "completed",
+                                            $$c
+                                          )
+                                        }
+                                      }
+                                    }
+                                  })
+                                : _vm._e()
+                            ])
+                          ])
+                        }),
+                        _vm._v(" "),
+                        _vm._l(_vm.items, function(item, index) {
+                          return _c(
+                            "tr",
+                            {
+                              directives: [
+                                {
+                                  name: "show",
+                                  rawName: "v-show",
+                                  value:
+                                    _vm.originalReceiptIds.indexOf(item.id) ==
+                                    -1,
+                                  expression:
+                                    "originalReceiptIds.indexOf(item.id) == -1"
+                                }
+                              ],
+                              staticClass: "pointer"
+                            },
+                            [
+                              _vm.isSelected(item.id)
                                 ? _c(
                                     "td",
                                     {
@@ -62462,8 +62863,8 @@ var render = function() {
                                       on: {
                                         click: function($event) {
                                           return _vm.toggleReceiptId(
-                                            payment.receipt.id,
-                                            payment.receipt.outstanding
+                                            item.id,
+                                            item.outstanding
                                           )
                                         }
                                       }
@@ -62482,8 +62883,8 @@ var render = function() {
                                       on: {
                                         click: function($event) {
                                           return _vm.toggleReceiptId(
-                                            payment.receipt.id,
-                                            payment.receipt.outstanding
+                                            item.id,
+                                            item.outstanding
                                           )
                                         }
                                       }
@@ -62503,8 +62904,8 @@ var render = function() {
                                   on: {
                                     click: function($event) {
                                       return _vm.toggleReceiptId(
-                                        payment.receipt.id,
-                                        payment.receipt.outstanding
+                                        item.id,
+                                        item.outstanding
                                       )
                                     }
                                   }
@@ -62512,12 +62913,12 @@ var render = function() {
                                 [
                                   _vm._v(
                                     "\n                                        " +
-                                      _vm._s(payment.receipt.name)
+                                      _vm._s(item.name)
                                   ),
                                   _c("br"),
                                   _vm._v(" "),
                                   _c("span", { staticClass: "text-muted" }, [
-                                    _vm._v(_vm._s(payment.receipt.typeName))
+                                    _vm._v(_vm._s(item.typeName))
                                   ])
                                 ]
                               ),
@@ -62529,13 +62930,13 @@ var render = function() {
                                   on: {
                                     click: function($event) {
                                       return _vm.toggleReceiptId(
-                                        payment.receipt.id,
-                                        payment.receipt.outstanding
+                                        item.id,
+                                        item.outstanding
                                       )
                                     }
                                   }
                                 },
-                                [_vm._v(_vm._s(payment.receipt.contact.name))]
+                                [_vm._v(_vm._s(item.contact.name))]
                               ),
                               _vm._v(" "),
                               _c(
@@ -62545,17 +62946,13 @@ var render = function() {
                                   on: {
                                     click: function($event) {
                                       return _vm.toggleReceiptId(
-                                        payment.receipt.id,
-                                        payment.receipt.outstanding
+                                        item.id,
+                                        item.outstanding
                                       )
                                     }
                                   }
                                 },
-                                [
-                                  _vm._v(
-                                    _vm._s(_vm.dateFormat(payment.receipt.date))
-                                  )
-                                ]
+                                [_vm._v(_vm._s(_vm.dateFormat(item.date)))]
                               ),
                               _vm._v(" "),
                               _c(
@@ -62565,19 +62962,13 @@ var render = function() {
                                   on: {
                                     click: function($event) {
                                       return _vm.toggleReceiptId(
-                                        payment.receipt.id,
-                                        payment.receipt.outstanding
+                                        item.id,
+                                        item.outstanding
                                       )
                                     }
                                   }
                                 },
-                                [
-                                  _vm._v(
-                                    _vm._s(
-                                      _vm.dateFormat(payment.receipt.dateDue)
-                                    )
-                                  )
-                                ]
+                                [_vm._v(_vm._s(_vm.dateFormat(item.dateDue)))]
                               ),
                               _vm._v(" "),
                               _c(
@@ -62587,8 +62978,8 @@ var render = function() {
                                   on: {
                                     click: function($event) {
                                       return _vm.toggleReceiptId(
-                                        payment.receipt.id,
-                                        payment.receipt.outstanding
+                                        item.id,
+                                        item.outstanding
                                       )
                                     }
                                   }
@@ -62596,11 +62987,7 @@ var render = function() {
                                 [
                                   _vm._v(
                                     _vm._s(
-                                      (payment.receipt.gross / 100).format(
-                                        2,
-                                        ",",
-                                        "."
-                                      )
+                                      (item.gross / 100).format(2, ",", ".")
                                     )
                                   )
                                 ]
@@ -62613,8 +63000,8 @@ var render = function() {
                                   on: {
                                     click: function($event) {
                                       return _vm.setAmount(
-                                        payment.receipt.id,
-                                        payment.receipt.outstanding
+                                        item.id,
+                                        item.outstanding
                                       )
                                     }
                                   }
@@ -62622,9 +63009,11 @@ var render = function() {
                                 [
                                   _vm._v(
                                     _vm._s(
-                                      (
-                                        payment.receipt.outstanding / 100
-                                      ).format(2, ",", ".")
+                                      (item.outstanding / 100).format(
+                                        2,
+                                        ",",
+                                        "."
+                                      )
                                     )
                                   )
                                 ]
@@ -62634,31 +63023,27 @@ var render = function() {
                                 "td",
                                 { staticClass: "align-middle" },
                                 [
-                                  _vm.isSelected(payment.receipt.id)
+                                  _vm.isSelected(item.id)
                                     ? _c("currency-input", {
                                         on: {
                                           input: function($event) {
                                             return _vm.handleInputAmount(
-                                              payment.receipt.id,
-                                              payment.receipt.outstanding
+                                              item.id,
+                                              item.outstanding
                                             )
                                           }
                                         },
                                         model: {
-                                          value:
-                                            _vm.receiptIds[payment.receipt.id]
-                                              .amount,
+                                          value: _vm.receiptIds[item.id].amount,
                                           callback: function($$v) {
                                             _vm.$set(
-                                              _vm.receiptIds[
-                                                payment.receipt.id
-                                              ],
+                                              _vm.receiptIds[item.id],
                                               "amount",
                                               $$v
                                             )
                                           },
                                           expression:
-                                            "receiptIds[payment.receipt.id].amount"
+                                            "receiptIds[item.id].amount"
                                         }
                                       })
                                     : _vm._e()
@@ -62669,38 +63054,33 @@ var render = function() {
                               _c("td", { staticClass: "align-middle" }, [
                                 _c("label", { staticClass: "form-checkbox" }),
                                 _vm._v(" "),
-                                _vm.isSelected(payment.receipt.id)
+                                _vm.isSelected(item.id)
                                   ? _c("input", {
                                       directives: [
                                         {
                                           name: "model",
                                           rawName: "v-model",
                                           value:
-                                            _vm.receiptIds[payment.receipt.id]
-                                              .completed,
+                                            _vm.receiptIds[item.id].completed,
                                           expression:
-                                            "receiptIds[payment.receipt.id].completed"
+                                            "receiptIds[item.id].completed"
                                         }
                                       ],
                                       attrs: { type: "checkbox" },
                                       domProps: {
                                         checked: Array.isArray(
-                                          _vm.receiptIds[payment.receipt.id]
-                                            .completed
+                                          _vm.receiptIds[item.id].completed
                                         )
                                           ? _vm._i(
-                                              _vm.receiptIds[payment.receipt.id]
-                                                .completed,
+                                              _vm.receiptIds[item.id].completed,
                                               null
                                             ) > -1
-                                          : _vm.receiptIds[payment.receipt.id]
-                                              .completed
+                                          : _vm.receiptIds[item.id].completed
                                       },
                                       on: {
                                         change: function($event) {
                                           var $$a =
-                                              _vm.receiptIds[payment.receipt.id]
-                                                .completed,
+                                              _vm.receiptIds[item.id].completed,
                                             $$el = $event.target,
                                             $$c = $$el.checked ? true : false
                                           if (Array.isArray($$a)) {
@@ -62709,18 +63089,14 @@ var render = function() {
                                             if ($$el.checked) {
                                               $$i < 0 &&
                                                 _vm.$set(
-                                                  _vm.receiptIds[
-                                                    payment.receipt.id
-                                                  ],
+                                                  _vm.receiptIds[item.id],
                                                   "completed",
                                                   $$a.concat([$$v])
                                                 )
                                             } else {
                                               $$i > -1 &&
                                                 _vm.$set(
-                                                  _vm.receiptIds[
-                                                    payment.receipt.id
-                                                  ],
+                                                  _vm.receiptIds[item.id],
                                                   "completed",
                                                   $$a
                                                     .slice(0, $$i)
@@ -62729,9 +63105,7 @@ var render = function() {
                                             }
                                           } else {
                                             _vm.$set(
-                                              _vm.receiptIds[
-                                                payment.receipt.id
-                                              ],
+                                              _vm.receiptIds[item.id],
                                               "completed",
                                               $$c
                                             )
@@ -62741,348 +63115,58 @@ var render = function() {
                                     })
                                   : _vm._e()
                               ])
-                            ])
-                          }),
-                          _vm._v(" "),
-                          _vm._l(_vm.items, function(item, index) {
-                            return _c(
-                              "tr",
-                              {
-                                directives: [
-                                  {
-                                    name: "show",
-                                    rawName: "v-show",
-                                    value:
-                                      _vm.originalReceiptIds.indexOf(item.id) ==
-                                      -1,
-                                    expression:
-                                      "originalReceiptIds.indexOf(item.id) == -1"
-                                  }
-                                ],
-                                staticClass: "pointer"
-                              },
-                              [
-                                _vm.isSelected(item.id)
-                                  ? _c(
-                                      "td",
-                                      {
-                                        staticClass: "align-middle text-center",
-                                        on: {
-                                          click: function($event) {
-                                            return _vm.toggleReceiptId(
-                                              item.id,
-                                              item.outstanding
-                                            )
-                                          }
-                                        }
-                                      },
-                                      [
-                                        _c("i", {
-                                          staticClass:
-                                            "fas fa-fw fa-check-circle text-success"
-                                        })
-                                      ]
-                                    )
-                                  : _c(
-                                      "td",
-                                      {
-                                        staticClass: "align-middle text-center",
-                                        on: {
-                                          click: function($event) {
-                                            return _vm.toggleReceiptId(
-                                              item.id,
-                                              item.outstanding
-                                            )
-                                          }
-                                        }
-                                      },
-                                      [
-                                        _c("i", {
-                                          staticClass:
-                                            "fas fa-fw fa-circle text-light"
-                                        })
-                                      ]
-                                    ),
-                                _vm._v(" "),
-                                _c(
-                                  "td",
-                                  {
-                                    staticClass: "align-middle",
-                                    on: {
-                                      click: function($event) {
-                                        return _vm.toggleReceiptId(
-                                          item.id,
-                                          item.outstanding
-                                        )
-                                      }
-                                    }
-                                  },
-                                  [
-                                    _vm._v(
-                                      "\n                                        " +
-                                        _vm._s(item.name)
-                                    ),
-                                    _c("br"),
-                                    _vm._v(" "),
-                                    _c("span", { staticClass: "text-muted" }, [
-                                      _vm._v(_vm._s(item.typeName))
-                                    ])
-                                  ]
-                                ),
-                                _vm._v(" "),
-                                _c(
-                                  "td",
-                                  {
-                                    staticClass: "align-middle",
-                                    on: {
-                                      click: function($event) {
-                                        return _vm.toggleReceiptId(
-                                          item.id,
-                                          item.outstanding
-                                        )
-                                      }
-                                    }
-                                  },
-                                  [_vm._v(_vm._s(item.contact.name))]
-                                ),
-                                _vm._v(" "),
-                                _c(
-                                  "td",
-                                  {
-                                    staticClass: "align-middle",
-                                    on: {
-                                      click: function($event) {
-                                        return _vm.toggleReceiptId(
-                                          item.id,
-                                          item.outstanding
-                                        )
-                                      }
-                                    }
-                                  },
-                                  [_vm._v(_vm._s(_vm.dateFormat(item.date)))]
-                                ),
-                                _vm._v(" "),
-                                _c(
-                                  "td",
-                                  {
-                                    staticClass: "align-middle",
-                                    on: {
-                                      click: function($event) {
-                                        return _vm.toggleReceiptId(
-                                          item.id,
-                                          item.outstanding
-                                        )
-                                      }
-                                    }
-                                  },
-                                  [_vm._v(_vm._s(_vm.dateFormat(item.dateDue)))]
-                                ),
-                                _vm._v(" "),
-                                _c(
-                                  "td",
-                                  {
-                                    staticClass: "align-middle text-right",
-                                    on: {
-                                      click: function($event) {
-                                        return _vm.toggleReceiptId(
-                                          item.id,
-                                          item.outstanding
-                                        )
-                                      }
-                                    }
-                                  },
-                                  [
-                                    _vm._v(
-                                      _vm._s(
-                                        (item.gross / 100).format(2, ",", ".")
-                                      )
-                                    )
-                                  ]
-                                ),
-                                _vm._v(" "),
-                                _c(
-                                  "td",
-                                  {
-                                    staticClass: "align-middle text-right",
-                                    on: {
-                                      click: function($event) {
-                                        return _vm.setAmount(
-                                          item.id,
-                                          item.outstanding
-                                        )
-                                      }
-                                    }
-                                  },
-                                  [
-                                    _vm._v(
-                                      _vm._s(
-                                        (item.outstanding / 100).format(
-                                          2,
-                                          ",",
-                                          "."
-                                        )
-                                      )
-                                    )
-                                  ]
-                                ),
-                                _vm._v(" "),
-                                _c(
-                                  "td",
-                                  { staticClass: "align-middle" },
-                                  [
-                                    _vm.isSelected(item.id)
-                                      ? _c("currency-input", {
-                                          on: {
-                                            input: function($event) {
-                                              return _vm.handleInputAmount(
-                                                item.id,
-                                                item.outstanding
-                                              )
-                                            }
-                                          },
-                                          model: {
-                                            value:
-                                              _vm.receiptIds[item.id].amount,
-                                            callback: function($$v) {
-                                              _vm.$set(
-                                                _vm.receiptIds[item.id],
-                                                "amount",
-                                                $$v
-                                              )
-                                            },
-                                            expression:
-                                              "receiptIds[item.id].amount"
-                                          }
-                                        })
-                                      : _vm._e()
-                                  ],
-                                  1
-                                ),
-                                _vm._v(" "),
-                                _c("td", { staticClass: "align-middle" }, [
-                                  _c("label", { staticClass: "form-checkbox" }),
-                                  _vm._v(" "),
-                                  _vm.isSelected(item.id)
-                                    ? _c("input", {
-                                        directives: [
-                                          {
-                                            name: "model",
-                                            rawName: "v-model",
-                                            value:
-                                              _vm.receiptIds[item.id].completed,
-                                            expression:
-                                              "receiptIds[item.id].completed"
-                                          }
-                                        ],
-                                        attrs: { type: "checkbox" },
-                                        domProps: {
-                                          checked: Array.isArray(
-                                            _vm.receiptIds[item.id].completed
-                                          )
-                                            ? _vm._i(
-                                                _vm.receiptIds[item.id]
-                                                  .completed,
-                                                null
-                                              ) > -1
-                                            : _vm.receiptIds[item.id].completed
-                                        },
-                                        on: {
-                                          change: function($event) {
-                                            var $$a =
-                                                _vm.receiptIds[item.id]
-                                                  .completed,
-                                              $$el = $event.target,
-                                              $$c = $$el.checked ? true : false
-                                            if (Array.isArray($$a)) {
-                                              var $$v = null,
-                                                $$i = _vm._i($$a, $$v)
-                                              if ($$el.checked) {
-                                                $$i < 0 &&
-                                                  _vm.$set(
-                                                    _vm.receiptIds[item.id],
-                                                    "completed",
-                                                    $$a.concat([$$v])
-                                                  )
-                                              } else {
-                                                $$i > -1 &&
-                                                  _vm.$set(
-                                                    _vm.receiptIds[item.id],
-                                                    "completed",
-                                                    $$a
-                                                      .slice(0, $$i)
-                                                      .concat(
-                                                        $$a.slice($$i + 1)
-                                                      )
-                                                  )
-                                              }
-                                            } else {
-                                              _vm.$set(
-                                                _vm.receiptIds[item.id],
-                                                "completed",
-                                                $$c
-                                              )
-                                            }
-                                          }
-                                        }
-                                      })
-                                    : _vm._e()
-                                ])
-                              ]
-                            )
-                          })
-                        ],
-                        2
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "tfoot",
-                        {
-                          directives: [
-                            {
-                              name: "show",
-                              rawName: "v-show",
-                              value: _vm.amountAssigned > 0,
-                              expression: "amountAssigned > 0"
-                            }
-                          ]
-                        },
-                        [
-                          _c("td", { staticClass: "align-middle" }),
-                          _vm._v(" "),
-                          _c("td", { staticClass: "align-middle" }),
-                          _vm._v(" "),
-                          _c("td", { staticClass: "align-middle" }),
-                          _vm._v(" "),
-                          _c("td", { staticClass: "align-middle" }),
-                          _vm._v(" "),
-                          _c("td", { staticClass: "align-middle" }),
-                          _vm._v(" "),
-                          _c("td", { staticClass: "align-middle" }),
-                          _vm._v(" "),
-                          _c("td", { staticClass: "align-middle" }),
-                          _vm._v(" "),
-                          _c("td", { staticClass: "align-middle" }, [
-                            _vm._v(
-                              _vm._s(_vm.amountAssigned.format(2, ",", ".")) +
-                                " (übrig: " +
-                                _vm._s(
-                                  _vm.amountAvailable.format(2, ",", ".")
-                                ) +
-                                ")"
-                            )
-                          ]),
-                          _vm._v(" "),
-                          _c("td", { staticClass: "align-middle" }),
-                          _vm._v(" "),
-                          _c("td", { staticClass: "align-middle" })
+                            ]
+                          )
+                        })
+                      ],
+                      2
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "tfoot",
+                      {
+                        directives: [
+                          {
+                            name: "show",
+                            rawName: "v-show",
+                            value: _vm.amountAssigned > 0,
+                            expression: "amountAssigned > 0"
+                          }
                         ]
-                      )
-                    ]
-                  )
-                ])
-              ],
-              1
-            ),
+                      },
+                      [
+                        _c("td", { staticClass: "align-middle" }),
+                        _vm._v(" "),
+                        _c("td", { staticClass: "align-middle" }),
+                        _vm._v(" "),
+                        _c("td", { staticClass: "align-middle" }),
+                        _vm._v(" "),
+                        _c("td", { staticClass: "align-middle" }),
+                        _vm._v(" "),
+                        _c("td", { staticClass: "align-middle" }),
+                        _vm._v(" "),
+                        _c("td", { staticClass: "align-middle" }),
+                        _vm._v(" "),
+                        _c("td", { staticClass: "align-middle" }),
+                        _vm._v(" "),
+                        _c("td", { staticClass: "align-middle" }, [
+                          _vm._v(
+                            _vm._s(_vm.amountAssigned.format(2, ",", ".")) +
+                              " (übrig: " +
+                              _vm._s(_vm.amountAvailable.format(2, ",", ".")) +
+                              ")"
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _c("td", { staticClass: "align-middle" }),
+                        _vm._v(" "),
+                        _c("td", { staticClass: "align-middle" })
+                      ]
+                    )
+                  ]
+                )
+              ])
+            ]),
             _vm._v(" "),
             _c("div", { staticClass: "modal-footer" }, [
               _c(
@@ -63391,18 +63475,6 @@ var render = function() {
                         _vm.$set(_vm.filter, "accountId", $$v)
                       },
                       expression: "filter.accountId"
-                    }
-                  }),
-                  _vm._v(" "),
-                  _c("filter-tags", {
-                    attrs: { options: _vm.tags },
-                    on: { input: _vm.fetch },
-                    model: {
-                      value: _vm.filter.tags,
-                      callback: function($$v) {
-                        _vm.$set(_vm.filter, "tags", $$v)
-                      },
-                      expression: "filter.tags"
                     }
                   })
                 ],

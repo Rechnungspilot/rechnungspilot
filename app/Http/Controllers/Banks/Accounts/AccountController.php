@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Banks\Accounts;
 
 use App\Banks\Account;
+use App\Http\Controllers\Controller;
 use App\Tag;
 use App\Transaction;
 use Illuminate\Http\Request;
@@ -86,7 +87,15 @@ class AccountController extends Controller
      */
     public function update(Request $request, Account $account)
     {
-        //
+        $attributes = $request->validate([
+            'name' => 'required|string',
+        ]);
+
+        $account->update($attributes);
+
+        return $account->load([
+            'bank.bank',
+        ]);
     }
 
     /**
@@ -97,8 +106,7 @@ class AccountController extends Controller
      */
     public function destroy(Account $account)
     {
-        if ($account->bank_company_id > 0)
-        {
+        if ($account->bank_company_id > 0) {
             $account->bank->delete();
         }
         $account->delete();

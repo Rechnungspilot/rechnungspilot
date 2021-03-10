@@ -11,7 +11,7 @@
                     <div class="modal-body">
                         <div class="form-group">
                             <label>Name</label>
-                            <input v-model="name" class="form-control" :class="'name' in errors ? 'is-invalid' : ''" placeholder="Name des Kontos" autofocus></input>
+                            <input v-model="form.name" class="form-control" :class="'name' in errors ? 'is-invalid' : ''" placeholder="Name des Kontos" autofocus></input>
                             <div class="invalid-feedback" v-text="'name' in errors ? errors.name[0] : ''"></div>
                         </div>
 
@@ -36,14 +36,18 @@
             currencyInput,
         },
 
-        props: [
-            'transaction',
-        ],
+        props: {
+            uri: {
+                required: true,
+                type: String,
+            }
+        },
 
         data() {
             return {
-                uri: '/konten',
-                name: '',
+                form: {
+                    name: '',
+                },
                 errors: {},
             };
         },
@@ -51,9 +55,7 @@
         methods: {
             create() {
                 var component = this;
-                axios.post(component.uri, {
-                    name: component.name,
-                })
+                axios.post(component.uri, component.form)
                     .then(function (response) {
                         component.errors = {};
                         component.name = '';

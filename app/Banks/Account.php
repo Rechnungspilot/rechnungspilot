@@ -6,13 +6,20 @@ use App\Banks\Bank;
 use App\Traits\HasCompany;
 use App\Transaction;
 use Carbon\Carbon;
+use D15r\ModelLabels\Traits\HasLabels;
+use D15r\ModelPath\Traits\HasModelPath;
 use Fhp\Model\SEPAAccount;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 
 class Account extends Model
 {
-    use HasCompany;
+    use HasCompany,
+        HasLabels,
+        HasModelPath;
+
+    const ROUTE_NAME = 'banks.accounts';
+    const TYPE = 'accounts';
 
     protected $sepaAccount;
 
@@ -30,6 +37,16 @@ class Account extends Model
         'iban',
         'name',
     ];
+
+    protected static function labels() : array
+    {
+        return [
+            'nominativ' => [
+                'singular' => 'Konto',
+                'plural' => 'Konten',
+            ],
+        ];
+    }
 
     public static function fromIban(string $iban)
     {
@@ -54,9 +71,18 @@ class Account extends Model
         return $this->hasMany('App\Transaction');
     }
 
-    public function getPathAttribute()
+    public function getRouteParameterAttribute() : array
     {
-        return $this->uri . '/' . $this->id;
+        return [
+            'account' => $this->id,
+        ];
+    }
+
+    public function getSyncPathAttribute()
+    {
+        return route('banks.accounts.sync', [
+            'account' => $this->id,
+        ]);
     }
 
     public function import(Carbon $from, Carbon $to, bool $guessCompany = false)
@@ -86,7 +112,13 @@ class Account extends Model
 
                 $transactions[] = $transaction;
             }
+
+            $amount = ($statement->getStartBalance() * ($statement->getCreditDebit() == \Fhp\Model\StatementOfAccount\Statement::CD_DEBIT ? -1 : 1) * 100);
         }
+
+        $this->update([
+            'amount' => $amount,
+        ]);
 
         $this->bank->update([
             'last_import_at' => now(),

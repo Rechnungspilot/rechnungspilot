@@ -23,22 +23,22 @@
             </center>
         </div>
         <div class="table-responsive" v-else-if="items.length">
-            <table class="table table-hover table-striped bg-white">
+            <table class="table table-hover table-striped table-sm bg-white">
                 <thead>
                     <tr>
                         <th width="20%">Name</th>
                         <th width="10%" class="text-right">Saldo</th>
-                        <th width="60%" class="text-right"></th>
+                        <th width="60%" class="text-right">Letzter Import</th>
                         <th width="10%" class="text-right">Aktion</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <row v-for="(item, index) in items" :item="item" :key="item.id" :uri="uri" @updated="update(index, $event)" @deleted="remove(index)"></row>
+                    <row v-for="(item, index) in items" :item="item" :key="item.id" :uri="uri" @updated="updated(index, $event)" @deleted="deleted(index)"></row>
                 </tbody>
             </table>
         </div>
         <div class="alert alert-dark" v-else><center>Keine Konten vorhanden</center></div>
-        <create @created="created($event)"></create>
+        <create :uri="uri" @created="created($event)"></create>
         <bank-company-create @created="created($event)"></bank-company-create>
     </div>
 </template>
@@ -65,7 +65,7 @@
 
         data () {
             return {
-                uri: '/konten',
+                uri: '/banks/accounts',
                 items: [],
                 isLoading: true,
             };
@@ -89,9 +89,12 @@
             },
             created(account) {
                 this.items.push(account);
+                Vue.successCreate(account);
             },
-            remove(index) {
+            deleted(index) {
+                var item = this.items[index];
                 this.items.splice(index, 1);
+                Vue.successDelete(item);
             },
             fetch() {
                 var component = this;
@@ -104,6 +107,10 @@
                     .catch(function (error) {
                         console.log(error);
                 });
+            },
+            updated(index, item) {
+                Vue.set(this.items, index, item);
+                Vue.successUpdate(item);
             },
         },
     };

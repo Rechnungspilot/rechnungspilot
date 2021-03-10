@@ -83,6 +83,7 @@ class Payment extends Status
             'amount' => $attributes['amount'],
             'type' => get_class($this->receipt) == Expense::class ? 'debit' : 'credit',
             'date' => $this->date,
+            'reference' => '',
         ]);
         $attributes['transaction_id'] = $transaction->id;
 
