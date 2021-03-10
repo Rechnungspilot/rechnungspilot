@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Userfiles;
 
+use App\Http\Controllers\Controller;
 use App\Tag;
 use App\Userfile;
 use Illuminate\Http\Request;
@@ -18,16 +19,26 @@ class UserfileController extends Controller
     public function index(Request $request)
     {
         if ($request->wantsJson()) {
-            return UserFile::with(['fileable', 'tags'])
+            $userfiles = UserFile::with(['fileable', 'tags'])
                 ->search($request->input('searchtext'))
                 ->type($request->input('fileable_type'))
-                ->withAllTags($request->input('tags'), 'dateien')
+                ->withAllTags($request->input('tags'), Userfile::class)
                 ->orderBy('created_at', 'DESC')
                 ->paginate(15);
+
+            foreach ($userfiles as $key => $userfile) {
+                $userfile->append([
+                    'tags_path',
+                    'tags_index_path',
+                    'tags_string',
+                ]);
+            }
+
+            return $userfiles;
         }
 
         return view('userfile.index')
-            ->with('tags', Tag::withType('dateien')->get());
+            ->with('tags', Tag::withType(Userfile::class)->get());
     }
 
     /**
@@ -59,6 +70,13 @@ class UserfileController extends Controller
         }
 
         if ($request->wantsJson()) {
+            foreach ($userfiles as $key => $userfile) {
+                $userfile->append([
+                    'tags_path',
+                    'tags_index_path',
+                    'tags_string',
+                ]);
+            }
             return $userfiles;
         }
 
@@ -103,7 +121,11 @@ class UserfileController extends Controller
 
         $userfile->update($validatedData);
 
-        return $userfile->load('fileable');
+        return $userfile->append([
+                    'tags_path',
+                    'tags_index_path',
+                    'tags_string',
+                ])->load('fileable');
     }
 
     /**
@@ -114,17 +136,15 @@ class UserfileController extends Controller
      */
     public function destroy(Request $request, Userfile $userfile)
     {
-        if (Storage::disk(config('app.storage_disk_userfiles'))->delete($userfile->filename))
-        {
+        if (Storage::disk(config('app.storage_disk_userfiles'))->delete($userfile->filename)) {
             $userfile->delete();
         }
 
-        if ($request->wantsJson())
-        {
+        if ($request->wantsJson()) {
             return;
         }
 
-        return back()
+        return redirect($userfile->index_path)
             ->with('status', 'Datei gelöscht!');
     }
 }

@@ -9388,6 +9388,11 @@ __webpack_require__.r(__webpack_exports__);
       type: Number,
       required: true
     },
+    hasCreateButton: {
+      type: Boolean,
+      required: false,
+      "default": true
+    },
     hasFilter: {
       type: Boolean,
       required: false,
@@ -12511,6 +12516,9 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _tables_rows_editable__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../tables/rows/editable */ "./resources/assets/js/components/tables/rows/editable.vue");
+/* harmony import */ var _form_input_text_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../form/input/text.vue */ "./resources/assets/js/components/form/input/text.vue");
+/* harmony import */ var _mixins_tables_rows_editable_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../mixins/tables/rows/editable.js */ "./resources/assets/js/mixins/tables/rows/editable.js");
 //
 //
 //
@@ -12545,48 +12553,25 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
+
+
+
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['item', 'uri'],
+  components: {
+    editable: _tables_rows_editable__WEBPACK_IMPORTED_MODULE_0__["default"],
+    inputText: _form_input_text_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
+  },
+  mixins: [_mixins_tables_rows_editable_js__WEBPACK_IMPORTED_MODULE_2__["editableMixin"]],
+  props: {},
   data: function data() {
     return {
-      id: this.item.id,
-      edit: false,
-      name: this.item.name,
-      tags: this.item.tags,
-      errors: {}
+      form: {
+        name: this.item.name
+      }
     };
   },
-  computed: {
-    tagsString: function tagsString() {
-      return this.tags.map(function (tag) {
-        return tag.name;
-      }).join(', ');
-    }
-  },
   methods: {
-    destroy: function destroy() {
-      axios["delete"]('/dateien/' + this.id);
-      this.$emit("deleted", this.id);
-    },
-    update: function update() {
-      var component = this;
-      axios.put('/dateien/' + this.id, {
-        name: this.name
-      }).then(function (response) {
-        component.errors = {};
-        component.edit = false;
-        component.$emit('updated', response.data);
-      })["catch"](function (error) {
-        component.errors = error.response.data.errors;
-      });
-    },
-    link: function link() {
+    show: function show() {
       location.href = this.item.url;
     }
   }
@@ -12607,6 +12592,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _row_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./row.vue */ "./resources/assets/js/components/userfile/row.vue");
 /* harmony import */ var _filter_type_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../filter/type.vue */ "./resources/assets/js/components/filter/type.vue");
 /* harmony import */ var _filter_tags_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../filter/tags.vue */ "./resources/assets/js/components/filter/tags.vue");
+/* harmony import */ var _tables_base_vue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../tables/base.vue */ "./resources/assets/js/components/tables/base.vue");
+/* harmony import */ var _mixins_tables_base_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../mixins/tables/base.js */ "./resources/assets/js/mixins/tables/base.js");
+/* harmony import */ var _mixins_tables_paginated_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../mixins/tables/paginated.js */ "./resources/assets/js/mixins/tables/paginated.js");
 //
 //
 //
@@ -12649,24 +12637,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
+
+
+
 
 
 
@@ -12674,80 +12647,37 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
     create: _create_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
-    row: _row_vue__WEBPACK_IMPORTED_MODULE_1__["default"],
+    filterTags: _filter_tags_vue__WEBPACK_IMPORTED_MODULE_3__["default"],
     filterType: _filter_type_vue__WEBPACK_IMPORTED_MODULE_2__["default"],
-    filterTags: _filter_tags_vue__WEBPACK_IMPORTED_MODULE_3__["default"]
+    row: _row_vue__WEBPACK_IMPORTED_MODULE_1__["default"],
+    tableBase: _tables_base_vue__WEBPACK_IMPORTED_MODULE_4__["default"]
   },
-  props: ['token', 'filterTypes', 'filterTags'],
+  mixins: [_mixins_tables_base_js__WEBPACK_IMPORTED_MODULE_5__["baseMixin"], _mixins_tables_paginated_js__WEBPACK_IMPORTED_MODULE_6__["paginatedMixin"]],
+  props: {
+    tags: {
+      type: Array
+    },
+    token: {
+      required: true,
+      type: String
+    },
+    types: {
+      type: Object
+    }
+  },
   data: function data() {
-    var uri = '/dateien';
     return {
-      items: [],
-      isLoading: true,
-      showFilter: true,
-      searchtext: '',
-      searchTimeout: null,
-      page: 1,
-      paginate: {
-        nextPageUrl: null,
-        prevPageUrl: null,
-        lastPage: 0
-      },
       filter: {
         type: '',
         tags: []
-      },
-      name: '',
-      errors: {},
-      uri: uri,
-      action: uri
+      }
     };
-  },
-  mounted: function mounted() {
-    this.fetch();
-  },
-  watch: {
-    page: function page() {
-      this.fetch();
-    }
   },
   methods: {
     created: function created(files) {
       for (var index in files) {
         this.items.unshift(files[index]);
       }
-    },
-    updated: function updated(index, item) {
-      Vue.set(this.items, index, item);
-    },
-    fetch: function fetch() {
-      var component = this;
-      component.isLoading = true;
-      axios.get(component.uri + '?searchtext=' + component.searchtext + '&fileable_type=' + component.filter.type + '&tags=' + component.filter.tags).then(function (response) {
-        component.items = response.data.data;
-        component.page = response.data.current_page;
-        component.paginate.nextPageUrl = response.data.next_page_url;
-        component.paginate.prevPageUrl = response.data.prev_page_url;
-        component.paginate.lastPage = response.data.last_page;
-        component.isLoading = false;
-      })["catch"](function (error) {
-        console.log(error);
-      });
-    },
-    search: function search() {
-      var component = this;
-
-      if (component.searchTimeout) {
-        clearTimeout(component.searchTimeout);
-        component.searchTimeout = null;
-      }
-
-      component.searchTimeout = setTimeout(function () {
-        component.fetch();
-      }, 300);
-    },
-    remove: function remove(index) {
-      this.items.splice(index, 1);
     }
   }
 });
@@ -50655,7 +50585,7 @@ var render = function() {
               expression: "value"
             }
           ],
-          staticClass: "form-control",
+          staticClass: "form-control form-control-sm",
           attrs: { id: "filter-statuses" },
           on: {
             change: [
@@ -58566,18 +58496,20 @@ var render = function() {
         [
           _vm._t("form"),
           _vm._v(" "),
-          _c(
-            "button",
-            {
-              staticClass: "btn btn-primary btn-sm",
-              on: {
-                click: function($event) {
-                  return _vm.$emit("creating")
-                }
-              }
-            },
-            [_c("i", { staticClass: "fas fa-plus-square" })]
-          )
+          _vm.hasCreateButton
+            ? _c(
+                "button",
+                {
+                  staticClass: "btn btn-primary btn-sm",
+                  on: {
+                    click: function($event) {
+                      return _vm.$emit("creating")
+                    }
+                  }
+                },
+                [_c("i", { staticClass: "fas fa-plus-square" })]
+              )
+            : _vm._e()
         ],
         2
       ),
@@ -63967,169 +63899,113 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm.edit
-    ? _c("tr", [
-        _c("td", { staticClass: "align-middle" }, [
-          _c("input", {
-            directives: [
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.name,
-                expression: "name"
-              }
-            ],
-            staticClass: "form-control",
-            class: "name" in _vm.errors ? "is-invalid" : "",
-            attrs: { type: "text" },
-            domProps: { value: _vm.name },
-            on: {
-              keydown: function($event) {
-                if (
-                  !$event.type.indexOf("key") &&
-                  _vm._k($event.keyCode, "enter", 13, $event.key, "Enter")
-                ) {
-                  return null
-                }
-                return _vm.update($event)
-              },
-              input: function($event) {
-                if ($event.target.composing) {
-                  return
-                }
-                _vm.name = $event.target.value
-              }
-            }
-          }),
-          _vm._v(" "),
-          _c("div", {
-            staticClass: "invalid-feedback",
-            domProps: {
-              textContent: _vm._s(
-                "name" in _vm.errors ? _vm.errors.name[0] : ""
-              )
-            }
-          })
-        ]),
-        _vm._v(" "),
-        _c(
-          "td",
-          { staticClass: "align-middle", attrs: { colspan: "2" } },
-          [
-            _c("tag-select", {
-              attrs: {
-                selected: _vm.tags,
-                type: "dateien",
-                type_id: _vm.id,
-                showLabel: false
-              },
-              model: {
-                value: _vm.tags,
-                callback: function($$v) {
-                  _vm.tags = $$v
-                },
-                expression: "tags"
-              }
-            })
-          ],
-          1
-        ),
-        _vm._v(" "),
-        _c("td", { staticClass: "text-right align-middle" }, [
-          _c(
-            "div",
-            { staticClass: "btn-group btn-group-sm", attrs: { role: "group" } },
-            [
-              _c(
-                "button",
-                {
-                  staticClass: "btn btn-primary",
-                  attrs: { type: "button", title: "Speichern" },
-                  on: { click: _vm.update }
-                },
-                [_c("i", { staticClass: "fas fa-fw fa-save" })]
-              ),
-              _vm._v(" "),
-              _c(
-                "button",
-                {
-                  staticClass: "btn btn-secondary",
-                  attrs: { type: "button", title: "Abbrechen" },
+  return _c("editable", {
+    attrs: { "is-editing": _vm.isEditing },
+    on: {
+      editing: function($event) {
+        _vm.isEditing = $event
+      },
+      updating: function($event) {
+        return _vm.update()
+      },
+      destroying: function($event) {
+        return _vm.destroy()
+      }
+    },
+    scopedSlots: _vm._u([
+      {
+        key: "edit",
+        fn: function() {
+          return [
+            _c(
+              "td",
+              { staticClass: "align-middle pointer" },
+              [
+                _c("input-text", {
+                  attrs: { placeholder: "Name", error: _vm.error("name") },
                   on: {
-                    click: function($event) {
-                      _vm.edit = false
+                    keydown: function($event) {
+                      if (
+                        !$event.type.indexOf("key") &&
+                        _vm._k($event.keyCode, "enter", 13, $event.key, "Enter")
+                      ) {
+                        return null
+                      }
+                      return _vm.update($event)
                     }
+                  },
+                  model: {
+                    value: _vm.form.name,
+                    callback: function($$v) {
+                      _vm.$set(_vm.form, "name", $$v)
+                    },
+                    expression: "form.name"
                   }
-                },
-                [_c("i", { staticClass: "fas fa-fw fa-times" })]
-              )
-            ]
-          )
-        ])
-      ])
-    : _c("tr", [
-        _c(
-          "td",
-          { staticClass: "align-middle pointer", on: { click: _vm.link } },
-          [
-            _vm._v("\n        " + _vm._s(_vm.item.name)),
-            _c("br"),
+                })
+              ],
+              1
+            ),
             _vm._v(" "),
-            _c("span", { staticClass: "text-muted" }, [
-              _vm._v(_vm._s(_vm.item.original_name))
+            _c(
+              "td",
+              { staticClass: "align-middle", attrs: { colspan: "2" } },
+              [
+                _c("tag-select", {
+                  attrs: {
+                    selected: _vm.item.tags,
+                    "index-path": _vm.item.tags_index_path,
+                    path: _vm.item.tags_path,
+                    showLabel: false
+                  }
+                })
+              ],
+              1
+            )
+          ]
+        },
+        proxy: true
+      },
+      {
+        key: "show",
+        fn: function() {
+          return [
+            _c(
+              "td",
+              { staticClass: "align-middle pointer", on: { click: _vm.show } },
+              [
+                _vm._v("\n            " + _vm._s(_vm.item.name)),
+                _c("br"),
+                _vm._v(" "),
+                _c("span", { staticClass: "text-muted" }, [
+                  _vm._v(_vm._s(_vm.item.original_name))
+                ])
+              ]
+            ),
+            _vm._v(" "),
+            _vm.item.fileable == null
+              ? _c("td", { staticClass: "align-middle pointer" })
+              : _c("td", { staticClass: "align-middle pointer" }, [
+                  _c("a", { attrs: { href: _vm.item.fileable.path } }, [
+                    _vm._v(_vm._s(_vm.item.fileable.name))
+                  ]),
+                  _c("br"),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "text-muted" }, [
+                    _vm._v(_vm._s(_vm.item.fileable.typeName))
+                  ])
+                ]),
+            _vm._v(" "),
+            _c("td", { staticClass: "align-middle pointer" }, [
+              _vm._v(
+                "\n            " + _vm._s(_vm.item.tags_string) + "\n        "
+              )
             ])
           ]
-        ),
-        _vm._v(" "),
-        _vm.item.fileable == null
-          ? _c("td", { staticClass: "align-middle pointer" })
-          : _c("td", { staticClass: "align-middle pointer" }, [
-              _c("a", { attrs: { href: _vm.item.fileable.path } }, [
-                _vm._v(_vm._s(_vm.item.fileable.name))
-              ]),
-              _c("br"),
-              _vm._v(" "),
-              _c("span", { staticClass: "text-muted" }, [
-                _vm._v(_vm._s(_vm.item.fileable.typeName))
-              ])
-            ]),
-        _vm._v(" "),
-        _c("td", { staticClass: "align-middle pointer" }, [
-          _vm._v("\n        " + _vm._s(_vm.tagsString) + "\n    ")
-        ]),
-        _vm._v(" "),
-        _c("td", { staticClass: "text-right align-middle" }, [
-          _c(
-            "div",
-            { staticClass: "btn-group btn-group-sm", attrs: { role: "group" } },
-            [
-              _c(
-                "button",
-                {
-                  staticClass: "btn btn-secondary",
-                  attrs: { type: "button", title: "Bearbeiten" },
-                  on: {
-                    click: function($event) {
-                      _vm.edit = true
-                    }
-                  }
-                },
-                [_c("i", { staticClass: "fas fa-fw fa-edit" })]
-              ),
-              _vm._v(" "),
-              _c(
-                "button",
-                {
-                  staticClass: "btn btn-secondary",
-                  attrs: { type: "button", title: "Löschen" },
-                  on: { click: _vm.destroy }
-                },
-                [_c("i", { staticClass: "fas fa-fw fa-trash" })]
-              )
-            ]
-          )
-        ])
-      ])
+        },
+        proxy: true
+      }
+    ])
+  })
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -64153,279 +64029,131 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [
-    _c("div", { staticClass: "container-fluid" }, [
+  return _c(
+    "div",
+    [
       _c(
         "div",
-        { staticClass: "row mb-3" },
+        { staticClass: "row mb-3 px-3" },
         [_c("create", { on: { created: _vm.created } })],
         1
       ),
       _vm._v(" "),
-      _c("div", { staticClass: "row" }, [
-        _c(
-          "div",
-          { staticClass: "form-group", staticStyle: { "margin-bottom": "0" } },
-          [
-            _c("input", {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.searchtext,
-                  expression: "searchtext"
-                }
-              ],
-              staticClass: "form-control",
-              attrs: { type: "search", placeholder: "suchen.." },
-              domProps: { value: _vm.searchtext },
-              on: {
-                keyup: _vm.search,
-                input: function($event) {
-                  if ($event.target.composing) {
-                    return
-                  }
-                  _vm.searchtext = $event.target.value
-                }
-              }
-            })
-          ]
-        ),
-        _vm._v(" \n            "),
-        _c(
-          "button",
-          {
-            staticClass: "btn btn-outline-primary",
-            on: {
-              click: function($event) {
-                _vm.showFilter = !_vm.showFilter
-              }
-            }
-          },
-          [_vm._v("+ Filter")]
-        )
-      ]),
-      _vm._v(" "),
-      _vm.showFilter
-        ? _c(
-            "form",
-            { staticStyle: { padding: "15px 0" }, attrs: { id: "filter" } },
-            [
-              _c(
-                "div",
-                { staticClass: "form-row" },
-                [
-                  _c("filter-type", {
-                    attrs: { options: _vm.filterTypes },
-                    on: { input: _vm.fetch },
-                    model: {
-                      value: _vm.filter.type,
-                      callback: function($$v) {
-                        _vm.$set(_vm.filter, "type", $$v)
-                      },
-                      expression: "filter.type"
-                    }
-                  }),
-                  _vm._v(" "),
-                  _c("filter-tags", {
-                    attrs: { options: _vm.filterTags },
-                    on: { input: _vm.fetch },
-                    model: {
-                      value: _vm.filter.tags,
-                      callback: function($$v) {
-                        _vm.$set(_vm.filter, "tags", $$v)
-                      },
-                      expression: "filter.tags"
-                    }
-                  })
-                ],
-                1
-              )
-            ]
-          )
-        : _vm._e()
-    ]),
-    _vm._v(" "),
-    _c("br"),
-    _vm._v(" "),
-    _vm.isLoading
-      ? _c(
-          "div",
-          { staticClass: "p-5" },
-          [
-            _c("center", [
-              _c("span", { staticStyle: { "font-size": "48px" } }, [
-                _c("i", { staticClass: "fas fa-spinner fa-spin" }),
-                _c("br")
-              ]),
-              _vm._v("\n            Lade Daten..\n        ")
-            ])
-          ],
-          1
-        )
-      : _vm.items.length
-      ? _c(
-          "table",
-          { staticClass: "table table-hover table-striped bg-white" },
-          [
-            _vm._m(0),
-            _vm._v(" "),
-            _c(
-              "tbody",
-              [
-                _vm._l(_vm.items, function(item, index) {
-                  return [
-                    _c("row", {
-                      key: item.id,
-                      attrs: { item: item, uri: _vm.uri },
-                      on: {
-                        deleted: function($event) {
-                          return _vm.remove(index)
-                        },
-                        updated: function($event) {
-                          return _vm.updated(index, $event)
-                        }
-                      }
-                    })
-                  ]
-                })
-              ],
-              2
-            )
-          ]
-        )
-      : _c(
-          "div",
-          { staticClass: "alert alert-dark" },
-          [_c("center", [_vm._v("Keine Dateien vorhanden")])],
-          1
-        ),
-    _vm._v(" "),
-    _c("nav", { attrs: { "aria-label": "Page navigation example" } }, [
-      _c(
-        "ul",
-        {
-          directives: [
-            {
-              name: "show",
-              rawName: "v-show",
-              value: _vm.paginate.lastPage > 1,
-              expression: "paginate.lastPage > 1"
-            }
-          ],
-          staticClass: "pagination"
+      _c("table-base", {
+        attrs: {
+          "has-create-button": false,
+          "is-loading": _vm.isLoading,
+          paginate: _vm.paginate,
+          "items-length": _vm.items.length,
+          "has-filter": _vm.hasFilter()
         },
-        [
-          _c(
-            "li",
-            {
-              directives: [
-                {
-                  name: "show",
-                  rawName: "v-show",
-                  value: _vm.paginate.prevPageUrl,
-                  expression: "paginate.prevPageUrl"
-                }
-              ],
-              staticClass: "page-item"
+        on: {
+          creating: _vm.create,
+          paginating: function($event) {
+            _vm.filter.page = $event
+          },
+          searching: function($event) {
+            return _vm.searching($event)
+          }
+        },
+        scopedSlots: _vm._u([
+          {
+            key: "form",
+            fn: function() {
+              return undefined
             },
-            [
-              _c(
-                "a",
-                {
-                  staticClass: "page-link",
-                  attrs: { href: "#" },
+            proxy: true
+          },
+          {
+            key: "filter",
+            fn: function() {
+              return [
+                _c("filter-type", {
+                  attrs: { options: _vm.types },
                   on: {
-                    click: function($event) {
-                      $event.preventDefault()
-                      _vm.page--
-                    }
-                  }
-                },
-                [_vm._v("Previous")]
-              )
-            ]
-          ),
-          _vm._v(" "),
-          _vm._l(_vm.paginate.lastPage, function(n) {
-            return _c(
-              "li",
-              { staticClass: "page-item", class: { active: n == _vm.page } },
-              [
-                _c(
-                  "a",
-                  {
-                    staticClass: "page-link",
-                    attrs: { href: "#" },
-                    on: {
-                      click: function($event) {
-                        $event.preventDefault()
-                        _vm.page = n
-                      }
+                    input: function($event) {
+                      return _vm.search()
                     }
                   },
-                  [_vm._v(_vm._s(n))]
-                )
-              ]
-            )
-          }),
-          _vm._v(" "),
-          _c(
-            "li",
-            {
-              directives: [
-                {
-                  name: "show",
-                  rawName: "v-show",
-                  value: _vm.paginate.nextPageUrl,
-                  expression: "paginate.nextPageUrl"
-                }
-              ],
-              staticClass: "page-item"
-            },
-            [
-              _c(
-                "a",
-                {
-                  staticClass: "page-link",
-                  attrs: { href: "#" },
+                  model: {
+                    value: _vm.filter.type,
+                    callback: function($$v) {
+                      _vm.$set(_vm.filter, "type", $$v)
+                    },
+                    expression: "filter.type"
+                  }
+                }),
+                _vm._v(" "),
+                _c("filter-tags", {
+                  attrs: { options: _vm.tags },
                   on: {
-                    click: function($event) {
-                      $event.preventDefault()
-                      _vm.page++
+                    input: function($event) {
+                      return _vm.search()
+                    }
+                  },
+                  model: {
+                    value: _vm.filter.tags,
+                    callback: function($$v) {
+                      _vm.$set(_vm.filter, "tags", $$v)
+                    },
+                    expression: "filter.tags"
+                  }
+                })
+              ]
+            },
+            proxy: true
+          },
+          {
+            key: "thead",
+            fn: function() {
+              return [
+                _c("tr"),
+                _c("tr", [
+                  _c("th", { attrs: { width: "40%" } }, [
+                    _vm._v("Bezeichnung")
+                  ]),
+                  _vm._v(" "),
+                  _c("th", { attrs: { width: "30%" } }, [_vm._v("Datensatz")]),
+                  _vm._v(" "),
+                  _c("th", { attrs: { width: "30%" } }, [_vm._v("Tags")]),
+                  _vm._v(" "),
+                  _c(
+                    "th",
+                    { staticClass: "text-right", attrs: { width: "125" } },
+                    [_vm._v("Aktion")]
+                  )
+                ])
+              ]
+            },
+            proxy: true
+          },
+          {
+            key: "tbody",
+            fn: function() {
+              return _vm._l(_vm.items, function(item, index) {
+                return _c("row", {
+                  key: item.id,
+                  attrs: { item: item, tags: _vm.tags },
+                  on: {
+                    deleted: function($event) {
+                      return _vm.deleted(index)
+                    },
+                    updated: function($event) {
+                      return _vm.updated(index, $event)
                     }
                   }
-                },
-                [_vm._v("Next")]
-              )
-            ]
-          )
-        ],
-        2
-      )
-    ])
-  ])
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("thead", [
-      _c("tr", [
-        _c("th", { attrs: { width: "30%" } }, [_vm._v("Bezeichnung")]),
-        _vm._v(" "),
-        _c("th", { attrs: { width: "30%" } }, [_vm._v("Datensatz")]),
-        _vm._v(" "),
-        _c("th", { attrs: { width: "30%" } }, [_vm._v("Tags")]),
-        _vm._v(" "),
-        _c("th", { staticClass: "text-right", attrs: { width: "10%" } }, [
-          _vm._v("Aktion")
+                })
+              })
+            },
+            proxy: true
+          }
         ])
-      ])
-    ])
-  }
-]
+      })
+    ],
+    1
+  )
+}
+var staticRenderFns = []
 render._withStripped = true
 
 

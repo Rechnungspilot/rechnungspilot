@@ -10,6 +10,8 @@ use App\Receipts\Receipt;
 use App\Traits\HasCompany;
 use App\Traits\HasTags;
 use App\Traits\HasUuid;
+use D15r\ModelLabels\Traits\HasLabels;
+use D15r\ModelPath\Traits\HasModelPath;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
@@ -17,7 +19,13 @@ use Illuminate\Support\Str;
 
 class Userfile extends Model
 {
-    use HasCompany, HasTags;
+    use HasCompany,
+        HasLabels,
+        HasModelPath,
+        HasTags;
+
+    const ROUTE_NAME = 'userfiles';
+    const TYPE = 'userfiles';
 
     protected $appends = [
         'url',
@@ -91,6 +99,16 @@ class Userfile extends Model
         }
 
         return $userfile->load('fileable');
+    }
+
+    protected static function labels() : array
+    {
+        return [
+            'nominativ' => [
+                'singular' => 'Datei',
+                'plural' => 'Dateien',
+            ],
+        ];
     }
 
     public function user()

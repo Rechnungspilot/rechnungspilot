@@ -3,7 +3,7 @@
         <div class="row mb-3">
             <div class="col d-flex align-items-start mb-1 mb-sm-0">
                 <slot name="form"></slot>
-                <button class="btn btn-primary btn-sm" @click="$emit('creating')"><i class="fas fa-plus-square"></i></button>
+                <button class="btn btn-primary btn-sm" @click="$emit('creating')" v-if="hasCreateButton"><i class="fas fa-plus-square"></i></button>
             </div>
             <div class="col-auto d-flex">
                 <div class="form-group" style="margin-bottom: 0;">
@@ -68,7 +68,11 @@
                 type: Number,
                 required: true,
             },
-            hasFilter: {
+            hasCreateButton: {
+                type: Boolean,
+                required: false,
+                default: true,
+            },hasFilter: {
                 type: Boolean,
                 required: false,
                 default: false,

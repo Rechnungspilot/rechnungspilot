@@ -5,6 +5,7 @@ namespace App\Support;
 use App\Contacts\Contact;
 use App\Item;
 use App\User;
+use App\Userfile;
 use Illuminate\Support\Arr;
 
 class Type
@@ -13,6 +14,7 @@ class Type
         Contact::TYPE => Contact::class,
         Item::TYPE => Item::class,
         User::TYPE => User::class,
+        Userfile::TYPE => Userfile::class,
     ];
 
     public static function class(string $type) : string

@@ -16,12 +16,17 @@ trait HasTags
         ]);
     }
 
-    public function getTagsPathAttribute()
+    public function getTagsPathAttribute() : string
     {
         return route('taggable.index', [
             'model' => $this->id,
             'type' => self::TYPE,
         ]);
+    }
+
+    public function getTagsIndexPathAttribute() : string
+    {
+        return self::indexPathTags();
     }
 
     public function getTagsStringAttribute()

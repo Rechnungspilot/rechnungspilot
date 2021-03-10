@@ -68,6 +68,7 @@ Route::bind('model', function ($id) {
         case Contact::TYPE: return Contact::findOrFail($id); break;
         case Item::TYPE: return Item::findOrFail($id); break;
         case User::TYPE: return User::findOrFail($id); break;
+        case Userfile::TYPE: return Userfile::findOrFail($id); break;
 
         default: abort(404);
     }
@@ -224,10 +225,10 @@ Route::middleware(['auth', 'company.locked'])->group(function () {
     Route::get('buchungen/belege', 'Transactions\ReceiptController@index');
 
     // Dateien
-    Route::get('dateien', 'UserfileController@index')->name('userfile.index');
-    Route::post('dateien', 'UserfileController@store')->name('userfile.store');
-    Route::put('dateien/{userfile}', 'UserfileController@update')->name('userfile.update');
-    Route::delete('dateien/{userfile}', 'UserfileController@destroy')->name('userfile.destroy');
+    Route::get('dateien', 'Userfiles\UserfileController@index')->name('userfile.index');
+    Route::post('dateien', 'Userfiles\UserfileController@store')->name('userfile.store');
+    Route::put('dateien/{userfile}', 'Userfiles\UserfileController@update')->name('userfile.update');
+    Route::delete('dateien/{userfile}', 'Userfiles\UserfileController@destroy')->name('userfile.destroy');
 
     Route::get('{type}/{model}/dateien', 'UserfileableController@index');
     Route::post('{type}/{model}/dateien', 'UserfileableController@store');
@@ -438,6 +439,7 @@ Route::middleware(['auth', 'company.locked'])->group(function () {
             Route::delete('contacts/{contact}/people/{person}/default/{type}', 'Contacts\People\DefaultController@destroy');
     Route::resource(Item::ROUTE_NAME, 'Items\ItemController');
     Route::resource(User::ROUTE_NAME, 'Users\UserController');
+    Route::resource(Userfile::ROUTE_NAME, 'Userfiles\UserfileController');
 
 });
 
