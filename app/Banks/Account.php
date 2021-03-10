@@ -90,13 +90,13 @@ class Account extends Model
         $transactions = [];
         $statements = $this->getStatements($from, $to);
         foreach ($statements->getStatements() as $statement) {
-            $date = new Carbon($statement->getDate()->format('Y-m-d'));
+            $amount_transactions = 0;
             foreach ($statement->getTransactions() as $SEPATransaction) {
-                $transaction = Transaction::make([
+                $transaction = Transaction::firstOrNew([
                     'account_id' => $this->id,
                     'amount' => $SEPATransaction->getAmount() * 100,
                     'company_id' => $this->company_id,
-                    'date' => $date,
+                    'date' => $SEPATransaction->getValutaDate(),
                     'reference' => Arr::get(explode("SVWZ+", $SEPATransaction->getDescription1()), 1, ''),
                     'text' => $SEPATransaction->getDescription1() . "\n" . $SEPATransaction->getDescription2(),
                     'type' => $SEPATransaction->getCreditDebit(),
@@ -111,9 +111,12 @@ class Account extends Model
                 $transaction->save();
 
                 $transactions[] = $transaction;
+
+                $amount_transactions += ($SEPATransaction->getAmount() * ($SEPATransaction->getCreditDebit() == \Fhp\Model\StatementOfAccount\Transaction::CD_DEBIT ? -1 : 1));
             }
 
-            $amount = ($statement->getStartBalance() * ($statement->getCreditDebit() == \Fhp\Model\StatementOfAccount\Statement::CD_DEBIT ? -1 : 1) * 100);
+            $amount_start_balance = $statement->getStartBalance() * ($statement->getCreditDebit() == \Fhp\Model\StatementOfAccount\Statement::CD_DEBIT ? -1 : 1);
+            $amount = ($amount_start_balance + $amount_transactions) * 100;
         }
 
         $this->update([
