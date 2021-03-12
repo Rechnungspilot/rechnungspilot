@@ -4,15 +4,22 @@ namespace App\Receipts;
 
 use App\Jobs\CacheItem;
 use App\Traits\HasCompany;
+use D15r\ModelLabels\Traits\HasLabels;
+use D15r\ModelPath\Traits\HasModelPath;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
 class Item extends Model
 {
-    use HasCompany;
+    use HasCompany,
+        HasLabels,
+        HasModelPath;
+
+    const ROUTE_NAME = 'receipts.items';
 
     protected $appends = [
         'unitPriceFormated',
+        'should_edit',
     ];
 
     protected $casts = [
@@ -37,6 +44,8 @@ class Item extends Model
     ];
 
     protected $table = 'item_receipt';
+
+    protected $should_edit = false;
 
     /**
      * The booting method of the model.
@@ -69,6 +78,16 @@ class Item extends Model
             }
             CacheItem::dispatch($receiptItem->item);
         }
+    }
+
+    protected static function labels() : array
+    {
+        return [
+            'nominativ' => [
+                'singular' => 'Position',
+                'plural' => 'Positionen',
+            ],
+        ];
     }
 
     public function getDatevTaxCodeAttribute() : int
@@ -104,6 +123,24 @@ class Item extends Model
         $nachkommastellen = strlen(substr( $zahl, (strpos($zahl, '.')+1) ) );
 
         return (int)($nachkommastellen < $min ? $min : ($nachkommastellen > $max ? $max : $nachkommastellen));
+    }
+
+    public function getRouteParameterAttribute() : array
+    {
+        return [
+            'receipt' => $this->receipt_id,
+            'item' => $this->id
+        ];
+    }
+
+    public function getShouldEditAttribute() : bool
+    {
+        return $this->should_edit;
+    }
+
+    public function setShouldEditAttribute($value) : void
+    {
+        $this->should_edit = $value;
     }
 
     public function setQuantityAttribute($value) {

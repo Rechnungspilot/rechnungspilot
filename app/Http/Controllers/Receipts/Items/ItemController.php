@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\Receipts;
+namespace App\Http\Controllers\Receipts\Items;
 
 use App\Http\Controllers\Controller;
 use App\Item;
 use App\Jobs\CacheContact;
 use App\Jobs\CacheItem;
 use App\Receipts\Abos\Abo;
-use App\Receipts\Item as ReceiptItem;
+use App\Receipts\Item as LineItem;
 use App\Receipts\Receipt;
 use App\Unit;
 use Illuminate\Http\Request;
@@ -45,7 +45,7 @@ class ItemController extends Controller
 
         $item = Item::findOrFail($validatedData['item_id']);
 
-        $receiptItem = $receipt->addItem($item);
+        $line_item = $receipt->addItem($item);
 
         $receipt->cache();
 
@@ -53,7 +53,9 @@ class ItemController extends Controller
         CacheItem::dispatch($item);
 
         if ($request->wantsJson()) {
-            return $receiptItem->load([
+            $line_item->should_edit = true;
+            return $line_item->load([
+                'morphedItems.receipt',
                 'item',
                 'unit',
             ]);
@@ -68,10 +70,10 @@ class ItemController extends Controller
      * @param  \App\Invoice  $invoice
      * @return \Illuminate\Http\Response
      */
-    public function edit(ReceiptItem $receiptItem)
+    public function edit(LineItem $item)
     {
         return view('receiptitem.edit')
-            ->with('receiptitem', $receiptItem)
+            ->with('receiptitem', $item)
             ->with('units', Unit::all());
     }
 
@@ -82,7 +84,7 @@ class ItemController extends Controller
      * @param  \App\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Receipt $receipt, ReceiptItem $receiptItem)
+    public function update(Request $request, Receipt $receipt, LineItem $item)
     {
         $validatedData = $request->validate([
             'description' => 'nullable|string',
@@ -94,17 +96,16 @@ class ItemController extends Controller
             'unit_id' => 'required|integer'
         ]);
 
-        $receiptItem->update($validatedData);
+        $item->update($validatedData);
         $receipt->cache();
 
         $this->cacheContact($receipt);
-        if ($receiptItem->item_id > 0)
-        {
-            CacheItem::dispatch($receiptItem->item);
+        if ($item->item_id > 0) {
+            CacheItem::dispatch($item->item);
         }
 
         if ($request->wantsJson()) {
-            return $receiptItem->load([
+            return $item->load([
                 'morphedItems.receipt',
                 'item',
                 'unit',
@@ -120,16 +121,16 @@ class ItemController extends Controller
      * @param  \App\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request, Receipt $receipt, ReceiptItem $receiptItem)
+    public function destroy(Request $request, Receipt $receipt, LineItem $item)
     {
-        $receiptItem->delete();
+        $item->delete();
 
         $receipt->cache();
 
         $this->cacheContact($receipt);
-        if ($receiptItem->item_id > 0)
+        if ($item->item_id > 0)
         {
-            CacheItem::dispatch($receiptItem->item);
+            CacheItem::dispatch($item->item);
         }
 
         if ($request->wantsJson())

@@ -117,12 +117,12 @@
             </div>
         </div>
 
-        <button type="submit" class="btn btn-primary">Speichern</button>
+        <button type="submit" class="btn btn-primary btn-sm">Speichern</button>
 
     </form>
     <br />
 
-    <receipt-item-table :model="{{ json_encode($invoice) }}" :options="{{ json_encode($items) }}" :units="{{ json_encode($units) }}"></receipt-item-table>
+    <receipt-item-table index-path="{{ \App\Receipts\Item::indexPath(['receipt_id' => $invoice->id]) }}" :model="{{ json_encode($invoice) }}" :options="{{ json_encode($items) }}" :units="{{ json_encode($units) }}"></receipt-item-table>
 
     @include('receipt.status.ul', ['statuses' => $invoice->statuses])
 

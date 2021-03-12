@@ -440,6 +440,7 @@ Route::middleware(['auth', 'company.locked'])->group(function () {
 
     Route::resource('receipts/invoices', 'Receipts\Invoices\InvoiceController', ['as' => 'receipts']);
     Route::resource('receipts/expenses', 'Receipts\Expenses\ExpenseController', ['as' => 'receipts']);
+    Route::resource('receipts.items', 'Receipts\Items\ItemController');
 
     Route::resource(User::ROUTE_NAME, 'Users\UserController');
     Route::resource(Userfile::ROUTE_NAME, 'Userfiles\UserfileController');

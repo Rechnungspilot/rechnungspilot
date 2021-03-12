@@ -5,6 +5,11 @@ export const editableMixin = {
             type: Object,
             required: true,
         },
+        isSelected: {
+            type: Boolean,
+            required: false,
+            default: false,
+        },
     },
 
     data () {

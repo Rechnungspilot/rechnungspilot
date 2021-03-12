@@ -1,6 +1,6 @@
 <template>
     <div>
-        <input class="form-control" :class="error ? 'is-invalid' : ''" type="text" v-model="display">
+        <input class="form-control form-control-sm" :class="error ? 'is-invalid' : ''" type="text" v-model="display">
         <div class="invalid-feedback" v-text="error ? error : ''"></div>
     </div>
 </template>

@@ -72,7 +72,7 @@
             </div>
         </div>
 
-        <button type="submit" class="btn btn-primary">Speichern</button>
+        <button type="submit" class="btn btn-primary btn-sm">Speichern</button>
 
     </form>
     <br />
