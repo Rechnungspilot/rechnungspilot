@@ -8,12 +8,14 @@ use App\Receipts\Receipt;
 use App\Receipts\Statuses\Created;
 use App\Receipts\Statuses\MorphedTo;
 use App\Receipts\Term;
+use D15r\ModelLabels\Traits\HasLabels;
 use Illuminate\Database\Eloquent\Model;
 use Parental\HasParent;
 
 class Abo extends Receipt
 {
-    use HasParent;
+    use HasParent,
+        HasLabels;
 
     const AVAILABLE_STATUSES = [
 
@@ -98,6 +100,16 @@ class Abo extends Receipt
         $abo->setStatus($draftStatus);
 
         return $abo;
+    }
+
+    protected static function labels() : array
+    {
+        return [
+            'nominativ' => [
+                'singular' => 'Abo',
+                'plural' => 'Abos',
+            ],
+        ];
     }
 
     public function toReceipt()

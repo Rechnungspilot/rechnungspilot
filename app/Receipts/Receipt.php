@@ -426,6 +426,16 @@ class Receipt extends Model
         return $date->format('Y-m-d H:i:s');
     }
 
+    public function getLabelSingularAttribute()
+    {
+        return static::LABEL_SINGULAR;
+    }
+
+    public function getLabelPluralAttribute()
+    {
+        return static::LABEL_PLURAL;
+    }
+
     public function getUriAttribute()
     {
         return $this->uri;
