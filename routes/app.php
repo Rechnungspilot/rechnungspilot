@@ -68,6 +68,7 @@ Route::bind('model', function ($id) {
 
         case Contact::TYPE: return Contact::findOrFail($id); break;
         case Expense::TYPE: return Expense::findOrFail($id); break;
+        case Invoice::TYPE: return Invoice::findOrFail($id); break;
         case Item::TYPE: return Item::findOrFail($id); break;
         case User::TYPE: return User::findOrFail($id); break;
         case Userfile::TYPE: return Userfile::findOrFail($id); break;

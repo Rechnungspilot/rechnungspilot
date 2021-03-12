@@ -71,7 +71,7 @@
 
                         <order-select class="mb-1" :value="{{ json_encode($invoice->order) }}" :receipt-id="{{ $invoice->id }}"></order-select>
 
-                        <tag-select class="my-2" :selected="{{ json_encode($invoice->tags) }}" index-path="/invoices/tags" path="/invoices/{{ $invoice->id }}/tags"></tag-select>
+                        <tag-select class="my-2" :selected="{{ json_encode($invoice->tags) }}" index-path="{{ $invoice->tags_index_path }}" path="{{ $invoice->tags_path }}"></tag-select>
 
                         @if (count($invoice->partialinvoices) == 0)
                             @if (is_null($invoice->final_invoice_id))
