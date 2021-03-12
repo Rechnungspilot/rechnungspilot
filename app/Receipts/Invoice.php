@@ -18,6 +18,8 @@ use App\Receipts\Statuses\Payment;
 use App\Receipts\Statuses\Send;
 use App\Receipts\Statuses\Viewed;
 use App\Receipts\Term;
+use D15r\ModelLabels\Traits\HasLabels;
+use D15r\ModelPath\Traits\HasModelPath;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
@@ -25,7 +27,9 @@ use Parental\HasParent;
 
 class Invoice extends Receipt
 {
-    use HasParent;
+    use HasParent,
+        HasLabels,
+        HasModelPath;
 
     // Key durch Status::FLAG ersetzen
     const AVAILABLE_STATUSES = [
@@ -42,6 +46,8 @@ class Invoice extends Receipt
     const LABEL_SINGULAR = 'Rechnung';
     const LABEL_PLURAL = 'Rechnungen';
     const SLUG = 'rechnungen';
+    const ROUTE_NAME = 'receipts.invoices';
+    const TYPE = 'invoices';
     const URI = '/' . self::SLUG;
 
     protected $typeName = 'Rechnung';
@@ -154,6 +160,16 @@ class Invoice extends Receipt
         return $data[0];
     }
 
+    protected static function labels() : array
+    {
+        return [
+            'nominativ' => [
+                'singular' => 'Rechnung',
+                'plural' => 'Rechnungen',
+            ],
+        ];
+    }
+
     public function getNextMainStatusAttribute()
     {
         if ($this->nextMainStatus)
@@ -197,6 +213,13 @@ class Invoice extends Receipt
             ->where('type', self::class)
             ->where('id', '!=', $this->id)
             ->get();
+    }
+
+    public function getRouteParameterAttribute() : array
+    {
+        return [
+            'invoice' => $this->id,
+        ];
     }
 
     public function finalinvoice() {

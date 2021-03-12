@@ -14,13 +14,17 @@ use App\Receipts\Statuses\Received;
 use App\Receipts\Statuses\Send;
 use App\Receipts\Statuses\Viewed;
 use App\Receipts\Term;
+use D15r\ModelLabels\Traits\HasLabels;
+use D15r\ModelPath\Traits\HasModelPath;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Parental\HasParent;
 
 class Expense extends Receipt
 {
-    use HasParent;
+    use HasParent,
+        HasLabels,
+        HasModelPath;
 
     const AVAILABLE_STATUSES = [
         'outstanding' => 'Offen',
@@ -32,6 +36,9 @@ class Expense extends Receipt
         Payed::class => Payed::NAME,
         Expensed::class => Expensed::NAME,
     ];
+
+    const ROUTE_NAME = 'receipts.expenses';
+    const TYPE = 'expenses';
 
     const LABEL_SINGULAR = 'Ausgabe';
     const LABEL_PLURAL = 'Ausgaben';
@@ -126,6 +133,16 @@ class Expense extends Receipt
         return $data[0];
     }
 
+    protected static function labels() : array
+    {
+        return [
+            'nominativ' => [
+                'singular' => 'Ausgabe',
+                'plural' => 'Ausgaben',
+            ],
+        ];
+    }
+
     public function getNextMainStatusAttribute()
     {
         if ($this->nextMainStatus)
@@ -143,6 +160,13 @@ class Expense extends Receipt
         }
 
         return $this->nextMainStatus;
+    }
+
+    public function getRouteParameterAttribute() : array
+    {
+        return [
+            'expense' => $this->id,
+        ];
     }
 
     public function setName()

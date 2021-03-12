@@ -35,7 +35,12 @@ use \Parental\HasChildren;
 
 class Receipt extends Model
 {
-    use HasComments, HasCustomFields, HasCompany, HasChildren, HasTags, HasUserfiles;
+    use HasComments,
+        HasCustomFields,
+        HasCompany,
+        HasChildren,
+        HasTags,
+        HasUserfiles;
 
     const SLUG = 'belege';
 
@@ -165,8 +170,6 @@ class Receipt extends Model
     {
 
     }
-
-
 
     /**
      * @param $name
@@ -306,15 +309,6 @@ class Receipt extends Model
         return $revenues;
     }
 
-    public static function labels()
-    {
-        return [
-            'uri' => static::URI,
-            'singular' => static::LABEL_SINGULAR,
-            'plural' => static::LABEL_PLURAL,
-        ];
-    }
-
     public function contact()
     {
         return $this->belongsTo('App\Contacts\Contact');
@@ -448,24 +442,9 @@ class Receipt extends Model
         return ($this->date_due->diff($now)->days < 1) ? 'heute' : $this->date_due->diffForHumans();
     }
 
-    public function getLabelSingularAttribute()
-    {
-        return static::LABEL_SINGULAR;
-    }
-
-    public function getLabelPluralAttribute()
-    {
-        return static::LABEL_PLURAL;
-    }
-
     public function getNumberLabelAttribute()
     {
         return 'Number Label nicht gesetzt';
-    }
-
-    public function getPathAttribute()
-    {
-        return '/' . static::SLUG . '/' . $this->id . '/edit';
     }
 
     public function getNextMainStatusAttribute()

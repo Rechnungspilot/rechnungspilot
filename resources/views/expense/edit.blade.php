@@ -4,7 +4,7 @@
 
 @section('buttons')
     <div class="dropdown mr-1">
-        <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown">
+        <button type="button" class="btn btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown">
             <i class="fas fa-ellipsis-h"></i> Mehr
         </button>
         <div class="dropdown-menu">
@@ -23,9 +23,9 @@
         </div>
     </div>
     @if ($expense->nextMainStatus)
-        <button class="btn btn-primary pointer mr-1" data-toggle="modal" data-target="#statusModal" data-status="{{ get_class($expense->nextMainStatus) }}">{{ ucfirst($expense->nextMainStatus->action) }}</button>
+        <button class="btn btn-primary btn-sm pointer mr-1" data-toggle="modal" data-target="#statusModal" data-status="{{ get_class($expense->nextMainStatus) }}">{{ ucfirst($expense->nextMainStatus->action) }}</button>
     @endif
-    <a href="{{ url('/ausgaben') }}" class="btn btn-secondary">Übersicht</a>
+    <a href="{{ $expense->path }}" class="btn btn-secondary btn-sm">Übersicht</a>
 @endsection
 
 @section('content')

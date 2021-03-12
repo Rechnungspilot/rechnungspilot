@@ -57,10 +57,10 @@
                     <!-- <a href="{{ route('receipt.inquiry.index') }}"><li>Anfragen</li></a> -->
                     <!-- <a href="{{ route('receipt.quote.index') }}"><li>Angebote</li></a> -->
                     <!-- <a href="{{ route('receipt.order.index') }}"><li>Aufträge</li></a> -->
-                    <a href="{{ url('/ausgaben') }}"><li>Ausgaben</li></a>
+                    <a href="{{ \App\Receipts\Expense::indexPath() }}"><li>{{ \App\Receipts\Expense::label() }}</li></a>
                     <!-- <a href="{{ url('/briefe') }}"><li>Briefe</li></a> -->
                     <!-- <a href="{{ url('/lieferscheine') }}"><li>Lieferscheine</li></a> -->
-                    <a href="{{ url('/rechnungen') }}"><li>Rechnungen</li></a>
+                    <a href="{{ \App\Receipts\Invoice::indexPath() }}"><li>{{ \App\Receipts\Invoice::label() }}</li></a>
                     <!-- <a href="{{ url('/einnahmen') }}"><li>Einnahmen</li></a> -->
                 </ul>
                 <a href="{{ url('/projekte') }}"><li>Projekte</li></a>

@@ -12,7 +12,7 @@ trait HasTags
     public static function indexPathTags() : string
     {
         return route('tags.index', [
-            'type' => self::TYPE,
+            'type' => static::TYPE,
         ]);
     }
 
@@ -20,7 +20,7 @@ trait HasTags
     {
         return route('taggable.index', [
             'model' => $this->id,
-            'type' => self::TYPE,
+            'type' => static::TYPE,
         ]);
     }
 

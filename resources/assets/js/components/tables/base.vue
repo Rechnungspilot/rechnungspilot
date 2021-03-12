@@ -36,6 +36,9 @@
             <tbody>
                 <slot name="tbody"></slot>
             </tbody>
+            <tfoot v-show="isShowingFooter">
+                <slot name="tfoot"></slot>
+            </tfoot>
         </table>
         <div class="alert alert-dark" v-else><center>Keine Datensätze vorhanden</center></div>
         <nav aria-label="Page navigation example">
@@ -78,6 +81,11 @@
                 default: false,
             },
             isLoading: {
+                type: Boolean,
+                required: false,
+                default: false,
+            },
+            isShowingFooter: {
                 type: Boolean,
                 required: false,
                 default: false,

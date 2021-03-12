@@ -2,16 +2,22 @@
 
 @section('title', $invoice->typeName . ' > ' . $invoice->name)
 
-@section('content')
-    <div class="row text-right mb-3">
-        <div class="col"></div>
-        <div class="col-sm col-sm-auto">
-            <a href="{{ url($invoice->path) }}" class="btn btn-primary"><i class="fas fa-edit"></i></a>
-            <a href="{{ url('/rechnungen') }}" class="btn btn-secondary">Übersicht</a>
-        </div>
-    </div>
+@section('buttons')
+    <a href="{{ $invoice->edit_path }}" class="btn btn-primary btn-sm"><i class="fas fa-edit"></i></a>
+    <a href="{{ $invoice->index_path }}" class="btn btn-secondary btn-sm ml-1">Übersicht</a>
+    @if($invoice->isDeletable())
+        <form action="{{ $invoice->path }}" class="ml-1" method="POST">
+            @csrf
+            @method('DELETE')
 
-    <div class="card mb-5">
+            <button type="submit" class="btn btn-danger btn-sm"><i class="fas fa-fw fa-fw fa-trash"></i></button>
+        </form>
+    @endif
+@endsection
+
+@section('content')
+
+    <div class="card mb-3">
         <div class="card-body">
             <div class="row">
 
@@ -53,7 +59,7 @@
         </div>
     </div>
 
-    <div class="card mb-5">
+    <div class="card mb-3">
         <div class="card-body container">
             <object data="/belege/vorlage/{{ $invoice->id }}" style="width: 100%; height: 600px">
                 <center>PDF kann nicht angezeigt werden.</center>
@@ -61,14 +67,14 @@
         </div>
     </div>
 
-    <div class="card mb-5">
+    <div class="card mb-3">
         <div class="card-body">
             @include('receipt.status.ul', ['statuses' => $invoice->statuses])
         </div>
     </div>
 
     @if(count($invoice->duns))
-        <div class="card mb-5">
+        <div class="card mb-3">
             <div class="card-header">Mahnungen</div>
             <div class="card-body">
                 <table class="table table-striped table-hover">
@@ -86,7 +92,7 @@
         </div>
     @endif
 
-    <div class="card mb-5">
+    <div class="card mb-3">
         <div class="card-body">
             <comments uri="/rechnungen" :item="{{ json_encode($invoice) }}"></comments>
         </div>

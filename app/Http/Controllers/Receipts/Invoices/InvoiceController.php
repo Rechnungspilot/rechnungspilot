@@ -30,7 +30,7 @@ class InvoiceController extends Controller
                 ->search($request->input('searchtext'))
                 ->contact($request->input('contact_id'))
                 ->status($request->input('status_type'))
-                ->withAllTags($request->input('tags'), 'rechnungen')
+                ->withAllTags($request->input('tags'), Invoice::class)
                 ->orderBy('date', 'DESC')
                 ->orderBy('number', 'DESC')
                 ->paginate(15);
@@ -40,7 +40,7 @@ class InvoiceController extends Controller
             ->with('contacts', Contact::all())
             ->with('statuses', Invoice::AVAILABLE_STATUSES)
             ->with('labels', Invoice::labels())
-            ->with('tags', Tag::withType('rechnungen')->get());
+            ->with('tags', Tag::withType(Invoice::class)->get());
     }
 
     /**
@@ -166,13 +166,13 @@ class InvoiceController extends Controller
         $invoice->update($validatedData);
         $invoice->cache();
 
-        if ($validatedData['contact_id'] != $oldContactId)
-        {
+        if ($validatedData['contact_id'] != $oldContactId) {
             CacheContact::dispatch(Contact::find($oldContactId));
             CacheContact::dispatch(Contact::find($validatedData['contact_id']));
         }
 
-        return back()->with('status', 'Rechnung gespeichert!');
+        return redirect($invoice->edit_path)
+            ->with('status', 'Rechnung gespeichert!');
     }
 
     /**
@@ -190,6 +190,6 @@ class InvoiceController extends Controller
             return;
         }
 
-        return redirect(route('receipt.invoice.index'));
+        return redirect($invoice->index_path);
     }
 }

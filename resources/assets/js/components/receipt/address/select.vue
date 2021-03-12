@@ -1,15 +1,19 @@
 <template>
     <div>
-        <div class="form-group">
-            <label for="contact_id">Kunde <a class="ml-1 pointer" :href="selectedContact.path"><i class="fas fa-external-link-alt"></i></a></label>
-            <select class="form-control" v-model="contact_id" @change="fetchAddress" name="contact_id">
-                <option v-for="contact in contacts" :value="contact.id">{{ contact.name }}</option>
-            </select>
+        <div class="form-group row">
+            <label class="col-sm-4 col-form-label col-form-label-sm" for="contact_id">Kunde <a class="ml-1 pointer" :href="selectedContact.path"><i class="fas fa-external-link-alt"></i></a></label>
+            <div class="col-sm-8">
+                <select class="form-control form-control-sm" v-model="contact_id" @change="fetchAddress" name="contact_id">
+                    <option v-for="contact in contacts" :value="contact.id">{{ contact.name }}</option>
+                </select>
+            </div>
         </div>
 
-        <div class="form-group">
-            <label for="address">Adresse</label>
-            <textarea class="form-control" rows="4" v-model="address" name="address"></textarea>
+        <div class="form-group row">
+            <label class="col-sm-4 col-form-label col-form-label-sm" for="address">Adresse</label>
+            <div class="col-sm-8">
+                <textarea class="form-control form-control-sm" rows="4" v-model="address" name="address"></textarea>
+            </div>
         </div>
     </div>
 </template>

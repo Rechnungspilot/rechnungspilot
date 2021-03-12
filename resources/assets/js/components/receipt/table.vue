@@ -1,89 +1,59 @@
 <template>
-    <div>
-        <div class="row">
-            <div class="col">
-                <button class="btn btn-primary" @click="create"><i class="fas fa-plus-square"></i></button>
-            </div>
-            <div class="col-auto d-flex">
-                <div class="form-group" style="margin-bottom: 0;">
-                    <filter-search v-model="filter.searchtext" @input="fetch()"></filter-search>
-                </div>
-                <button class="btn btn-secondary ml-1" @click="filter.show = !filter.show"><i class="fas fa-filter"></i></button>
-            </div>
-        </div>
 
-        <form v-if="filter.show" id="filter" class="mt-1">
-            <div  class="form-row">
+    <table-base :is-loading="isLoading" :is-showing-footer="selected.length > 0" :paginate="paginate" :items-length="items.length" :has-filter="hasFilter()" @creating="create" @paginating="filter.page = $event" @searching="searching($event)">
 
-                <filter-contact :options="contacts" v-model="filter.contact_id" @input="fetch"></filter-contact>
-                <filter-status :options="statuses" v-model="filter.status_type" @input="fetch"></filter-status>
-                <filter-tags :options="tags" v-model="filter.tags" @input="fetch"></filter-tags>
+        <template v-slot:form>
 
-            </div>
-        </form>
+        </template>
 
-        <div v-if="isLoading" class="mt-3 p-5">
-            <center>
-                <span style="font-size: 48px;">
-                    <i class="fas fa-spinner fa-spin"></i><br />
-                </span>
-                Lade Daten..
-            </center>
-        </div>
-        <div class="table-responsive mt-3" v-else-if="items.length">
-            <table class="table table-hover table-striped table-sm bg-white">
-                <thead>
-                    <tr>
-                        <th class="text-center" width="30">
-                            <label class="form-checkbox" for="checkall"></label>
-                            <input id="checkall" type="checkbox" v-model="selectAll">
-                        </th>
-                        <th width="100">Datum</th>
-                        <th width="50%">#</th>
-                        <th width="50%">Empfänger</th>
-                        <th class="text-right" width="100">Netto</th>
-                        <th class="text-right" width="100">Brutto</th>
-                        <th width="100">Status</th>
-                        <th class="text-right" width="100">Aktion</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <row :item="invoice" :key="invoice.id" :uri="uri" :selected="(selected.indexOf(invoice.id) == -1) ? false : true" v-for="(invoice, index) in items" @deleted="remove(index)" @input="toggleSelected"></row>
-                </tbody>
-                <tfoot v-show="selected.length > 0">
-                    <tr>
-                        <td class="align-middle" colspan="3">{{ selected.length }} ausgewählt</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td class="align-middle" colspan="3">
-                            <select class="form-control" v-model="action">
-                                <option value="0">Aktion</option>
-                                <option value="downloadPdfs">PDFs herunterladen</option>
-                                <optgroup label="Export">
-                                    <option value="exportDatevEinzeln">Datev</option>
-                                </optgroup>
-                            </select>
-                        </td>
-                    </tr>
-                </tfoot>
-            </table>
-        </div>
-        <div class="alert alert-dark mt-3" v-else><center>Keine {{ labels.plural }} vorhanden</center></div>
-        <nav aria-label="Page navigation example">
-            <ul class="pagination" v-show="paginate.lastPage > 1">
-                <li class="page-item" v-show="paginate.prevPageUrl">
-                    <a class="page-link" href="#" @click.prevent="page--">Previous</a>
-                </li>
+        <template v-slot:filter>
 
-                <li class="page-item" v-for="n in paginate.lastPage" v-bind:class="{ active: (n == page) }"><a class="page-link" href="#" @click.prevent="page = n">{{ n }}</a></li>
+            <filter-contact :options="contacts" v-model="filter.contact_id" @input="fetch"></filter-contact>
+            <filter-status :options="statuses" v-model="filter.status_type" @input="fetch"></filter-status>
+            <filter-tags :options="tags" v-model="filter.tags" @input="fetch"></filter-tags>
 
-                <li class="page-item" v-show="paginate.nextPageUrl">
-                    <a class="page-link" href="#" @click.prevent="page++">Next</a>
-                </li>
-            </ul>
-        </nav>
-    </div>
+        </template>
+
+        <template v-slot:thead>
+            <tr>
+                <th class="text-center" width="30">
+                    <label class="form-checkbox" for="checkall"></label>
+                    <input id="checkall" type="checkbox" v-model="selectAll">
+                </th>
+                <th width="100">Datum</th>
+                <th width="50%">#</th>
+                <th width="50%">Empfänger</th>
+                <th class="text-right" width="100">Netto</th>
+                <th class="text-right" width="100">Brutto</th>
+                <th width="100">Status</th>
+                <th class="text-right" width="125">Aktion</th>
+            </tr>
+        </template>
+
+        <template v-slot:tbody>
+            <row :item="item" :key="item.id" :is-selected="isSelected(item.id)" v-for="(item, index) in items" @deleted="deleted(index)" @input="toggleSelected"></row>
+        </template>
+
+        <template v-slot:tfoot>
+            <tr>
+                <td class="align-middle" colspan="3">{{ selected.length }} ausgewählt</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td class="align-middle" colspan="3">
+                    <select class="form-control" v-model="action">
+                        <option value="0">Aktion</option>
+                        <option value="downloadPdfs">PDFs herunterladen</option>
+                        <optgroup label="Export">
+                            <option value="exportDatevEinzeln">Datev</option>
+                        </optgroup>
+                    </select>
+                </td>
+            </tr>
+        </template>
+
+    </table-base>
+
 </template>
 
 <script>
@@ -92,54 +62,62 @@
     import filterContact from "../filter/contact.vue";
     import filterTags from "../filter/tags.vue";
     import filterSearch from "../filter/search.vue";
+    import tableBase from '../tables/base.vue';
+
+    import { baseMixin } from "../../mixins/tables/base.js";
+    import { paginatedMixin } from "../../mixins/tables/paginated.js";
+    import { selectableMixin } from "../../mixins/selectable.js";
 
     export default {
 
         components: {
-            row,
-            filterStatus,
             filterContact,
-            filterTags,
             filterSearch,
+            filterStatus,
+            filterTags,
+            row,
+            tableBase,
         },
 
-        props: [
-            'contacts',
-            'initialFilter',
-            'labels',
-            'statuses',
-            'tags',
-            'type',
+        mixins: [
+            baseMixin,
+            paginatedMixin,
+            selectableMixin,
         ],
+
+        // props: [
+        //     'contacts',
+        //     'initialFilter',
+        //     'labels',
+        //     'statuses',
+        //     'tags',
+        //     'type',
+        // ],
+
+        props: {
+            contacts: {
+                type: Array,
+                required: true,
+            },
+            statuses: {
+                type: Object,
+                required: true,
+            },
+            tags: {
+                type: Array,
+                required: true,
+            },
+        },
 
         data () {
             return {
                 action: '0',
-                uri: this.labels.uri + (this.type ? '/' + this.type : ''),
-                items: [],
-                isLoading: true,
-                page: 1,
-                paginate: {
-                    nextPageUrl: null,
-                    prevPageUrl: null,
-                    lastPage: 0,
-                },
                 filter: {
-                    show: false,
                     contact_id: 0,
                     status_type: 0,
                     tags: [],
-                    searchtext: '',
                 },
-                selected: [],
             };
-        },
-
-        mounted() {
-
-            this.fetch();
-            // this.setInitialFilters();
-
         },
 
         watch: {
@@ -150,75 +128,17 @@
 
                 this[newValue]();
             },
-            page () {
-                this.fetch();
-            },
-        },
-
-        computed: {
-            selectAll: {
-                get: function () {
-                    return this.items.length ? this.items.length == this.selected.length : false;
-                },
-                set: function (value) {
-                    this.selected = [];
-                    if (value) {
-                        for (let i in this.items) {
-                            this.selected.push(this.items[i].id);
-                        }
-                    }
-                },
-            },
         },
 
         methods: {
-            create() {
-                var component = this;
-                axios.post(component.uri)
-                    .then(function (response) {
-                        location.href = response.data.path;
-                    })
-                    .catch( function (error) {
-                        Vue.error(component.labels.singular + ' konnte nicht erstellt werden!');
-                });
-            },
-            fetch() {
-                var component = this;
-                component.isLoading = true;
-                axios.get(component.uri, {
-                    params: component.filter
-                })
-                    .then(function (response) {
-                        component.items = response.data.data;
-                        component.page = response.data.current_page;
-                        component.paginate.nextPageUrl = response.data.next_page_url;
-                        component.paginate.prevPageUrl = response.data.prev_page_url;
-                        component.paginate.lastPage = response.data.last_page;
-                        component.isLoading = false;
-                    })
-                    .catch(function (error) {
-                        Vue.success(labels.plural + ' konnten nicht geladen werden!');
-                        console.log(error);
-                    });
+            created(item) {
+                location.href = item.edit_path;
             },
             setInitialFilters() {
                 for (var key in this.filter) {
                     if (key in this.initialFilter) {
                         this.filter[key] = this.initialFilter[key];
                     }
-                }
-            },
-            remove(index) {
-                this.items.splice(index, 1);
-                Vue.success(this.labels.singular + ' gelöscht.');
-            },
-            toggleSelected (id) {
-                var index = this.selected.indexOf(id);
-                if (index == -1) {
-                    this.selected.push(id);
-                }
-                else {
-                    this.selected.splice(index, 1);
                 }
             },
             downloadPdfs() {

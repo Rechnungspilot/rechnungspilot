@@ -4,13 +4,13 @@
             <label for="text_above">Text über Positionen <a href="/textbausteine"><i class="fas fa-external-link-alt"></i></a></label>
             <div class="form-row mb-1">
                 <div class="col">
-                    <select class="form-control" v-model="boilerplateAbove" @change="appendBoilerplateAbove" v-show="boilerplates.length">
+                    <select class="form-control form-control-sm" v-model="boilerplateAbove" @change="appendBoilerplateAbove" v-show="boilerplates.length">
                         <option value="0">Textbaustein hinzufügen</option>
                         <option v-for="(option, key) in boilerplates" :value="key">{{ option.name }}</option>
                     </select>
                 </div>
                 <div class="col">
-                    <select class="form-control" v-model="placeholderAbove" @change="appendPlaceholderAbove">
+                    <select class="form-control form-control-sm" v-model="placeholderAbove" @change="appendPlaceholderAbove">
                         <option value="0">Platzhalter hinzufügen</option>
                         <option v-for="(option, key) in placeholders" :value="key">{{ option }}</option>
                     </select>
@@ -23,13 +23,13 @@
             <label for="text_below">Text unter Positionen <a href="/textbausteine"><i class="fas fa-external-link-alt"></i></a></label>
             <div class="form-row mb-1">
                 <div class="col">
-                    <select class="form-control" v-model="boilerplateBelow" @change="appendBoilerplateBelow" v-show="boilerplates.length">
+                    <select class="form-control form-control-sm" v-model="boilerplateBelow" @change="appendBoilerplateBelow" v-show="boilerplates.length">
                         <option value="0">Textbaustein hinzufügen</option>
                         <option v-for="(option, key) in boilerplates" :value="key">{{ option.name }}</option>
                     </select>
                 </div>
                 <div class="col">
-                    <select class="form-control" v-model="placeholderBelow" @change="appendPlaceholderBelow">
+                    <select class="form-control form-control-sm" v-model="placeholderBelow" @change="appendPlaceholderBelow">
                         <option value="0">Platzhalter hinzufügen</option>
                         <option v-for="(option, key) in placeholders" :value="key">{{ option }}</option>
                     </select>

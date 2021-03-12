@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Receipts\Expenses;
 
 use App\Contacts\Contact;
+use App\Http\Controllers\Controller;
 use App\Item;
 use App\Receipts\Boilerplate;
 use App\Receipts\Expense;
@@ -27,7 +28,7 @@ class ExpenseController extends Controller
                 ->search($request->input('searchtext'))
                 ->contact($request->input('contact_id'))
                 ->status($request->input('status_type'))
-                ->withAllTags($request->input('tags'), 'ausgaben')
+                ->withAllTags($request->input('tags'), Expense::class)
                 ->orderBy('date', 'DESC')
                 ->paginate(15);
         }
@@ -36,7 +37,7 @@ class ExpenseController extends Controller
             ->with('contacts', Contact::all())
             ->with('statuses', Expense::AVAILABLE_STATUSES)
             ->with('labels', Expense::labels())
-            ->with('tags', Tag::withType('ausgaben')->get());
+            ->with('tags', Tag::withType(Expense::class)->get());
     }
 
     /**
@@ -75,18 +76,27 @@ class ExpenseController extends Controller
             return $receipt;
         }
 
-        return redirect($receipt->path);
+        return redirect($receipt->edit_path);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Receipts\Expense  $expense
+     * @param  \App\Invoice  $invoice
      * @return \Illuminate\Http\Response
      */
     public function show(Expense $expense)
     {
-        //
+        $expense->load([
+            'items',
+            'tags',
+            'status',
+        ]);
+
+        $expense->statuses = $expense->statuses()->with('user')->orderBy('date', 'DESC')->orderBy('id', 'DESC')->get();
+
+        return view('expense.show')
+            ->with('expense', $expense);
     }
 
     /**
@@ -166,6 +176,6 @@ class ExpenseController extends Controller
             return;
         }
 
-        return redirect('/ausgaben');
+        return redirect($expense->index_path);
     }
 }

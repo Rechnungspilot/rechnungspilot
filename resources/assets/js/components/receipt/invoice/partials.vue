@@ -1,10 +1,13 @@
 <template>
     <div v-show="possibles.length">
-        <ul class="list-group mb-4">
-            <li class="list-group-item" v-for="(partial, key) in possibles">
-                <input :checked="partial.final_invoice_id == id" :id="key" type="checkbox" class="" @change="toggle"> <a :href="partial.path" target="_blank">{{ partial.name }}</a>
-            </li>
-        </ul>
+        <div class="form-group row" v-for="(partial, key) in possibles">
+            <label class="col-sm-4 col-form-label col-form-label-sm pointer" :for="key">{{ partial.name }}<a class="ml-1" :href="partial.path" target="_blank"><i class="fas fa-external-link-alt"></i></a></label>
+            <div class="col-sm-8">
+                <div class="form-check">
+                    <input :checked="partial.final_invoice_id == id" class="form-check-input" :id="key" type="checkbox" @change="toggle">
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -39,13 +42,27 @@
                 }
             },
             create(receiptId) {
-                return axios.post(this.uri + '/' + receiptId, {
+                axios.post(this.uri + '/' + receiptId, {
                     finalInvoiceId: this.id,
+                })
+                    .then(function (response) {
+                        Vue.success('Als Abschlagsrechnung markiert.');
+                })
+                    .catch(function (error) {
+                        component.errors = error.response.data.errors;
+                        Vue.errorCreate();
                 });
             },
             destroy(receiptId) {
-                return axios.post(this.uri + '/' + receiptId, {
+                axios.post(this.uri + '/' + receiptId, {
                     finalInvoiceId: null,
+                })
+                    .then(function (response) {
+                        Vue.success('Nicht mehr als Abschlagsrechnung markiert.');
+                })
+                    .catch(function (error) {
+                        component.errors = error.response.data.errors;
+                        Vue.errorCreate();
                 });
             },
         },

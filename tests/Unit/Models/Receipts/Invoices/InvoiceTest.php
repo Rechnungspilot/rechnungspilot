@@ -10,10 +10,12 @@ use App\Receipts\Term;
 use App\Unit;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
-use Tests\TestCase;
+use Tests\Unit\TestCase;
 
 class InvoiceTest extends TestCase
 {
+    protected $class_name = Invoice::class;
+
     protected function setUp() : void
     {
         parent::setUp();
@@ -50,18 +52,21 @@ class InvoiceTest extends TestCase
     /**
      * @test
      */
-    public function it_has_a_path()
+    public function it_has_model_paths()
     {
-        $this->assertEquals('/rechnungen/1/edit', $this->fromReceipt->path);
-    }
+        $model = factory($this->class_name)->create();
+        $route_parameter = [
+            'invoice' => $model->id,
+        ];
 
-    /**
-     * @test
-     */
-    public function it_has_labels()
-    {
-        $this->assertEquals('Rechnung', $this->fromReceipt->labelSingular);
-        $this->assertEquals('Rechnungen', $this->fromReceipt->labelPlural);
+        $routes = [
+            'index_path' => strtok(route($this->class_name::ROUTE_NAME . '.index', $route_parameter), '?'),
+            'create_path' => strtok(route($this->class_name::ROUTE_NAME . '.create', $route_parameter), '?'),
+            'path' => route($this->class_name::ROUTE_NAME . '.show', $route_parameter),
+            'edit_path' => route($this->class_name::ROUTE_NAME . '.edit', $route_parameter),
+        ];
+
+        $this->testModelPaths($model, $routes);
     }
 
     /**

@@ -57,6 +57,7 @@ Route::bind('model', function ($id) {
         case 'buchungen': return Transaction::findOrFail($id); break;
         case 'dateien': return Userfile::findOrFail($id); break;
         case 'einnahmen': return Income::findOrFail($id); break;
+        case 'einnahmen': return Income::findOrFail($id); break;
         case 'firmen': return Company::findOrFail($id); break;
         case 'kontakte': return Contact::findOrFail($id); break;
         case 'lieferscheine': return Delivery::findOrFail($id); break;
@@ -66,6 +67,7 @@ Route::bind('model', function ($id) {
         case 'zeiterfassung': return Time::findOrFail($id); break;
 
         case Contact::TYPE: return Contact::findOrFail($id); break;
+        case Expense::TYPE: return Expense::findOrFail($id); break;
         case Item::TYPE: return Item::findOrFail($id); break;
         case User::TYPE: return User::findOrFail($id); break;
         case Userfile::TYPE: return Userfile::findOrFail($id); break;
@@ -434,6 +436,10 @@ Route::middleware(['auth', 'company.locked'])->group(function () {
             Route::post('contacts/{contact}/people/{person}/default/{type}', 'Contacts\People\DefaultController@store');
             Route::delete('contacts/{contact}/people/{person}/default/{type}', 'Contacts\People\DefaultController@destroy');
     Route::resource(Item::ROUTE_NAME, 'Items\ItemController');
+
+    Route::resource('receipts/invoices', 'Receipts\Invoices\InvoiceController', ['as' => 'receipts']);
+    Route::resource('receipts/expenses', 'Receipts\Expenses\ExpenseController', ['as' => 'receipts']);
+
     Route::resource(User::ROUTE_NAME, 'Users\UserController');
     Route::resource(Userfile::ROUTE_NAME, 'Userfiles\UserfileController');
 

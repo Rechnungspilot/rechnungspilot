@@ -1,7 +1,10 @@
 <template>
-    <div>
-        <multiselect v-model="item" :custom-label="label" track-by="id" :options="items" :multiple="false" :close-on-select="true" :clear-on-select="false" placeholder="Auftrag wählen" :loading="isLoading" :preserve-search="true" @input="update"></multiselect>
-        <div class="invalid-feedback" v-text="error" :style="{display: error ? 'block' : 'none'}"></div>
+    <div class="form-group row">
+        <label class="col-sm-4 col-form-label col-form-label-sm" for="address">Auftrag</label>
+        <div class="col-sm-8">
+            <multiselect v-model="item" :custom-label="label" track-by="id" :options="items" :multiple="false" :close-on-select="true" :clear-on-select="false" placeholder="Auftrag wählen" :loading="isLoading" :preserve-search="true" @input="update"></multiselect>
+            <div class="invalid-feedback" v-text="error" :style="{display: error ? 'block' : 'none'}"></div>
+        </div>
     </div>
 </template>
 

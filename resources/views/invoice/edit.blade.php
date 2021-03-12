@@ -3,10 +3,10 @@
 @section('title', $invoice->typeName . ' > ' . $invoice->name)
 
 @section('buttons')
-    <a href="{{ url('/belege/vorlage', $invoice->id) }}" class="btn btn-secondary mr-1" title="Vorschau"><i class="fas fa-file-pdf"></i></a>
-    <a href="{{ url('/belege/pdf', $invoice->id) }}" class="btn btn-secondary mr-1" title="Download"><i class="fas fa-download"></i></a>
+    <a href="{{ url('/belege/vorlage', $invoice->id) }}" class="btn btn-secondary btn-sm mr-1" title="Vorschau"><i class="fas fa-file-pdf"></i></a>
+    <a href="{{ url('/belege/pdf', $invoice->id) }}" class="btn btn-secondary btn-sm mr-1" title="Download"><i class="fas fa-download"></i></a>
     <div class="dropdown mr-1">
-        <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown">
+        <button type="button" class="btn btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown">
             <i class="fas fa-ellipsis-h"></i> Mehr
         </button>
         <div class="dropdown-menu">
@@ -24,70 +24,95 @@
             <button class="dropdown-item pointer" data-toggle="modal" data-target="#confirm-delete">Löschen</button>
         </div>
     </div>
-    <button class="btn <?php echo $invoice->nextMainStatus ? 'btn-secondary' : 'btn-primary'; ?> pointer mr-1" data-toggle="modal" data-target="#statusModal" data-status="{{ App\Receipts\Statuses\Send::class }}">Versenden</button>
+    <button class="btn <?php echo $invoice->nextMainStatus ? 'btn-secondary' : 'btn-primary'; ?> btn-sm pointer mr-1" data-toggle="modal" data-target="#statusModal" data-status="{{ App\Receipts\Statuses\Send::class }}">Versenden</button>
     @if ($invoice->nextMainStatus)
-        <button class="btn btn-primary pointer mr-1" data-toggle="modal" data-target="#statusModal" data-status="{{ get_class($invoice->nextMainStatus) }}">{{ ucfirst($invoice->nextMainStatus->action) }}</button>
+        <button class="btn btn-primary btn-sm pointer mr-1" data-toggle="modal" data-target="#statusModal" data-status="{{ get_class($invoice->nextMainStatus) }}">{{ ucfirst($invoice->nextMainStatus->action) }}</button>
     @endif
     @if ($invoice->isDunable())
         <form action="{{ url('/rechnungen/' . $invoice->id . '/mahnungen') }}" class="mb-0 mr-1" method="POST">
             @csrf
-            <button type="submit" class="btn btn-danger">Anmahnen</button>
+            <button type="submit" class="btn btn-danger btn-sm">Anmahnen</button>
         </form>
     @endif
-    <a href="{{ url('/rechnungen') }}" class="btn btn-secondary">Übersicht</a>
+    <a href="{{ $invoice->path }}" class="btn btn-secondary btn-sm">Übersicht</a>
 @endsection
 
 @section('content')
 
-    <h3>Allgemein</h3>
     <form action="{{ url('/rechnungen', $invoice->id) }}" method="POST">
         @csrf
         @method('PUT')
+
         <div class="row">
-            <div class="col">
-                <div class="form-group">
-                    <label for="number">Rechnungsnummer</label>
-                    <input type="text" class="form-control {{ ($errors->has('number') ? 'is-invalid' : '') }}" id="number" name="number" value="{{ $invoice->number }}">
-                    <small class="d-flex">
-                        <div class="col px-0">Nummernvorlage {{ $invoice->company->invoice_name_format }}</div>
-                        <a href="http://app.erp-olaf.test/einstellungen/nummernkreise">bearbeiten</a>
-                    </small>
-                    @if ($errors->has('number'))
-                        <div class="invalid-feedback">
-                            {{ $errors->first('number') }}
-                        </div>
-                    @endif
-                </div>
 
-                <address-select selected-address="{{ $invoice->address }}" :selected-contact-id="{{ $invoice->contact_id }}" :contacts="{{ json_encode($contacts) }}"></address-select>
+            <div class="col-12 col-lg-6">
 
-                <order-select class="mb-1" :value="{{ json_encode($invoice->order) }}" :receipt-id="{{ $invoice->id }}"></order-select>
+                <div class="card mb-3">
+                    <div class="card-header">Allgemein</div>
+                    <div class="card-body">
 
-                <tag-select class="my-2" :selected="{{ json_encode($invoice->tags) }}" type="rechnungen" type_id="{{ $invoice->id }}"></tag-select>
-
-                @if (count($invoice->partialinvoices) == 0)
-                    @if (is_null($invoice->final_invoice_id))
-                        <div class="form-group form-check">
-                            <input type="checkbox" class="form-check-input" id="is_partial" name="is_partial" <?php echo ($invoice->is_partial ? 'checked="checked"' : '') ?> value="1">
-                            <label class="form-check-label" for="is_partial">Abschlagsrechnung</label>
-                        </div>
-                    @elseif ($invoice->final_invoice_id)
-                        <div class="card">
-                            <div class="card-body">
-                                Abschlagsrechnung für <a href="{{ $invoice->finalinvoice->path }}">{{ $invoice->finalinvoice->name }}</a>
+                        <div class="form-group row align-items-center">
+                            <label class="col-sm-4 col-form-label col-form-label-sm" for="number">Rechnungsnummer</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control form-control-sm @error('number') is-invalid @enderror" id="number" name="number" value="{{ $invoice->number }}">
+                                <small class="d-flex">
+                                    <div class="col px-0">Nummernvorlage {{ $invoice->company->invoice_name_format }}</div>
+                                    <a href="http://app.erp-olaf.test/einstellungen/nummernkreise">bearbeiten</a>
+                                </small>
+                                @error('number')
+                                    <div class="invalid-feedback">
+                                        $message
+                                    </div>
+                                @enderror
                             </div>
                         </div>
-                    @endif
-                @endif
-                @if(count($invoice->possiblePartials) && $invoice->is_partial == false)
-                    <div class="mt-3">Abschlagsrechnungen</div>
-                    <invoice-partials :id="{{ $invoice->id }}" :possibles="{{ json_encode($invoice->possiblePartials) }}"></invoice-partials>
-                @endif
-            </div>
-            <div class="col">
 
-                <dates-edit :terms="{{ json_encode($terms) }}" :model="{{ $invoice }}"></dates-edit>
-                <boilerplate-input text-above-prop="{{ $invoice->text_above }}" text-below-prop="{{ $invoice->text_below }}" :boilerplates="{{ json_encode($boilerplates) }}" :placeholders="{{ json_encode($placeholders) }}"></boilerplate-input>
+                        <address-select selected-address="{{ $invoice->address }}" :selected-contact-id="{{ $invoice->contact_id }}" :contacts="{{ json_encode($contacts) }}"></address-select>
+
+                        <order-select class="mb-1" :value="{{ json_encode($invoice->order) }}" :receipt-id="{{ $invoice->id }}"></order-select>
+
+                        <tag-select class="my-2" :selected="{{ json_encode($invoice->tags) }}" index-path="/invoices/tags" path="/invoices/{{ $invoice->id }}/tags"></tag-select>
+
+                        @if (count($invoice->partialinvoices) == 0)
+                            @if (is_null($invoice->final_invoice_id))
+                                <div class="form-group row">
+                                    <label class="col-sm-4 col-form-label col-form-label-sm" for="is_partial">Abschlagsrechnung</label>
+                                    <div class="col-sm-8">
+                                        <div class="form-check">
+                                            <input class="form-check-input" id="is_partial" name="is_partial" type="checkbox" <?php echo ($invoice->is_partial ? 'checked="checked"' : '') ?> value="1">
+                                        </div>
+                                    </div>
+                                </div>
+                            @elseif ($invoice->final_invoice_id)
+                                <div class="card">
+                                    <div class="card-body">
+                                        Abschlagsrechnung für <a href="{{ $invoice->finalinvoice->path }}">{{ $invoice->finalinvoice->name }}</a>
+                                    </div>
+                                </div>
+                            @endif
+                        @endif
+                        @if(count($invoice->possiblePartials) && $invoice->is_partial == false)
+                            <div class="mt-3">Abschlagsrechnungen</div>
+                            <invoice-partials :id="{{ $invoice->id }}" :possibles="{{ json_encode($invoice->possiblePartials) }}"></invoice-partials>
+                        @endif
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="col-12 col-lg-6">
+
+                <div class="card mb-3">
+                    <div class="card-header">Allgemein</div>
+                    <div class="card-body">
+
+                        <dates-edit :terms="{{ json_encode($terms) }}" :model="{{ $invoice }}"></dates-edit>
+                        <boilerplate-input text-above-prop="{{ $invoice->text_above }}" text-below-prop="{{ $invoice->text_below }}" :boilerplates="{{ json_encode($boilerplates) }}" :placeholders="{{ json_encode($placeholders) }}"></boilerplate-input>
+
+                    </div>
+
+                </div>
 
             </div>
         </div>
