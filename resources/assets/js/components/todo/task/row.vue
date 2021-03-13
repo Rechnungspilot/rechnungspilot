@@ -73,6 +73,9 @@
                 })
                     .then( function (response) {
                         component.isCompleted = checked;
+                        if (checked) {
+                            Vue.success('Aufgabe erledigt');
+                        }
                     });
             },
             link (edit) {

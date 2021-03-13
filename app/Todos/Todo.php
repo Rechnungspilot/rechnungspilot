@@ -19,7 +19,10 @@ use Illuminate\Support\Facades\Auth;
 
 class Todo extends Model
 {
-    use HasComments, HasCompany, HasTags, HasUserfiles;
+    use HasComments,
+        HasCompany,
+        HasTags,
+        HasUserfiles;
 
     const PRIORITY_HIGH = 0;
     const PRIORITY_MEDIUM = 1;

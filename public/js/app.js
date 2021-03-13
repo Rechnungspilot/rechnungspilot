@@ -11321,6 +11321,10 @@ __webpack_require__.r(__webpack_exports__);
         completed: checked
       }).then(function (response) {
         component.isCompleted = checked;
+
+        if (checked) {
+          Vue.success('Aufgabe erledigt');
+        }
       });
     },
     link: function link(edit) {
@@ -61929,11 +61933,14 @@ var render = function() {
       : _vm.items.length
       ? _c(
           "table",
-          { staticClass: "table table-hover table-striped bg-white" },
+          {
+            staticClass:
+              "table table-fixed table-hover table-striped table-sm bg-white"
+          },
           [
             _c("thead", [
               _c("tr", [
-                _c("th", { attrs: { width: "35" } }),
+                _c("th", { attrs: { width: "30" } }),
                 _vm._v(" "),
                 _c("th", { attrs: { width: "50%" } }, [_vm._v("Bezeichnung")]),
                 _vm._v(" "),

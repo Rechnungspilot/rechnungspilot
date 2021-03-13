@@ -29,10 +29,10 @@
                 Lade Daten..
             </center>
         </div>
-        <table class="table table-hover table-striped bg-white" v-else-if="items.length">
+        <table class="table table-fixed table-hover table-striped table-sm bg-white" v-else-if="items.length">
             <thead>
                 <tr>
-                    <th width="35"></th>
+                    <th width="30"></th>
                     <th width="50%">Bezeichnung</th>
                     <th width="50%" v-if="options.show_team">Mitarbeiter</th>
                     <th class="text-right" width="115">Aktion</th>
