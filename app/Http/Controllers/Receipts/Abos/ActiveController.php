@@ -34,15 +34,15 @@ class ActiveController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, Abo $abo)
+    public function store(Request $request, string $type, Abo $subscription)
     {
-        $abo->settings()->update([
+        $subscription->settings()->update([
             'active' => true,
         ]);
 
-        if ($abo->settings->next_at <= today())
+        if ($subscription->settings->next_at <= today())
         {
-            $receipt = $abo->toReceipt();
+            $receipt = $subscription->toReceipt();
         }
 
         return back()
@@ -89,9 +89,9 @@ class ActiveController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request, Abo $abo)
+    public function destroy(Request $request, string $type, Abo $subscription)
     {
-        $abo->settings()->update([
+        $subscription->settings()->update([
             'active' => false,
         ]);
 

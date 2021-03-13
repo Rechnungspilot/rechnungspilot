@@ -6816,38 +6816,70 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['contacts', 'showLabel', 'model'],
+  props: {
+    contacts: {
+      required: true,
+      type: Array
+    },
+    model: {
+      required: true,
+      type: Object
+    },
+    showLabel: {
+      required: false,
+      type: Boolean,
+      "default": false
+    }
+  },
   data: function data() {
     return {
-      all: this.contacts,
       selected: this.model.contacts,
       label: this.showLabel === undefined ? true : this.showLabel,
       contactId: 0,
       path: '/abos/' + this.model.id
     };
   },
-  beforeMount: function beforeMount() {// this.fetchAll();
+  computed: {
+    selected_ids: function selected_ids() {
+      return this.selected.reduce(function (total, contact) {
+        total.push(contact.id);
+        return total;
+      }, []);
+    },
+    available_contacts: function available_contacts() {
+      var component = this;
+      return this.contacts.filter(function (contact) {
+        return component.selected_ids.indexOf(contact.id) == -1;
+      });
+    }
   },
   methods: {
-    fetchAll: function fetchAll() {
-      var component = this;
-      axios.get(component.path + '/kontakte').then(function (response) {
-        component.all = response.data;
-      });
-    },
     create: function create() {
       var component = this;
       axios.post(component.path + '/kontakte/' + component.contactId).then(function (response) {
         component.selected.push(response.data);
         component.contactId = 0;
+        Vue.success('Kontakt hinzugefügt.');
       });
     },
     destroy: function destroy(index) {
       var component = this;
       axios["delete"](component.path + '/kontakte/' + component.selected[index].id).then(function (response) {
+        var item = component.selected[index];
         component.selected.splice(index, 1);
+        Vue.success('Kontakt entfernt.');
       });
     },
     formatDate: function formatDate(date) {
@@ -6869,6 +6901,23 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
 /* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_0__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -8853,21 +8902,13 @@ __webpack_require__.r(__webpack_exports__);
     tableBase: _tables_base_vue__WEBPACK_IMPORTED_MODULE_5__["default"]
   },
   mixins: [_mixins_tables_base_js__WEBPACK_IMPORTED_MODULE_6__["baseMixin"], _mixins_tables_paginated_js__WEBPACK_IMPORTED_MODULE_7__["paginatedMixin"], _mixins_selectable_js__WEBPACK_IMPORTED_MODULE_8__["selectableMixin"]],
-  // props: [
-  //     'contacts',
-  //     'initialFilter',
-  //     'labels',
-  //     'statuses',
-  //     'tags',
-  //     'type',
-  // ],
   props: {
     contacts: {
       type: Array,
       required: true
     },
     statuses: {
-      type: Object,
+      type: Array,
       required: true
     },
     tags: {
@@ -53381,7 +53422,7 @@ var render = function() {
                 expression: "contactId"
               }
             ],
-            staticClass: "form-control",
+            staticClass: "form-control form-control-sm",
             on: {
               change: [
                 function($event) {
@@ -53406,7 +53447,7 @@ var render = function() {
               _vm._v("Kontakt hinzufügen")
             ]),
             _vm._v(" "),
-            _vm._l(_vm.all, function(contact) {
+            _vm._l(_vm.available_contacts, function(contact) {
               return _c("option", { domProps: { value: contact.id } }, [
                 _vm._v(_vm._s(contact.name))
               ])
@@ -53417,7 +53458,7 @@ var render = function() {
       ]),
       _vm._v(" "),
       _c(
-        "div",
+        "table",
         {
           directives: [
             {
@@ -53427,42 +53468,61 @@ var render = function() {
               expression: "selected.length"
             }
           ],
-          staticClass: "list-group"
+          staticClass:
+            "table table-fixed table-hover table-striped table-sm bg-white"
         },
-        _vm._l(_vm.selected, function(item, index) {
-          return _c(
-            "div",
-            { key: item.id, staticClass: "list-group-item d-flex" },
-            [
-              _c("div", { staticClass: "col" }, [
-                _c("a", { attrs: { href: item.path } }, [
-                  _vm._v(_vm._s(item.name))
+        [
+          _vm._m(0),
+          _vm._v(" "),
+          _c(
+            "tbody",
+            _vm._l(_vm.selected, function(item, index) {
+              return _c("tr", [
+                _c("td", [_vm._v(_vm._s(item.pivot.created_at_formatted))]),
+                _vm._v(" "),
+                _c("td", [_vm._v(_vm._s(item.name))]),
+                _vm._v(" "),
+                _c("td", [
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-link btn-sm pointer py-0",
+                      attrs: { title: "Löschen" },
+                      on: {
+                        click: function($event) {
+                          $event.preventDefault()
+                          return _vm.destroy(index)
+                        }
+                      }
+                    },
+                    [_c("i", { staticClass: "fas fa-trash text-danger" })]
+                  )
                 ])
-              ]),
-              _vm._v(" "),
-              _c(
-                "button",
-                {
-                  staticClass: "btn btn-link btn-xs pointer py-0",
-                  attrs: { title: "Löschen" },
-                  on: {
-                    click: function($event) {
-                      $event.preventDefault()
-                      return _vm.destroy(index)
-                    }
-                  }
-                },
-                [_c("i", { staticClass: "fas fa-trash text-danger" })]
-              )
-            ]
+              ])
+            }),
+            0
           )
-        }),
-        0
+        ]
       )
     ])
   ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("tr", [
+        _c("th", { attrs: { width: "150" } }, [_vm._v("Hinzugefügt")]),
+        _vm._v(" "),
+        _c("th", { attrs: { width: "100%" } }, [_vm._v("Name")]),
+        _vm._v(" "),
+        _c("th", { attrs: { width: "30" } })
+      ])
+    ])
+  }
+]
 render._withStripped = true
 
 
@@ -53485,55 +53545,64 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
-    _c("div", { staticClass: "form-group" }, [
-      _c("label", { attrs: { for: "send_mail" } }, [_vm._v("Sendeoptionen")]),
-      _vm._v(" "),
+    _c("div", { staticClass: "form-group row" }, [
       _c(
-        "select",
+        "label",
         {
-          directives: [
-            {
-              name: "model",
-              rawName: "v-model",
-              value: _vm.sendMail,
-              expression: "sendMail"
-            }
-          ],
-          staticClass: "form-control",
-          class: "send_mail" in _vm.errors ? "is-invalid" : "",
-          attrs: { id: "send_mail", name: "send_mail" },
-          on: {
-            change: function($event) {
-              var $$selectedVal = Array.prototype.filter
-                .call($event.target.options, function(o) {
-                  return o.selected
-                })
-                .map(function(o) {
-                  var val = "_value" in o ? o._value : o.value
-                  return val
-                })
-              _vm.sendMail = $event.target.multiple
-                ? $$selectedVal
-                : $$selectedVal[0]
-            }
-          }
+          staticClass: "col-sm-4 col-form-label col-form-label-sm",
+          attrs: { for: "send_mail" }
         },
-        _vm._l(_vm.sendMailOptions, function(option, index) {
-          return _c("option", { domProps: { value: index } }, [
-            _vm._v(_vm._s(option))
-          ])
-        }),
-        0
+        [_vm._v("Sendeoptionen")]
       ),
       _vm._v(" "),
-      _c("div", {
-        staticClass: "invalid-feedback",
-        domProps: {
-          textContent: _vm._s(
-            "send_mail" in _vm.errors ? _vm.errors.send_mail[0] : ""
-          )
-        }
-      })
+      _c("div", { staticClass: "col-sm-8" }, [
+        _c(
+          "select",
+          {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.sendMail,
+                expression: "sendMail"
+              }
+            ],
+            staticClass: "form-control",
+            class: "send_mail" in _vm.errors ? "is-invalid" : "",
+            attrs: { id: "send_mail", name: "send_mail" },
+            on: {
+              change: function($event) {
+                var $$selectedVal = Array.prototype.filter
+                  .call($event.target.options, function(o) {
+                    return o.selected
+                  })
+                  .map(function(o) {
+                    var val = "_value" in o ? o._value : o.value
+                    return val
+                  })
+                _vm.sendMail = $event.target.multiple
+                  ? $$selectedVal
+                  : $$selectedVal[0]
+              }
+            }
+          },
+          _vm._l(_vm.sendMailOptions, function(option, index) {
+            return _c("option", { domProps: { value: index } }, [
+              _vm._v(_vm._s(option))
+            ])
+          }),
+          0
+        ),
+        _vm._v(" "),
+        _c("div", {
+          staticClass: "invalid-feedback",
+          domProps: {
+            textContent: _vm._s(
+              "send_mail" in _vm.errors ? _vm.errors.send_mail[0] : ""
+            )
+          }
+        })
+      ])
     ]),
     _vm._v(" "),
     _c(
@@ -53547,141 +53616,234 @@ var render = function() {
             expression: "sendMail == 1"
           }
         ],
-        staticClass: "form-group"
+        staticClass: "form-group row"
       },
       [
-        _c("label", { attrs: { for: "email" } }, [_vm._v("E-Mail")]),
+        _c(
+          "label",
+          {
+            staticClass: "col-sm-4 col-form-label col-form-label-sm",
+            attrs: { for: "email" }
+          },
+          [_vm._v("E-Mail")]
+        ),
         _vm._v(" "),
-        _c("input", {
-          directives: [
-            {
-              name: "model",
-              rawName: "v-model",
-              value: _vm.email,
-              expression: "email"
-            }
-          ],
-          staticClass: "form-control",
-          class: "name" in _vm.errors ? "is-invalid" : "",
-          attrs: { type: "text", id: "email", name: "email" },
-          domProps: { value: _vm.email },
-          on: {
-            input: function($event) {
-              if ($event.target.composing) {
-                return
+        _c("div", { staticClass: "col-sm-8" }, [
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.email,
+                expression: "email"
               }
-              _vm.email = $event.target.value
-            }
-          }
-        }),
-        _vm._v(" "),
-        _c("div", {
-          staticClass: "invalid-feedback",
-          domProps: {
-            textContent: _vm._s(
-              "email" in _vm.errors ? _vm.errors.email[0] : ""
-            )
-          }
-        })
-      ]
-    ),
-    _vm._v(" "),
-    _c(
-      "div",
-      { staticClass: "form-group" },
-      [
-        _c("label", { attrs: { for: "start_at" } }, [
-          _vm._v("Erste Ausführung")
-        ]),
-        _vm._v(" "),
-        _c("date-input", {
-          attrs: {
-            id: "start_at",
-            name: "start_at",
-            error: "start_at" in _vm.errors ? _vm.errors.start_at[0] : ""
-          },
-          model: {
-            value: _vm.startAt,
-            callback: function($$v) {
-              _vm.startAt = $$v
-            },
-            expression: "startAt"
-          }
-        })
-      ],
-      1
-    ),
-    _vm._v(" "),
-    _c(
-      "div",
-      { staticClass: "form-group" },
-      [
-        _c("label", { attrs: { for: "next_at" } }, [
-          _vm._v("Nächste Ausführung")
-        ]),
-        _vm._v(" "),
-        _c("date-input", {
-          attrs: {
-            id: "next_at",
-            name: "next_at",
-            error: "next_at" in _vm.errors ? _vm.errors.next_at[0] : ""
-          },
-          on: { input: _vm.setLastAt },
-          model: {
-            value: _vm.nextAt,
-            callback: function($$v) {
-              _vm.nextAt = $$v
-            },
-            expression: "nextAt"
-          }
-        })
-      ],
-      1
-    ),
-    _vm._v(" "),
-    _c("div", { staticClass: "form-row" }, [
-      _c("div", { staticClass: "form-group col-md-4" }, [
-        _c("label", { attrs: { for: "interval_value" } }, [_vm._v("Interval")]),
-        _vm._v(" "),
-        _c("input", {
-          directives: [
-            {
-              name: "model",
-              rawName: "v-model",
-              value: _vm.intervalValue,
-              expression: "intervalValue"
-            }
-          ],
-          staticClass: "form-control",
-          class: "name" in _vm.errors ? "is-invalid" : "",
-          attrs: { type: "text", id: "interval_value", name: "interval_value" },
-          domProps: { value: _vm.intervalValue },
-          on: {
-            input: [
-              function($event) {
+            ],
+            staticClass: "form-control",
+            class: "name" in _vm.errors ? "is-invalid" : "",
+            attrs: { type: "text", id: "email", name: "email" },
+            domProps: { value: _vm.email },
+            on: {
+              input: function($event) {
                 if ($event.target.composing) {
                   return
                 }
-                _vm.intervalValue = $event.target.value
-              },
-              _vm.setLastAt
-            ]
-          }
-        }),
-        _vm._v(" "),
-        _c("div", {
-          staticClass: "invalid-feedback",
-          domProps: {
-            textContent: _vm._s(
-              "interval_value" in _vm.errors ? _vm.errors.interval_value[0] : ""
-            )
-          }
-        })
-      ]),
+                _vm.email = $event.target.value
+              }
+            }
+          }),
+          _vm._v(" "),
+          _c("div", {
+            staticClass: "invalid-feedback",
+            domProps: {
+              textContent: _vm._s(
+                "email" in _vm.errors ? _vm.errors.email[0] : ""
+              )
+            }
+          })
+        ])
+      ]
+    ),
+    _vm._v(" "),
+    _c("div", { staticClass: "form-group row" }, [
+      _c(
+        "label",
+        {
+          staticClass: "col-sm-4 col-form-label col-form-label-sm",
+          attrs: { for: "start_at" }
+        },
+        [_vm._v("Erste Ausführung")]
+      ),
       _vm._v(" "),
-      _c("div", { staticClass: "form-group col-md-8" }, [
-        _c("label", { attrs: { for: "interval_unit" } }, [_vm._v("Einheit")]),
+      _c(
+        "div",
+        { staticClass: "col-sm-8" },
+        [
+          _c("date-input", {
+            attrs: {
+              id: "start_at",
+              name: "start_at",
+              error: "start_at" in _vm.errors ? _vm.errors.start_at[0] : ""
+            },
+            model: {
+              value: _vm.startAt,
+              callback: function($$v) {
+                _vm.startAt = $$v
+              },
+              expression: "startAt"
+            }
+          })
+        ],
+        1
+      )
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "form-group row" }, [
+      _c(
+        "label",
+        {
+          staticClass: "col-sm-4 col-form-label col-form-label-sm",
+          attrs: { for: "next_at" }
+        },
+        [_vm._v("Nächste Ausführung")]
+      ),
+      _vm._v(" "),
+      _c(
+        "div",
+        { staticClass: "col-sm-8" },
+        [
+          _c("date-input", {
+            attrs: {
+              id: "next_at",
+              name: "next_at",
+              error: "next_at" in _vm.errors ? _vm.errors.next_at[0] : ""
+            },
+            on: { input: _vm.setLastAt },
+            model: {
+              value: _vm.nextAt,
+              callback: function($$v) {
+                _vm.nextAt = $$v
+              },
+              expression: "nextAt"
+            }
+          })
+        ],
+        1
+      )
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "form-group row" }, [
+      _c(
+        "label",
+        {
+          staticClass: "col-sm-4 col-form-label col-form-label-sm",
+          attrs: { for: "interval_value" }
+        },
+        [_vm._v("Interval")]
+      ),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-sm-8 row pr-0" }, [
+        _c("div", { staticClass: "col" }, [
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.intervalValue,
+                expression: "intervalValue"
+              }
+            ],
+            staticClass: "form-control",
+            class: "name" in _vm.errors ? "is-invalid" : "",
+            attrs: {
+              type: "text",
+              id: "interval_value",
+              name: "interval_value"
+            },
+            domProps: { value: _vm.intervalValue },
+            on: {
+              input: [
+                function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.intervalValue = $event.target.value
+                },
+                _vm.setLastAt
+              ]
+            }
+          }),
+          _vm._v(" "),
+          _c("small", [_vm._v("Interval")]),
+          _vm._v(" "),
+          _c("div", {
+            staticClass: "invalid-feedback",
+            domProps: {
+              textContent: _vm._s(
+                "interval_value" in _vm.errors
+                  ? _vm.errors.interval_value[0]
+                  : ""
+              )
+            }
+          })
+        ]),
         _vm._v(" "),
+        _c("div", { staticClass: "col px-0" }, [
+          _c(
+            "select",
+            {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.intervalUnit,
+                  expression: "intervalUnit"
+                }
+              ],
+              staticClass: "form-control",
+              attrs: { name: "interval_unit", id: "interval_unit" },
+              on: {
+                change: [
+                  function($event) {
+                    var $$selectedVal = Array.prototype.filter
+                      .call($event.target.options, function(o) {
+                        return o.selected
+                      })
+                      .map(function(o) {
+                        var val = "_value" in o ? o._value : o.value
+                        return val
+                      })
+                    _vm.intervalUnit = $event.target.multiple
+                      ? $$selectedVal
+                      : $$selectedVal[0]
+                  },
+                  _vm.setLastAt
+                ]
+              }
+            },
+            _vm._l(_vm.intervalUnits, function(option, index) {
+              return _c("option", { domProps: { value: index } }, [
+                _vm._v(_vm._s(option))
+              ])
+            }),
+            0
+          ),
+          _vm._v(" "),
+          _c("small", [_vm._v("Einheit")])
+        ])
+      ])
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "form-group row" }, [
+      _c(
+        "label",
+        {
+          staticClass: "col-sm-4 col-form-label col-form-label-sm",
+          attrs: { for: "last_type" }
+        },
+        [_vm._v("Dauer")]
+      ),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-sm-8" }, [
         _c(
           "select",
           {
@@ -53689,12 +53851,13 @@ var render = function() {
               {
                 name: "model",
                 rawName: "v-model",
-                value: _vm.intervalUnit,
-                expression: "intervalUnit"
+                value: _vm.lastType,
+                expression: "lastType"
               }
             ],
             staticClass: "form-control",
-            attrs: { name: "interval_unit", id: "interval_unit" },
+            class: "last_type" in _vm.errors ? "is-invalid" : "",
+            attrs: { id: "last_type", name: "last_type" },
             on: {
               change: [
                 function($event) {
@@ -53706,7 +53869,7 @@ var render = function() {
                       var val = "_value" in o ? o._value : o.value
                       return val
                     })
-                  _vm.intervalUnit = $event.target.multiple
+                  _vm.lastType = $event.target.multiple
                     ? $$selectedVal
                     : $$selectedVal[0]
                 },
@@ -53714,69 +53877,26 @@ var render = function() {
               ]
             }
           },
-          _vm._l(_vm.intervalUnits, function(option, index) {
-            return _c("option", { domProps: { value: index } }, [
-              _vm._v(_vm._s(option))
+          [
+            _c("option", { attrs: { value: "0" } }, [_vm._v("Unbegrenzt")]),
+            _vm._v(" "),
+            _c("option", { attrs: { value: "1" } }, [_vm._v("Anzahl angeben")]),
+            _vm._v(" "),
+            _c("option", { attrs: { value: "2" } }, [
+              _vm._v("Enddatum angeben")
             ])
-          }),
-          0
-        )
-      ])
-    ]),
-    _vm._v(" "),
-    _c("div", { staticClass: "form-group" }, [
-      _c("label", { attrs: { for: "last_type" } }, [_vm._v("Dauer")]),
-      _vm._v(" "),
-      _c(
-        "select",
-        {
-          directives: [
-            {
-              name: "model",
-              rawName: "v-model",
-              value: _vm.lastType,
-              expression: "lastType"
-            }
-          ],
-          staticClass: "form-control",
-          class: "last_type" in _vm.errors ? "is-invalid" : "",
-          attrs: { id: "last_type", name: "last_type" },
-          on: {
-            change: [
-              function($event) {
-                var $$selectedVal = Array.prototype.filter
-                  .call($event.target.options, function(o) {
-                    return o.selected
-                  })
-                  .map(function(o) {
-                    var val = "_value" in o ? o._value : o.value
-                    return val
-                  })
-                _vm.lastType = $event.target.multiple
-                  ? $$selectedVal
-                  : $$selectedVal[0]
-              },
-              _vm.setLastAt
-            ]
+          ]
+        ),
+        _vm._v(" "),
+        _c("div", {
+          staticClass: "invalid-feedback",
+          domProps: {
+            textContent: _vm._s(
+              "last_type" in _vm.errors ? _vm.errors.last_type[0] : ""
+            )
           }
-        },
-        [
-          _c("option", { attrs: { value: "0" } }, [_vm._v("Unbegrenz")]),
-          _vm._v(" "),
-          _c("option", { attrs: { value: "1" } }, [_vm._v("Anzahl angeben")]),
-          _vm._v(" "),
-          _c("option", { attrs: { value: "2" } }, [_vm._v("Enddatum angeben")])
-        ]
-      ),
-      _vm._v(" "),
-      _c("div", {
-        staticClass: "invalid-feedback",
-        domProps: {
-          textContent: _vm._s(
-            "last_type" in _vm.errors ? _vm.errors.last_type[0] : ""
-          )
-        }
-      })
+        })
+      ])
     ]),
     _vm._v(" "),
     _c(
@@ -53790,52 +53910,59 @@ var render = function() {
             expression: "lastType == 1"
           }
         ],
-        staticClass: "form-group"
+        staticClass: "form-group row"
       },
       [
-        _c("label", { attrs: { for: "last_count" } }, [
-          _vm._v("Verbleibende Ausführungen")
-        ]),
-        _vm._v(" "),
-        _c("input", {
-          directives: [
-            {
-              name: "model",
-              rawName: "v-model",
-              value: _vm.lastCount,
-              expression: "lastCount"
-            }
-          ],
-          staticClass: "form-control",
-          class: "name" in _vm.errors ? "is-invalid" : "",
-          attrs: {
-            type: "text",
-            id: "last_count",
-            name: "last_count",
-            number: ""
+        _c(
+          "label",
+          {
+            staticClass: "col-sm-4 col-form-label col-form-label-sm",
+            attrs: { for: "last_count" }
           },
-          domProps: { value: _vm.lastCount },
-          on: {
-            input: [
-              function($event) {
-                if ($event.target.composing) {
-                  return
-                }
-                _vm.lastCount = $event.target.value
-              },
-              _vm.setLastAt
-            ]
-          }
-        }),
+          [_vm._v("Verbleibende Ausführungen")]
+        ),
         _vm._v(" "),
-        _c("div", {
-          staticClass: "invalid-feedback",
-          domProps: {
-            textContent: _vm._s(
-              "last_count" in _vm.errors ? _vm.errors.last_count[0] : ""
-            )
-          }
-        })
+        _c("div", { staticClass: "col-sm-8" }, [
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.lastCount,
+                expression: "lastCount"
+              }
+            ],
+            staticClass: "form-control",
+            class: "name" in _vm.errors ? "is-invalid" : "",
+            attrs: {
+              type: "text",
+              id: "last_count",
+              name: "last_count",
+              number: ""
+            },
+            domProps: { value: _vm.lastCount },
+            on: {
+              input: [
+                function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.lastCount = $event.target.value
+                },
+                _vm.setLastAt
+              ]
+            }
+          }),
+          _vm._v(" "),
+          _c("div", {
+            staticClass: "invalid-feedback",
+            domProps: {
+              textContent: _vm._s(
+                "last_count" in _vm.errors ? _vm.errors.last_count[0] : ""
+              )
+            }
+          })
+        ])
       ]
     ),
     _vm._v(" "),
@@ -53850,29 +53977,40 @@ var render = function() {
             expression: "lastType == 2"
           }
         ],
-        staticClass: "form-group"
+        staticClass: "form-group row"
       },
       [
-        _c("label", { attrs: { for: "last_at" } }, [
-          _vm._v("Letzte Ausführung")
-        ]),
-        _vm._v(" "),
-        _c("date-input", {
-          attrs: {
-            id: "last_at",
-            name: "last_at",
-            error: "last_at" in _vm.errors ? _vm.errors.last_at[0] : ""
+        _c(
+          "label",
+          {
+            staticClass: "col-sm-4 col-form-label col-form-label-sm",
+            attrs: { for: "last_at" }
           },
-          model: {
-            value: _vm.lastAt,
-            callback: function($$v) {
-              _vm.lastAt = $$v
-            },
-            expression: "lastAt"
-          }
-        })
-      ],
-      1
+          [_vm._v("Letzte Ausführung")]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          { staticClass: "col-sm-8" },
+          [
+            _c("date-input", {
+              attrs: {
+                id: "last_at",
+                name: "last_at",
+                error: "last_at" in _vm.errors ? _vm.errors.last_at[0] : ""
+              },
+              model: {
+                value: _vm.lastAt,
+                callback: function($$v) {
+                  _vm.lastAt = $$v
+                },
+                expression: "lastAt"
+              }
+            })
+          ],
+          1
+        )
+      ]
     )
   ])
 }

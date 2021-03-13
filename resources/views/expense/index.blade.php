@@ -3,7 +3,7 @@
 @section('title', 'Ausgaben')
 
 @section('content')
-    <a class="btn btn-secondary btn-sm" href="{{ url('/abos/expense') }}">Abos</a>
+    <a class="btn btn-secondary btn-sm" href="{{ \App\Receipts\Abos\Abo::indexPath(['settings_type' => \App\Receipts\Expense::TYPE]) }}">{{ \App\Receipts\Abos\Abo::label() }}</a>
     <a href="{{ \App\Receipts\Expense::indexPathTags() }}" class="btn btn-secondary btn-sm">Kategorien</a>
     <a href="{{ url('/terms/ausgaben') }}" class="btn btn-secondary btn-sm">Zahlungsbedingungen</a>
     <br /><br />

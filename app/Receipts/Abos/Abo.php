@@ -8,18 +8,25 @@ use App\Receipts\Receipt;
 use App\Receipts\Statuses\Created;
 use App\Receipts\Statuses\MorphedTo;
 use App\Receipts\Term;
+use App\Support\Type;
 use D15r\ModelLabels\Traits\HasLabels;
+use D15r\ModelPath\Traits\HasModelPath;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Parental\HasParent;
 
 class Abo extends Receipt
 {
     use HasParent,
-        HasLabels;
+        HasLabels,
+        HasModelPath;
 
     const AVAILABLE_STATUSES = [
 
     ];
+
+    const ROUTE_NAME = 'receipts.subscriptions';
+    const TYPE = 'subscriptions';
 
     const LABEL_SINGULAR = 'Abo';
     const LABEL_PLURAL = 'Abos';
@@ -102,6 +109,13 @@ class Abo extends Receipt
         return $abo;
     }
 
+    public static function indexPath(array $attributes = []) : string
+    {
+        return route(self::ROUTE_NAME . '.index', [
+            'type' => $attributes['settings_type'],
+        ]);
+    }
+
     protected static function labels() : array
     {
         return [
@@ -162,9 +176,12 @@ class Abo extends Receipt
         return $this->nextMainStatus;
     }
 
-    public function getPathAttribute()
+    public function getRouteParameterAttribute() : array
     {
-        return $this->uri . '/' . $this->id;
+        return [
+            'type' => Type::type((is_null($this->settings) ? $this->settings_type : $this->settings->type)),
+            'subscription' => $this->id,
+        ];
     }
 
     public function getContactLinkStringAttribute() : string
@@ -179,7 +196,9 @@ class Abo extends Receipt
 
     public function contacts()
     {
-        return $this->belongsToMany('App\Contacts\Contact', 'contact_receipt');
+        return $this->belongsToMany('App\Contacts\Contact', 'contact_receipt')
+            ->using(\App\Models\Receipts\Contact::class)
+            ->withTimestamps();
     }
 
     public function receipts()
@@ -187,9 +206,9 @@ class Abo extends Receipt
         return $this->hasMay('App\Receipts\Receipt', 'abo_id');
     }
 
-    public function settings()
+    public function settings() : HasOne
     {
-        return $this->hasOne('App\Receipts\Abos\Settings', 'abo_id');
+        return $this->hasOne(\App\Receipts\Abos\Settings::class, 'abo_id');
     }
 
     protected function getNameFormat()
@@ -199,8 +218,7 @@ class Abo extends Receipt
 
     public function draft(array $data = [])
     {
-        if (! array_key_exists('date', $data))
-        {
+        if (! array_key_exists('date', $data)) {
             $data['date'] = today();
         }
         (new Created())->associate($this, $data);

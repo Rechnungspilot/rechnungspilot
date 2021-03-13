@@ -4,6 +4,7 @@ namespace App\Support;
 
 use App\Contacts\Contact;
 use App\Item;
+use App\Receipts\Abos\Abo;
 use App\Receipts\Expense;
 use App\Receipts\Invoice;
 use App\User;
@@ -13,6 +14,7 @@ use Illuminate\Support\Arr;
 class Type
 {
     const ALL = [
+        Abo::TYPE => Abo::class,
         Contact::TYPE => Contact::class,
         Expense::TYPE => Expense::class,
         Invoice::TYPE => Invoice::class,

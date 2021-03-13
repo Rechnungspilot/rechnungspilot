@@ -12,6 +12,7 @@ use App\Receipts\Boilerplate;
 use App\Receipts\Statuses\Created;
 use App\Receipts\Statuses\Draft;
 use App\Receipts\Term;
+use App\Support\Type;
 use App\Tag;
 use App\Unit;
 use Carbon\Carbon;
@@ -29,7 +30,7 @@ class AboController extends Controller
     {
         if ($request->wantsJson()) {
 
-            $class_name = 'App\\Receipts\\' . ucfirst($type);
+            $class_name = Type::class($type);
 
             return Abo::select('receipts.*')
                 ->with([
@@ -41,7 +42,7 @@ class AboController extends Controller
                 ->search($request->input('searchtext'))
                 ->contact($request->input('contact_id'))
                 ->status($request->input('status_type'))
-                ->withAllTags($request->input('tags'), 'abos')
+                ->withAllTags($request->input('tags'), Abo::class)
                 ->orderBy('date', 'DESC')
                 ->paginate(15);
         }
@@ -50,7 +51,7 @@ class AboController extends Controller
             ->with('contacts', Contact::all())
             ->with('statuses', Abo::AVAILABLE_STATUSES)
             ->with('labels', Abo::labels())
-            ->with('tags', Tag::withType('abos')->get())
+            ->with('tags', Tag::withType(Abo::class)->get())
             ->with('type', $type);
     }
 
@@ -73,7 +74,7 @@ class AboController extends Controller
     public function store(Request $request, string $type)
     {
         $receipt = Abo::create([
-            'settings_type' => 'App\\Receipts\\' . ucfirst($type),
+            'settings_type' => Type::class($type),
             'address' => NULL,
             'company_id' => auth()->user()->company_id,
         ]);
@@ -87,39 +88,45 @@ class AboController extends Controller
             return $receipt;
         }
 
-        return redirect($receipt->path);
+        return redirect($receipt->edit_path);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Receipts\abo  $abo
+     * @param  \App\Receipts\abo  $subscription
      * @return \Illuminate\Http\Response
      */
-    public function show(Abo $abo)
+    public function show(string $type, Abo $subscription)
     {
-        $abo->load([
+        $subscription->load([
             'tags',
             'settings',
             'contacts',
         ]);
 
-        $abo->statuses = $abo->statuses()->with('user')->orderBy('date', 'DESC')->orderBy('id', 'DESC')->get();
-        $abo->calculateTax();
+        $subscription->statuses = $subscription->statuses()->with('user')->orderBy('date', 'DESC')->orderBy('id', 'DESC')->get();
+        $subscription->calculateTax();
+
+        $settings = \App\Receipts\Abos\Settings::firstWhere([
+            'abo_id' => $subscription->id,
+        ]);
+
+        $subscription->contacts_count = count($subscription->contacts);
 
         return view('abo.show')
-            ->with('abo', $abo);
+            ->with('abo', $subscription);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Receipts\abo  $abo
+     * @param  \App\Receipts\abo  $subscription
      * @return \Illuminate\Http\Response
      */
-    public function edit(Abo $abo)
+    public function edit(string $type, Abo $subscription)
     {
-        $abo->load([
+        $subscription->load([
             'company',
             'contacts',
             'items',
@@ -127,11 +134,11 @@ class AboController extends Controller
             'tags',
         ]);
 
-        $abo->statuses = $abo->statuses()->with('user')->orderBy('date', 'DESC')->orderBy('id', 'DESC')->get();
-        $abo->calculateTax();
+        $subscription->statuses = $subscription->statuses()->with('user')->orderBy('date', 'DESC')->orderBy('id', 'DESC')->get();
+        $subscription->calculateTax();
 
         return view('abo.edit')
-            ->with('abo', $abo)
+            ->with('abo', $subscription)
             ->with('contacts', Contact::all())
             ->with('units', Unit::all())
             ->with('items', Item::all())
@@ -143,10 +150,10 @@ class AboController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Receipts\abo  $abo
+     * @param  \App\Receipts\abo  $subscription
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Abo $abo)
+    public function update(Request $request, string $type, Abo $subscription)
     {
         $validatedData = $request->validate([
             'email' => 'nullable|string',
@@ -165,56 +172,50 @@ class AboController extends Controller
         $validatedData['start_at'] = Carbon::createFromFormat('d.m.Y', $validatedData['start_at'])->startOfDay();
         $validatedData['next_at'] = Carbon::createFromFormat('d.m.Y', $validatedData['next_at'])->startOfDay();
         $validatedData['date'] = $validatedData['start_at'];
-        $validatedData['contact_id'] = $abo->contact_id;
+        $validatedData['contact_id'] = $subscription->contact_id;
         $validatedData['is_partial'] = (Arr::has($validatedData, 'is_partial') ? (bool) $validatedData['is_partial'] : false);
-        if ($validatedData['last_at'])
-        {
+        if ($validatedData['last_at']) {
             $validatedData['last_at'] = Carbon::createFromFormat('d.m.Y', $validatedData['last_at'])->startOfDay();
         }
-        else
-        {
+        else {
             $validatedData['last_at'] = null;
         }
         $validatedData = collect($validatedData);
 
-        $abo->update($validatedData->only([
+        $subscription->update($validatedData->only([
             'number',
             'date',
             'contact_id',
             'is_partial',
         ])->toArray());
 
-        $abo->settings()->update($validatedData->except([
+        $subscription->settings()->update($validatedData->except([
             'number',
             'date',
             'contact_id',
             'is_partial',
         ])->toArray());
 
-        $abo->cache();
+        $subscription->cache();
 
-        return redirect($abo->path)
+        return redirect($subscription->path)
             ->with('status', 'Abo gespeichert!');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Receipts\abo  $abo
+     * @param  \App\Receipts\abo  $subscription
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request, Abo $abo)
+    public function destroy(Request $request, string $type, Abo $subscription)
     {
-        $type = $abo->settings->type::SLUG;
-
-        $abo->delete();
+        $subscription->delete();
 
         if ($request->wantsJson()) {
             return;
         }
 
-        return redirect(route('receipt.abo.index', [
-            'type' => $type
-        ]));
+        return redirect($subscription->index_path);
     }
 }

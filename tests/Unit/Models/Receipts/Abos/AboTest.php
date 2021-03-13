@@ -4,12 +4,38 @@ namespace Tests\Unit\Models\Receipts\Abos;
 
 use App\Receipts\Abos\Abo;
 use App\Receipts\Abos\Settings;
+use App\Receipts\Invoice;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
-use Tests\TestCase;
+use Tests\Unit\TestCase;
 
 class AboTest extends TestCase
 {
+    protected $class_name = Abo::class;
+
+    /**
+     * @test
+     */
+    public function it_has_model_paths()
+    {
+        $model = factory($this->class_name)->create();
+        $route_parameter = [
+            'type' => Invoice::TYPE,
+            'subscription' => $model->id,
+        ];
+
+        $routes = [
+            'index_path' => strtok(route($this->class_name::ROUTE_NAME . '.index', $route_parameter), '?'),
+            'create_path' => strtok(route($this->class_name::ROUTE_NAME . '.create', $route_parameter), '?'),
+            'path' => route($this->class_name::ROUTE_NAME . '.show', $route_parameter),
+            'edit_path' => route($this->class_name::ROUTE_NAME . '.edit', $route_parameter),
+        ];
+
+        $this->testModelPaths($model, $routes, [
+            'settings_type' => Invoice::TYPE,
+        ]);
+    }
+
     /**
      * @test
      */

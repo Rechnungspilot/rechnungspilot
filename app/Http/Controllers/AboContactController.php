@@ -37,7 +37,13 @@ class AboContactController extends Controller
      */
     public function store(Request $request, Abo $abo, Contact $contact)
     {
-        $abo->contacts()->attach($contact->id);
+        $abo->contacts()->attach($contact->id, [
+            'user_id' => auth()->user()->id,
+        ]);
+
+        $contact = $abo->contacts()
+            ->where('contact_id', $contact->id)
+            ->first();
 
         return $contact;
     }

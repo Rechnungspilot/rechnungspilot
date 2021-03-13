@@ -85,22 +85,13 @@
             selectableMixin,
         ],
 
-        // props: [
-        //     'contacts',
-        //     'initialFilter',
-        //     'labels',
-        //     'statuses',
-        //     'tags',
-        //     'type',
-        // ],
-
         props: {
             contacts: {
                 type: Array,
                 required: true,
             },
             statuses: {
-                type: Object,
+                type: Array,
                 required: true,
             },
             tags: {

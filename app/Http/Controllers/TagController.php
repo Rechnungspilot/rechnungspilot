@@ -24,6 +24,7 @@ class TagController extends Controller
         }
 
         return view('tag.index')
+            ->with('index_path_attributes', $class == \App\Receipts\Abos\Abo::class ? ['settings_type' => \App\Receipts\Abos\Abo::TYPE] : [])
             ->with('type', $type)
             ->with('class', $class);
     }

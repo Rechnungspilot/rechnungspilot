@@ -1,62 +1,79 @@
 <template>
     <div>
-        <div class="form-group">
-            <label for="send_mail">Sendeoptionen</label>
-            <select class="form-control" :class="'send_mail' in errors ? 'is-invalid' : ''" id="send_mail" name="send_mail" v-model="sendMail">
-                <option v-for="(option, index) in sendMailOptions" :value="index">{{ option }}</option>
-            </select>
-            <div class="invalid-feedback" v-text="'send_mail' in errors ? errors.send_mail[0] : ''"></div>
-        </div>
-
-        <div class="form-group" v-show="sendMail == 1">
-            <label for="email">E-Mail</label>
-            <input class="form-control" :class="'name' in errors ? 'is-invalid' : ''" type="text" id="email" name="email" v-model="email"></input>
-            <div class="invalid-feedback" v-text="'email' in errors ? errors.email[0] : ''"></div>
-        </div>
-
-        <div class="form-group">
-            <label for="start_at">Erste Ausführung</label>
-            <date-input id="start_at" name="start_at" v-model="startAt" :error="(('start_at' in errors) ? errors.start_at[0] : '')"></date-input>
-        </div>
-
-        <div class="form-group">
-            <label for="next_at">Nächste Ausführung</label>
-            <date-input id="next_at" name="next_at" v-model="nextAt" :error="(('next_at' in errors) ? errors.next_at[0] : '')" @input="setLastAt"></date-input>
-        </div>
-
-        <div class="form-row">
-            <div class="form-group col-md-4">
-                <label for="interval_value">Interval</label>
-                <input class="form-control" :class="'name' in errors ? 'is-invalid' : ''" type="text" id="interval_value" name="interval_value" v-model="intervalValue" @input="setLastAt">
-                <div class="invalid-feedback" v-text="'interval_value' in errors ? errors.interval_value[0] : ''"></div>
-            </div>
-            <div class="form-group col-md-8">
-                <label for="interval_unit">Einheit</label>
-                <select class="form-control" name="interval_unit" id="interval_unit" v-model="intervalUnit" @change="setLastAt">
-                    <option v-for="(option, index) in intervalUnits" :value="index">{{ option }}</option>
+        <div class="form-group row">
+            <label class="col-sm-4 col-form-label col-form-label-sm" for="send_mail">Sendeoptionen</label>
+            <div class="col-sm-8">
+                <select class="form-control" :class="'send_mail' in errors ? 'is-invalid' : ''" id="send_mail" name="send_mail" v-model="sendMail">
+                    <option v-for="(option, index) in sendMailOptions" :value="index">{{ option }}</option>
                 </select>
+                <div class="invalid-feedback" v-text="'send_mail' in errors ? errors.send_mail[0] : ''"></div>
             </div>
         </div>
 
-        <div class="form-group">
-            <label for="last_type">Dauer</label>
-            <select class="form-control" :class="'last_type' in errors ? 'is-invalid' : ''" id="last_type" name="last_type" v-model="lastType" @change="setLastAt">
-                <option value="0">Unbegrenz</option>
-                <option value="1">Anzahl angeben</option>
-                <option value="2">Enddatum angeben</option>
-            </select>
-            <div class="invalid-feedback" v-text="'last_type' in errors ? errors.last_type[0] : ''"></div>
+        <div class="form-group row" v-show="sendMail == 1">
+            <label class="col-sm-4 col-form-label col-form-label-sm" for="email">E-Mail</label>
+            <div class="col-sm-8">
+                <input class="form-control" :class="'name' in errors ? 'is-invalid' : ''" type="text" id="email" name="email" v-model="email"></input>
+                <div class="invalid-feedback" v-text="'email' in errors ? errors.email[0] : ''"></div>
+            </div>
         </div>
 
-        <div class="form-group" v-show="lastType == 1">
-            <label for="last_count">Verbleibende Ausführungen</label>
-            <input class="form-control" :class="'name' in errors ? 'is-invalid' : ''" type="text" id="last_count" name="last_count" v-model="lastCount" @input="setLastAt" number>
-            <div class="invalid-feedback" v-text="'last_count' in errors ? errors.last_count[0] : ''"></div>
+        <div class="form-group row">
+            <label class="col-sm-4 col-form-label col-form-label-sm" for="start_at">Erste Ausführung</label>
+            <div class="col-sm-8">
+                <date-input id="start_at" name="start_at" v-model="startAt" :error="(('start_at' in errors) ? errors.start_at[0] : '')"></date-input>
+            </div>
         </div>
 
-        <div class="form-group" v-show="lastType == 2">
-            <label for="last_at">Letzte Ausführung</label>
-            <date-input id="last_at" name="last_at" v-model="lastAt" :error="(('last_at' in errors) ? errors.last_at[0] : '')"></date-input>
+        <div class="form-group row">
+            <label class="col-sm-4 col-form-label col-form-label-sm" for="next_at">Nächste Ausführung</label>
+            <div class="col-sm-8">
+                <date-input id="next_at" name="next_at" v-model="nextAt" :error="(('next_at' in errors) ? errors.next_at[0] : '')" @input="setLastAt"></date-input>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="col-sm-4 col-form-label col-form-label-sm" for="interval_value">Interval</label>
+            <div class="col-sm-8 row pr-0">
+                <div class="col">
+                    <input class="form-control" :class="'name' in errors ? 'is-invalid' : ''" type="text" id="interval_value" name="interval_value" v-model="intervalValue" @input="setLastAt">
+                    <small>Interval</small>
+                    <div class="invalid-feedback" v-text="'interval_value' in errors ? errors.interval_value[0] : ''"></div>
+                </div>
+                <div class="col px-0">
+                    <select class="form-control" name="interval_unit" id="interval_unit" v-model="intervalUnit" @change="setLastAt">
+                        <option v-for="(option, index) in intervalUnits" :value="index">{{ option }}</option>
+                    </select>
+                    <small>Einheit</small>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="col-sm-4 col-form-label col-form-label-sm" for="last_type">Dauer</label>
+            <div class="col-sm-8">
+                <select class="form-control" :class="'last_type' in errors ? 'is-invalid' : ''" id="last_type" name="last_type" v-model="lastType" @change="setLastAt">
+                    <option value="0">Unbegrenzt</option>
+                    <option value="1">Anzahl angeben</option>
+                    <option value="2">Enddatum angeben</option>
+                </select>
+                <div class="invalid-feedback" v-text="'last_type' in errors ? errors.last_type[0] : ''"></div>
+            </div>
+        </div>
+
+        <div class="form-group row" v-show="lastType == 1">
+            <label class="col-sm-4 col-form-label col-form-label-sm" for="last_count">Verbleibende Ausführungen</label>
+            <div class="col-sm-8">
+                <input class="form-control" :class="'name' in errors ? 'is-invalid' : ''" type="text" id="last_count" name="last_count" v-model="lastCount" @input="setLastAt" number>
+                <div class="invalid-feedback" v-text="'last_count' in errors ? errors.last_count[0] : ''"></div>
+            </div>
+        </div>
+
+        <div class="form-group row" v-show="lastType == 2">
+            <label class="col-sm-4 col-form-label col-form-label-sm" for="last_at">Letzte Ausführung</label>
+            <div class="col-sm-8">
+                <date-input id="last_at" name="last_at" v-model="lastAt" :error="(('last_at' in errors) ? errors.last_at[0] : '')"></date-input>
+            </div>
         </div>
 
     </div>

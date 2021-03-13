@@ -90,7 +90,7 @@ class AboControllerTest extends TestCase
         $this->withoutExceptionHandling();
 
         $route = route($this->getBaseRouteName() . '.store', [
-            'type' => 'rechnungen',
+            'type' => 'invoice',
         ]);
 
         $this->signIn();

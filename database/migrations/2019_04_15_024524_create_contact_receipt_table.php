@@ -18,9 +18,13 @@ class CreateContactReceiptTable extends Migration
 
             $table->unsignedInteger('receipt_id');
             $table->unsignedInteger('contact_id');
+            $table->unsignedInteger('user_id')->nullable();
+
+            $table->timestamps();
 
             $table->foreign('receipt_id')->references('id')->on('receipts')->onDelete('cascade');
             $table->foreign('contact_id')->references('id')->on('contacts')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 

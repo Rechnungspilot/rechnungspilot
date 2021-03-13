@@ -2,73 +2,80 @@
 
 @section('title', $abo->typeName . ' > ' . $abo->name ?: 'Noch nicht vergeben')
 
+@section('buttons')
+    <a href="{{ $abo->path }}" class="btn btn-secondary btn-sm">Übersicht</a>
+@endsection
+
 @section('content')
 
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col"></div>
-            <div class="dropdown mr-1">
-                <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown">
-                    <i class="fas fa-ellipsis-h"></i> Mehr
-                </button>
-                <div class="dropdown-menu">
-                    <h6 class="dropdown-header">Anlegen</h6>
-                    <form action="{{ url('/abos/aus', $abo->id) }}" method="POST">
-                        @csrf
-                        <button type="submit" class="dropdown-item pointer">Duplizieren</button>
-                    </form>
-                    <h6 class="dropdown-header">Bearbeiten</h6>
-                    <button class="dropdown-item pointer" data-toggle="modal" data-target="#confirm-delete">Löschen</button>
-                </div>
-            </div>
-            @if ($abo->nextMainStatus)
-                <button class="btn btn-primary pointer mr-1" data-toggle="modal" data-target="#statusModal" data-status="{{ get_class($abo->nextMainStatus) }}">{{ ucfirst($abo->nextMainStatus->action) }}</button>
-            @endif
-            <a href="{{ url('/abos/' . strtolower(class_basename($abo->settings->type))) }}" class="btn btn-secondary">Übersicht</a>
-        </div>
-    </div>
-
-    <h3>Allgemein</h3>
-    <form action="{{ url('/abos', $abo->id) }}" method="POST">
+    <form action="{{ $abo->path }}" class="mb-3" method="POST">
         @csrf
         @method('PUT')
+
         <div class="row">
-            <div class="col">
-                <div class="form-group">
-                    <label for="number">Belegnummer</label>
-                    <input type="text" class="form-control {{ ($errors->has('number') ? 'is-invalid' : '') }}" id="number" name="number" value="{{ $abo->number }}">
-                    @if ($errors->has('number'))
-                        <div class="invalid-feedback">
-                            {{ $errors->first('number') }}
+
+            <div class="col-12 col-lg-6">
+
+                <div class="card mb-3">
+                    <div class="card-header">Allgemein</div>
+                    <div class="card-body">
+
+                        <div class="form-group row">
+                            <label class="col-sm-4 col-form-label col-form-label-sm" for="number">Belegnummer</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control form-control-sm @error('number') is-invalid @enderror" id="number" name="number" value="{{ $abo->number }}">
+                                @error('number')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
+                            </div>
                         </div>
-                    @endif
+
+                        <div class="form-group row">
+                            <label class="col-sm-4 col-form-label col-form-label-sm" for="is_partial">Abschlagsrechnung</label>
+                            <div class="col-sm-8">
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" id="is_partial" name="is_partial" value="1" <?php echo ($abo->is_partial ? 'checked="checked"' : '') ?>>
+                                </div>
+                            </div>
+                        </div>
+
+                        <tag-select class="my-2" :selected="{{ json_encode($abo->tags) }}" index-path="{{ $abo->indexPathTags() }}" path="{{ $abo->tags_path }}"></tag-select>
+
+                    </div>
 
                 </div>
+
 
                 <abo-contacts-select class="my-2" :model="{{ json_encode($abo) }}" :contacts="{{ json_encode($contacts) }}"></abo-contacts-select>
 
-                <tag-select class="my-2" :selected="{{ json_encode($abo->tags) }}" type="abos" type_id="{{ $abo->id }}"></tag-select>
-
-                <div class="form-group form-check">
-                    <input type="checkbox" class="form-check-input" id="is_patial" name="is_partial" value="1" <?php echo ($abo->is_partial ? 'checked="checked"' : '') ?>>
-                    <label class="form-check-label" for="is_patial">Abschlagsrechnung</label>
-                </div>
-
             </div>
-            <div class="col">
 
-                <abo-settings :model="{{ json_encode($abo->settings) }}" :interval-units="{{ json_encode($intervalUnits) }}" :send-mail-options="{{ json_encode($sendMailOptions) }}"></abo-settings>
+            <div class="col-12 col-lg-6">
+
+                <div class="card mb-3">
+                    <div class="card-header">Einstellungen</div>
+                    <div class="card-body">
+
+                        <abo-settings :model="{{ json_encode($abo->settings) }}" :interval-units="{{ json_encode($intervalUnits) }}" :send-mail-options="{{ json_encode($sendMailOptions) }}"></abo-settings>
+
+                    </div>
+
+                </div>
 
             </div>
 
         </div>
 
-        <button type="submit" class="btn btn-primary">Speichern</button>
+        <div class="fixed-bottom bg-white p-3 text-right">
+            <button type="submit" class="btn btn-primary btn-sm">Speichern</button>
+        </div>
 
     </form>
     <br />
 
-    <receipt-item-table :model="{{ json_encode($abo) }}" :options="{{ json_encode($items) }}" :units="{{ json_encode($units) }}"></receipt-item-table>
+    <receipt-item-table index-path="{{ \App\Receipts\Item::indexPath(['receipt_id' => $abo->id]) }}" :model="{{ json_encode($abo) }}" :options="{{ json_encode($items) }}" :units="{{ json_encode($units) }}"></receipt-item-table>
 
     @include('receipt.status.ul', ['statuses' => $abo->statuses])
 

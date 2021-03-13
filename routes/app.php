@@ -66,6 +66,7 @@ Route::bind('model', function ($id) {
         case 'team': return User::findOrFail($id); break;
         case 'zeiterfassung': return Time::findOrFail($id); break;
 
+        case Abo::TYPE: return Abo::findOrFail($id); break;
         case Contact::TYPE: return Contact::findOrFail($id); break;
         case Expense::TYPE: return Expense::findOrFail($id); break;
         case Invoice::TYPE: return Invoice::findOrFail($id); break;
@@ -97,9 +98,6 @@ Route::middleware(['auth', 'company.locked'])->group(function () {
     Route::delete('abos/{abo}', 'Receipts\Abos\AboController@destroy')->name('receipt.abo.destroy')->where('abo', '[0-9]+');
     Route::get('abos/{type}', 'Receipts\Abos\AboController@index')->name('receipt.abo.index');
     Route::post('abos/{type}', 'Receipts\Abos\AboController@store')->name('receipt.abo.store');
-
-    Route::post('abos/{abo}/aktiv', 'Receipts\Abos\ActiveController@store')->name('receipt.abo.active.store');
-    Route::delete('abos/{abo}/aktiv', 'Receipts\Abos\ActiveController@destroy')->name('receipt.abo.active.destroy');
 
     Route::post('abos/aus/{receipt}', 'IncomeFromController@store');
     Route::post('abos/{abo}/kontakte/{contact}', 'AboContactController@store');
@@ -156,11 +154,6 @@ Route::middleware(['auth', 'company.locked'])->group(function () {
     Route::post('auftraege/aus/{receipt}', 'OrderFromController@store');
 
     // Ausgaben
-    Route::get('ausgaben', 'ExpenseController@index');
-    Route::post('ausgaben', 'ExpenseController@store');
-    Route::get('ausgaben/{expense}/edit', 'ExpenseController@edit');
-    Route::put('ausgaben/{expense}', 'ExpenseController@update');
-    Route::delete('ausgaben/{expense}', 'ExpenseController@destroy');
     Route::post('ausgaben/aus/{receipt}', 'ExpenseFromController@store');
 
     // Rechnungen
@@ -190,13 +183,6 @@ Route::middleware(['auth', 'company.locked'])->group(function () {
     Route::post('projektabschnitte/{section}/aufgaben', 'Projects\TodoController@store');
     Route::get('projektabschnitte/{section}/aufgaben/{todo}', 'Projects\TodoController@show');
     Route::put('projektabschnitte/{section}/aufgaben/{todo}', 'Projects\TodoController@update');
-
-    // Belege
-    Route::get('belege/{receipt}/artikel', 'Receipts\ItemController@index')->name('receipt.item.index');
-    Route::post('belege/{receipt}/artikel', 'Receipts\ItemController@store')->name('receipt.item.store');
-    Route::get('belege/artikel/{receiptItem}/edit', 'Receipts\ItemController@edit')->name('receipt.item.edit');
-    Route::put('belege/{receipt}/artikel/{receiptItem}', 'Receipts\ItemController@update')->name('receipt.item.update');
-    Route::delete('belege/{receipt}/artikel/{receiptItem}', 'Receipts\ItemController@destroy')->name('receipt.item.destroy');
 
     Route::get('{type}/{model}/aufgaben', 'Receipts\Receipts\TodoController@index')->name('receipt.receipt.todo.index');
 
@@ -438,6 +424,9 @@ Route::middleware(['auth', 'company.locked'])->group(function () {
             Route::delete('contacts/{contact}/people/{person}/default/{type}', 'Contacts\People\DefaultController@destroy');
     Route::resource(Item::ROUTE_NAME, 'Items\ItemController');
 
+    Route::resource('receipts/{type}/subscriptions', 'Receipts\Abos\AboController', ['as' => 'receipts']);
+        Route::post('receipts/{type}/subscriptions/{subscription}/activate', 'Receipts\Abos\ActiveController@store')->name('receipt.abo.active.store');
+        Route::delete('receipts/{type}/subscriptions/{subscription}/activate', 'Receipts\Abos\ActiveController@destroy')->name('receipt.abo.active.destroy');
     Route::resource('receipts/invoices', 'Receipts\Invoices\InvoiceController', ['as' => 'receipts']);
     Route::resource('receipts/expenses', 'Receipts\Expenses\ExpenseController', ['as' => 'receipts']);
     Route::resource('receipts.items', 'Receipts\Items\ItemController');

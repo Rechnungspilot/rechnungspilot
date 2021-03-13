@@ -3,19 +3,29 @@
         <div class="card-header">Kontakte</div>
         <div class="card-body">
             <div class="form-group">
-                <select class="form-control" v-model="contactId" @change="create">
+                <select class="form-control form-control-sm" v-model="contactId" @change="create">
                     <option value="0">Kontakt hinzufügen</option>
-                    <option v-for="contact in all" :value="contact.id">{{ contact.name }}</option>
+                    <option v-for="contact in available_contacts" :value="contact.id">{{ contact.name }}</option>
                 </select>
             </div>
-            <div class="list-group" v-show="selected.length">
-                <div class="list-group-item d-flex" v-for="(item, index) in selected" :key="item.id">
-                    <div class="col">
-                        <a :href="item.path">{{ item.name }}</a>
-                    </div>
-                    <button class="btn btn-link btn-xs pointer py-0" title="Löschen" @click.prevent="destroy(index)"><i class="fas fa-trash text-danger"></i></button>
-                </div>
-            </div>
+            <table class="table table-fixed table-hover table-striped table-sm bg-white" v-show="selected.length">
+                <thead>
+                    <tr>
+                        <th width="150">Hinzugefügt</th>
+                        <th width="100%">Name</th>
+                        <th width="30"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="(item, index) in selected">
+                        <td>{{ item.pivot.created_at_formatted }}</td>
+                        <td>{{ item.name }}</td>
+                        <td>
+                            <button class="btn btn-link btn-sm pointer py-0" title="Löschen" @click.prevent="destroy(index)"><i class="fas fa-trash text-danger"></i></button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
 </template>
@@ -25,15 +35,24 @@
 
     export default {
 
-        props: [
-            'contacts',
-            'showLabel',
-            'model'
-        ],
+        props: {
+            contacts: {
+                required: true,
+                type: Array,
+            },
+            model: {
+                required: true,
+                type: Object,
+            },
+            showLabel: {
+                required: false,
+                type: Boolean,
+                default: false,
+            },
+        },
 
         data () {
             return {
-                all: this.contacts,
                 selected: this.model.contacts,
                 label: this.showLabel === undefined ? true : this.showLabel,
                 contactId: 0,
@@ -41,31 +60,38 @@
             }
         },
 
-        beforeMount() {
-            // this.fetchAll();
+        computed: {
+            selected_ids() {
+                return this.selected.reduce( function (total, contact) {
+                    total.push(contact.id);
+                    return total;
+                }, []);
+            },
+            available_contacts() {
+                var component = this;
+                return this.contacts.filter(function (contact) {
+                    return (component.selected_ids.indexOf(contact.id) == -1);
+                })
+            },
         },
 
         methods: {
-            fetchAll() {
-                var component = this;
-                axios.get(component.path + '/kontakte')
-                    .then( function (response) {
-                        component.all = response.data;
-                });
-            },
             create () {
                 var component = this;
                 axios.post(component.path + '/kontakte/' + component.contactId)
                     .then(function (response) {
                         component.selected.push(response.data);
                         component.contactId = 0;
+                        Vue.success('Kontakt hinzugefügt.');
                 });
             },
             destroy (index) {
                 var component = this;
                 axios.delete(component.path + '/kontakte/' + component.selected[index].id)
                     .then(function (response) {
+                        var item = component.selected[index];
                         component.selected.splice(index, 1);
+                        Vue.success('Kontakt entfernt.');
                 });
             },
             formatDate(date) {

@@ -23,35 +23,35 @@
 
                 <div class="col-md-6">
                     <div class="row">
-                        <div class="col-md-4"><b>Status</b></div>
-                        <div class="col-md-8">{{ $invoice->status->name }}</div>
+                        <div class="col-label"><b>Status</b></div>
+                        <div class="col-value">{{ $invoice->status->name }}</div>
                     </div>
                     <div class="row">
-                        <div class="col-md-4"><b>Kontakt</b></div>
-                        <div class="col-md-8">{{ $invoice->contact->name }}</div>
+                        <div class="col-label"><b>Kontakt</b></div>
+                        <div class="col-value">{{ $invoice->contact->name }}</div>
                     </div>
                     <div class="row">
-                        <div class="col-md-4"><b>Fällig</b></div>
-                        <div class="col-md-8">{{ $invoice->dateDueForHumans }}</div>
+                        <div class="col-label"><b>Fällig</b></div>
+                        <div class="col-value">{{ $invoice->dateDueForHumans }}</div>
                     </div>
                 </div>
 
                 <div class="col-md-6">
                     <div class="row">
-                        <div class="col-md-4"><b>Offen</b></div>
-                        <div class="col-md-8">{{ number_format($invoice->outstandingBalance / 100, 2, ',', '.') }} €</div>
+                        <div class="col-label"><b>Offen</b></div>
+                        <div class="col-value">{{ number_format($invoice->outstandingBalance / 100, 2, ',', '.') }} €</div>
                     </div>
                     <div class="row">
-                        <div class="col-md-4"><b>Betrag netto</b></div>
-                        <div class="col-md-8">{{ number_format($invoice->gross / 100, 2, ',', '.') }} €</div>
+                        <div class="col-label"><b>Betrag netto</b></div>
+                        <div class="col-value">{{ number_format($invoice->gross / 100, 2, ',', '.') }} €</div>
                     </div>
                     <div class="row">
-                        <div class="col-md-4"><b>USt.</b></div>
-                        <div class="col-md-8">{{ number_format($invoice->tax_value / 100, 2, ',', '.') }} €</div>
+                        <div class="col-label"><b>USt.</b></div>
+                        <div class="col-value">{{ number_format($invoice->tax_value / 100, 2, ',', '.') }} €</div>
                     </div>
                     <div class="row">
-                        <div class="col-md-4"><b>Betrag brutto</b></div>
-                        <div class="col-md-8">{{ number_format($invoice->gross / 100, 2, ',', '.') }} €</div>
+                        <div class="col-label"><b>Betrag brutto</b></div>
+                        <div class="col-value">{{ number_format($invoice->gross / 100, 2, ',', '.') }} €</div>
                     </div>
                 </div>
 

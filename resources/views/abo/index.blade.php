@@ -3,8 +3,9 @@
 @section('title', 'Abos')
 
 @section('content')
-    <a href="{{ url('/kategorien/abos') }}" class="btn btn-secondary btn-sm">Kategorien</a>
+
+    <a href="{{ \App\Receipts\Abos\Abo::indexPathTags() }}" class="btn btn-secondary btn-sm">Kategorien</a>
     <br /><br />
-    <receipt-table type="{{ $type }}" :labels="{{ json_encode($labels) }}" :contacts="{{ json_encode($contacts) }}" :statuses="{{ json_encode($statuses) }}" :tags="{{ json_encode($tags) }}"></receipt-table>
+    <receipt-table index-path="{{ \App\Receipts\Abos\Abo::indexPath(['settings_type' => $type]) }}" :contacts="{{ json_encode($contacts) }}" :statuses="{{ json_encode($statuses) }}" :tags="{{ json_encode($tags) }}"></receipt-table>
 
 @endsection
