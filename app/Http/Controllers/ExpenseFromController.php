@@ -10,7 +10,9 @@ class ExpenseFromController extends Controller
 {
     public function store(Request $request, Receipt $receipt)
     {
-        $expense = Expense::from($receipt, (bool) $request->input('credit'));
+        $expense = Expense::from($receipt, [
+            'credit' => (bool) $request->input('credit'),
+        ]);
 
         return redirect($expense->path)
             ->with('status', $expense->typeName . ' erstellt');

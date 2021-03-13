@@ -4,6 +4,25 @@
 
 @section('buttons')
     <a href="{{ $invoice->edit_path }}" class="btn btn-primary btn-sm"><i class="fas fa-edit"></i></a>
+    <div class="dropdown ml-1">
+        <button type="button" class="btn btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown">
+            <i class="fas fa-ellipsis-h"></i> Mehr
+        </button>
+        <div class="dropdown-menu">
+            <h6 class="dropdown-header">Anlegen</h6>
+            <form action="{{ url('/rechnungen/aus', $invoice->id) }}" method="POST">
+                @csrf
+                <button type="submit" class="dropdown-item pointer">Duplizieren</button>
+            </form>
+            <form action="{{ url('/rechnungen/aus', $invoice->id) }}" method="POST">
+                @csrf
+                <input type="hidden" name="credit" value="1">
+                <button type="submit" class="dropdown-item pointer">Gutschrift erstellen</button>
+            </form>
+            <h6 class="dropdown-header">Bearbeiten</h6>
+            <button class="dropdown-item pointer" data-toggle="modal" data-target="#confirm-delete">Löschen</button>
+        </div>
+    </div>
     <a href="{{ $invoice->index_path }}" class="btn btn-secondary btn-sm ml-1">Übersicht</a>
     @if($invoice->isDeletable())
         <form action="{{ $invoice->path }}" class="ml-1" method="POST">

@@ -40,8 +40,7 @@ class ActiveController extends Controller
             'active' => true,
         ]);
 
-        if ($subscription->settings->next_at <= today())
-        {
+        if ($subscription->settings->next_at <= today()) {
             $receipt = $subscription->toReceipt();
         }
 

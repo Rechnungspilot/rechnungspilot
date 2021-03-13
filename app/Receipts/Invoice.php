@@ -60,15 +60,13 @@ class Invoice extends Receipt
 
         $contact = Arr::get($parameters, 'contact');
         $credit = Arr::get($parameters, 'credit', false);
-        $receiptId = Arr::get($parameters, 'receipt_id');
-        $receiptItemIds = Arr::get($parameters, 'receipt_item_ids');
+        $receipt_id = Arr::get($parameters, 'receipt_id');
+        $receipt_item_ids = Arr::get($parameters, 'receipt_item_ids');
 
-        if ($receiptId)
-        {
-            $invoice = self::find($receiptId);
+        if ($receipt_id) {
+            $invoice = self::find($receipt_id);
         }
-        else
-        {
+        else {
             $attributes = $receipt->getAttributes();
             unset(
                 $attributes['type'],
@@ -79,14 +77,13 @@ class Invoice extends Receipt
                 $attributes['latest_status_type'],
                 $attributes['latest_status_id']
             );
-            if ($contact)
-            {
+
+            if ($contact) {
                 $attributes['contact_id'] = $contact->id;
                 $attributes['address'] = $contact->billing_address;
             }
 
-            if (in_array(get_class($receipt), [Abo::class, Order::class]))
-            {
+            if (in_array(get_class($receipt), [Abo::class, Order::class])) {
                 $attributes['receipt_id'] = $receipt->id;
             }
 
@@ -99,11 +96,10 @@ class Invoice extends Receipt
             $invoice->status->save();
         }
 
-        $items = is_null($receiptItemIds) ? $receipt->items : $receipt->items->whereIn('id', $receiptItemIds);
+        $items = is_null($receipt_item_ids) ? $receipt->items : $receipt->items->whereIn('id', $receipt_item_ids);
         foreach ($items as $item) {
             $attributes = $item->getAttributes();
-            if ($credit)
-            {
+            if ($credit) {
                 $attributes['quantity'] *= -1;
             }
             $attributes['receipt_id'] = $invoice->id;

@@ -17,6 +17,7 @@ use App\Receipts\Term;
 use D15r\ModelLabels\Traits\HasLabels;
 use D15r\ModelPath\Traits\HasModelPath;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Parental\HasParent;
 
@@ -51,7 +52,12 @@ class Expense extends Receipt
     public $dateName = 'Rechnungsdatum';
     public $dateDueName = 'Fälligkeitsdatum';
 
-    public static function from(Receipt $receipt, bool $credit = false) : self {
+    public static function from(Receipt $receipt, array $parameters = []) : self {
+
+        $contact = Arr::get($parameters, 'contact');
+        $credit = Arr::get($parameters, 'credit', false);
+        $receipt_id = Arr::get($parameters, 'receipt_id');
+        $receipt_item_ids = Arr::get($parameters, 'receipt_item_ids');
 
         $attributes = $receipt->getAttributes();
         unset(
@@ -67,14 +73,22 @@ class Expense extends Receipt
             $attributes['latest_status_id']
         );
 
+        if ($contact) {
+            $attributes['contact_id'] = $contact->id;
+            $attributes['address'] = $contact->billing_address;
+        }
+
+        if (in_array(get_class($receipt), [Abo::class, Order::class])) {
+            $attributes['receipt_id'] = $receipt->id;
+        }
+
         $attributes['name'] = '';
         $attributes['term_id'] = Term::default(self::class)->id;
         $expense = self::create($attributes);
 
         foreach ($receipt->items as $item) {
             $attributes = $item->getAttributes();
-            if ($credit)
-            {
+            if ($credit) {
                 $attributes['quantity'] *= -1;
             }
             $attributes['receipt_id'] = $expense->id;
@@ -96,8 +110,7 @@ class Expense extends Receipt
         ];
         $expense->setStatus($draftStatus);
 
-        if ($credit)
-        {
+        if ($credit) {
             $paymentStatus = new Payment();
             $paymentStatus->data = [
                 'receipt_id' => $expense->id,

@@ -3,38 +3,19 @@
 @section('title', $invoice->typeName . ' > ' . $invoice->name)
 
 @section('buttons')
-    <a href="{{ url('/belege/vorlage', $invoice->id) }}" class="btn btn-secondary btn-sm mr-1" title="Vorschau"><i class="fas fa-file-pdf"></i></a>
-    <a href="{{ url('/belege/pdf', $invoice->id) }}" class="btn btn-secondary btn-sm mr-1" title="Download"><i class="fas fa-download"></i></a>
-    <div class="dropdown mr-1">
-        <button type="button" class="btn btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown">
-            <i class="fas fa-ellipsis-h"></i> Mehr
-        </button>
-        <div class="dropdown-menu">
-            <h6 class="dropdown-header">Anlegen</h6>
-            <form action="{{ url('/rechnungen/aus', $invoice->id) }}" method="POST">
-                @csrf
-                <button type="submit" class="dropdown-item pointer">Duplizieren</button>
-            </form>
-            <form action="{{ url('/rechnungen/aus', $invoice->id) }}" method="POST">
-                @csrf
-                <input type="hidden" name="credit" value="1">
-                <button type="submit" class="dropdown-item pointer">Gutschrift erstellen</button>
-            </form>
-            <h6 class="dropdown-header">Bearbeiten</h6>
-            <button class="dropdown-item pointer" data-toggle="modal" data-target="#confirm-delete">Löschen</button>
-        </div>
-    </div>
-    <button class="btn <?php echo $invoice->nextMainStatus ? 'btn-secondary' : 'btn-primary'; ?> btn-sm pointer mr-1" data-toggle="modal" data-target="#statusModal" data-status="{{ App\Receipts\Statuses\Send::class }}">Versenden</button>
+    <a href="{{ url('/belege/vorlage', $invoice->id) }}" class="btn btn-secondary btn-sm ml-1" title="Vorschau"><i class="fas fa-file-pdf"></i></a>
+    <a href="{{ url('/belege/pdf', $invoice->id) }}" class="btn btn-secondary btn-sm ml-1" title="Download"><i class="fas fa-download"></i></a>
+    <button class="btn <?php echo $invoice->nextMainStatus ? 'btn-secondary' : 'btn-primary'; ?> btn-sm pointer ml-1" data-toggle="modal" data-target="#statusModal" data-status="{{ App\Receipts\Statuses\Send::class }}">Versenden</button>
     @if ($invoice->nextMainStatus)
-        <button class="btn btn-primary btn-sm pointer mr-1" data-toggle="modal" data-target="#statusModal" data-status="{{ get_class($invoice->nextMainStatus) }}">{{ ucfirst($invoice->nextMainStatus->action) }}</button>
+        <button class="btn btn-primary btn-sm pointer ml-1" data-toggle="modal" data-target="#statusModal" data-status="{{ get_class($invoice->nextMainStatus) }}">{{ ucfirst($invoice->nextMainStatus->action) }}</button>
     @endif
     @if ($invoice->isDunable())
-        <form action="{{ url('/rechnungen/' . $invoice->id . '/mahnungen') }}" class="mb-0 mr-1" method="POST">
+        <form action="{{ url('/rechnungen/' . $invoice->id . '/mahnungen') }}" class="mb-0 ml-1" method="POST">
             @csrf
             <button type="submit" class="btn btn-danger btn-sm">Anmahnen</button>
         </form>
     @endif
-    <a href="{{ $invoice->path }}" class="btn btn-secondary btn-sm">Übersicht</a>
+    <a href="{{ $invoice->path }}" class="btn btn-secondary btn-sm ml-1">Übersicht</a>
 @endsection
 
 @section('content')

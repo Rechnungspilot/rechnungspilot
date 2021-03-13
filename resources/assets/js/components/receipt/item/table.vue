@@ -36,8 +36,8 @@
 
         <template v-slot:tfoot>
             <tr v-show="selected.length > 0">
-                <td class="align-middle">{{ selected.length }} ausgewählt</td>
                 <td class="align-middle"></td>
+                <td class="align-middle">{{ selected.length }} ausgewählt</td>
                 <td class="text-right"></td>
                 <td></td>
                 <td class="text-right"></td>
@@ -46,7 +46,7 @@
                 <td></td>
                 <td></td>
                 <td class="align-middle">
-                    <select class="form-control" v-model="action">
+                    <select class="form-control form-control-sm" v-model="action">
                         <option value="0">Aktion</option>
                         <option value="invoiceCreate">Rechnung erstellen</option>
                         <option value="invoiceAppend" v-if="false">Zu Rechnung hinzufügen</option>

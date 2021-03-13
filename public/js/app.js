@@ -8908,7 +8908,7 @@ __webpack_require__.r(__webpack_exports__);
       required: true
     },
     statuses: {
-      type: Array,
+      type: Object,
       required: true
     },
     tags: {
@@ -50082,7 +50082,14 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "col-md-3" }, [
     _c("div", { staticClass: "form-group" }, [
-      _c("label", { attrs: { for: "filter-contact" } }, [_vm._v("Kontakt")]),
+      _c(
+        "label",
+        {
+          staticClass: "col-form-label col-form-label-sm",
+          attrs: { for: "filter-contact" }
+        },
+        [_vm._v("Kontakt")]
+      ),
       _vm._v(" "),
       _c(
         "select",
@@ -50095,7 +50102,7 @@ var render = function() {
               expression: "value"
             }
           ],
-          staticClass: "form-control",
+          staticClass: "form-control form-control-sm",
           attrs: { id: "filter-contact" },
           on: {
             change: [
@@ -50405,7 +50412,14 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "col-md-3" }, [
     _c("div", { staticClass: "form-group" }, [
-      _c("label", { attrs: { for: "filter-statuses" } }, [_vm._v("Status")]),
+      _c(
+        "label",
+        {
+          staticClass: "col-form-label col-form-label-sm",
+          attrs: { for: "filter-statuses" }
+        },
+        [_vm._v("Status")]
+      ),
       _vm._v(" "),
       _c(
         "select",
@@ -50418,7 +50432,7 @@ var render = function() {
               expression: "value"
             }
           ],
-          staticClass: "form-control",
+          staticClass: "form-control form-control-sm",
           attrs: { id: "filter-statuses" },
           on: {
             change: [
@@ -56586,11 +56600,11 @@ var render = function() {
                 ]
               },
               [
+                _c("td", { staticClass: "align-middle" }),
+                _vm._v(" "),
                 _c("td", { staticClass: "align-middle" }, [
                   _vm._v(_vm._s(_vm.selected.length) + " ausgewählt")
                 ]),
-                _vm._v(" "),
-                _c("td", { staticClass: "align-middle" }),
                 _vm._v(" "),
                 _c("td", { staticClass: "text-right" }),
                 _vm._v(" "),
@@ -56618,7 +56632,7 @@ var render = function() {
                           expression: "action"
                         }
                       ],
-                      staticClass: "form-control",
+                      staticClass: "form-control form-control-sm",
                       on: {
                         change: function($event) {
                           var $$selectedVal = Array.prototype.filter

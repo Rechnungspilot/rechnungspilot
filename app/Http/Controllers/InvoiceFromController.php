@@ -15,8 +15,7 @@ class InvoiceFromController extends Controller
             'receipt_item_ids' => $request->input('receipt_item_ids'),
         ]);
 
-        if ($request->wantsJson())
-        {
+        if ($request->wantsJson()) {
             return $invoice;
         }
 

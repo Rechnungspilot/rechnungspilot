@@ -22,7 +22,8 @@ class Abo extends Receipt
         HasModelPath;
 
     const AVAILABLE_STATUSES = [
-
+        \App\Receipts\Statuses\Created::class => \App\Receipts\Statuses\Created::NAME,
+        \App\Receipts\Statuses\MorphedTo::class => \App\Receipts\Statuses\MorphedTo::NAME,
     ];
 
     const ROUTE_NAME = 'receipts.subscriptions';

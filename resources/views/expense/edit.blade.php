@@ -3,25 +3,6 @@
 @section('title', $expense->typeName . ' > ' . $expense->name ?: 'Noch nicht vergeben')
 
 @section('buttons')
-    <div class="dropdown mr-1">
-        <button type="button" class="btn btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown">
-            <i class="fas fa-ellipsis-h"></i> Mehr
-        </button>
-        <div class="dropdown-menu">
-            <h6 class="dropdown-header">Anlegen</h6>
-            <form action="{{ url('/ausgaben/aus', $expense->id) }}" method="POST">
-                @csrf
-                <button type="submit" class="dropdown-item pointer">Duplizieren</button>
-            </form>
-            <form action="{{ url('/ausgaben/aus', $expense->id) }}" method="POST">
-                @csrf
-                <input type="hidden" name="credit" value="1">
-                <button type="submit" class="dropdown-item pointer">Gutschrift erstellen</button>
-            </form>
-            <h6 class="dropdown-header">Bearbeiten</h6>
-            <button class="dropdown-item pointer" data-toggle="modal" data-target="#confirm-delete">Löschen</button>
-        </div>
-    </div>
     @if ($expense->nextMainStatus)
         <button class="btn btn-primary btn-sm pointer mr-1" data-toggle="modal" data-target="#statusModal" data-status="{{ get_class($expense->nextMainStatus) }}">{{ ucfirst($expense->nextMainStatus->action) }}</button>
     @endif
@@ -62,7 +43,7 @@
 
                 <order-select class="mb-1" :value="{{ json_encode($expense->order) }}" :receipt-id="{{ $expense->id }}"></order-select>
 
-                <tag-select class="my-2" :selected="{{ json_encode($invoice->tags) }}" index-path="{{ $expense->tags_index_path }}" path="{{ $expense->tags_path }}"></tag-select>
+                <tag-select class="my-2" :selected="{{ json_encode($expense->tags) }}" index-path="{{ $expense->tags_index_path }}" path="{{ $expense->tags_path }}"></tag-select>
 
             </div>
             <div class="col">
@@ -82,7 +63,7 @@
             <userfileable-receipt-single :model="{{ json_encode($expense) }}"></userfileable-receipt-single>
         </div>
         <div class="col">
-            <receipt-item-table :model="{{ json_encode($expense) }}" :options="{{ json_encode($items) }}" :units="{{ json_encode($units) }}"></receipt-item-table>
+            <receipt-item-table index-path="{{ \App\Receipts\Item::indexPath(['receipt_id' => $expense->id]) }}" :model="{{ json_encode($expense) }}" :options="{{ json_encode($items) }}" :units="{{ json_encode($units) }}"></receipt-item-table>
         </div>
     </div>
 

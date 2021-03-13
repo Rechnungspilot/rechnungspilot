@@ -1,8 +1,8 @@
 <template>
     <div class="col-md-3">
         <div class="form-group">
-            <label for="filter-contact">Kontakt</label>
-            <select class="form-control" id="filter-contact" v-model="value" @change="$emit('input', value)">
+            <label class="col-form-label col-form-label-sm" for="filter-contact">Kontakt</label>
+            <select class="form-control form-control-sm" id="filter-contact" v-model="value" @change="$emit('input', value)">
                 <option value="0">Kontakt wählen</option>
                 <option v-for="(option, key) in options" :value="option.id">{{ option.name }}</option>
             </select>
