@@ -65,7 +65,7 @@
             <div class="flex">
               <div class="ml-3">
                 <dt class="text-lg leading-6 font-medium text-gray-900">
-                  <a href="https://github.com/LifeOS-HQ" target="_blank">LifeOS</a>
+                  <a href="https://lifeos.d15r.de" target="_blank">LifeOS</a>
                 </dt>
                 <dd class="mt-2 text-base text-gray-500">
                   Aggregieren von Daten aus meinem Leben.
