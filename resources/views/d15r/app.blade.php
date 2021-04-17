@@ -49,7 +49,7 @@
         </div>
         <div class="hidden md:flex md:space-x-10">
           <a href="#contact" class="font-medium text-gray-500 hover:text-gray-900">Kontakt</a>
-          <a href="https://danielsundermeier.gitbook.io/knowledge/" class="font-medium text-gray-500 hover:text-gray-900">Notizen</a>
+          <a href="https://notes.d15r.de" class="font-medium text-gray-500 hover:text-gray-900">Notizen</a>
           <a href="https://github.com/danielsundermeier" class="font-medium text-gray-500 hover:text-gray-900">Github</a>
         </div>
       </nav>
@@ -85,7 +85,7 @@
         <div role="menu" aria-orientation="vertical" aria-labelledby="main-menu">
           <div class="px-2 pt-2 pb-3" role="none">
             <a href="#contact" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50" role="menuitem">Kontakt</a>
-            <a href="https://danielsundermeier.gitbook.io/knowledge/" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50" role="menuitem">Notizen</a>
+            <a href="https://notes.d15r.de" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50" role="menuitem">Notizen</a>
             <a href="https://github.com/danielsundermeier" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50" role="menuitem">Github</a>
           </div>
         </div>
