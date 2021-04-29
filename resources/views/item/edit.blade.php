@@ -122,6 +122,7 @@
                                 <select class="form-control form-control-sm @error('tax') is-invalid @enderror" id="tax" name="tax">
                                     <option value="0.19" {{ $item->tax == 0.19 ? 'selected="selected"' : '' }}>19%</option>
                                     <option value="0.16" {{ $item->tax == 0.16 ? 'selected="selected"' : '' }}>16%</option>
+                                    <option value="0.107" {{ $item->tax == 0.107 ? 'selected="selected"' : '' }}>10,7%</option>
                                     <option value="0.07" {{ $item->tax == 0.07 ? 'selected="selected"' : '' }}>7%</option>
                                     <option value="0" {{ $item->tax == 0 ? 'selected="selected"' : '' }}>0%</option>
                                 </select>
