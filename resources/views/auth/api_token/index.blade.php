@@ -31,7 +31,7 @@
             @foreach($tokens as $token)
                 <tr>
                     <td class="align-middle">{{ $token->name }}</td>
-                    <td class="align-middle">{{ $token->plainTextToken }}</td>
+                    <td class="align-middle">{{ $token->token }}</td>
                     <td class="align-middle">
                         <div class="btn-group btn-group-sm">
                             <form action="{{ route('tokens.destroy', ['token' => $token->id]) }}" method="POST">

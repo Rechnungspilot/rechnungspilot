@@ -82,9 +82,11 @@
                 <li class="divider"></li>
                 <a href="" data-toggle="collapse" data-target="#nav-einstellungen"><li class="d-flex align-items-center justify-content-between line-height-base">Einstellungen<i class="fas fa-caret-right"></i></li></a>
                 <ul id="nav-einstellungen" class="collapse">
+                    <a href="{{ url('/tokens') }}"><li>API Token</li></a>
                     <a href="{{ url('/einstellungen/buchhaltung') }}"><li>Buchhaltung</li></a>
                     <!-- <a href="{{ url('/einstellungen/finanzielles') }}"><li>Finanzielles</li></a> -->
                     <a href="{{ url('/firma/edit') }}"><li>Firma</li></a>
+                    <a href="{{ url('/firmen') }}"><li>Firmen</li></a>
                     <a href="{{ url('/einstellungen/mahnstufen') }}"><li>Mahnstufen</li></a>
                     <a href="{{ url('/einstellungen/nummernkreise') }}"><li>Nummernkreise</li></a>
                     <a href="{{ url('/textbausteine') }}"><li>Textbausteine</li></a>

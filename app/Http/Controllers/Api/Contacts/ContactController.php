@@ -14,10 +14,10 @@ class ContactController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Company $company)
+    public function index(Request $request, Company $company)
     {
         return $company->contacts()
-            ->orderBy('')
+            ->email($request->input('email'))
             ->paginate();
     }
 
@@ -33,7 +33,10 @@ class ContactController extends Controller
             'firstname' => 'nullable|string',
             'lastname' => 'nullable|string',
             'company' => 'nullable|string',
-            'email' => 'nullable|email',
+            'email' => 'required|email',
+            'city' => 'required|string|max:255',
+            'postcode' => 'required|string|max:255',
+            'address' => 'required|string|max:255',
         ]);
 
         $model = $company->contacts()->create($attributes);

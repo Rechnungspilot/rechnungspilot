@@ -373,7 +373,7 @@ class Receipt extends Model
             'item_id' => $item->id,
             'unit_id' => $item->unit_id,
             'name' => $item->name,
-            'description' => $item->description,
+            'description' => $attributes['description'] ?? $item->description,
             'quantity' => $attributes['quantity'] ?? 1,
             'discount' => 0,
             'tax' => $item->tax,
@@ -763,6 +763,17 @@ class Receipt extends Model
         return $query->whereRaw('flags & :status == 0', [
             'status' => $status,
         ]);
+    }
+
+    public function scopeHasItemId(Builder $query, $value) : Builder
+    {
+        if (! $value) {
+            return $query;
+        }
+
+        return $query->whereHas('items', function (Builder $query) use ($value) {
+            return $query->where('item_id', $value);
+        });
     }
 
     public function pdf()

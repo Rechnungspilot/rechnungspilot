@@ -18,6 +18,7 @@ use App\Traits\HasUserfiles;
 use Carbon\CarbonPeriod;
 use D15r\ModelLabels\Traits\HasLabels;
 use D15r\ModelPath\Traits\HasModelPath;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -197,6 +198,16 @@ class Contact extends Model
     {
         return $this->belongsToMany(Todo::class);
     }
+
+    public function scopeEmail(Builder $query, $value) : Builder
+    {
+        if (! $value) {
+            return $query;
+        }
+
+        return $query->where('email', $value);
+    }
+
 
     public function scopeSearch($query, $searchtext)
     {

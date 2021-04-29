@@ -80,6 +80,8 @@ class SwitchController extends Controller
             'company_id' => $company->id,
         ]);
 
+        $request->session()->put('user.company.id', $company->id);
+
         return back()
             ->with('status', 'Firma zu ' . $company->name . ' gewechselt');
     }

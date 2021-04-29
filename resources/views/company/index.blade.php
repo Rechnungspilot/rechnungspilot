@@ -12,6 +12,7 @@
     <table class="table table-striped table-hover mt-3">
         <thead>
             <tr>
+                <th width="100">ID</th>
                 <th width="90%">Bezeichnung</th>
                 <th width="10%"></th>
             </tr>
@@ -19,6 +20,7 @@
         <tbody>
             @foreach($companies as $company)
                 <tr>
+                    <td class="align-middle">{{ $company->id }}</td>
                     <td class="align-middle">{{ $company->name }}</td>
                     <td class="align-middle">
                         <div class="btn-group btn-group-sm">
