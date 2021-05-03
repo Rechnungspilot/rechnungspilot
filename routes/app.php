@@ -253,7 +253,7 @@ Route::middleware(['auth', 'company.locked'])->group(function () {
     Route::put('einstellungen/nummernkreise', 'Settings\NumbersController@update');
 
     // Firma
-    Route::get('firma/edit', 'CompanyController@edit');
+    Route::get('firma/edit', 'CompanyController@edit')->name('company.edit');
     Route::put('firma/{company}', 'CompanyController@update');
 
     // Individuelle Felder

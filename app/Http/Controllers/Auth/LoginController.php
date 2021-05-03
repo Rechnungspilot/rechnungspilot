@@ -47,7 +47,12 @@ class LoginController extends Controller
      */
     protected function authenticated(Request $request, $user)
     {
-        $request->session()->push('user.company.id', $user->company_id);
+        $company = Company::find($user->company_id);
+
+        $request->session()->put('user.company', $company->only([
+            'id',
+            'name',
+        ]));
 
         return redirect()->intended($this->redirectPath());
     }

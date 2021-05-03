@@ -111,6 +111,9 @@
                     <span class="navbar-text" id="menu-toggle">
                         <i class="fas fa-bars pointer"></i>
                     </span>
+                    <a class="nav-link" href="{{ route('company.edit') }}">
+                        <span class="d-xs-none d-sm-none d-md-inline d-lg-inline d-xl-inline">{{ Session::get('user.company.name') }}</span>
+                    </a>
                     <form class="form-inline col my-2 my-lg-0">
                         <!-- <input class="form-control mr-sm-2 col d-none d-sm-block" type="search" placeholder="Search" aria-label="Search">
                         <button class="btn btn-outline-primary my-2 my-sm-0 d-none d-sm-block" type="submit">Search</button> -->

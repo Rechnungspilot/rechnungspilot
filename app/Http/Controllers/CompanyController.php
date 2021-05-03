@@ -18,7 +18,8 @@ class CompanyController extends Controller
         $companies = $user->companies()->orderBy('name', 'ASC')->get();
 
         return view('company.index')
-            ->with('companies', $companies);
+            ->with('companies', $companies)
+            ->with('current_company', Company::find(session('user.company.id')));
     }
 
     /**
