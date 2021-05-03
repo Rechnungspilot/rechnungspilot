@@ -103,7 +103,7 @@ class CompanyController extends Controller
     public function update(Request $request, Company $company)
     {
         $validatedData = $request->validate([
-            'accountholdername' => 'string|max:255',
+            'accountholdername' => 'nullable|string|max:255',
             'address' => 'nullable|string|max:255',
             'bankname' => 'nullable|string|max:255',
             'bic' => 'nullable|string|max:255',
@@ -126,10 +126,11 @@ class CompanyController extends Controller
         $validatedData['sales_tax'] = $request->filled('sales_tax');
 
         $company->update($validatedData);
-        // if($company->hasDirtyAddress())
-        // {
 
-        // }
+        $request->session()->put('user.company', $company->only([
+            'id',
+            'name',
+        ]));
 
         return back()->with('status', 'Änderungen gespeichert!');
     }
