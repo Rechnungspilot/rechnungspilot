@@ -72,7 +72,7 @@
                 <td></td>
                 <td class="text-right">{{ (tax['net'] / 100).format(2, ',', '.') }} €</td>
                 <td></td>
-                <td class="text-right">{{ (tax['tax'] * 100).format(0, ',', '.') }} %</td>
+                <td class="text-right">{{ (tax['tax'] * 100).format(1, ',', '.') }} %</td>
                 <td class="text-right">{{ (tax['value'] / 100).format(2, ',', '.') }} €</td>
                 <td></td>
                 <td class="text-right"></td>

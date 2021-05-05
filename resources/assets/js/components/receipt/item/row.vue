@@ -48,7 +48,7 @@
             <td class="align-middle pointer" @click="edit = true">{{ item.unit ? item.unit.name : '' }}</td>
             <td class="align-middle pointer text-right" @click="edit = true">{{ item.unit_price.format(item.item.decimals, ',', '.') }} €</td>
             <td class="align-middle pointer text-right" @click="edit = true">{{ (item.discount * 100).format(1, ',', '') }}%</td>
-            <td class="align-middle pointer text-right" @click="edit = true" v-if="company.sales_tax">{{ (item.tax * 100).format(0, ',', '') }}%</td>
+            <td class="align-middle pointer text-right" @click="edit = true" v-if="company.sales_tax">{{ (item.tax * 100).format(1, ',', '') }}%</td>
             <td class="align-middle pointer text-right" @click="edit = true">{{ (item.net / 100).format(2, ',', '.') }} €</td>
             <td class="align-middle text-center">
                 <a :href="item.morphed_items[0].receipt.path" :title="item.morphed_items[0].receipt.typeName + ' ' + item.morphed_items[0].receipt.name" target="_blank" v-if="item.morphed_items.length > 0"><i class="fas fa-file-invoice"></i></a>

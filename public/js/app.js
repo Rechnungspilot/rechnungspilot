@@ -56307,7 +56307,7 @@ var render = function() {
                   },
                   [
                     _vm._v(
-                      _vm._s((_vm.item.tax * 100).format(0, ",", "")) + "%"
+                      _vm._s((_vm.item.tax * 100).format(1, ",", "")) + "%"
                     )
                   ]
                 )
@@ -56717,7 +56717,7 @@ var render = function() {
                     _vm._v(" "),
                     _c("td", { staticClass: "text-right" }, [
                       _vm._v(
-                        _vm._s((tax["tax"] * 100).format(0, ",", ".")) + " %"
+                        _vm._s((tax["tax"] * 100).format(1, ",", ".")) + " %"
                       )
                     ]),
                     _vm._v(" "),

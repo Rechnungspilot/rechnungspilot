@@ -54,6 +54,7 @@ class InvoiceController extends Controller
             'contact_id' => $contact->id,
             'term_id' => $term->id,
             'date_due' => now()->add($term->days, 'days'),
+            'number' => 0,
         ]);
 
         foreach ($attributes['items'] as $key => $item_attributes) {
