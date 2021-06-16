@@ -222,6 +222,9 @@ Route::middleware(['auth', 'company.locked'])->group(function () {
     Route::get('{type}/{model}/dateien', 'UserfileableController@index');
     Route::post('{type}/{model}/dateien', 'UserfileableController@store');
 
+    Route::get('/receipts/{type}/{model}/dateien', 'UserfileableController@index');
+    Route::post('/receipts/{type}/{model}/dateien', 'UserfileableController@store');
+
     // Einheiten
     Route::get('einheiten', 'Items\Units\UnitController@index');
     Route::post('einheiten', 'Items\Units\UnitController@store');

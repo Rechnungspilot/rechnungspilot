@@ -12,7 +12,7 @@
 @section('content')
 
     <h3>Allgemein</h3>
-    <form action="{{ url('/ausgaben', $expense->id) }}" method="POST">
+    <form action="{{ $expense->path }}" method="POST">
         @csrf
         @method('PUT')
         <div class="row">
