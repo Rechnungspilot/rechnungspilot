@@ -71,22 +71,22 @@
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td>{{ $receipt->dateName }}</td>
-                                        <td style="text-align: right;">{{ $receipt->date->format('d.m.Y') }}</td>
+                                        <td width="50%">{{ $receipt->dateName }}</td>
+                                        <td width="50%" style="text-align: right;">{{ $receipt->date->format('d.m.Y') }}</td>
                                     </tr>
                                     @if ($receipt->dateDueName)
                                         <tr>
-                                            <td>{{ $receipt->dateDueName }}</td>
-                                            <td style="text-align: right;">{{ $receipt->date_due->format('d.m.Y') }}</td>
+                                            <td width="50%">{{ $receipt->dateDueName }}</td>
+                                            <td width="50%" style="text-align: right;">{{ $receipt->date_due->format('d.m.Y') }}</td>
                                         </tr>
                                     @endif
                                     <tr>
-                                        <td>Kundennummer</td>
-                                        <td style="text-align: right;">{{ $receipt->contact->number }}</td>
+                                        <td width="50%">Kundennummer</td>
+                                        <td width="50%" style="text-align: right;">{{ $receipt->contact->number }}</td>
                                     </tr>
                                     <tr>
-                                        <td>Seite</td>
-                                        <td style="text-align: right;">{PAGENO} von {nb}</td>
+                                        <td width="50%">Seite</td>
+                                        <td width="50%" style="text-align: right;">{PAGENO} von {nb}</td>
                                     </tr>
                                 </tbody>
                             </table>
