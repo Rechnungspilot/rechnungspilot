@@ -26,9 +26,20 @@ class Term extends Model
         'type',
     ];
 
-    public static function default(string $type, int $id = 0)
+    public static function default(string $type, int $id = 0, int $company_id = 0)
     {
-        return $id ? self::findOrFail($id) : self::where('type', $type)->where('default', true)->limit(1)->first();
+        if ($id) {
+            return self::findOrFail($id);
+        }
+
+
+        $query = self::where('type', $type)->where('default', true);
+
+        if ($company_id) {
+            $query->where('company_id', $company_id);
+        }
+
+        return $query->limit(1)->first();
     }
 
     public static function typesName(string $type) : string

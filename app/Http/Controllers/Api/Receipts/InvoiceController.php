@@ -25,7 +25,7 @@ class InvoiceController extends Controller
         return $company->invoices()
             ->with([
                 'contact',
-                'items'
+                'items',
             ])
             ->hasItemId($request->input('item_id'))
             ->paginate();
@@ -46,7 +46,7 @@ class InvoiceController extends Controller
         ]);
 
         $contact = ($request->has('contact.id') && ! is_null($request->input('contact.id'))) ? Contact::find($request->input('contact.id')) : Contact::create($attributes['contact'])->refresh();
-        $term = Term::default(Invoice::class, $contact->invoice_term_id);
+        $term = Term::default(Invoice::class, $contact->invoice_term_id, $contact->company_id);
 
         $invoice = Invoice::create([
             'address' => $contact->billing_address,
