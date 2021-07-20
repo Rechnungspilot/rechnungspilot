@@ -103,7 +103,7 @@
                   <a href="https://esphome.io/" target="_blank">ESPHome</a>
                 </dt>
                 <dd class="mt-2 text-base text-gray-500">
-                  Firmaware für ESP8266, 32.
+                  Firmware für ESP8266, 32.
                 </dd>
               </div>
             </div>
