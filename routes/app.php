@@ -126,7 +126,7 @@ Route::middleware(['auth', 'company.locked'])->group(function () {
     Route::post('angebote/aus/{receipt}', 'QuoteFromController@store');
 
     // Artikel
-    Route::get('artikel/{item}/umsatz', 'ItemRevenueController@show');
+    Route::get('items/{item}/umsatz', 'ItemRevenueController@show');
 
     // Aufgaben
     Route::get('aufgaben/kontakte', 'Todos\ContactController@index')->name('todo.contacts.index');
@@ -426,6 +426,7 @@ Route::middleware(['auth', 'company.locked'])->group(function () {
             Route::post('contacts/{contact}/people/{person}/default/{type}', 'Contacts\People\DefaultController@store');
             Route::delete('contacts/{contact}/people/{person}/default/{type}', 'Contacts\People\DefaultController@destroy');
     Route::resource(Item::ROUTE_NAME, 'Items\ItemController');
+    Route::resource(App\Models\Items\Article::ROUTE_NAME, 'Items\Articles\ArticleController');
 
     Route::resource('receipts/{type}/subscriptions', 'Receipts\Abos\AboController', ['as' => 'receipts']);
         Route::post('receipts/{type}/subscriptions/{subscription}/activate', 'Receipts\Abos\ActiveController@store')->name('receipt.abo.active.store');

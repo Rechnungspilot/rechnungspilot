@@ -120,6 +120,18 @@
         </div>
     </div>
 
+    @if ($item->type == \App\Item::TYPE_PRODUCT)
+        <div class="card mb-3">
+            <div class="card-header d-flex justify-content-between">
+                <div class="">Artikel</div>
+                <a class="text-body" href="{{ \App\Models\Items\Article::indexPath(['item_id' => $item->id]) }}/create"><i class="fas fa-arrow-right"></i></a>
+            </div>
+            <div class="card-body">
+                <items-articles-table :model="{{ json_encode($item) }}" index-path="{{ \App\Models\Items\Article::indexPath(['item_id' => $item->id]) }}"></items-articles-table>
+            </div>
+        </div>
+    @endif
+
     @if(count($item->receiptItems))
         <div class="card mb-3">
             <div class="card-header">Historie</div>

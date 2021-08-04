@@ -16,6 +16,7 @@ use Carbon\CarbonPeriod;
 use D15r\ModelLabels\Traits\HasLabels;
 use D15r\ModelPath\Traits\HasModelPath;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\DB;
 
 class Item extends Model
@@ -33,6 +34,7 @@ class Item extends Model
 
     const TYPE_ITEM = 0;
     const TYPE_SERVICE = 1;
+    const TYPE_PRODUCT = 2;
 
     const PRICE_DECIMALS = 6;
 
@@ -42,6 +44,7 @@ class Item extends Model
     const TYPES = [
         self::TYPE_ITEM => 'Artikel',
         self::TYPE_SERVICE => 'Dienstleistung',
+        self::TYPE_PRODUCT => 'Produkt',
     ];
 
     public $uri = '/artikel';
@@ -292,6 +295,11 @@ class Item extends Model
             ->with('receipt');
     }
 
+    public function articles(): HasMany
+    {
+        return $this->hasMany(\App\Models\Items\Article::class, 'item_id');
+    }
+
     public function company()
     {
         return $this->belongsTo('App\Company');
@@ -314,8 +322,11 @@ class Item extends Model
 
     public function isDeletable() : bool
     {
-        if ($this->receipts()->exists())
-        {
+        if ($this->receipts()->exists()) {
+            return false;
+        }
+
+        if ($this->articles()->exists()) {
             return false;
         }
 
