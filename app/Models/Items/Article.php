@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Arr;
 
 class Article extends Model
@@ -92,6 +93,32 @@ class Article extends Model
     public function item(): BelongsTo
     {
         return $this->belongsTo(\App\Item::class, 'item_id');
+    }
+
+    public function receipt_item(): HasMany
+    {
+        return $this->hasMany(\App\Receipts\Item::class, 'item_article_id');
+    }
+
+    public function scopeIsAvailable(Builder $query, $value): Builder
+    {
+        if (is_null($value)) {
+            return $query;
+        }
+
+        if (! $value) {
+            return $query->whereHas('receipt_item', function ($query) {
+                return $query->whereHas('receipt', function ($query) {
+                    return $query->where('type', \App\Receipts\Invoice::class);
+                });
+            });
+        }
+
+        return $query->whereDoesntHave('receipt_item', function ($query) {
+            return $query->whereHas('receipt', function ($query) {
+                return $query->where('type', \App\Receipts\Invoice::class);
+            });
+        });
     }
 
     public function scopeCreatedAtDate(Builder $query, $value): Builder

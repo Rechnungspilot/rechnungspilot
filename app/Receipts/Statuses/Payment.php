@@ -8,6 +8,7 @@ use App\Receipts\Receipt;
 use App\Receipts\Statuses\Status;
 use App\Transaction;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Arr;
 use Parental\HasParent;
 
 class Payment extends Status
@@ -30,9 +31,14 @@ class Payment extends Status
         return $this->data['amount'];
     }
 
+    public function getTippAttribute()
+    {
+        return Arr::get($this->data, 'tipp', 0);
+    }
+
     public function getDescriptionAttribute()
     {
-        return number_format($this->amount / 100, 2, ',', '.') . ' € wurden ' . ($this->credit() ? ' mit <a href="' . $this->credit->path . '">' . $this->credit->typeName . ' ' . $this->credit->name . '</a> verrechnet' : ' bezahlt') . '.';
+        return number_format($this->amount / 100, 2, ',', '.') . ' € wurden ' . ($this->credit() ? ' mit <a href="' . $this->credit->path . '">' . $this->credit->typeName . ' ' . $this->credit->name . '</a> verrechnet' : ' bezahlt') . '.' . ($this->tipp ? '<br /><span class="text-muted">Trinkgeld: ' . number_format($this->tipp / 100, 2, ',', '.') . ' €</span>' : '');
     }
 
     public function getDataAttributesAttribute()

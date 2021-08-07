@@ -6,7 +6,7 @@
             <div class="form-group mb-0 mr-1">
                 <select v-model="form.item_id" class="form-control form-control-sm" :class="error('item_id') ? 'is-invalid' : ''" id="item_id">
                     <option value="0">Artikel hinzufügen</option>
-                    <option v-for="(option, key) in options" :value="option.id">{{ option.name }}</option>
+                    <option v-for="(option, key) in options" :value="option.id">{{ option.name }}</option>
                 </select>
                 <div class="invalid-feedback" v-text="error('item_id') ? error('item_id') : ''"></div>
             </div>

@@ -5,6 +5,7 @@ namespace App\Receipts;
 use App\Company;
 use App\Contacts\Interaction;
 use App\Item;
+use App\Models\Items\Article;
 use App\Receipts\Expense;
 use App\Receipts\Income;
 use App\Receipts\Item as ReceiptItem;
@@ -28,6 +29,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use PDF;
@@ -367,27 +369,52 @@ class Receipt extends Model
 
     public function addItem(Item $item, array $attributes = [], Model $receiptable = null) : ReceiptItem
     {
-        $receiptItem = ReceiptItem::make([
-            'receipt_id' => $this->id,
-            'company_id' => $this->company_id,
-            'item_id' => $item->id,
-            'unit_id' => $item->unit_id,
-            'name' => $item->name,
-            'description' => $attributes['description'] ?? $item->description,
-            'quantity' => $attributes['quantity'] ?? 1,
-            'discount' => 0,
-            'tax' => $item->tax,
-            'unit_price' => $attributes['unit_price'] ?? $item->unit_price,
-        ]);
+        $item_article_id = (int) Arr::get($attributes, 'item_article_id', 0);
+        $receipt_item = null;
+        if (Arr::has($attributes, 'quantity')) {
+            $quantity = $attributes['quantity'];
+        }
+        elseif ($item_article_id > 0) {
+            $article = Article::find($item_article_id);
+            $quantity = $article->unit_value;
 
-        if (! is_null($receiptable))
-        {
-            $receiptItem->receiptable()->associate($receiptable);
+            $receipt_item = ReceiptItem::where('receipt_id', $this->id)->where('item_id', $item->id)->where('item_article_id', -1)->first();
+        }
+        elseif ($item->is_product) {
+            $quantity = 0;
+        }
+        else {
+            $quantity = 1;
         }
 
-        $receiptItem->save();
+        if (is_null($receipt_item)) {
+            $receipt_item = ReceiptItem::make([
+                'receipt_id' => $this->id,
+                'company_id' => $this->company_id,
+                'item_id' => $item->id,
+                'item_article_id' => $item_article_id,
+                'unit_id' => $item->unit_id,
+                'name' => $item->name,
+                'description' => $attributes['description'] ?? $item->description,
+                'quantity' => $quantity,
+                'discount' => 0,
+                'tax' => $item->tax,
+                'unit_price' => $attributes['unit_price'] ?? $item->unit_price,
+            ]);
+        }
+        else {
+            $receipt_item->item_article_id = $item_article_id;
+            $receipt_item->quantity = $quantity;
+            $receipt_item->unit_price = $item->unit_price;
+        }
 
-        return $receiptItem;
+        if (! is_null($receiptable)) {
+            $receipt_item->receiptable()->associate($receiptable);
+        }
+
+        $receipt_item->save();
+
+        return $receipt_item;
     }
 
     public function delItem(ReceiptItem $receiptItem) : self
@@ -558,7 +585,11 @@ class Receipt extends Model
 
     public function isPayed() : bool
     {
-        return $this->calculateOutstanding() <= 0;
+        if ($this->items()->where('item_article_id', -1)->exists()) {
+            return false;
+        }
+
+        return ($this->calculateOutstanding() <= 0 );
     }
 
     public function paid(Carbon $payedAt)

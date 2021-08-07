@@ -425,6 +425,8 @@ Route::middleware(['auth', 'company.locked'])->group(function () {
         Route::resource(Person::ROUTE_NAME, 'Contacts\People\PersonController');
             Route::post('contacts/{contact}/people/{person}/default/{type}', 'Contacts\People\DefaultController@store');
             Route::delete('contacts/{contact}/people/{person}/default/{type}', 'Contacts\People\DefaultController@destroy');
+    Route::get('/items/articles', 'Items\ArticleController@index');
+    Route::post('/items/articles', 'Items\ArticleController@store');
     Route::resource(Item::ROUTE_NAME, 'Items\ItemController');
     Route::resource(App\Models\Items\Article::ROUTE_NAME, 'Items\Articles\ArticleController');
 
@@ -434,6 +436,7 @@ Route::middleware(['auth', 'company.locked'])->group(function () {
     Route::resource('receipts/invoices', 'Receipts\Invoices\InvoiceController', ['as' => 'receipts']);
     Route::resource('receipts/expenses', 'Receipts\Expenses\ExpenseController', ['as' => 'receipts']);
     Route::resource('receipts.items', 'Receipts\Items\ItemController');
+    Route::resource('receipts/sales', 'Receipts\Sales\SaleController', ['as' => 'receipts']);
 
     Route::resource(User::ROUTE_NAME, 'Users\UserController');
     Route::resource(Userfile::ROUTE_NAME, 'Userfiles\UserfileController');

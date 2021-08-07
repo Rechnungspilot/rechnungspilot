@@ -22,6 +22,7 @@ class ArticleController extends Controller
                 'item',
             ])
             ->createdAtDate($request->input('created_at_date'))
+            ->isAvailable($request->input('availability'))
             ->latest()
             ->paginate(25);
     }

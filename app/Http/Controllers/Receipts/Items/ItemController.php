@@ -11,6 +11,7 @@ use App\Receipts\Item as LineItem;
 use App\Receipts\Receipt;
 use App\Unit;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 
 class ItemController extends Controller
 {
@@ -39,13 +40,14 @@ class ItemController extends Controller
      */
     public function store(Request $request, Receipt $receipt)
     {
-        $validatedData = $request->validate([
+        $attributes = $request->validate([
             'item_id' => 'required',
+            'item_article_id' =>'sometimes|integer',
         ]);
 
-        $item = Item::findOrFail($validatedData['item_id']);
+        $item = Item::findOrFail($attributes['item_id']);
 
-        $line_item = $receipt->addItem($item);
+        $line_item = $receipt->addItem($item, $attributes);
 
         $receipt->cache();
 
@@ -53,7 +55,7 @@ class ItemController extends Controller
         CacheItem::dispatch($item);
 
         if ($request->wantsJson()) {
-            $line_item->should_edit = true;
+            $line_item->should_edit = ! Arr::has($attributes, 'item_article_id');
             return $line_item->load([
                 'morphedItems.receipt',
                 'item',

@@ -50,6 +50,8 @@ class Item extends Model
     public $uri = '/artikel';
 
     protected $appends = [
+        'articles_index_path',
+        'is_product',
         'tagsString',
         'path',
         'tags_badges',
@@ -234,6 +236,13 @@ class Item extends Model
         return $this;
     }
 
+    public function getArticlesIndexPathAttribute(): string
+    {
+        return \App\Models\Items\Article::indexPath([
+            'item_id' => $this->id,
+        ]);
+    }
+
     public function getDurationHourAttribute()
     {
         return str_pad(floor($this->attributes['duration'] / 3600), 2, '0', STR_PAD_LEFT);
@@ -252,6 +261,11 @@ class Item extends Model
     public function getGrossInCentsAttribute()
     {
         return ($this->gross * 100);
+    }
+
+    public function getIsProductAttribute(): bool
+    {
+        return ($this->type == self::TYPE_PRODUCT);
     }
 
     public function getTypeNameAttribute()

@@ -63,6 +63,7 @@
                     <a href="{{ \App\Receipts\Invoice::indexPath() }}"><li>{{ \App\Receipts\Invoice::label() }}</li></a>
                     <!-- <a href="{{ url('/einnahmen') }}"><li>Einnahmen</li></a> -->
                 </ul>
+                <a href="{{ route('receipts.sales.index') }}"><li>Bestellungen</li></a>
                 <a href="{{ url('/projekte') }}"><li>Projekte</li></a>
                 <a href="" data-toggle="collapse" data-target="#nav-stammdaten"><li class="d-flex align-items-center justify-content-between line-height-base">Stammdaten<i class="fas fa-caret-right"></i></li></a>
                 <ul id="nav-stammdaten" class="collapse">

@@ -10,11 +10,17 @@
 
             <template v-slot:form>
                 <div class="form-group mb-0 mr-1">
-                    <input-text v-model="form.unit_value_formatted" :placeholder="model.unit.name + ' (' + model.unit.abbreviation + ')'" :error="error('unit_value_formatted')" @keydown.enter="create" @input="setUnitFormattedPrice()"></input-text>
+                    <input-text v-model="form.unit_value_formatted" :placeholder="model.unit.name + ' (' + model.unit.abbreviation + ')'" :error="error('unit_value_formatted')" @keydown.enter="create" @input="setUnitPriceFormatted()"></input-text>
                 </div>
                 <div class="form-group mb-0 mr-1">
                     <input-text v-model="form.unit_price_formatted" placeholder="Preis" :error="error('unit_price_formatted')"></input-text>
                 </div>
+            </template>
+
+            <template v-slot:filter>
+
+                <filter-per-page v-model="filter.perPage" @input="fetch"></filter-per-page>
+
             </template>
 
             <template v-slot:thead>
@@ -32,8 +38,17 @@
 
             <template v-slot:tfoot>
                 <tr class="font-weight-bold">
-                    <td class="">Ø {{ Number(sums.unit_value / items.length).format(2, ',', '.') }}</td>
-                    <td class="d-none d-sm-table-cell">Ø {{ Number(sums.unit_price / items.length).format(2, ',', '.') }}</td>
+                    <td class="" colspan="4">{{ items.length }} {{ model.name }}</td>
+                </tr>
+                <tr class="font-weight-bold">
+                    <td class="">{{ Number(sums.unit_value).format(2, ',', '.') }} {{ model.unit.abbreviation }}</td>
+                    <td class="d-none d-sm-table-cell">{{ Number(sums.unit_price).format(2, ',', '.') }} €</td>
+                    <td class="d-none d-sm-table-cell"></td>
+                    <td></td>
+                </tr>
+                <tr class="font-weight-bold">
+                    <td class="">Ø {{ Number(sums.unit_value / items.length).format(2, ',', '.') }} {{ model.unit.abbreviation }}</td>
+                    <td class="d-none d-sm-table-cell">Ø {{ Number(sums.unit_price / items.length).format(2, ',', '.') }} €</td>
                     <td class="d-none d-sm-table-cell"></td>
                     <td></td>
                 </tr>
@@ -48,6 +63,7 @@
 
 <script>
     import row from './row.vue';
+    import filterPerPage from "../../filter/perPage.vue";
     import inputText from '../../form/input/text.vue';
     import tableBase from '../../tables/base.vue';
 
@@ -57,6 +73,7 @@
     export default {
 
         components: {
+            filterPerPage,
             inputText,
             row,
             tableBase,
@@ -99,11 +116,13 @@
             return {
                 filter: {
                     created_at_date: this.createdAtDate,
+                    perPage: 25,
                 },
                 form: {
                     unit_value_formatted: '',
                     unit_price_formatted: '',
                 },
+                is_creating: false,
                 tag_item: null,
             };
         },
@@ -113,7 +132,7 @@
                 this.items.unshift(item);
                 // this.tag_item = item;
             },
-            setUnitFormattedPrice() {
+            setUnitPriceFormatted() {
                 var unit_value = Number(this.form.unit_value_formatted.replace(',', '.')),
                     unit_price = unit_value * this.model.unit_price;
 

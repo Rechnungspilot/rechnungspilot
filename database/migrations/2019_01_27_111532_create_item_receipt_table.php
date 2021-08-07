@@ -18,6 +18,7 @@ class CreateItemReceiptTable extends Migration
             $table->unsignedInteger('company_id');
             $table->unsignedInteger('receipt_id');
             $table->unsignedInteger('item_id')->nullable();
+            $table->unsignedInteger('item_article_id')->nullable();
             $table->unsignedInteger('unit_id')->nullable();
 
             $table->nullableMorphs('receiptable');
@@ -34,6 +35,7 @@ class CreateItemReceiptTable extends Migration
 
             $table->foreign('company_id')->references('id')->on('companies');
             $table->foreign('item_id')->references('id')->on('items');
+            $table->foreign('item_article_id')->references('id')->on('item_articles');
             $table->foreign('unit_id')->references('id')->on('units');
             $table->foreign('receipt_id')->references('id')->on('receipts')->onDelete('cascade');
         });

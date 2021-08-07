@@ -6,7 +6,7 @@
                 <option value="1">1 Einträge</option>
                 <option value="25">25 Einträge</option>
                 <option value="50">50 Einträge</option>
-                <option value="100">100 Einträget</option>
+                <option value="100">100 Einträge</option>
             </select>
         </div>
     </div>

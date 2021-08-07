@@ -74,8 +74,10 @@ class ContactController extends Controller
     {
         $contact = Contact::create([
             'company_id' => auth()->user()->company_id,
-            'firstname' => 'Neuer',
-            'lastname' => 'Kunde',
+            'firstname' => ($request->has('firstname') ? $request->input('firstname') : 'Neuer'),
+            'lastname' => ($request->has('lastname') ? $request->input('lastname') : 'Kunde'),
+            'email' => ($request->has('email') ? $request->input('email') : ''),
+            'phonenumber' => ($request->has('phonenumber') ? $request->input('phonenumber') : ''),
             'number' => Contact::nextNumber(),
         ]);
 

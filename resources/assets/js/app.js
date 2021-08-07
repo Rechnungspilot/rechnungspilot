@@ -104,6 +104,7 @@ Vue.component('datetime-input', require('./components/form/input/datetime.vue').
 Vue.component('dun-table', require('./components/receipt/dun/table.vue').default);
 Vue.component('flash-message', require('./components/flashmessage.vue').default);
 Vue.component('invoice-partials', require('./components/receipt/invoice/partials.vue').default);
+Vue.component('invoice-create', require('./components/receipt/invoice/create.vue').default);
 Vue.component('item-revenue-chart', require('./components/item/revenue.vue').default);
 Vue.component('item-table', require('./components/item/table.vue').default);
 Vue.component('letter-table', require('./components/receipt/letter/table.vue').default);
@@ -112,6 +113,8 @@ Vue.component('person-table', require('./components/contact/person/table.vue').d
 Vue.component('project-show', require('./components/project/show.vue').default);
 Vue.component('projectgroups', require('./components/project/group/index.vue').default);
 Vue.component('receipt-item-table', require('./components/receipt/item/table.vue').default);
+Vue.component('receipt-sales-table', require('./components/receipt/sales/table.vue').default);
+Vue.component('receipt-sales-items-table', require('./components/receipt/sales/items/table.vue').default);
 Vue.component('receipt-table', require('./components/receipt/table.vue').default);
 Vue.component('tag-select', require('./components/tag/select.vue').default);
 Vue.component('tag-table', require('./components/tag/table.vue').default);

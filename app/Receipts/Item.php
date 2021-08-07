@@ -34,6 +34,7 @@ class Item extends Model
         'discount',
         'gross',
         'item_id',
+        'item_article_id',
         'name',
         'net',
         'quantity',
@@ -58,8 +59,7 @@ class Item extends Model
 
         static::creating(function($model)
         {
-            if (! $model->company_id)
-            {
+            if (! $model->company_id) {
                 $model->company_id = auth()->user()->company_id;
             }
 
