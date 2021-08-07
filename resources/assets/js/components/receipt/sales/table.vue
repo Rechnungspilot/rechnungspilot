@@ -1,6 +1,6 @@
 <template>
 
-    <table-base :is-loading="isLoading" :is-showing-footer="selected.length > 0" :has-create-button="false" :paginate="paginate" :items-length="items.length" :has-filter="hasFilter()" @creating="create" @paginating="filter.page = $event" @searching="searching($event)">
+    <table-base :is-loading="isLoading" :is-showing-footer="false" :has-create-button="false" :paginate="paginate" :items-length="items.length" :has-filter="hasFilter()" @creating="create" @paginating="filter.page = $event" @searching="searching($event)">
 
         <template v-slot:form>
 
@@ -66,6 +66,12 @@
                 filter: {
                     //
                 },
+                presold_items: [
+                    {
+                        name: 'Weidehähnchen',
+                        presold_count: 5,
+                    },
+                ],
             };
         },
 

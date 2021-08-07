@@ -9799,7 +9799,11 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       filter: {//
-      }
+      },
+      presold_items: [{
+        name: 'Weidehähnchen',
+        presold_count: 5
+      }]
     };
   },
   methods: {
@@ -60364,7 +60368,7 @@ var render = function() {
   return _c("table-base", {
     attrs: {
       "is-loading": _vm.isLoading,
-      "is-showing-footer": _vm.selected.length > 0,
+      "is-showing-footer": false,
       "has-create-button": false,
       paginate: _vm.paginate,
       "items-length": _vm.items.length,

@@ -4,11 +4,13 @@ namespace App\Http\Controllers\Receipts\Sales;
 
 use App\Contacts\Contact;
 use App\Http\Controllers\Controller;
+use App\Item;
 use App\Receipts\Invoice;
 use App\Receipts\Term;
 use App\Tag;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class SaleController extends Controller
 {
@@ -28,7 +30,33 @@ class SaleController extends Controller
                 ->paginate(15);
         }
 
-        return view('receipts.sales.index');
+        $sql = 'SELECT
+                    item_receipt.item_id,
+                    COUNT(*) AS presale_count
+                FROM
+                    item_receipt
+                WHERE
+                    item_receipt.company_id = :company_id AND
+                    item_receipt.item_article_id = -1
+                GROUP BY
+                    item_receipt.item_id';
+
+        $presales = DB::select($sql, [
+            'company_id' => auth()->user()->company_id,
+        ]);
+
+        foreach ($presales as $key => $presale) {
+            $presale->item = Item::with([
+                //
+            ])->find($presale->item_id);
+        }
+
+        usort($presales, function ($elem1, $elem2) {
+            return strcmp($elem1->item->name, $elem2->item->name);
+        });
+
+        return view('receipts.sales.index')
+            ->with('presales', $presales);
     }
 
     /**
