@@ -6173,6 +6173,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 
 
@@ -6221,7 +6227,10 @@ __webpack_require__.r(__webpack_exports__);
 
         counts[unit_value]++;
       });
-      return counts;
+      return Object.keys(counts).sort().reduce(function (obj, key) {
+        obj[key] = counts[key];
+        return obj;
+      }, {});
     }
   },
   data: function data() {
@@ -53798,14 +53807,41 @@ var render = function() {
                   _c("td", { staticClass: "d-none d-sm-table-cell" }),
                   _vm._v(" "),
                   _c("td")
-                ]),
-                _vm._v(" "),
-                _c("tr", { staticClass: "font-weight-bold" }, [
-                  _c("td", { attrs: { colspan: "4" } }, [_vm._v("Gewichte")])
-                ]),
-                _vm._v(" "),
+                ])
+              ]
+            },
+            proxy: true
+          }
+        ])
+      }),
+      _vm._v(" "),
+      _vm.items.length
+        ? _c(
+            "table",
+            {
+              staticClass:
+                "table table-fixed table-hover table-striped table-sm"
+            },
+            [
+              _c("thead", [
+                _c("tr", [
+                  _c("th", [
+                    _vm._v(
+                      _vm._s(_vm.model.unit.name) +
+                        " (" +
+                        _vm._s(_vm.model.unit.abbreviation) +
+                        ")"
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("th", [_vm._v("Anzahl")])
+                ])
+              ]),
+              _vm._v(" "),
+              _c(
+                "tbody",
                 _vm._l(_vm.counts, function(count, unit_value) {
-                  return _c("tr", { staticClass: "font-weight-bold" }, [
+                  return _c("tr", [
                     _c("td", [
                       _vm._v(
                         _vm._s(unit_value) +
@@ -53814,19 +53850,14 @@ var render = function() {
                       )
                     ]),
                     _vm._v(" "),
-                    _c("td", [_vm._v(_vm._s(count))]),
-                    _vm._v(" "),
-                    _c("td"),
-                    _vm._v(" "),
-                    _c("td")
+                    _c("td", [_vm._v(_vm._s(count))])
                   ])
-                })
-              ]
-            },
-            proxy: true
-          }
-        ])
-      })
+                }),
+                0
+              )
+            ]
+          )
+        : _vm._e()
     ],
     1
   )

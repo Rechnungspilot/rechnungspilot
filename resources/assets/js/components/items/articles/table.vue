@@ -52,18 +52,24 @@
                     <td class="d-none d-sm-table-cell"></td>
                     <td></td>
                 </tr>
-                <tr class="font-weight-bold">
-                    <td colspan="4">Gewichte</td>
-                </tr>
-                <tr class="font-weight-bold" v-for="(count, unit_value) in counts">
-                    <td>{{ unit_value }} {{ model.unit.abbreviation }}</td>
-                    <td>{{ count }}</td>
-                    <td></td>
-                    <td></td>
-                </tr>
             </template>
 
         </table-base>
+
+        <table class="table table-fixed table-hover table-striped table-sm" v-if="items.length">
+            <thead>
+                <tr>
+                    <th>{{ model.unit.name }} ({{ model.unit.abbreviation }})</th>
+                    <th>Anzahl</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="(count, unit_value) in counts">
+                    <td>{{ unit_value }} {{ model.unit.abbreviation }}</td>
+                    <td>{{ count }}</td>
+                </tr>
+            </tbody>
+        </table>
 
     </div>
 
@@ -132,7 +138,11 @@
                     counts[unit_value]++;
                 });
 
-                return counts;
+                return Object.keys(counts).sort().reduce(
+                    (obj, key) => {
+                        obj[key] = counts[key];
+                        return obj;
+                }, {});
             }
         },
 
