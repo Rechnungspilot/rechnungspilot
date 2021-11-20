@@ -52,6 +52,15 @@
                     <td class="d-none d-sm-table-cell"></td>
                     <td></td>
                 </tr>
+                <tr class="font-weight-bold">
+                    <td colspan="4">Gewichte</td>
+                </tr>
+                <tr class="font-weight-bold" v-for="(count, unit_value) in counts">
+                    <td>{{ unit_value }} {{ model.unit.abbreviation }}</td>
+                    <td>{{ count }}</td>
+                    <td></td>
+                    <td></td>
+                </tr>
             </template>
 
         </table-base>
@@ -109,6 +118,21 @@
                 });
 
                 return sums;
+            },
+            counts() {
+                var counts = {};
+
+                this.items.forEach(function (article, index) {
+                    var unit_value = Number(article.unit_value);
+
+                    if (! (unit_value in counts)) {
+                        counts[unit_value] = 0;
+                    }
+
+                    counts[unit_value]++;
+                });
+
+                return counts;
             }
         },
 

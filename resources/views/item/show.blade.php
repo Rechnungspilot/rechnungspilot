@@ -173,16 +173,18 @@
                             </tr>
                         @endforeach
                     </tbody>
-                    <tfoot>
-                         <tr>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td class="text-right">{{ number_format($quantity, $item->decimals, ',', '.') }}</td>
-                            <td class="text-right">{{ number_format($unit_price_sum/$quantity, $item->decimals, ',', '.') }}</td>
-                            <td class="text-right">{{ number_format($gross, $item->decimals, ',', '.') }}</td>
-                        </tr>
-                    </tfoot>
+                    @if ($quantity > 0)
+                        <tfoot>
+                             <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td class="text-right">{{ number_format($quantity, $item->decimals, ',', '.') }}</td>
+                                <td class="text-right">{{ number_format($unit_price_sum/$quantity, $item->decimals, ',', '.') }}</td>
+                                <td class="text-right">{{ number_format($gross, $item->decimals, ',', '.') }}</td>
+                            </tr>
+                        </tfoot>
+                    @endif
                 </table>
             </div>
         </div>
