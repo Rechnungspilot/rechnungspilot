@@ -6095,12 +6095,16 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _row_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./row.vue */ "./resources/assets/js/components/items/articles/row.vue");
-/* harmony import */ var _filter_perPage_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../filter/perPage.vue */ "./resources/assets/js/components/filter/perPage.vue");
-/* harmony import */ var _form_input_text_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../form/input/text.vue */ "./resources/assets/js/components/form/input/text.vue");
-/* harmony import */ var _tables_base_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../tables/base.vue */ "./resources/assets/js/components/tables/base.vue");
-/* harmony import */ var _mixins_tables_base_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../mixins/tables/base.js */ "./resources/assets/js/mixins/tables/base.js");
-/* harmony import */ var _mixins_tables_paginated_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../mixins/tables/paginated.js */ "./resources/assets/js/mixins/tables/paginated.js");
+/* harmony import */ var highcharts__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! highcharts */ "./node_modules/highcharts/highcharts.js");
+/* harmony import */ var highcharts__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(highcharts__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var highcharts_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! highcharts-vue */ "./node_modules/highcharts-vue/dist/highcharts-vue.min.js");
+/* harmony import */ var highcharts_vue__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(highcharts_vue__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _row_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./row.vue */ "./resources/assets/js/components/items/articles/row.vue");
+/* harmony import */ var _filter_perPage_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../filter/perPage.vue */ "./resources/assets/js/components/filter/perPage.vue");
+/* harmony import */ var _form_input_text_vue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../form/input/text.vue */ "./resources/assets/js/components/form/input/text.vue");
+/* harmony import */ var _tables_base_vue__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../tables/base.vue */ "./resources/assets/js/components/tables/base.vue");
+/* harmony import */ var _mixins_tables_base_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../../mixins/tables/base.js */ "./resources/assets/js/mixins/tables/base.js");
+/* harmony import */ var _mixins_tables_paginated_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../../mixins/tables/paginated.js */ "./resources/assets/js/mixins/tables/paginated.js");
 //
 //
 //
@@ -6179,6 +6183,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+
+
 
 
 
@@ -6187,10 +6195,11 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
-    filterPerPage: _filter_perPage_vue__WEBPACK_IMPORTED_MODULE_1__["default"],
-    inputText: _form_input_text_vue__WEBPACK_IMPORTED_MODULE_2__["default"],
-    row: _row_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
-    tableBase: _tables_base_vue__WEBPACK_IMPORTED_MODULE_3__["default"]
+    filterPerPage: _filter_perPage_vue__WEBPACK_IMPORTED_MODULE_3__["default"],
+    highcharts: highcharts_vue__WEBPACK_IMPORTED_MODULE_1__["Chart"],
+    inputText: _form_input_text_vue__WEBPACK_IMPORTED_MODULE_4__["default"],
+    row: _row_vue__WEBPACK_IMPORTED_MODULE_2__["default"],
+    tableBase: _tables_base_vue__WEBPACK_IMPORTED_MODULE_5__["default"]
   },
   props: {
     model: {
@@ -6203,7 +6212,7 @@ __webpack_require__.r(__webpack_exports__);
       "default": null
     }
   },
-  mixins: [_mixins_tables_base_js__WEBPACK_IMPORTED_MODULE_4__["baseMixin"], _mixins_tables_paginated_js__WEBPACK_IMPORTED_MODULE_5__["paginatedMixin"]],
+  mixins: [_mixins_tables_base_js__WEBPACK_IMPORTED_MODULE_6__["baseMixin"], _mixins_tables_paginated_js__WEBPACK_IMPORTED_MODULE_7__["paginatedMixin"]],
   computed: {
     sums: function sums() {
       var sums = {
@@ -6217,24 +6226,92 @@ __webpack_require__.r(__webpack_exports__);
       return sums;
     },
     counts: function counts() {
-      var counts = {};
+      var component = this,
+          counts = {};
       this.items.forEach(function (article, index) {
-        var unit_value = Number(article.unit_value);
+        var unit_value_formatted = Number(article.unit_value).format(component.model.decimals, ',', '');
 
-        if (!(unit_value in counts)) {
-          counts[unit_value] = 0;
+        if (!(unit_value_formatted in counts)) {
+          counts[unit_value_formatted] = 0;
         }
 
-        counts[unit_value]++;
+        counts[unit_value_formatted]++;
       });
-      return Object.keys(counts).sort().reduce(function (obj, key) {
+      var sorted = Object.keys(counts).sort().reduce(function (obj, key) {
         obj[key] = counts[key];
         return obj;
       }, {});
+      component.counts_chart.xAxis.categories = Object.keys(sorted);
+      component.counts_chart.series[0].data = Object.values(sorted);
+      return sorted;
     }
   },
   data: function data() {
+    var component = this;
     return {
+      counts_chart: {
+        chart: {},
+        title: {
+          text: 'Verteilung'
+        },
+        subtitle: {
+          text: ''
+        },
+        xAxis: {
+          categories: [],
+          type: 'category',
+          labels: {
+            rotation: -45,
+            style: {
+              fontSize: '13px',
+              fontFamily: 'Verdana, sans-serif'
+            }
+          }
+        },
+        yAxis: {
+          min: 0,
+          title: {
+            text: 'Anzahl'
+          },
+          tickInterval: 1
+        },
+        legend: {
+          enabled: true
+        },
+        plotOptions: {
+          column: {//stacking: 'normal'
+          }
+        },
+        series: [{
+          name: component.model.unit.name,
+          type: 'column',
+          yAxis: 0,
+          data: [],
+          color: '#90ed7d',
+          index: 0,
+          tooltip: {
+            pointFormat: '<b>{point.y:.0f} Stück</b>'
+          },
+          dataLabels: {
+            enabled: true,
+            rotation: 0,
+            color: '#FFFFFF',
+            align: 'center',
+            // format: '{point.y:.2f} €', // one decimal
+            y: 0,
+            // 10 pixels down from the top
+            style: {
+              fontSize: '13px',
+              fontFamily: 'Verdana, sans-serif'
+            },
+            formatter: function formatter() {
+              if (this.y != 0) {
+                return this.y ? highcharts__WEBPACK_IMPORTED_MODULE_0___default.a.numberFormat(this.y, 0) : '';
+              }
+            }
+          }
+        }]
+      },
       filter: {
         created_at_date: this.createdAtDate,
         perPage: 25
@@ -14825,6 +14902,17 @@ function toComment(sourceMap) {
 	return '/*# ' + data + ' */';
 }
 
+
+/***/ }),
+
+/***/ "./node_modules/highcharts-vue/dist/highcharts-vue.min.js":
+/*!****************************************************************!*\
+  !*** ./node_modules/highcharts-vue/dist/highcharts-vue.min.js ***!
+  \****************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+!function(t,e){ true?module.exports=e(__webpack_require__(/*! highcharts */ "./node_modules/highcharts/highcharts.js"),__webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js")):undefined}(window,function(r,n){return c={},o.m=i=[function(t,e){t.exports=r},function(t,e){t.exports=n},function(t,e,r){"use strict";r.r(e),r.d(e,"Chart",function(){return l}),r.d(e,"default",function(){return h});var e=r(0),c=r.n(e);function n(t,e){return function r(n,o,i){function t(t,e){!c.a.isObject(t,!i)||c.a.isClass(t)||c.a.isDOMElement(t)?n[e]=o[e]:n[e]=r(n[e]||c.a.isArray(t)?[]:{},t,i)}return c.a.isArray(o)?o.forEach(t):c.a.objectEach(o,t),n}({},t,e)}var o=r(1);function i(t){return function(t){if(Array.isArray(t))return a(t)}(t)||function(t){if("undefined"!=typeof Symbol&&null!=t[Symbol.iterator]||null!=t["@@iterator"])return Array.from(t)}(t)||function(t,e){if(t){if("string"==typeof t)return a(t,e);var r=Object.prototype.toString.call(t).slice(8,-1);return"Map"===(r="Object"===r&&t.constructor?t.constructor.name:r)||"Set"===r?Array.from(t):"Arguments"===r||/^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(r)?a(t,e):void 0}}(t)||function(){throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.")}()}function a(t,e){(null==e||e>t.length)&&(e=t.length);for(var r=0,n=new Array(e);r<e;r++)n[r]=t[r];return n}function u(e,t){var r,n=Object.keys(e);return Object.getOwnPropertySymbols&&(r=Object.getOwnPropertySymbols(e),t&&(r=r.filter(function(t){return Object.getOwnPropertyDescriptor(e,t).enumerable})),n.push.apply(n,r)),n}function s(n){for(var t=1;t<arguments.length;t++){var o=null!=arguments[t]?arguments[t]:{};t%2?u(Object(o),!0).forEach(function(t){var e,r;e=n,t=o[r=t],r in e?Object.defineProperty(e,r,{value:t,enumerable:!0,configurable:!0,writable:!0}):e[r]=t}):Object.getOwnPropertyDescriptors?Object.defineProperties(n,Object.getOwnPropertyDescriptors(o)):u(Object(o)).forEach(function(t){Object.defineProperty(n,t,Object.getOwnPropertyDescriptor(o,t))})}return n}function f(){this.chart&&this.chart.destroy()}var p=function(e,t){t=t.split(".")[0]<3?{render:function(t){return t("div",{ref:"chart"})},beforeDestroy:f}:{render:function(){return Object(o.h)("div",{ref:"chart"})},beforeUnmount:f};return s({template:'<div ref="chart"></div>',props:{constructorType:{type:String,default:"chart"},options:{type:Object,required:!0},callback:Function,updateArgs:{type:Array,default:function(){return[!0,!0]}},highcharts:{type:Object},deepCopyOnUpdate:{type:Boolean,default:!0}},watch:{options:{handler:function(t){var e;(e=this.chart).update.apply(e,[n(t,this.deepCopyOnUpdate)].concat(i(this.updateArgs)))},deep:!0}},mounted:function(){var t=this.highcharts||e;this.options&&t[this.constructorType]?this.chart=t[this.constructorType](this.$refs.chart,n(this.options,!0),this.callback||null):this.options?console.warn("'".concat(this.constructorType,"' constructor-type is incorrect. Sometimes this error is caused by the fact, that the corresponding module wasn't imported.")):console.warn('The "options" parameter was not passed.')}},t)},l=p(c.a,o.version||r.n(o).a.version);function h(t){var e=1<arguments.length&&void 0!==arguments[1]?arguments[1]:{};t.component(e.tagName||"highcharts",p(e.highcharts||c.a,t.version))}}],o.c=c,o.d=function(t,e,r){o.o(t,e)||Object.defineProperty(t,e,{enumerable:!0,get:r})},o.r=function(t){"undefined"!=typeof Symbol&&Symbol.toStringTag&&Object.defineProperty(t,Symbol.toStringTag,{value:"Module"}),Object.defineProperty(t,"__esModule",{value:!0})},o.t=function(e,t){if(1&t&&(e=o(e)),8&t)return e;if(4&t&&"object"==typeof e&&e&&e.__esModule)return e;var r=Object.create(null);if(o.r(r),Object.defineProperty(r,"default",{enumerable:!0,value:e}),2&t&&"string"!=typeof e)for(var n in e)o.d(r,n,function(t){return e[t]}.bind(null,n));return r},o.n=function(t){var e=t&&t.__esModule?function(){return t.default}:function(){return t};return o.d(e,"a",e),e},o.o=function(t,e){return Object.prototype.hasOwnProperty.call(t,e)},o.p="",o(o.s=2);function o(t){if(c[t])return c[t].exports;var e=c[t]={i:t,l:!1,exports:{}};return i[t].call(e.exports,e,e.exports,o),e.l=!0,e.exports}var i,c});
 
 /***/ }),
 
@@ -53814,6 +53902,8 @@ var render = function() {
           }
         ])
       }),
+      _vm._v(" "),
+      _c("highcharts", { attrs: { options: _vm.counts_chart } }),
       _vm._v(" "),
       _vm.items.length
         ? _c(

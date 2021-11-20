@@ -56,6 +56,8 @@
 
         </table-base>
 
+        <highcharts :options="counts_chart"></highcharts>
+
         <table class="table table-fixed table-hover table-striped table-sm" v-if="items.length">
             <thead>
                 <tr>
@@ -77,6 +79,9 @@
 </template>
 
 <script>
+    import Highcharts from 'highcharts';
+    import {Chart} from 'highcharts-vue'
+
     import row from './row.vue';
     import filterPerPage from "../../filter/perPage.vue";
     import inputText from '../../form/input/text.vue';
@@ -89,6 +94,7 @@
 
         components: {
             filterPerPage,
+            highcharts: Chart,
             inputText,
             row,
             tableBase,
@@ -126,28 +132,104 @@
                 return sums;
             },
             counts() {
-                var counts = {};
+                var component = this,
+                    counts = {};
 
                 this.items.forEach(function (article, index) {
-                    var unit_value = Number(article.unit_value);
+                    var unit_value_formatted = Number(article.unit_value).format(component.model.decimals, ',', '');
 
-                    if (! (unit_value in counts)) {
-                        counts[unit_value] = 0;
+                    if (! (unit_value_formatted in counts)) {
+                        counts[unit_value_formatted] = 0;
                     }
 
-                    counts[unit_value]++;
+                    counts[unit_value_formatted]++;
                 });
 
-                return Object.keys(counts).sort().reduce(
+                var sorted = Object.keys(counts).sort().reduce(
                     (obj, key) => {
                         obj[key] = counts[key];
                         return obj;
                 }, {});
+
+                component.counts_chart.xAxis.categories = Object.keys(sorted);
+                component.counts_chart.series[0].data = Object.values(sorted);
+
+                return sorted;
             }
         },
 
         data () {
+
+            var component = this;
+
             return {
+                counts_chart: {
+                    chart: {
+
+                    },
+                    title: {
+                        text: 'Verteilung'
+                    },
+                    subtitle: {
+                        text: ''
+                    },
+                    xAxis: {
+                        categories: [],
+                        type: 'category',
+                        labels: {
+                            rotation: -45,
+                            style: {
+                                fontSize: '13px',
+                                fontFamily: 'Verdana, sans-serif'
+                            }
+                        }
+                    },
+                    yAxis: {
+                        min: 0,
+                        title: {
+                            text: 'Anzahl'
+                        },
+                        tickInterval: 1,
+                    },
+                    legend: {
+                        enabled: true
+                    },
+                    plotOptions: {
+                        column: {
+                            //stacking: 'normal'
+                        }
+                    },
+                    series: [
+                        {
+                            name: component.model.unit.name,
+                            type: 'column',
+                            yAxis: 0,
+                            data: [],
+                            color: '#90ed7d',
+                            index: 0,
+                            tooltip: {
+                                pointFormat: '<b>{point.y:.0f} Stück</b>'
+                            },
+                            dataLabels: {
+                                enabled: true,
+                                rotation: 0,
+                                color: '#FFFFFF',
+                                align: 'center',
+                                // format: '{point.y:.2f} €', // one decimal
+                                y: 0, // 10 pixels down from the top
+                                style: {
+                                    fontSize: '13px',
+                                    fontFamily: 'Verdana, sans-serif'
+                                },
+                                formatter: function () {
+                                    if(this.y != 0) {
+                                        return (this.y ? Highcharts.numberFormat(this.y, 0) :  '');
+                                    }
+                                }
+                            }
+                        },
+                    ],
+                },
                 filter: {
                     created_at_date: this.createdAtDate,
                     perPage: 25,
