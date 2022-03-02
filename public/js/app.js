@@ -10055,6 +10055,18 @@ __webpack_require__.r(__webpack_exports__);
       required: true
     }
   },
+  computed: {
+    sum_gross: function sum_gross() {
+      var component = this;
+      return this.items.reduce(function (sum, item) {
+        if (!component.isSelected(item.id)) {
+          return sum + 0;
+        }
+
+        return sum + Number(item.gross / 100);
+      }, 0);
+    }
+  },
   data: function data() {
     var years = [],
         current_year = new Date().getFullYear();
@@ -60898,7 +60910,9 @@ var render = function() {
               _vm._v(" "),
               _c("td"),
               _vm._v(" "),
-              _c("td"),
+              _c("td", { staticClass: "align-middle text-right" }, [
+                _vm._v(_vm._s(_vm.sum_gross.format(2, ",", ".")))
+              ]),
               _vm._v(" "),
               _c(
                 "td",
@@ -89926,14 +89940,15 @@ __webpack_require__.r(__webpack_exports__);
 /*!**********************************************************!*\
   !*** ./resources/assets/js/components/receipt/table.vue ***!
   \**********************************************************/
-/*! exports provided: default */
+/*! no static exports found */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _table_vue_vue_type_template_id_bba925a0___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./table.vue?vue&type=template&id=bba925a0& */ "./resources/assets/js/components/receipt/table.vue?vue&type=template&id=bba925a0&");
 /* harmony import */ var _table_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./table.vue?vue&type=script&lang=js& */ "./resources/assets/js/components/receipt/table.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _table_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__) if(["default"].indexOf(__WEBPACK_IMPORT_KEY__) < 0) (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _table_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__[key]; }) }(__WEBPACK_IMPORT_KEY__));
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
 
@@ -89963,7 +89978,7 @@ component.options.__file = "resources/assets/js/components/receipt/table.vue"
 /*!***********************************************************************************!*\
   !*** ./resources/assets/js/components/receipt/table.vue?vue&type=script&lang=js& ***!
   \***********************************************************************************/
-/*! exports provided: default */
+/*! no static exports found */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";

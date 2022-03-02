@@ -48,7 +48,7 @@
                 <td class="align-middle" colspan="3">{{ selected.length }} ausgewählt</td>
                 <td></td>
                 <td></td>
-                <td></td>
+                <td class="align-middle text-right">{{ sum_gross.format(2, ',', '.') }}</td>
                 <td class="align-middle" colspan="3">
                     <select class="form-control" v-model="action">
                         <option value="0">Aktion</option>
@@ -106,6 +106,18 @@
             tags: {
                 type: Array,
                 required: true,
+            },
+        },
+
+        computed: {
+            sum_gross() {
+                var component = this;
+                return this.items.reduce( function(sum, item) {
+                    if (! component.isSelected(item.id)) {
+                        return sum + 0;
+                    }
+                    return sum + Number(item.gross / 100);
+                }, 0);
             },
         },
 
