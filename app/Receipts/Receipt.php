@@ -740,6 +740,15 @@ class Receipt extends Model
         return $query->where('contact_id', $id);
     }
 
+    public function scopeYear(Builder $query, $value) : Builder
+    {
+        if (is_null($value)) {
+            return $query;
+        }
+
+        return $query->where(DB::raw('YEAR(receipts.date)'), $value);
+    }
+
     public function scopeSearch($query, $searchtext)
     {
         if ($searchtext == '') {

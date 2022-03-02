@@ -27,6 +27,7 @@ class ExpenseController extends Controller
             return Expense::with(['contact', 'status'])
                 ->search($request->input('searchtext'))
                 ->contact($request->input('contact_id'))
+                ->year($request->input('year'))
                 ->status($request->input('status_type'))
                 ->withAllTags($request->input('tags'), Expense::class)
                 ->orderBy('date', 'DESC')

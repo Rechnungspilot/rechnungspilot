@@ -10013,6 +10013,15 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -10047,13 +10056,22 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   data: function data() {
+    var years = [],
+        current_year = new Date().getFullYear();
+
+    for (var year = 2020; year <= current_year + 1; year++) {
+      years.push(year);
+    }
+
     return {
       action: '0',
       filter: {
         contact_id: 0,
         status_type: 0,
-        tags: []
-      }
+        tags: [],
+        year: current_year
+      },
+      years: years
     };
   },
   watch: {
@@ -60703,7 +60721,72 @@ var render = function() {
                 },
                 expression: "filter.tags"
               }
-            })
+            }),
+            _vm._v(" "),
+            _c("div", { staticClass: "col-md-3" }, [
+              _c("div", { staticClass: "form-group" }, [
+                _c(
+                  "label",
+                  {
+                    staticClass: "col-form-label col-form-label-sm",
+                    attrs: { for: "filter-contact" }
+                  },
+                  [_vm._v("Jahr")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "select",
+                  {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.filter.year,
+                        expression: "filter.year"
+                      }
+                    ],
+                    staticClass: "form-control form-control-sm",
+                    attrs: { id: "filter-contact" },
+                    on: {
+                      change: [
+                        function($event) {
+                          var $$selectedVal = Array.prototype.filter
+                            .call($event.target.options, function(o) {
+                              return o.selected
+                            })
+                            .map(function(o) {
+                              var val = "_value" in o ? o._value : o.value
+                              return val
+                            })
+                          _vm.$set(
+                            _vm.filter,
+                            "year",
+                            $event.target.multiple
+                              ? $$selectedVal
+                              : $$selectedVal[0]
+                          )
+                        },
+                        function($event) {
+                          return _vm.fetch()
+                        }
+                      ]
+                    }
+                  },
+                  [
+                    _c("option", { attrs: { value: "null" } }, [
+                      _vm._v("Jahr wählen")
+                    ]),
+                    _vm._v(" "),
+                    _vm._l(_vm.years, function(year, key) {
+                      return _c("option", { domProps: { value: year } }, [
+                        _vm._v(_vm._s(year))
+                      ])
+                    })
+                  ],
+                  2
+                )
+              ])
+            ])
           ]
         },
         proxy: true

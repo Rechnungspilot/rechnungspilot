@@ -11,6 +11,15 @@
             <filter-contact :options="contacts" v-model="filter.contact_id" @input="fetch"></filter-contact>
             <filter-status :options="statuses" v-model="filter.status_type" @input="fetch"></filter-status>
             <filter-tags :options="tags" v-model="filter.tags" @input="fetch"></filter-tags>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label class="col-form-label col-form-label-sm" for="filter-contact">Jahr</label>
+                    <select class="form-control form-control-sm" id="filter-contact" v-model="filter.year" @change="fetch()">
+                        <option value="null">Jahr wählen</option>
+                        <option v-for="(year, key) in years" :value="year">{{ year }}</option>
+                    </select>
+                </div>
+            </div>
 
         </template>
 
@@ -101,13 +110,23 @@
         },
 
         data () {
+
+            var years = [],
+                current_year = (new Date()).getFullYear();
+
+            for (var year = 2020; year <= (current_year + 1); year++) {
+                years.push(year);
+            }
+
             return {
                 action: '0',
                 filter: {
                     contact_id: 0,
                     status_type: 0,
                     tags: [],
+                    year: current_year,
                 },
+                years: years,
             };
         },
 

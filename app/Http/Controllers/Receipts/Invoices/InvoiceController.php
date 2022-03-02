@@ -29,6 +29,7 @@ class InvoiceController extends Controller
             return Invoice::with(['contact', 'status'])
                 ->search($request->input('searchtext'))
                 ->contact($request->input('contact_id'))
+                ->year($request->input('year'))
                 ->status($request->input('status_type'))
                 ->withAllTags($request->input('tags'), Invoice::class)
                 ->orderBy('date', 'DESC')
