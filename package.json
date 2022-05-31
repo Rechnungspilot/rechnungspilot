@@ -35,7 +35,7 @@
         "highcharts-vue": "^1.4.0",
         "luxon": "^1.25.0",
         "moment": "^2.29.1",
-        "postcss": "^8.2.1",
+        "postcss": "^8.2.13",
         "vue-datetime": "^1.0.0-beta.14",
         "vue-multiselect": "^2.1.6",
         "vue-wysiwyg": "^1.7.2",
