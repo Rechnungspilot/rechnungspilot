@@ -18,7 +18,7 @@ class CreateItemReceiptTable extends Migration
             $table->unsignedInteger('company_id');
             $table->unsignedInteger('receipt_id');
             $table->unsignedInteger('item_id')->nullable();
-            $table->unsignedInteger('item_article_id')->nullable();
+            $table->unsignedBigInteger('item_article_id')->nullable();
             $table->unsignedInteger('unit_id')->nullable();
 
             $table->nullableMorphs('receiptable');

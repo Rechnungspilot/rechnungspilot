@@ -16,8 +16,8 @@ class DatabaseSeeder extends Seeder
             RolesAndPermissionsSeeder::class,
             UsersTableSeeder::class,
             ContactsTableSeeder::class,
-            BanksTableSeeder::class,
-            BankCompanyTableSeeder::class,
+            // BanksTableSeeder::class,
+            // BankCompanyTableSeeder::class,
         ]);
     }
 }

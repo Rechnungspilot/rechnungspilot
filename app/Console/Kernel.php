@@ -4,11 +4,6 @@ namespace App\Console;
 
 use App\Console\Commands\InvoiceOverdue;
 use App\Console\Commands\QuoteExpired;
-use App\Receipts\Invoice;
-use App\Receipts\Statuses\Overdue;
-use App\Receipts\Statuses\Payment;
-use App\Receipts\Statuses\Send;
-use App\Receipts\Statuses\Viewed;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -31,8 +26,8 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('company:createTransactions')->daily();
-        $schedule->command('company:charge')->daily();
+        // $schedule->command('company:createTransactions')->daily();
+        // $schedule->command('company:charge')->daily();
         $schedule->command('telescope:prune --hours=48')->daily();
         $schedule->command(InvoiceOverdue::class)->daily();
         $schedule->command(QuoteExpired::class)->daily();

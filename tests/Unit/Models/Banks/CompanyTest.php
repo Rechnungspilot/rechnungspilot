@@ -11,6 +11,14 @@ class CompanyTest extends TestCase
     /**
      * @test
      */
+    public function it_can_create_a_company()
+    {
+        $company = factory(\App\Company::class)->create();
+    }
+
+    /**
+     * @test
+     */
     public function it_gets_the_accounts()
     {
         $this->markTestSkipped();
