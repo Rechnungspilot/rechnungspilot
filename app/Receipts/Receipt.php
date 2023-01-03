@@ -118,7 +118,7 @@ class Receipt extends Model
             }
 
             if (is_null($model->number)) {
-                $model->number = self::nextNumber($model->date);
+                $model->number = self::nextNumber($model->date, $model->company_id);
             }
             $model->setName();
 
@@ -200,9 +200,15 @@ class Receipt extends Model
         return $this;
     }
 
-    public static function nextNumber(Carbon $date)
+    public static function nextNumber(Carbon $date, int $company_id = 0)
     {
-        return self::whereYear('date', $date->year)->max('number') + 1;
+        $query =  self::whereYear('date', $date->year);
+
+        if ($company_id > 0) {
+            $query->where('company_id', $company_id);
+        }
+
+        return $query->max('number') + 1;
     }
 
     public static function revenueByMonth(int $companyId, int $contactId = 0)
