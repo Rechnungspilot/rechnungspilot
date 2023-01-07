@@ -11,7 +11,7 @@
         "php": "^7.3|^8.0",
         "ajcastro/eager-load-pivot-relations": "^0.2.1",
         "calebporzio/parental": "^0.11.0",
-        "danielsundermeier/laravel-deploy": "^0.1.0",
+        "danielsundermeier/laravel-deploy": "^0.2.0",
         "danielsundermeier/laravel-model-labels": "dev-master",
         "danielsundermeier/laravel-model-path": "^0.4.1",
         "doctrine/dbal": "^3.0.0",

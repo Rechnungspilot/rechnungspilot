@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "81c7ed4586ed9d3e2f3ec7ff15e46a9a",
+    "content-hash": "3b946ca016f579e32dfcc2a3c32e1e14",
     "packages": [
         {
             "name": "ajcastro/eager-load-pivot-relations",
@@ -306,16 +306,16 @@
         },
         {
             "name": "danielsundermeier/laravel-deploy",
-            "version": "0.1.0",
+            "version": "0.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/danielsundermeier/laravel-deploy.git",
-                "reference": "752221c58e2cccf49b6cbd9fd3ff3c0c3dae3ced"
+                "reference": "83ad7c4618eda0be7eea537ce3a5b986056b7659"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/danielsundermeier/laravel-deploy/zipball/752221c58e2cccf49b6cbd9fd3ff3c0c3dae3ced",
-                "reference": "752221c58e2cccf49b6cbd9fd3ff3c0c3dae3ced",
+                "url": "https://api.github.com/repos/danielsundermeier/laravel-deploy/zipball/83ad7c4618eda0be7eea537ce3a5b986056b7659",
+                "reference": "83ad7c4618eda0be7eea537ce3a5b986056b7659",
                 "shasum": ""
             },
             "require-dev": {
@@ -347,9 +347,9 @@
             "description": "Description.",
             "support": {
                 "issues": "https://github.com/danielsundermeier/laravel-deploy/issues",
-                "source": "https://github.com/danielsundermeier/laravel-deploy/tree/0.1.0"
+                "source": "https://github.com/danielsundermeier/laravel-deploy/tree/0.2.0"
             },
-            "time": "2020-10-22T04:48:59+00:00"
+            "time": "2023-01-07T02:29:01+00:00"
         },
         {
             "name": "danielsundermeier/laravel-model-labels",

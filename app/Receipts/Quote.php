@@ -40,9 +40,15 @@ class Quote extends Receipt
     public $dateName = 'Angebotsdatum';
     public $dateDueName = 'Gültig bis';
 
-    public static function nextNumber(Carbon $date)
+    public static function nextNumber(Carbon $date, int $company_id = 0)
     {
-        return self::whereDate('date', $date)->max('number') + 1;
+        $query = self::whereDate('date', $date);
+
+        if ($company_id > 0) {
+            $query->where('company_id', $company_id);
+        }
+
+        return $query->max('number') + 1;
     }
 
     public static function from(Receipt $receipt) : self {
