@@ -15,17 +15,13 @@ use App\Traits\HasCompany;
 use App\Traits\HasCustomFields;
 use App\Traits\HasTags;
 use App\Traits\HasUserfiles;
-use Carbon\CarbonPeriod;
 use D15r\ModelLabels\Traits\HasLabels;
 use D15r\ModelPath\Traits\HasModelPath;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\MorphMany;
-use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\DB;
 
 class Contact extends Model
 {
@@ -133,7 +129,7 @@ class Contact extends Model
 
     public function getNameAttribute() {
 
-        return ($this->attributes['company'] ?: $this->attributes['lastname'] . ', ' . $this->attributes['firstname']);
+        return ($this->company ?: $this->lastname . ', ' . $this->firstname);
 
     }
 
@@ -151,7 +147,7 @@ class Contact extends Model
 
     public function getLinkAttribute() : string
     {
-        return '<a href="' . $this->uri . '/' . $this->id . '">' . $this->name . '</a>';
+        return '<a href="' . $this->path . '">' . $this->name . '</a>';
     }
 
     public function defaultReceiptEmail(string $type)
