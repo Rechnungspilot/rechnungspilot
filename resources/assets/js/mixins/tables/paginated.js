@@ -34,6 +34,7 @@ export const paginatedMixin = {
             this.paginate.prevPageUrl = response.data.prev_page_url;
             this.paginate.lastPage = response.data.last_page;
             this.paginate.currentPage = response.data.current_page;
+            this.selected = [];
         }
     },
 };
