@@ -60129,7 +60129,11 @@ var render = function() {
             _c(
               "td",
               { staticClass: "align-middle pointer", on: { click: _vm.show } },
-              [_vm._v(_vm._s(_vm.item.status.name))]
+              [
+                _vm._v(
+                  _vm._s(_vm.item.status ? _vm.item.status.name : "Kein Status")
+                )
+              ]
             )
           ]
         },

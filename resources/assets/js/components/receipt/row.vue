@@ -16,7 +16,7 @@
             <td class="align-middle" v-html="item.contact_link_string"></a></td>
             <td class="align-middle text-right pointer" @click="show">{{ (item.net / 100).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2, }) }}</td>
             <td class="align-middle text-right pointer" @click="show">{{ (item.gross / 100).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2, }) }}</td>
-            <td class="align-middle pointer" @click="show">{{ item.status.name }}</td>
+            <td class="align-middle pointer" @click="show">{{ item.status ? item.status.name : 'Kein Status' }}</td>
 
         </template>
 
