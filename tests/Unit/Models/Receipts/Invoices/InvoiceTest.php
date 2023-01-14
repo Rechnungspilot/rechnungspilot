@@ -8,8 +8,6 @@ use App\Receipts\Invoice;
 use App\Receipts\Order;
 use App\Receipts\Term;
 use App\Unit;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\Unit\TestCase;
 
 class InvoiceTest extends TestCase

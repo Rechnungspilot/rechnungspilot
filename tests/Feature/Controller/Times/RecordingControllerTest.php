@@ -5,13 +5,10 @@ namespace Tests\Feature\Controller\Times;
 use App\Contacts\Contact;
 use App\Item;
 use App\Receipts\Order;
-use App\Receipts\Receipt;
 use App\Receipts\Statuses\Completed;
 use App\Time;
 use App\Todos\Todo;
 use App\Unit;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Http\Response;
 use Tests\TestCase;
 

@@ -1,35 +1,24 @@
 <?php
 
-use App\Company;
-use App\Contacts\Contact;
-use App\Contacts\Person;
 use App\Item;
-use App\Items\Price;
-use App\Mail\CompanyRegistered;
-use App\Projects\Project;
-use App\Receipt\Letter;
-use App\Receipts\Abos\Abo;
-use App\Receipts\Boilerplate;
-use App\Receipts\Delivery;
-use App\Receipts\Dun;
-use App\Receipts\Expense;
-use App\Receipts\Income;
-use App\Receipts\Inquiries\Inquiry;
-use App\Receipts\Invoice;
-use App\Receipts\Order;
-use App\Receipts\Quote;
-use App\Receipts\Receipt;
-use App\Receipts\Statuses\Payment;
 use App\Time;
+use App\User;
+use App\Company;
+use App\Userfile;
 use App\Todos\Todo;
 use App\Transaction;
-use App\Unit;
-use App\User;
-use App\Userfile;
-use Fhp\FinTs;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Storage;
+use App\Receipts\Dun;
+use App\Receipt\Letter;
+use App\Receipts\Order;
+use App\Contacts\Person;
+use App\Receipts\Income;
+use App\Contacts\Contact;
+use App\Receipts\Expense;
+use App\Receipts\Invoice;
+use App\Receipts\Receipt;
+use App\Receipts\Abos\Abo;
+use App\Receipts\Delivery;
+use App\Receipts\Inquiries\Inquiry;
 
 /*
 |--------------------------------------------------------------------------

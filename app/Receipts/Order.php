@@ -2,7 +2,6 @@
 
 namespace App\Receipts;
 
-use App\Item;
 use App\Receipts\Expense;
 use App\Receipts\Invoice;
 use App\Receipts\Item as ReceiptItem;
@@ -10,15 +9,13 @@ use App\Receipts\Receipt;
 use App\Receipts\Statuses\Completed;
 use App\Receipts\Statuses\Draft;
 use App\Receipts\Statuses\MorphedTo;
-use App\Receipts\Statuses\Send;
-use App\Receipts\Term;
-use App\Todos\Todo;
-use Illuminate\Database\Eloquent\Model;
+use D15r\ModelPath\Traits\HasModelPath;
 use Parental\HasParent;
 
 class Order extends Receipt
 {
-    use HasParent;
+    use HasParent,
+        HasModelPath;
 
     const AVAILABLE_STATUSES = [
         Draft::class => Draft::NAME,
@@ -27,6 +24,7 @@ class Order extends Receipt
 
     const LABEL_SINGULAR = 'Auftrag';
     const LABEL_PLURAL = 'Aufträge';
+    const ROUTE_NAME = 'receipt.order';
     const SLUG = 'auftraege';
     const URI = '/' . self::SLUG;
 
@@ -83,6 +81,23 @@ class Order extends Receipt
 
         return $order;
 
+    }
+
+    protected function getAvailablePaths() : array
+    {
+        return [
+            // 'create_path',
+            'edit_path',
+            'index_path',
+            'path',
+        ];
+    }
+
+    public function getRouteParameterAttribute() : array
+    {
+        return [
+            'order' => $this->id,
+        ];
     }
 
     public function receipts()

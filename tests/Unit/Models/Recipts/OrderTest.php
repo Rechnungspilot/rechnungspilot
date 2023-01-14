@@ -11,12 +11,12 @@ use App\Receipts\Receipt;
 use App\Receipts\Term;
 use App\Todos\Todo;
 use App\Unit;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Tests\TestCase;
+use Tests\Unit\TestCase;
 
 class OrderTest extends TestCase
 {
+    protected $class_name = Order::class;
+
     protected function setUp() : void
     {
         parent::setUp();
@@ -62,6 +62,25 @@ class OrderTest extends TestCase
         ]);
 
         $this->fromReceipt = $this->fromReceipt->fresh();
+    }
+
+    /**
+     * @test
+     */
+    public function it_has_model_paths()
+    {
+        $model = factory($this->class_name)->create();
+        $route_parameter = [
+            'order' => $model->id,
+        ];
+
+        $routes = [
+            'index_path' => strtok(route($this->class_name::ROUTE_NAME . '.index', $route_parameter), '?'),
+            'path' => route($this->class_name::ROUTE_NAME . '.show', $route_parameter),
+            'edit_path' => route($this->class_name::ROUTE_NAME . '.edit', $route_parameter),
+        ];
+
+        $this->testModelPaths($model, $routes);
     }
 
     /**

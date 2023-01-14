@@ -2,12 +2,10 @@
 
 namespace App\Receipts;
 
-use App\Contacts\Contact;
 use App\Receipts\Abos\Abo;
 use App\Receipts\Boilerplate;
 use App\Receipts\Dun;
 use App\Receipts\Duns\Level;
-use App\Receipts\Duns\Settings;
 use App\Receipts\Item as ReceiptItem;
 use App\Receipts\Statuses\Draft;
 use App\Receipts\Statuses\Expensed;

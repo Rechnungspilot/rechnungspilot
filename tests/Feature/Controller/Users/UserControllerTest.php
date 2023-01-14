@@ -10,7 +10,7 @@ use Tests\TestCase;
 
 class UserControllerTest extends TestCase
 {
-    protected $baseRouteName = 'team';
+    protected $baseRouteName = 'users';
 
     protected function setUp() : void
     {
@@ -28,10 +28,10 @@ class UserControllerTest extends TestCase
             'index' => [],
             'create' => [],
             'store' => [],
-            'show' => ['team' => $user->id],
-            'edit' => ['team' => $user->id],
-            'update' => ['team' => $user->id],
-            'destroy' => ['team' => $user->id],
+            'show' => ['user' => $user->id],
+            'edit' => ['user' => $user->id],
+            'update' => ['user' => $user->id],
+            'destroy' => ['user' => $user->id],
         ];
         $this->a_guest_can_not_access($actions);
     }
@@ -43,7 +43,7 @@ class UserControllerTest extends TestCase
     {
         $userOfADifferentCompany = factory(User::class)->create();
 
-        $this->a_user_can_not_see_things_from_a_different_company(['team' => $userOfADifferentCompany->id]);
+        $this->a_user_can_not_see_things_from_a_different_company(['user' => $userOfADifferentCompany->id]);
 
         $response = $this->json('get', route($this->baseRouteName . '.index'))
             ->assertJsonCount(1, 'data');
@@ -78,7 +78,7 @@ class UserControllerTest extends TestCase
 
         $response = $this->post(route($this->baseRouteName . '.store'));
         $response->assertStatus(Response::HTTP_FOUND)
-            ->assertRedirect(route($this->baseRouteName . '.show', ['team' => 2]));
+            ->assertRedirect(route($this->baseRouteName . '.show', ['user' => 2]));
 
         $this->assertDatabaseHas('users', [
             'id' => 2,
@@ -102,7 +102,7 @@ class UserControllerTest extends TestCase
      */
     public function a_user_can_see_the_show_view()
     {
-        $this->getShowViewResponse(['team' => $this->user->id]);
+        $this->getShowViewResponse(['user' => $this->user->id]);
     }
 
     /**
@@ -110,7 +110,7 @@ class UserControllerTest extends TestCase
      */
     public function a_user_can_see_the_edit_view()
     {
-        $this->getEditViewResponse(['team' => $this->user->id]);
+        $this->getEditViewResponse(['user' => $this->user->id]);
     }
 
     /**
@@ -120,7 +120,7 @@ class UserControllerTest extends TestCase
     {
         $this->signIn();
 
-        $response = $this->put(route($this->baseRouteName . '.update', ['team' => $this->user->id]), [
+        $response = $this->put(route($this->baseRouteName . '.update', ['user' => $this->user->id]), [
             'address' => '',
             'bankname' => '',
             'bic' => '',
@@ -167,7 +167,7 @@ class UserControllerTest extends TestCase
             'company_id' => $this->user->company_id,
         ]);
 
-        $this->deleteModel($model, ['team' => $model->id])
+        $this->deleteModel($model, ['user' => $model->id])
             ->assertRedirect(route($this->baseRouteName . '.index'));
     }
 }
