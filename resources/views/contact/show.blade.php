@@ -266,7 +266,7 @@
                                             </a><br />
                                             <span class="text-muted">{{ $receipt->typeName }}</span>
                                         </td>
-                                        <td class="align-middle">{{ $receipt->status->name }}</td>
+                                        <td class="align-middle">{{ $receipt->status->name ?? 'Kein Status' }}</td>
                                         <td class="align-middle text-right">{{ number_format($receipt->net, 2, ',', '.') }}</td>
                                         <td class="align-middle text-right">{{ number_format($receipt->unit_price, 2, ',', '.')  }}</td>
                                         <td class="align-middle text-right">{{ number_format($receipt->gross / 100, 2, ',', '.') }}</td>
@@ -317,7 +317,7 @@
                                                 {{ $receipt->name }}
                                             </a>
                                         </td>
-                                        <td class="align-middle">{{ $receipt->status->name }}</td>
+                                        <td class="align-middle">{{ $receipt->status->name ?? 'Kein Status' }}</td>
                                         <td class="align-middle text-right">{{ number_format($receipt->net, 2, ',', '.') }}</td>
                                         <td class="align-middle text-right">{{ number_format($receipt->unit_price, 2, ',', '.')  }}</td>
                                         <td class="align-middle text-right">{{ number_format($receipt->gross / 100, 2, ',', '.') }}</td>
