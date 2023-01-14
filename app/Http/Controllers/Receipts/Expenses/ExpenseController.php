@@ -31,7 +31,7 @@ class ExpenseController extends Controller
                 ->status($request->input('status_type'))
                 ->withAllTags($request->input('tags'), Expense::class)
                 ->orderBy('date', 'DESC')
-                ->paginate(15);
+                ->paginate($request->input('perPage'));
         }
 
         return view('expense.index')

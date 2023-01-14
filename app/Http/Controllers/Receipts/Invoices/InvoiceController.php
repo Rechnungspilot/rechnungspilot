@@ -34,7 +34,7 @@ class InvoiceController extends Controller
                 ->withAllTags($request->input('tags'), Invoice::class)
                 ->orderBy('date', 'DESC')
                 ->orderBy('number', 'DESC')
-                ->paginate(15);
+                ->paginate($request->input('perPage'));
         }
 
         return view('invoice.index')
