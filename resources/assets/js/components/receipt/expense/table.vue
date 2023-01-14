@@ -18,6 +18,8 @@
                     <filter-contact :options="contacts" v-model="filter.contactId" @input="fetch"></filter-contact>
                     <filter-status :options="statuses" v-model="filter.statusType" @input="fetch"></filter-status>
                     <filter-tags :options="tags" v-model="filter.tags" @input="fetch"></filter-tags>
+                    <filter-year v-model="filter.year" @input="fetch"></filter-year>
+                    <filter-per-page v-model="filter.perPage" @input="fetch"></filter-per-page>
 
                 </div>
             </form>
@@ -74,18 +76,22 @@
 </template>
 
 <script>
-    import row from "../row.vue";
-    import filterStatus from "../../filter/status.vue";
     import filterContact from "../../filter/contact.vue";
+    import filterPerPage from "../filter/perPage.vue";
+    import filterStatus from "../../filter/status.vue";
     import filterTags from "../../filter/tags.vue";
+    import filterYear from "../filter/year.vue";
+    import row from "../row.vue";
 
     export default {
 
         components: {
-            row,
-            filterStatus,
             filterContact,
+            filterPerPage,
+            filterStatus,
             filterTags,
+            filterYear,
+            row,
         },
 
         props: [

@@ -11,15 +11,8 @@
             <filter-contact :options="contacts" v-model="filter.contact_id" @input="fetch"></filter-contact>
             <filter-status :options="statuses" v-model="filter.status_type" @input="fetch"></filter-status>
             <filter-tags :options="tags" v-model="filter.tags" @input="fetch"></filter-tags>
-            <div class="col-md-3">
-                <div class="form-group">
-                    <label class="col-form-label col-form-label-sm" for="filter-contact">Jahr</label>
-                    <select class="form-control form-control-sm" id="filter-contact" v-model="filter.year" @change="fetch()">
-                        <option value="null">Jahr wählen</option>
-                        <option v-for="(year, key) in years" :value="year">{{ year }}</option>
-                    </select>
-                </div>
-            </div>
+            <filter-year v-model="filter.year" @input="fetch"></filter-year>
+            <filter-per-page v-model="filter.perPage" @input="fetch"></filter-per-page>
 
         </template>
 
@@ -66,11 +59,13 @@
 </template>
 
 <script>
-    import row from "./row.vue";
-    import filterStatus from "../filter/status.vue";
     import filterContact from "../filter/contact.vue";
-    import filterTags from "../filter/tags.vue";
+    import filterPerPage from "../filter/perPage.vue";
     import filterSearch from "../filter/search.vue";
+    import filterStatus from "../filter/status.vue";
+    import filterTags from "../filter/tags.vue";
+    import filterYear from "../filter/year.vue";
+    import row from "./row.vue";
     import tableBase from '../tables/base.vue';
 
     import { baseMixin } from "../../mixins/tables/base.js";
@@ -81,9 +76,11 @@
 
         components: {
             filterContact,
+            filterPerPage,
             filterSearch,
             filterStatus,
             filterTags,
+            filterYear,
             row,
             tableBase,
         },
@@ -122,23 +119,15 @@
         },
 
         data () {
-
-            var years = [],
-                current_year = (new Date()).getFullYear();
-
-            for (var year = 2020; year <= (current_year + 1); year++) {
-                years.push(year);
-            }
-
             return {
                 action: '0',
                 filter: {
                     contact_id: 0,
                     status_type: 0,
                     tags: [],
-                    year: current_year,
+                    year: (new Date()).getFullYear(),
+                    perPage: 25,
                 },
-                years: years,
             };
         },
 
