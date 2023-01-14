@@ -43,7 +43,7 @@
                 <div class="col-md-6">
                     <div class="row">
                         <div class="col-md-4"><b>Status</b></div>
-                        <div class="col-md-8">{{ $expense->status->name }}</div>
+                        <div class="col-md-8">{{ $expense->status->name ?? 'Kein Status' }}</div>
                     </div>
                     <div class="row">
                         <div class="col-md-4"><b>Kontakt</b></div>

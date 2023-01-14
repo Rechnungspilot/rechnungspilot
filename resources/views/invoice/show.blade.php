@@ -43,7 +43,7 @@
                 <div class="col-md-6">
                     <div class="row">
                         <div class="col-label"><b>Status</b></div>
-                        <div class="col-value">{{ $invoice->status->name }}</div>
+                        <div class="col-value">{{ $invoice->status->name ?? 'Kein Status' }}</div>
                     </div>
                     <div class="row">
                         <div class="col-label"><b>Kontakt</b></div>
