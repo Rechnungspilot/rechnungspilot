@@ -20,8 +20,8 @@ class CreateCommand extends Command
     public function handle()
     {
         $last_month = now()->subMonth();
-        $start_of_last_month = $last_month->startOfMonth();
-        $end_of_last_month = $last_month->endOfMonth();
+        $start_of_last_month = now()->subMonth()->startOfMonth();
+        $end_of_last_month = now()->subMonth()->endOfMonth();
 
         $response = Http::withHeaders([
                 'Accept' => 'application/json',
@@ -54,8 +54,8 @@ class CreateCommand extends Command
         CacheContact::dispatch($invoice->contact);
         CacheItem::dispatch($item->item);
 
-        $this->line('Invoice for ' . $last_month->monthName . ' created: ' . $invoice->name);
-        $this->line('Invoice amount: ' . number_format($item->gross / 100, 2, ',', '.') . ' €');
+        $this->line('Invoice for ' . $last_month->monthName . '(' . $start_of_last_month->format('Y-m-d') . ' - ' . $end_of_last_month->format('Y-m-d') . ') created: ' . $invoice->name);
+        $this->line('Invoice amount: ' . number_format($revenue, 2, ',', '.') . ' € -> '  . number_format($item->gross / 100, 2, ',', '.') . ' €');
 
         if ($this->option('send')) {
             $invoice->send();
