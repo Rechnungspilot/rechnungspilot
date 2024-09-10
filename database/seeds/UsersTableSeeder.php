@@ -1,6 +1,5 @@
 <?php
 
-use App\Company;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 
