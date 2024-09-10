@@ -59,7 +59,7 @@ class CreateCommand extends Command
 
         if ($this->option('send')) {
             $invoice->send();
-            $this->line('Invoice sent' . $invoice->name);
+            $this->line('Invoice sent ' . $invoice->name);
         }
 
         return self::SUCCESS;
