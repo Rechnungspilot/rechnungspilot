@@ -51,11 +51,9 @@ class ApiTokenController extends Controller
             ];
         }
 
-        dd($token->plainTextToken);
-
         return back()
             ->with('status', 'Token erstellt')
-            ->with('token', $token->plainTextToken);
+            ->with('token', $token);
     }
 
     /**

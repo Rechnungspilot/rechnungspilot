@@ -93,6 +93,7 @@
                     <a href="{{ url('/textbausteine') }}"><li>Textbausteine</li></a>
                     <a href="{{ url('/vorlagen/edit') }}"><li>Vorlagen</li></a>
                 </ul>
+                <a href="{{ route('log-viewer.index') }}" target="_blank"><li>Errorlog</li></a>
             </ul>
 
             <div class="px-3 text-white text-center"><p>by <a href="https://d15r.de" target="_blank">D15r</a></p></div>

@@ -4,8 +4,9 @@ namespace App\Providers;
 
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Config;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\ServiceProvider;
+use Opcodes\LogViewer\Facades\LogViewer;
+use Illuminate\Support\Facades\Validator;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -39,6 +40,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        LogViewer::auth(function ($request) {
+            return $request->user() && in_array($request->user()->email, [
+                    'daniel@rechnungspilot.de',
+                    'user@example.com',
+                ]);
+        });
     }
 }

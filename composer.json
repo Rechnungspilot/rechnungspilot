@@ -27,6 +27,7 @@
         "league/flysystem-aws-s3-v3": "~1.0",
         "nemiah/php-fints": "dev-master",
         "niklasravnsborg/laravel-pdf": "^4.0",
+        "opcodesio/log-viewer": "^3.12",
         "spatie/laravel-cookie-consent": "^2.10",
         "spatie/laravel-permission": "^3.0",
         "staudenmeir/eloquent-json-relations": "^1.3",

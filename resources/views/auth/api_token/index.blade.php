@@ -19,6 +19,12 @@
         <button type="submit" class="ml-1 btn btn-primary"><i class="fas fa-plus-square"></i></button>
     </form>
 
+    @if(session('token'))
+        <div class="alert alert-success mt-3">
+            {{ session('token')->plainTextToken }}
+        </div>
+    @endif
+
     <table class="table table-striped table-hover mt-3">
         <thead>
             <tr>
