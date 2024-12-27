@@ -17,6 +17,7 @@
         "doctrine/dbal": "^3.0.0",
         "facade/ignition": "^2.5",
         "fideloper/proxy": "^4.0",
+        "horstoeko/zugferd": "^1.0",
         "laravel/framework": "^8.0",
         "laravel/legacy-factories": "^1.1",
         "laravel/sanctum": "^2.9",

@@ -58,6 +58,9 @@ class ReceiptSend extends Mailable
             ->replyTo($this->company->email ?: 'noreply@rechnungspilot.de', $this->company->name)
             ->attachData($this->receipt->pdf()->output(), $this->receipt->filename, [
                 'mime' => 'application/pdf',
+            ])
+            ->attachData($this->receipt->xRechnung()->getContent(), $this->receipt->x_rechnung_filename, [
+                'mime' => 'application/xml',
             ]);
     }
 }

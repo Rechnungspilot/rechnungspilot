@@ -19,6 +19,7 @@ use App\Receipts\Receipt;
 use App\Receipts\Abos\Abo;
 use App\Receipts\Delivery;
 use App\Receipts\Inquiries\Inquiry;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -180,6 +181,8 @@ Route::middleware(['auth', 'company.locked'])->group(function () {
     Route::post('belege/pdfs', 'DraftController@index');
     Route::get('belege/vorlage/{receipt?}', 'DraftController@show');
     Route::get('belege/pdf/{receipt}', 'DraftController@pdf');
+    Route::get('belege/xrechnung/{receipt}', [\App\Http\Controllers\Receipts\XRechnungController::class, 'show']);
+
 
     Route::post('belege/exporte/datev/einzeln', 'Receipts\\Exports\\Datev\\SingleController@index');
 

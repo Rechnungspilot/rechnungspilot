@@ -2,38 +2,43 @@
 
 namespace App\Receipts;
 
-use App\Company;
-use App\Contacts\Interaction;
+use PDF;
 use App\Item;
-use App\Models\Items\Article;
-use App\Receipts\Expense;
+use App\Company;
+use Carbon\Carbon;
+use App\Transaction;
+use App\Traits\HasTags;
 use App\Receipts\Income;
-use App\Receipts\Item as ReceiptItem;
-use App\Receipts\Statuses\Completed;
-use App\Receipts\Statuses\Draft;
-use App\Receipts\Statuses\Overdue;
-use App\Receipts\Statuses\Payed;
-use App\Receipts\Statuses\Payment;
+use Carbon\CarbonPeriod;
+use App\Receipts\Expense;
+use \Parental\HasChildren;
+use App\Traits\HasCompany;
+use App\Traits\HasComments;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
+use App\Traits\HasUserfiles;
+use App\Contacts\Interaction;
+use App\Models\Items\Article;
 use App\Receipts\Statuses\Send;
+use App\Traits\HasCustomFields;
+use App\Receipts\Statuses\Draft;
+use App\Receipts\Statuses\Payed;
 use App\Receipts\Statuses\Status;
 use App\Receipts\Statuses\Viewed;
-use App\Traits\HasComments;
-use App\Traits\HasCompany;
-use App\Traits\HasCustomFields;
-use App\Traits\HasTags;
-use App\Traits\HasUserfiles;
-use App\Transaction;
-use Carbon\Carbon;
-use Carbon\CarbonPeriod;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\MorphMany;
-use Illuminate\Support\Arr;
+use App\Receipts\Statuses\Overdue;
+use App\Receipts\Statuses\Payment;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
-use PDF;
-use \Parental\HasChildren;
+use App\Receipts\Statuses\Completed;
+use App\Receipts\Item as ReceiptItem;
+use horstoeko\zugferd\ZugferdProfiles;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
+use horstoeko\zugferd\ZugferdDocumentBuilder;
+use horstoeko\zugferd\codelists\ZugferdInvoiceType;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use horstoeko\zugferd\codelists\ZugferdPaymentMeans;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
+use horstoeko\zugferd\codelists\ZugferdTextSubjectCodeQualifiers;
 
 class Receipt extends Model
 {
@@ -530,6 +535,11 @@ class Receipt extends Model
         return $this->typeName . ' ' . $this->name . '.pdf';
     }
 
+    public function getXRechnungFilenameAttribute()
+    {
+        return $this->typeName . ' ' . $this->name . '.xml';
+    }
+
     public function getOutstandingBalanceAttribute()
     {
         return $this->attributes['outstanding'];
@@ -836,6 +846,102 @@ class Receipt extends Model
             'margin_bottom' => 20,
             'margin_header' => 20,
         ]);
+    }
+
+    public function xRechnung(): ZugferdDocumentBuilder
+    {
+        $this->load([
+            'contact',
+            'items',
+            'term'
+        ]);
+        $this->calculateTax();
+
+        $company = Company::findOrFail($this->company_id);
+
+        $document = ZugferdDocumentBuilder::CreateNew(ZugferdProfiles::PROFILE_EN16931);
+
+        $document
+            ->setDocumentSupplyChainEvent($this->date)
+            ->setDocumentBusinessProcess('urn:fdc:peppol.eu:2017:poacc:billing:01:1.0')
+            ->setDocumentInformation(
+                documentNo: $this->name,
+                documentTypeCode: ZugferdInvoiceType::INVOICE,
+                documentDate: $this->date,
+                invoiceCurrency: 'EUR'
+            )
+            ->addDocumentNote($this->typeName . ' ' . $this->name)
+            ->addDocumentNote($company->name . PHP_EOL . $company->address . PHP_EOL . $company->postcode . ' ' . $company->city . PHP_EOL . 'Geschäftsführer: ' . $company->firstname . ' ' . $company->lastname . PHP_EOL . 'Handelsregisternummer: ' . $company->traderegister . PHP_EOL . 'USt-IdNr.: ' . $company->euvatnumber, null, ZugferdTextSubjectCodeQualifiers::UNTDID_4451_REG)
+            ->addDocumentPaymentMean(
+                typeCode: ZugferdPaymentMeans::UNTDID_4461_58,
+                information: 'Überweisung',
+                payeeIban: str_replace(' ', '', $company->iban),
+                payeeAccountName: $company->accountholdername
+            );
+
+        $document
+            ->setDocumentSeller($company->name, $this->contact->company_number ?: $company->id)
+            ->addDocumentSellerTaxRegistration('FC', $company->vatnumber)
+            ->addDocumentSellerTaxRegistration('VA', $company->euvatnumber)
+            ->setDocumentSellerAddress($company->address, '', '', $company->postcode, $company->city, 'DE')
+            ->setDocumentSellerContact($company->firstname . ' ' . $company->lastname, '', $company->phonenumber, $company->faxnumber, $company->email);
+
+        $document
+            ->setDocumentBuyer($this->contact->name, $this->contact->number)
+            ->setDocumentBuyerReference('34676-342323')
+            ->setDocumentBuyerAddress($this->contact->address, '', '', $this->contact->postcode, $this->contact->city, 'DE');
+
+        if ($this->text_above) {
+            $document->addDocumentNote($this->formatBoilerplate($this->text_above), ZugferdTextSubjectCodeQualifiers::UNTDID_4451_AAI);
+        }
+
+        if ($this->text_below) {
+            $document->addDocumentNote($this->formatBoilerplate($this->text_below), ZugferdTextSubjectCodeQualifiers::UNTDID_4451_AAI);
+        }
+
+        foreach ($this->items as $key => $item) {
+            $document->addNewPosition($key + 1)
+                ->setDocumentPositionNote($item->description)
+                ->setDocumentPositionProductDetails($item->name, $item->item->description, $item->item->number)
+                ->setDocumentPositionProductOriginTradeCountry('DE')
+                ->setDocumentPositionNetPrice($item->unit_price)
+                ->setDocumentPositionQuantity($item->quantity, 'H87')
+                ->setDocumentPositionGrossPrice($item->unit_price * (1 + $item->tax))
+                ->setDocumentPositionLineSummation($item->gross);
+
+            if ($item->tax) {
+                $document->addDocumentPositionTax('S', 'VAT', (int) ($item->tax * 100));
+            }
+        }
+
+        foreach ($this->tax as $tax) {
+            $document->addDocumentTax(
+                categoryCode: 'S',
+                typeCode: 'VAT',
+                basisAmount: $tax['net'] / 100,
+                calculatedAmount: $tax['value'] / 100,
+                rateApplicablePercent: (int) ($tax['tax'] * 100)
+            );
+        }
+
+        $document
+            ->setDocumentSummation(
+                grandTotalAmount: $this->net / 100,
+                duePayableAmount: $this->net / 100,
+                lineTotalAmount: $this->gross / 100,
+                chargeTotalAmount: 0.0,
+                allowanceTotalAmount: 0.0,
+                taxBasisTotalAmount: $this->net / 100,
+                taxTotalAmount: (($this->gross / 100) - ($this->net / 100)),
+                roundingAmount: null,
+                totalPrepaidAmount: 0.0
+            );
+
+        if ($this->term) {
+            $document->addDocumentPaymentTerm($this->term->text ? $this->formatBoilerplate($this->term->text) : null, $this->date_due);
+        }
+
+        return $document;
     }
 
     protected function checkUUID(string $uuid)

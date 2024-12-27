@@ -2,15 +2,16 @@
 
 namespace Tests\Unit\Models\Receipts;
 
-use App\Contacts\Contact;
 use App\Item;
-use App\Receipts\Invoice;
-use App\Receipts\Statuses\Draft;
-use App\Receipts\Statuses\Send;
 use App\Unit;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
+use App\Contacts\Contact;
+use App\Receipts\Invoice;
+use App\Receipts\Statuses\Send;
+use App\Receipts\Statuses\Draft;
+use Illuminate\Foundation\Testing\WithFaker;
+use horstoeko\zugferd\ZugferdDocumentBuilder;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class ReceiptTest extends TestCase
 {
@@ -131,5 +132,16 @@ class ReceiptTest extends TestCase
         $invoice->sendWithoutMail();
 
         $this->assertEquals(Send::class, $invoice->latest_status_type);
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_create_a_x_rechnung_xml()
+    {
+        $invoice = factory(Invoice::class)->create();
+        $document = $invoice->xRechnung();
+
+        $this->assertInstanceOf(ZugferdDocumentBuilder::class, $document);
     }
 }

@@ -4,6 +4,7 @@
 
 @section('buttons')
     <a href="{{ url('/belege/vorlage', $invoice->id) }}" class="btn btn-secondary btn-sm ml-1" title="Vorschau"><i class="fas fa-file-pdf"></i></a>
+    <a href="{{ url('/belege/xrechnung', $invoice->id) }}" class="btn btn-secondary btn-sm ml-1" title="XRechnung">XRechnung</a>
     <a href="{{ url('/belege/pdf', $invoice->id) }}" class="btn btn-secondary btn-sm ml-1" title="Download"><i class="fas fa-download"></i></a>
     <button class="btn <?php echo $invoice->nextMainStatus ? 'btn-secondary' : 'btn-primary'; ?> btn-sm pointer ml-1" data-toggle="modal" data-target="#statusModal" data-status="{{ App\Receipts\Statuses\Send::class }}">Versenden</button>
     @if ($invoice->nextMainStatus)
