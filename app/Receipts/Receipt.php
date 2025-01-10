@@ -907,7 +907,7 @@ class Receipt extends Model
                 ->setDocumentPositionNetPrice($item->unit_price)
                 ->setDocumentPositionQuantity($item->quantity, 'H87')
                 ->setDocumentPositionGrossPrice($item->unit_price * (1 + $item->tax))
-                ->setDocumentPositionLineSummation($item->gross);
+                ->setDocumentPositionLineSummation($item->gross / 100);
 
             if ($item->tax) {
                 $document->addDocumentPositionTax('S', 'VAT', (int) ($item->tax * 100));
