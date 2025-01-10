@@ -19,6 +19,7 @@ use App\Receipts\Receipt;
 use App\Receipts\Abos\Abo;
 use App\Receipts\Delivery;
 use App\Receipts\Inquiries\Inquiry;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -68,7 +69,9 @@ Route::bind('model', function ($id) {
     }
 });
 
-Auth::routes();
+Auth::routes([
+    'register' => false
+]);
 
 Route::middleware(['auth', 'company.locked'])->group(function () {
 

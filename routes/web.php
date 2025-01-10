@@ -1,13 +1,15 @@
 <?php
 
-use App\Contacts\Contact;
+use App\User;
+use Fhp\FinTs;
+use App\Userfile;
+use App\Todos\Todo;
 use App\Receipts\Order;
 use App\Receipts\Quote;
+use App\Contacts\Contact;
 use App\Receipts\Receipt;
-use App\Todos\Todo;
-use App\User;
-use App\Userfile;
-use Fhp\FinTs;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
 
 /*
@@ -39,7 +41,9 @@ Route::get('/impressum', function () {
 
 Route::post('/contact', 'Guests\ContactController@store');
 
-Auth::routes();
+Auth::routes([
+    'register' => false
+]);
 
 Route::get('/d15r', function () {
     return view('d15r.home');

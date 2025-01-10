@@ -44,9 +44,6 @@
                         @endif
                         @guest
                             <li class="nav-item">
-                                <a class="nav-link text-primary" href="{{ route('register') }}">Jetzt testen</a>
-                            </li>
-                            <li class="nav-item">
                                   <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
                             </li>
                         @else
