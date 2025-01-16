@@ -23,9 +23,7 @@ use Illuminate\Support\Facades\Storage;
 |
 */
 
-Route::get('/', function () {
-    return view('home.start');
-})->name('home.start');
+Route::get('/', 'HomeController@index')->name('home.start');
 
 Route::get('/funktionen', function () {
     return view('home.features');
