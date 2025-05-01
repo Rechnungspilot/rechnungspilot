@@ -18,7 +18,6 @@ use App\Receipts\Statuses\Viewed;
 use App\Receipts\Term;
 use D15r\ModelLabels\Traits\HasLabels;
 use D15r\ModelPath\Traits\HasModelPath;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Parental\HasParent;
@@ -60,6 +59,8 @@ class Invoice extends Receipt
         $credit = Arr::get($parameters, 'credit', false);
         $receipt_id = Arr::get($parameters, 'receipt_id');
         $receipt_item_ids = Arr::get($parameters, 'receipt_item_ids');
+        $date = Arr::get($parameters, 'date', null);
+        $date_due = Arr::get($parameters, 'date_due', null);
 
         if ($receipt_id) {
             $invoice = self::find($receipt_id);
@@ -83,6 +84,14 @@ class Invoice extends Receipt
 
             if (in_array(get_class($receipt), [Abo::class, Order::class])) {
                 $attributes['receipt_id'] = $receipt->id;
+            }
+
+            if ($date) {
+                $attributes['date'] = $date;
+            }
+
+            if ($date_due) {
+                $attributes['date_due'] = $date_due;
             }
 
             $attributes['term_id'] = Term::default(self::class)->id;

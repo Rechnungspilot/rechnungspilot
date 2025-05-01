@@ -378,7 +378,7 @@ class Receipt extends Model
         return $this->hasOne('App\Templates\Template', 'company_id', 'company_id');
     }
 
-    public function addItem(Item $item, array $attributes = [], Model $receiptable = null) : ReceiptItem
+    public function addItem(Item $item, array $attributes = [], ?Model $receiptable = null) : ReceiptItem
     {
         $item_article_id = (int) Arr::get($attributes, 'item_article_id', 0);
         $receipt_item = null;

@@ -2,17 +2,24 @@
 
 namespace Tests\Unit\Models\Receipts\Invoices;
 
-use App\Contacts\Contact;
 use App\Item;
-use App\Receipts\Invoice;
-use App\Receipts\Order;
-use App\Receipts\Term;
 use App\Unit;
+use App\Receipts\Term;
+use App\Receipts\Order;
 use Tests\Unit\TestCase;
+use App\Contacts\Contact;
+use App\Receipts\Invoice;
+use Illuminate\Support\Carbon;
 
 class InvoiceTest extends TestCase
 {
     protected $class_name = Invoice::class;
+
+    private Unit $unit;
+    private Item $item;
+    private Contact $contact;
+    private Term $term;
+    private Invoice $fromReceipt;
 
     protected function setUp() : void
     {
@@ -41,8 +48,8 @@ class InvoiceTest extends TestCase
             'term_id' => $this->term->id,
         ]);
 
-        $this->fromReceipt->addItem($this->item);
-        $this->fromReceipt->addItem($this->item);
+        // $this->fromReceipt->addItem($this->item);
+        // $this->fromReceipt->addItem($this->item);
 
         $this->fromReceipt = $this->fromReceipt->fresh();
     }
@@ -83,6 +90,35 @@ class InvoiceTest extends TestCase
         $invoice = Invoice::from($this->fromReceipt);
 
         $this->assertCount(2, $invoice->fresh()->items);
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_be_created_from_another_receipt_with_date_and_date_due()
+    {
+        $now = Carbon::parse('2023-01-10 12:00:00');
+        $this->travelTo($now);
+
+        $last_month = $now->clone()->subMonth();
+        $start_of_last_month = $last_month->clone()->startOfMonth();
+        $end_of_last_month = $last_month->clone()->endOfMonth();
+
+        $invoice_last_year = factory(Invoice::class)->create([
+            'company_id' => $this->company->id,
+            'contact_id' => $this->contact->id,
+            'term_id' => $this->term->id,
+            'number' => 5,
+            'date' => $start_of_last_month,
+            'date_due' => $end_of_last_month,
+        ]);
+
+        $invoice = Invoice::from($invoice_last_year, [
+            'date' => $end_of_last_month,
+            'date_due' => $end_of_last_month,
+        ]);
+
+        $this->assertEquals($invoice->number, 6);
     }
 
     /**

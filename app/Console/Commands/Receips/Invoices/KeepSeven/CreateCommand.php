@@ -35,8 +35,7 @@ class CreateCommand extends Command
         $revenue = $response['revenue'];
 
         $from = Invoice::findOrfail($this->argument('receipt'));
-        $invoice = Invoice::from($from);
-        $invoice->update([
+        $invoice = Invoice::from($from, [
             'date' => $end_of_last_month,
             'date_due' => $end_of_last_month,
         ]);
