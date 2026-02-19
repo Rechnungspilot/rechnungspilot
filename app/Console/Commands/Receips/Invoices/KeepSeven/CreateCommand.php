@@ -27,7 +27,7 @@ class CreateCommand extends Command
                 'Accept' => 'application/json',
                 'Authorization' => 'Bearer ' . $this->argument('api-token')
             ])
-            ->get('https://cardmonitor.d15r.de/api/user/revenue', [
+            ->get('https://cardmonitor.keepseven.de/api/user/revenue', [
                 'from' => $start_of_last_month->format('Y-m-d'),
                 'to' => $end_of_last_month->format('Y-m-d'),
             ])
