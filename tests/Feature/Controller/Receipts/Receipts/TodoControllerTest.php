@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Controller\Receipts\Receipts;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Contacts\Contact;
 use App\Item;
 use App\Receipts\Quote;
@@ -56,8 +57,8 @@ class TodoControllerTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function a_user_can_get_a_collection_of_todos_from_a_receipt()
     {
         $todos = factory($this->className, 3)->create([

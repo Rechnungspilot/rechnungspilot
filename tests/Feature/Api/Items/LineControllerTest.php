@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Api\Items;
 
+use PHPUnit\Framework\Attributes\Test;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Http\Response;
@@ -10,8 +11,8 @@ use Tests\TestCase;
 class LineControllerTest extends TestCase
 {
     /**
-     * @test
      */
+    #[Test]
     public function it_can_get_a_model_for_a_company()
     {
         $this->withoutExceptionHandling();

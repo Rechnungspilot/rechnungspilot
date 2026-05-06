@@ -10,6 +10,7 @@ $factory->define(App\Receipts\Invoice::class, function (Faker $faker) {
     ]);
     return [
         'number' => App\Receipts\Invoice::nextNumber(now()),
+        'type' => App\Receipts\Invoice::TYPE,
         'company_id' => $company->id,
         'contact_id' => $contact->id,
     ];

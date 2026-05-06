@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Controller;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Company;
 use App\Contacts\Contact;
 use App\Item;
@@ -30,8 +31,8 @@ class ItemControllerTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function guest_can_not_access_the_following_routes()
     {
         $id = $this->createItem()->id;
@@ -49,8 +50,8 @@ class ItemControllerTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function a_user_can_see_the_index_view()
     {
         $this->signIn($this->user);
@@ -61,8 +62,8 @@ class ItemControllerTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function a_user_can_get_a_paginated_collection_of_items()
     {
         $existing_count = Item::where('company_id', $this->user->company_id)->count();
@@ -91,8 +92,8 @@ class ItemControllerTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function a_user_can_see_the_create_view()
     {
         $this->signIn($this->user);
@@ -103,8 +104,8 @@ class ItemControllerTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function a_user_can_create_an_item()
     {
         $this->signIn($this->user);
@@ -147,8 +148,8 @@ class ItemControllerTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function a_user_can_see_the_show_view()
     {
         $this->signIn($this->user);
@@ -161,8 +162,8 @@ class ItemControllerTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function a_user_can_see_the_edit_view()
     {
         $this->signIn($this->user);
@@ -176,8 +177,8 @@ class ItemControllerTest extends TestCase
 
 
     /**
-     * @test
      */
+    #[Test]
     public function a_user_can_not_see_the_item_show_view_from_a_different_company()
     {
         $differentCompany = factory(Company::class)->create();
@@ -197,8 +198,8 @@ class ItemControllerTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function a_user_can_update_an_item()
     {
         $item = $this->createItem();
@@ -251,8 +252,8 @@ class ItemControllerTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function a_name_is_required()
     {
         $item = $this->createItem();
@@ -268,8 +269,8 @@ class ItemControllerTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function a_user_can_delete_an_item_if_it_is_deletable()
     {
         $this->withoutExceptionHandling();
@@ -302,8 +303,8 @@ class ItemControllerTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function a_user_can_delete_an_item_json()
     {
         $item = $this->createItem();

@@ -380,7 +380,7 @@ class Receipt extends Model
 
     public function addItem(Item $item, array $attributes = [], ?Model $receiptable = null) : ReceiptItem
     {
-        $item_article_id = (int) Arr::get($attributes, 'item_article_id', 0);
+        $item_article_id = Arr::get($attributes, 'item_article_id');
         $receipt_item = null;
         if (Arr::has($attributes, 'quantity')) {
             $quantity = $attributes['quantity'];
@@ -403,7 +403,7 @@ class Receipt extends Model
                 'receipt_id' => $this->id,
                 'company_id' => $this->company_id,
                 'item_id' => $item->id,
-                'item_article_id' => $item_article_id,
+                'item_article_id' => $item_article_id ?: null,
                 'unit_id' => $item->unit_id,
                 'name' => $item->name,
                 'description' => $attributes['description'] ?? $item->description,
@@ -414,7 +414,7 @@ class Receipt extends Model
             ]);
         }
         else {
-            $receipt_item->item_article_id = $item_article_id;
+            $receipt_item->item_article_id = $item_article_id ?: null;
             $receipt_item->quantity = $quantity;
             $receipt_item->unit_price = $item->unit_price;
         }

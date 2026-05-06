@@ -55,6 +55,10 @@ class Status extends Model
             {
                 $model->date = date('Y-m-d');
             }
+            if (! $model->type)
+            {
+                $model->type = static::class;
+            }
             if (! isset($model->user_id))
             {
                 $model->user_id = auth()->user()->id ?? 0;

@@ -2,6 +2,7 @@
 
 namespace Tests\Unit\Models\Contacts;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Contacts\Contact;
 use App\Contacts\Interaction;
 use App\Contacts\InteractionType;
@@ -18,8 +19,8 @@ class InteractionTest extends TestCase
     use RelationshipAssertions;
 
     /**
-     * @test
      */
+    #[Test]
     public function it_has_many_interactions()
     {
         $model = factory(Interaction::class)->create();
@@ -34,8 +35,8 @@ class InteractionTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function it_belongs_to_a_contact()
     {
         $interaction = factory(Interaction::class)->create();
@@ -44,8 +45,8 @@ class InteractionTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function it_belongs_to_an_interaction_type()
     {
         $interaction = factory(Interaction::class)->create();
@@ -54,8 +55,8 @@ class InteractionTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function it_belongs_to_a_person()
     {
         $interaction = factory(Interaction::class)->create();
@@ -64,8 +65,8 @@ class InteractionTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function it_belongs_to_a_user()
     {
         $interaction = factory(Interaction::class)->create();
@@ -74,8 +75,8 @@ class InteractionTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function it_morphs_to_a_model()
     {
         $interaction = factory(Interaction::class)->create();

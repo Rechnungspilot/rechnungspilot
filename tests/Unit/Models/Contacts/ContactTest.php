@@ -2,6 +2,7 @@
 
 namespace Tests\Unit\Models\Contacts;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Contacts\Contact;
 use App\Receipts\Invoice;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -13,8 +14,8 @@ class ContactTest extends TestCase
     protected $class_name = Contact::class;
 
     /**
-     * @test
      */
+    #[Test]
     public function it_has_model_paths()
     {
         $model = factory($this->class_name)->create();
@@ -33,8 +34,8 @@ class ContactTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function it_gets_its_billing_address()
     {
         $contact = factory(Contact::class)->create();
@@ -59,8 +60,8 @@ class ContactTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function it_sets_email_receipt()
     {
         $contact = factory(Contact::class)->create();
@@ -73,8 +74,8 @@ class ContactTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function it_checks_if_it_is_deletable()
     {
         $contact = factory(Contact::class)->create();

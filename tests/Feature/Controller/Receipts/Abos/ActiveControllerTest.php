@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Controller\Receipts\Abos;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Contacts\Contact;
 use App\Receipts\Abos\Abo;
 use App\Receipts\Term;
@@ -14,8 +15,8 @@ class ActiveControllerTest extends TestCase
     protected $baseRouteName = 'receipt.abo.active';
 
     /**
-     * @test
      */
+    #[Test]
     public function guest_can_not_access_the_following_routes()
     {
         $id = factory(Abo::class)->create()->id;
@@ -28,8 +29,8 @@ class ActiveControllerTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function a_user_can_not_activate_an_abo_of_an_other_company()
     {
         $aboOfADifferentCompany = factory(Abo::class)->create();
@@ -42,8 +43,8 @@ class ActiveControllerTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function a_user_can_activate_an_abo()
     {
         $this->signIn();
@@ -67,8 +68,8 @@ class ActiveControllerTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function a_user_can_deactivate_an_abo()
     {
         $this->signIn();

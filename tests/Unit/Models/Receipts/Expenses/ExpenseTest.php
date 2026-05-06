@@ -2,6 +2,7 @@
 
 namespace Tests\Unit\Models\Receipts\Invoices;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Contacts\Contact;
 use App\Item;
 use App\Receipts\Expense;
@@ -17,8 +18,8 @@ class ExpenseTest extends TestCase
     protected $class_name = Expense::class;
 
     /**
-     * @test
      */
+    #[Test]
     public function it_has_model_paths()
     {
         $model = factory($this->class_name)->create();

@@ -2,6 +2,7 @@
 
 namespace Tests\Unit\Models\Receipts\Invoices;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Item;
 use App\Unit;
 use App\Receipts\Term;
@@ -55,8 +56,8 @@ class InvoiceTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function it_has_model_paths()
     {
         $model = factory($this->class_name)->create();
@@ -75,16 +76,16 @@ class InvoiceTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function it_has_items()
     {
         $this->assertCount(2, $this->fromReceipt->fresh()->items);
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function it_can_be_created_from_another_receipt()
     {
         $invoice = Invoice::from($this->fromReceipt);
@@ -93,8 +94,8 @@ class InvoiceTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function it_can_be_created_from_another_receipt_with_date_and_date_due()
     {
         $now = Carbon::parse('2023-01-10 12:00:00');
@@ -122,8 +123,8 @@ class InvoiceTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function it_can_be_created_from_an_order()
     {
         $term = factory(Term::class)->create([
@@ -147,8 +148,8 @@ class InvoiceTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function a_credit_can_be_created_from_an_invoice()
     {
         $invoice = Invoice::from($this->fromReceipt, [
@@ -159,8 +160,8 @@ class InvoiceTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function selected_receipt_items_can_be_added_to_an_existing_invoice_from_another_receipt()
     {
         $invoice = Invoice::from($this->fromReceipt);
@@ -175,8 +176,8 @@ class InvoiceTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function receipt_items_can_be_added_to_an_existing_invoice_from_another_receipt()
     {
         $invoice = Invoice::from($this->fromReceipt, [

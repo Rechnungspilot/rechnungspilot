@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Controller\Todos;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Todos\Todo;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -14,8 +15,8 @@ class CompletedControllerTest extends TestCase
     protected $className = Todo::class;
 
     /**
-     * @test
      */
+    #[Test]
     public function guest_can_not_access_the_following_routes()
     {
         $id = factory($this->className)->create()->id;
@@ -28,8 +29,8 @@ class CompletedControllerTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function a_user_can_not_see_todos_of_an_other_company()
     {
         $modelOfADifferentCompany = factory($this->className)->create();
@@ -44,8 +45,8 @@ class CompletedControllerTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function a_user_can_complete_a_model()
     {
         $this->signIn();
@@ -80,8 +81,8 @@ class CompletedControllerTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function a_user_can_incomplete_a_model()
     {
         $this->signIn();

@@ -2,6 +2,7 @@
 
 namespace Tests\Unit\Models;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Userfile;
 use Tests\Unit\TestCase;
 
@@ -10,8 +11,8 @@ class UserFileTest extends TestCase
     protected $class_name = Userfile::class;
 
     /**
-     * @test
      */
+    #[Test]
     public function it_has_model_paths()
     {
         $model = factory($this->class_name)->create();
@@ -30,16 +31,16 @@ class UserFileTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function it_deletes_the_file_on_deleting()
     {
         $this->markTestIncomplete('This test has not been implemented yet.');
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function it_has_a_path()
     {
         // folder/name.extension
@@ -47,8 +48,8 @@ class UserFileTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function it_has_an_url()
     {
         // http://dateien.rechnungspilot.de/

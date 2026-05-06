@@ -2,6 +2,7 @@
 
 namespace Tests\Unit\Models\Items;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Unit;
 use Tests\Unit\TestCase;
 
@@ -10,8 +11,8 @@ class UnitTest extends TestCase
     protected $class_name = Unit::class;
 
     /**
-     * @test
      */
+    #[Test]
     public function it_has_model_paths()
     {
         $model = factory($this->class_name)->create();
@@ -30,8 +31,8 @@ class UnitTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function it_has_labels()
     {
         $this->assertEquals('Einheiten', $this->class_name::label());

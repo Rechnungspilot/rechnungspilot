@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Controller;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Contacts\Contact;
 use App\Item;
 use App\Receipt\Letter;
@@ -46,8 +47,8 @@ class TaggableControllerTest extends TestCase
     ];
 
     /**
-     * @test
      */
+    #[Test]
     public function a_user_can_attach_a_tag()
     {
         $this->signIn($this->user);
@@ -75,8 +76,8 @@ class TaggableControllerTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function a_user_can_detach_a_tag()
     {
         $this->signIn($this->user);

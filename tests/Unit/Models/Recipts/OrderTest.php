@@ -2,6 +2,7 @@
 
 namespace Tests\Unit\Models\Recipts;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Contacts\Contact;
 use App\Item;
 use App\Receipts\Item as ReceiptItem;
@@ -65,8 +66,8 @@ class OrderTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function it_has_model_paths()
     {
         $model = factory($this->class_name)->create();
@@ -84,8 +85,8 @@ class OrderTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function it_can_be_created_from_a_quote()
     {
         $this->assertCount(3, $this->fromReceipt->todos, 'count todos original receipt');

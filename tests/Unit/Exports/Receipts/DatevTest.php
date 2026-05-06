@@ -2,6 +2,7 @@
 
 namespace Tests\Unit\Exports\Receipts;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Company;
 use App\Exports\Receipts\Datev;
 use Illuminate\Support\Collection;
@@ -11,8 +12,8 @@ use Tests\TestCase;
 class DatevTest extends TestCase
 {
     /**
-     * @test
      */
+    #[Test]
     public function it_can_export_invoices()
     {
         $this->markTestIncomplete('TODO: create receipts to export');

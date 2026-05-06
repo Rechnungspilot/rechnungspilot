@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Controller\Users;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Mail\TeamInvite;
 use App\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -15,8 +16,8 @@ class InviteControllerTest extends TestCase
     protected $baseRouteName = 'team.invite';
 
     /**
-     * @test
      */
+    #[Test]
     public function guest_can_not_access_the_following_routes()
     {
         $user = factory(User::class)->create();
@@ -28,8 +29,8 @@ class InviteControllerTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function a_user_can_invite_a_user()
     {
         $this->withoutExceptionHandling();
@@ -60,8 +61,8 @@ class InviteControllerTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function a_user_can_revoke_an_invitation()
     {
         // Ist die Tabelle "invitations" wirklich notwendig?

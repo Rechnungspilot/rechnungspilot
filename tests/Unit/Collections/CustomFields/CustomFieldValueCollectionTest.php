@@ -2,6 +2,7 @@
 
 namespace Tests\Unit\Collections\CustomFields;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Contacts\Contact;
 use App\Models\CustomFields\CustomField;
 use App\Models\CustomFields\CustomFieldValue;
@@ -35,8 +36,8 @@ class CustomFieldValueCollectionTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function it_can_validate_itself()
     {
         $attributes = [];
@@ -51,8 +52,8 @@ class CustomFieldValueCollectionTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function it_can_update_each_item()
     {
         $attributes = [];

@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Controller\Times;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Contacts\Contact;
 use App\Item;
 use App\Receipts\Order;
@@ -42,8 +43,8 @@ class RecordingControllerTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function guest_can_not_access_the_following_routes()
     {
         $id = factory($this->className)->create()->id;
@@ -56,16 +57,16 @@ class RecordingControllerTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function a_user_can_see_the_index_view()
     {
         $this->getIndexViewResponse();
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function a_user_can_start_recording()
     {
         $postData = [
@@ -102,8 +103,8 @@ class RecordingControllerTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function a_user_can_end_recording()
     {
         $time = $this->createTime();
@@ -135,8 +136,8 @@ class RecordingControllerTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function a_user_can_end_recording_and_complete_order()
     {
         $time = $this->createTimeWithOrder();
@@ -176,8 +177,8 @@ class RecordingControllerTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function a_user_can_end_recording_and_a_no_receipt_item_is_created_if_industryHours_are_zero()
     {
         $this->withoutExceptionHandling();
@@ -223,8 +224,8 @@ class RecordingControllerTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function a_user_can_end_recording_and_a_receipt_item_is_created()
     {
         $this->withoutExceptionHandling();

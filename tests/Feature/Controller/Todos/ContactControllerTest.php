@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Controller\Todos;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Contacts\Contact;
 use App\Todos\Todo;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -15,8 +16,8 @@ class ContactControllerTest extends TestCase
     protected $className = Todo::class;
 
     /**
-     * @test
      */
+    #[Test]
     public function guest_can_not_access_the_following_routes()
     {
         $todo = factory($this->className)->create();
@@ -33,8 +34,8 @@ class ContactControllerTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function a_user_can_not_see_todos_of_an_other_company()
     {
         $existing_count = Contact::where('company_id', $this->user->company_id)->count();
@@ -61,8 +62,8 @@ class ContactControllerTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function a_user_can_get_a_collection_of_contacts()
     {
         $existing_count = Contact::where('company_id', $this->user->company_id)->count();
@@ -84,8 +85,8 @@ class ContactControllerTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function a_user_can_attach_a_contact_once()
     {
         $todo = factory($this->className)->create([
@@ -120,8 +121,8 @@ class ContactControllerTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function a_user_can_dettach_a_contact()
     {
         $this->withoutExceptionHandling();

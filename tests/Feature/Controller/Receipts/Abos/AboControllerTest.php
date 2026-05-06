@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Controller\Receipts\Abos;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Contacts\Contact;
 use App\Receipts\Abos\Abo;
 use App\Receipts\Abos\Settings;
@@ -25,8 +26,8 @@ class AboControllerTest extends TestCase
     protected $redirectRouteAction = 'show';
 
     /**
-     * @test
      */
+    #[Test]
     public function guest_can_not_access_the_following_routes()
     {
         $id = factory($this->getClassName())->create()->id;
@@ -43,8 +44,8 @@ class AboControllerTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function a_user_can_not_see_receipts_of_an_other_company()
     {
         $modelOfADifferentCompany = factory($this->getClassName())->create();
@@ -59,8 +60,8 @@ class AboControllerTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function a_user_can_see_the_index_view()
     {
         $this->getIndexViewResponse([
@@ -69,8 +70,8 @@ class AboControllerTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function a_user_can_get_a_paginated_collection_of_invoices()
     {
         $receipt = $this->createReceipt();
@@ -83,8 +84,8 @@ class AboControllerTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function a_user_can_create_a_receipt()
     {
         $this->withoutExceptionHandling();
@@ -147,8 +148,8 @@ class AboControllerTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function a_user_can_create_a_receipt_for_a_contact()
     {
         $this->withoutExceptionHandling();
@@ -200,8 +201,8 @@ class AboControllerTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function a_user_can_update_a_receipt()
     {
         $abo = $this->createReceipt();
@@ -255,8 +256,8 @@ class AboControllerTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function a_user_can_delete_a_receipt_if_it_is_deletable()
     {
         $this->withoutExceptionHandling();

@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Controller\Users;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -18,8 +19,8 @@ class UserControllerTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function guest_can_not_access_the_following_routes()
     {
         $user = factory(User::class)->create();
@@ -37,8 +38,8 @@ class UserControllerTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function a_user_can_not_see_users_of_an_other_company()
     {
         $userOfADifferentCompany = factory(User::class)->create();
@@ -50,16 +51,16 @@ class UserControllerTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function a_user_can_see_the_index_view()
     {
         $this->getIndexViewResponse();
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function a_user_can_get_a_paginated_collection_of_users()
     {
         $users = factory(User::class, 3)->create([
@@ -70,8 +71,8 @@ class UserControllerTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function a_user_can_create_a_user()
     {
         $this->signIn($this->user);
@@ -98,24 +99,24 @@ class UserControllerTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function a_user_can_see_the_show_view()
     {
         $this->getShowViewResponse(['user' => $this->user->id]);
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function a_user_can_see_the_edit_view()
     {
         $this->getEditViewResponse(['user' => $this->user->id]);
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function a_user_can_update_a_user()
     {
         $this->signIn();
@@ -159,8 +160,8 @@ class UserControllerTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function a_user_can_delete_a_user_if_it_is_deletable()
     {
         $model = factory(User::class)->create([

@@ -2,6 +2,7 @@
 
 namespace Tests\Unit\Models\Banks;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Banks\Bank;
 use App\Banks\Company;
 use Tests\TestCase;
@@ -9,16 +10,16 @@ use Tests\TestCase;
 class CompanyTest extends TestCase
 {
     /**
-     * @test
      */
+    #[Test]
     public function it_can_create_a_company()
     {
         $company = factory(\App\Company::class)->create();
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function it_gets_the_accounts()
     {
         $this->markTestSkipped();

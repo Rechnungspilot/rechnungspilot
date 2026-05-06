@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Controller\Contacts;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Contacts\Contact;
 use App\Models\CustomFields\CustomField;
 use App\User;
@@ -15,8 +16,8 @@ class ContactControllerTest extends TestCase
     protected $baseRouteName = 'contacts';
 
     /**
-     * @test
      */
+    #[Test]
     public function guest_can_not_access_the_following_routes()
     {
         $id = factory(Contact::class)->create()->id;
@@ -34,8 +35,8 @@ class ContactControllerTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function a_user_can_not_see_contacts_of_an_other_company()
     {
         $existing_count = Contact::where('company_id', $this->user->company_id)->count();
@@ -49,16 +50,16 @@ class ContactControllerTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function a_user_can_see_the_index_view()
     {
         $this->getIndexViewResponse();
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function a_user_can_get_a_paginated_collection_of_items()
     {
         $existing_count = Contact::where('company_id', $this->user->company_id)->count();
@@ -72,16 +73,16 @@ class ContactControllerTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function a_user_can_see_the_create_view()
     {
         $this->getCreateViewResponse();
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function a_user_can_create_a_contact()
     {
         $this->signIn();
@@ -112,8 +113,8 @@ class ContactControllerTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function a_user_can_create_a_contact_with_customfields()
     {
         $defaultCustomfield = factory(CustomField::class)->create([
@@ -176,8 +177,8 @@ class ContactControllerTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function a_user_can_see_the_show_view()
     {
         $contact = factory(Contact::class)->create([
@@ -188,8 +189,8 @@ class ContactControllerTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function a_user_can_see_the_edit_view()
     {
         $contact = factory(Contact::class)->create([
@@ -200,8 +201,8 @@ class ContactControllerTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function a_user_can_update_a_contact()
     {
         $contact = factory(Contact::class)->create([
@@ -272,8 +273,8 @@ class ContactControllerTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function a_user_can_update_a_contact_with_customfields()
     {
         $this->withoutExceptionHandling();
@@ -355,8 +356,8 @@ class ContactControllerTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function a_user_can_delete_an_item_if_it_is_deletable()
     {
         $model = factory(Contact::class)->create([

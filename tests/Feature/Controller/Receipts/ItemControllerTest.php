@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Controller\Receipts;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Contacts\Contact;
 use App\Item;
 use App\Receipts\Invoice;
@@ -41,8 +42,8 @@ class ItemControllerTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function guest_can_not_access_the_following_routes()
     {
         $id = $this->createReceiptItem()->id;
@@ -58,8 +59,8 @@ class ItemControllerTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function a_user_can_not_see_receipt_items_of_an_other_company()
     {
         $modelOfADifferentCompany = factory(ReceiptItem::class)->create();
@@ -77,8 +78,8 @@ class ItemControllerTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function a_user_can_get_a_collection_of_receipt_items()
     {
         $receiptItems = [];
@@ -90,8 +91,8 @@ class ItemControllerTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function a_user_can_create_a_receipt_item()
     {
         $this->signIn($this->user);
@@ -125,8 +126,8 @@ class ItemControllerTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function a_user_can_see_the_edit_view()
     {
         $receiptItem = $this->createReceiptItem();
@@ -135,8 +136,8 @@ class ItemControllerTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function a_user_can_update_a_contact()
     {
         $receiptItem = $this->createReceiptItem();
@@ -170,8 +171,8 @@ class ItemControllerTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function a_user_can_delete_an_item_if_it_is_deletable()
     {
         $model = $this->createReceiptItem();

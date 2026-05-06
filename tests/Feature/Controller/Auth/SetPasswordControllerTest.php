@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Controller\Auth;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -15,8 +16,8 @@ class SetPasswordControllerTest extends TestCase
     protected $baseRouteName = 'password';
 
     /**
-     * @test
      */
+    #[Test]
     public function users_can_not_access_the_following_routes()
     {
         $this->signIn();
@@ -37,8 +38,8 @@ class SetPasswordControllerTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function invited_guests_can_visit_the_create_view()
     {
         $user = factory(User::class)->create([
@@ -51,8 +52,8 @@ class SetPasswordControllerTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function invited_guests_can_set_their_password()
     {
         $user = factory(User::class)->create([
@@ -68,14 +69,14 @@ class SetPasswordControllerTest extends TestCase
 
         $response->assertStatus(Response::HTTP_FOUND)
             ->assertSessionHasNoErrors()
-            ->assertRedirect(route('login'));
+            ->assertRedirect(route('login', [], false));
 
         $this->assertTrue(Hash::Check($password, $user->fresh()->password));
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function invited_guests_can_not_set_a_password_from_another_user()
     {
         $user = factory(User::class)->create([

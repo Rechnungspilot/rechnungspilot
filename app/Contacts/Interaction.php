@@ -22,8 +22,8 @@ class Interaction extends Model
         'path',
     ];
 
-    protected $dates = [
-        'at',
+    protected $casts = [
+        'at' => 'datetime',
     ];
 
     protected $fillable = [

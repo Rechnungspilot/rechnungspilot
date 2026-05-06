@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Controller\Contacts;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Contacts\Contact;
 use App\Contacts\Person;
 use App\User;
@@ -26,8 +27,8 @@ class PersonControllerTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function guest_can_not_access_the_following_routes()
     {
         $id = $this->createPerson()->id;
@@ -43,8 +44,8 @@ class PersonControllerTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function a_user_can_not_see_persons_of_an_other_company()
     {
         $person = factory(Person::class)->create();
@@ -70,8 +71,8 @@ class PersonControllerTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function a_user_can_get_a_collection_of_people()
     {
         $this->signIn($this->user);
@@ -90,8 +91,8 @@ class PersonControllerTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function a_user_can_create_a_person()
     {
         $this->signIn($this->user);
@@ -113,8 +114,8 @@ class PersonControllerTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function a_user_can_see_the_edit_view()
     {
         $this->signIn($this->user);
@@ -127,8 +128,8 @@ class PersonControllerTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function a_user_can_update_a_person()
     {
         $person = $this->createPerson();
@@ -162,8 +163,8 @@ class PersonControllerTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function a_user_can_delete_a_person()
     {
         $this->signIn($this->user);

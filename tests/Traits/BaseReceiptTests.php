@@ -2,6 +2,7 @@
 
 namespace Tests\Traits;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Contacts\Contact;
 use App\Item;
 use App\Receipts\Invoice;
@@ -38,8 +39,8 @@ trait BaseReceiptTests
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function guest_can_not_access_the_following_routes()
     {
         $id = factory($this->getClassName())->create()->id;
@@ -56,8 +57,8 @@ trait BaseReceiptTests
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function a_user_can_not_see_receipts_of_an_other_company()
     {
         $modelOfADifferentCompany = factory($this->getClassName())->create();
@@ -70,16 +71,16 @@ trait BaseReceiptTests
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function a_user_can_see_the_index_view()
     {
         $this->getIndexViewResponse();
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function a_user_can_get_a_paginated_collection_of_invoices()
     {
         $this->createReceipt();
@@ -90,8 +91,8 @@ trait BaseReceiptTests
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function a_user_can_create_a_receipt()
     {
         $this->signIn();
@@ -128,8 +129,8 @@ trait BaseReceiptTests
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function a_user_can_create_a_receipt_for_a_contact()
     {
         $this->signIn();
@@ -161,8 +162,8 @@ trait BaseReceiptTests
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function a_user_can_see_the_edit_view()
     {
         $invoice = $this->createReceipt();
@@ -178,8 +179,8 @@ trait BaseReceiptTests
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function a_user_can_update_a_receipt()
     {
         $receipt = $this->createReceipt();
@@ -215,8 +216,8 @@ trait BaseReceiptTests
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function a_user_can_delete_a_receipt_if_it_is_deletable()
     {
         $this->withoutExceptionHandling();

@@ -2,6 +2,7 @@
 
 namespace Tests\Unit\Models\Receipts\Abos;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Receipts\Abos\Abo;
 use App\Receipts\Abos\Settings;
 use App\Receipts\Invoice;
@@ -14,8 +15,8 @@ class AboTest extends TestCase
     protected $class_name = Abo::class;
 
     /**
-     * @test
      */
+    #[Test]
     public function it_has_model_paths()
     {
         $model = factory($this->class_name)->create();
@@ -37,8 +38,8 @@ class AboTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function it_creates_settings_after_it_is_created()
     {
         $abo = factory(Abo::class)->create();
@@ -56,8 +57,8 @@ class AboTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function it_deletes_its_statuses_and_settings_on_deleting()
     {
         $abo = factory(Abo::class)->create();

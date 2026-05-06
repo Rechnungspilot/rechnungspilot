@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Api\Contacts;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Contacts\Contact;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -11,8 +12,8 @@ use Tests\TestCase;
 class ContactControllerTest extends TestCase
 {
     /**
-     * @test
      */
+    #[Test]
     public function it_can_get_the_models_for_a_company()
     {
         $this->signIn();
@@ -31,8 +32,8 @@ class ContactControllerTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function it_can_create_a_model_for_a_company()
     {
         $this->signIn();
@@ -44,14 +45,17 @@ class ContactControllerTest extends TestCase
             'lastname' => 'Nachname',
             'company' => 'Firma',
             'email' => 'email@firma.de',
+            'address' => 'Musterstrasse 1',
+            'postcode' => '12345',
+            'city' => 'Musterstadt',
         ]);
 
         $response->assertStatus(Response::HTTP_CREATED);
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function it_can_get_a_model_for_a_company()
     {
         $this->withoutExceptionHandling();

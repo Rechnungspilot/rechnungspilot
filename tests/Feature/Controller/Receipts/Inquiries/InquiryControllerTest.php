@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Controller\Receipts\Inquiries;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Receipts\Inquiries\Inquiry;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -18,8 +19,8 @@ class InquiryControllerTest extends TestCase
     protected $className = Inquiry::class;
 
     /**
-     * @test
      */
+    #[Test]
     public function a_user_can_see_the_edit_view()
     {
         $this->withoutExceptionHandling();
@@ -30,8 +31,8 @@ class InquiryControllerTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function a_user_can_update_a_receipt()
     {
         $this->withoutExceptionHandling();

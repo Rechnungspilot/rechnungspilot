@@ -2,6 +2,7 @@
 
 namespace Tests\Unit\Items;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Company;
 use App\Contacts\Contact;
 use App\Item;
@@ -16,8 +17,8 @@ class ItemTest extends TestCase
     protected $class_name = Item::class;
 
     /**
-     * @test
      */
+    #[Test]
     public function it_has_model_paths()
     {
         $model = factory($this->class_name)->create();
@@ -36,8 +37,8 @@ class ItemTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function it_gets_the_default_name_if_none_is_given_on_creating()
     {
         $unit = factory(Unit::class)->create();
@@ -54,8 +55,8 @@ class ItemTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function it_gets_its_gross_attribute()
     {
         $item = factory(Item::class)->create([
@@ -67,8 +68,8 @@ class ItemTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function it_gets_its_gross_attribute_in_cents()
     {
         $item = factory(Item::class)->create([
@@ -80,8 +81,8 @@ class ItemTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function it_gets_the_formated_duration_hour_attribute()
     {
         $item = factory(Item::class)->create([
@@ -92,8 +93,8 @@ class ItemTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function it_sets_the_duration_from_valid_hours_and_minutes()
     {
         $item = factory(Item::class)->create();
@@ -130,8 +131,8 @@ class ItemTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function it_gets_the_formated_duration_minute_attribute()
     {
         $item = factory(Item::class)->create([
@@ -142,8 +143,8 @@ class ItemTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function it_belongs_to_a_company()
     {
         $item = factory(Item::class)->create();
@@ -152,8 +153,8 @@ class ItemTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function it_has_many_prices()
     {
         $item = factory(Item::class)->create();
@@ -162,8 +163,8 @@ class ItemTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function it_checks_if_it_is_deletable()
     {
         $item = factory(Item::class)->create();
@@ -190,8 +191,8 @@ class ItemTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function it_can_calulate_its_revenue()
     {
         $contact = factory(Contact::class)->create();
@@ -227,8 +228,8 @@ class ItemTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function it_adds_a_price_if_item_prices_are_changed_on_updating()
     {
         $item = factory(Item::class)->create();
@@ -265,8 +266,8 @@ class ItemTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function it_knows_if_the_unit_price_is_updated()
     {
         $item = factory(Item::class)->create();
@@ -294,8 +295,8 @@ class ItemTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function it_knows_if_the_unit_cost_is_updated()
     {
         $item = factory(Item::class)->create();
@@ -323,8 +324,8 @@ class ItemTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function it_has_labels()
     {
         $this->assertEquals('Artikel', Item::label());

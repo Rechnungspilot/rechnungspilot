@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Controller\Projects;
 
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -12,8 +13,8 @@ class ProjectControllerTest extends TestCase
      * A basic feature test example.
      *
      *
-     * @test
      */
+    #[Test]
     public function testExample()
     {
         $response = $this->get('/');
@@ -21,7 +22,7 @@ class ProjectControllerTest extends TestCase
         $response->assertStatus(200);
     }
 
-    /* @test */
+    #[Test]
     public function it_stores_a_project()
     {
 

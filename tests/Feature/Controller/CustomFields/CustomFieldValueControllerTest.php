@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Controller\CustomFields;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Contacts\Contact;
 use App\Models\CustomFields\CustomField;
 use App\Models\CustomFields\CustomFieldValue;
@@ -38,8 +39,8 @@ class CustomFieldValueControllerTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function a_user_can_get_a_collection_of_models()
     {
         foreach ($this->customfields as $key => $customfield) {
@@ -55,8 +56,8 @@ class CustomFieldValueControllerTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function a_user_can_create_a_model()
     {
         $this->withoutExceptionHandling();
@@ -87,8 +88,8 @@ class CustomFieldValueControllerTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function a_user_can_update_a_model()
     {
         $model = factory($this->className)->create([
@@ -133,8 +134,8 @@ class CustomFieldValueControllerTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function a_user_can_delete_a_model_if_it_is_deletable()
     {
         $this->withoutExceptionHandling();

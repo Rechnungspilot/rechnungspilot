@@ -2,6 +2,7 @@
 
 namespace Tests\Unit\Models\Todos;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Contacts\Contact;
 use App\Item;
 use App\Todos\Todo;
@@ -15,8 +16,8 @@ class TodoTest extends TestCase
     use RefreshDatabase;
 
     /**
-     * @test
      */
+    #[Test]
     public function it_has_a_creator()
     {
         $creator = factory(User::class)->create();
@@ -29,8 +30,8 @@ class TodoTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function it_belongs_to_a_teammember()
     {
         $creator = factory(User::class)->create();
@@ -47,8 +48,8 @@ class TodoTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function it_belongs_to_an_item()
     {
         $item = factory(Item::class)->create();
@@ -64,8 +65,8 @@ class TodoTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function it_can_attach_and_detach_contacts()
     {
         $contacts_count = 1;
@@ -95,8 +96,8 @@ class TodoTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function it_can_be_completed()
     {
         $this->signIn();
@@ -124,8 +125,8 @@ class TodoTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function it_can_be_incompleted()
     {
         $this->signIn();

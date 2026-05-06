@@ -2,6 +2,7 @@
 
 namespace Tests\Unit\Models;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -12,8 +13,8 @@ class UserTest extends TestCase
     protected $class_name = User::class;
 
     /**
-     * @test
      */
+    #[Test]
     public function it_has_model_paths()
     {
         $model = factory($this->class_name)->create();
@@ -32,8 +33,8 @@ class UserTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function it_gets_its_initals()
     {
         $model = factory(User::class)->create([

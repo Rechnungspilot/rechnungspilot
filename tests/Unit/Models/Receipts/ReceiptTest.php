@@ -2,6 +2,7 @@
 
 namespace Tests\Unit\Models\Receipts;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Item;
 use App\Unit;
 use Tests\TestCase;
@@ -16,8 +17,8 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 class ReceiptTest extends TestCase
 {
     /**
-     * @test
      */
+    #[Test]
     public function it_sets_its_name_after_been_created()
     {
         $invoice = factory(Invoice::class)->create();
@@ -26,8 +27,8 @@ class ReceiptTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function it_sets_its_name_to_vorlaeufig_when_number_is_zero_after_been_created()
     {
         $invoice = factory(Invoice::class)->create([
@@ -38,8 +39,8 @@ class ReceiptTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function it_gets_the_status_draft_after_it_is_created()
     {
         $invoice = factory(Invoice::class)->create();
@@ -48,16 +49,16 @@ class ReceiptTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function it_deletes_its_statuses_before_being_deleted()
     {
         $this->markTestIncomplete('This test has not been implemented yet.');
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function it_can_add_an_item()
     {
         $contact = factory(Contact::class)->create();
@@ -86,8 +87,8 @@ class ReceiptTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function it_can_delete_an_item()
     {
         $contact = factory(Contact::class)->create();
@@ -124,8 +125,8 @@ class ReceiptTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function the_status_send_can_be_added()
     {
         $invoice = factory(Invoice::class)->create();
@@ -135,8 +136,8 @@ class ReceiptTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function it_can_create_a_x_rechnung_xml()
     {
         $invoice = factory(Invoice::class)->create();

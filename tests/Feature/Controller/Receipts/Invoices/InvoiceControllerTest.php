@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Controller\Receipts\Invoices;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Receipts\Invoice;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -18,8 +19,8 @@ class InvoiceControllerTest extends TestCase
     protected $className = Invoice::class;
 
     /**
-     * @test
      */
+    #[Test]
     public function an_invoice_can_be_set_as_partial()
     {
         $invoice = $this->createReceipt();

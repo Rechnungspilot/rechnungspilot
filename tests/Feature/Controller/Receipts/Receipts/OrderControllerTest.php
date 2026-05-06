@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Controller\Receipts\Receipts;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Contacts\Contact;
 use App\Item;
 use App\Receipts\Invoice;
@@ -60,8 +61,8 @@ class OrderControllerTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function a_user_can_attach_an_order()
     {
         $this->signIn();
@@ -77,8 +78,8 @@ class OrderControllerTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function a_user_can_detach_an_order()
     {
         $this->signIn();

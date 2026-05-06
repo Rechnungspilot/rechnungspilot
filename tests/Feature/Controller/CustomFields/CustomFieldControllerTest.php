@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Controller\CustomFields;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Models\CustomFields\CustomField;
 use App\Receipts\Invoice;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -21,8 +22,8 @@ class CustomFieldControllerTest extends TestCase
     ];
 
     /**
-     * @test
      */
+    #[Test]
     public function guest_can_not_access_the_following_routes()
     {
         $id = factory($this->className)->create()->id;
@@ -37,8 +38,8 @@ class CustomFieldControllerTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function a_user_can_not_see_models_of_an_other_company()
     {
         $modelOfADifferentCompany = factory($this->className)->create();
@@ -54,8 +55,8 @@ class CustomFieldControllerTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function a_user_can_see_the_index_view()
     {
         foreach ($this->types as $type) {
@@ -64,8 +65,8 @@ class CustomFieldControllerTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function a_user_can_get_a_collection_of_models()
     {
         factory($this->className, 3)->create([
@@ -79,8 +80,8 @@ class CustomFieldControllerTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function a_user_can_create_a_model()
     {
         $inputType = 'text';
@@ -116,8 +117,8 @@ class CustomFieldControllerTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function a_user_can_update_a_model()
     {
        $model = factory($this->className)->create([
@@ -149,8 +150,8 @@ class CustomFieldControllerTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function a_user_can_delete_a_model_if_it_is_deletable()
     {
         $this->withoutExceptionHandling();

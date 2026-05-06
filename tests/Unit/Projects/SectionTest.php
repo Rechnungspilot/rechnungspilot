@@ -2,6 +2,7 @@
 
 namespace Tests\Unit\Projects;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Projects\Section;
 use App\Todos\Todo;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -13,8 +14,8 @@ class SectionTest extends TestCase
     use RefreshDatabase;
 
     /**
-     * @test
      */
+    #[Test]
     public function it_has_todos()
     {
         $section = factory(Section::class)->create();

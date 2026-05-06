@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Controller;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Tag;
 use App\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -25,8 +26,8 @@ class TagControllerTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function guest_can_not_access_the_following_routes()
     {
         $id = $this->createTag()->id;
@@ -41,8 +42,8 @@ class TagControllerTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function a_user_can_not_see_tags_of_an_other_company()
     {
         $tag = factory(Tag::class)->create([
@@ -60,8 +61,8 @@ class TagControllerTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function a_user_can_see_the_index_view()
     {
         $this->signIn($this->user);
@@ -72,8 +73,8 @@ class TagControllerTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function a_user_can_get_a_collection_of_tags()
     {
         $this->signIn($this->user);
@@ -94,8 +95,8 @@ class TagControllerTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function a_user_can_create_a_tag()
     {
         $this->signIn($this->user);
@@ -119,8 +120,8 @@ class TagControllerTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function a_user_can_update_a_tag()
     {
         $tag = $this->createTag();
@@ -149,8 +150,8 @@ class TagControllerTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function a_user_can_delete_a_tag()
     {
         $this->signIn($this->user);

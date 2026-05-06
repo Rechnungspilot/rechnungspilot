@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Api\Receipts;
 
+use PHPUnit\Framework\Attributes\Test;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Http\Response;
@@ -10,8 +11,8 @@ use Tests\TestCase;
 class InvoiceControllerTest extends TestCase
 {
     /**
-     * @test
      */
+    #[Test]
     public function it_can_get_the_invoices_for_a_company()
     {
         $this->signIn();
@@ -31,8 +32,8 @@ class InvoiceControllerTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function it_can_get_the_invoices_with_an_item_for_a_company()
     {
         $this->signIn();
@@ -70,8 +71,8 @@ class InvoiceControllerTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function it_can_create_an_invoices_for_a_company()
     {
         $this->signIn();

@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Controller\Userfiles;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Userfile;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -16,8 +17,8 @@ class UserfileControllerTest extends TestCase
     protected $className = Userfile::class;
 
     /**
-     * @test
      */
+    #[Test]
     public function guest_can_not_access_the_following_routes()
     {
         $id = factory($this->className)->create()->id;
@@ -32,8 +33,8 @@ class UserfileControllerTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function a_user_can_not_see_contacts_of_an_other_company()
     {
         $userfileOfADifferentCompany = factory($this->className)->create();
@@ -51,16 +52,16 @@ class UserfileControllerTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function a_user_can_see_the_index_view()
     {
         $this->getIndexViewResponse();
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function a_user_can_get_a_paginated_collection_of_items()
     {
         $models = factory($this->className, 3)->create([
@@ -72,8 +73,8 @@ class UserfileControllerTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function a_user_can_create_a_file()
     {
         Storage::fake(config('app.storage_disk_userfiles'));
@@ -104,8 +105,8 @@ class UserfileControllerTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function a_user_can_update_a_userfile()
     {
         $this->signIn($this->user);
@@ -127,8 +128,8 @@ class UserfileControllerTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function a_user_can_delete_an_item_if_it_is_deletable()
     {
         $this->withoutExceptionHandling();

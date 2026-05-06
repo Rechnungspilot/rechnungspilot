@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Controller\Contacts;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Contacts\Contact;
 use App\Contacts\Interaction;
 use App\Contacts\InteractionType;
@@ -40,8 +41,8 @@ class InteractionControllerTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function guest_can_not_access_the_following_routes()
     {
         $id = factory($this->className)->create()->id;
@@ -58,8 +59,8 @@ class InteractionControllerTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function a_user_can_not_see_todos_of_an_other_company()
     {
         $modelOfADifferentCompany = factory($this->className)->create();
@@ -71,8 +72,8 @@ class InteractionControllerTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function a_user_can_get_a_paginated_collection_of_items()
     {
         $models = factory($this->className, 3)->create([
@@ -88,8 +89,8 @@ class InteractionControllerTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function a_user_can_see_the_show_view()
     {
         $this->withoutExceptionHandling();
@@ -100,8 +101,8 @@ class InteractionControllerTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function a_user_can_see_the_edit_view()
     {
         $model = $this->createInteraction();
@@ -110,8 +111,8 @@ class InteractionControllerTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function a_user_can_create_a_model()
     {
         $this->signIn();
@@ -143,8 +144,8 @@ class InteractionControllerTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function a_user_can_update_a_model()
     {
         $this->withoutExceptionHandling();
@@ -179,8 +180,8 @@ class InteractionControllerTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function a_user_can_delete_a_model_if_it_is_deletable()
     {
         $model = $this->createInteraction();

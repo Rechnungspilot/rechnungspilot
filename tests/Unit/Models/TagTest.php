@@ -2,6 +2,7 @@
 
 namespace Tests\Unit\Models;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Contacts\Contact;
 use App\Tag;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -11,8 +12,8 @@ use Tests\TestCase;
 class TagTest extends TestCase
 {
     /**
-     * @test
      */
+    #[Test]
     public function it_has_many_taggables()
     {
         $this->markTestIncomplete();

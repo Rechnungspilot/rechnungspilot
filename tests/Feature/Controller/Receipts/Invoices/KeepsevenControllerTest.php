@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Controller\Receipts\Invoices;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Contacts\Contact;
 use App\Item;
 use App\Mail\ReceiptSend;
@@ -15,8 +16,8 @@ use Tests\TestCase;
 class KeepsevenControllerTest extends TestCase
 {
     /**
-     * @test
      */
+    #[Test]
     public function it_has_a_create_view()
     {
         $this->markTestIncomplete();
@@ -24,8 +25,8 @@ class KeepsevenControllerTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function it_can_create_a_new_invoice()
     {
         $this->markTestIncomplete();

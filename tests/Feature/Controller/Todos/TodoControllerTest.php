@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Controller\Todos;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Todos\Todo;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -15,8 +16,8 @@ class TodoControllerTest extends TestCase
     protected $className = Todo::class;
 
     /**
-     * @test
      */
+    #[Test]
     public function guest_can_not_access_the_following_routes()
     {
         $id = factory($this->className)->create()->id;
@@ -33,8 +34,8 @@ class TodoControllerTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function a_user_can_not_see_todos_of_an_other_company()
     {
         $existing_todos_count = Todo::where('company_id', $this->user->company_id)->count();
@@ -48,16 +49,16 @@ class TodoControllerTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function a_user_can_see_the_index_view()
     {
         $this->getIndexViewResponse();
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function a_user_can_get_a_paginated_collection_of_items()
     {
         $existing_todos_count = Todo::where('company_id', $this->user->company_id)->count();
@@ -71,16 +72,16 @@ class TodoControllerTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function a_user_can_get_the_raw_models()
     {
         $this->markTestIncomplete('This test has not been implemented yet.');
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function a_user_can_create_a_model()
     {
         $this->signIn();
@@ -106,8 +107,8 @@ class TodoControllerTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function a_user_can_see_the_show_view()
     {
         $model = factory($this->className)->create([
@@ -118,8 +119,8 @@ class TodoControllerTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function a_user_can_see_the_edit_view()
     {
         $model = factory($this->className)->create([
@@ -130,8 +131,8 @@ class TodoControllerTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function a_user_can_update_a_model()
     {
         $this->withoutExceptionHandling();
@@ -175,8 +176,8 @@ class TodoControllerTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function a_user_can_delete_a_model_if_it_is_deletable()
     {
         $model = factory($this->className)->create([

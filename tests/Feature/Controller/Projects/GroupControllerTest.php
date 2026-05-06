@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Controller\Projects;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Projects\Group;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -17,8 +18,8 @@ class GroupControllerTest extends TestCase
     ];
 
     /**
-     * @test
      */
+    #[Test]
     public function it_stores_a_project_group()
     {
         $user = $this->signIn();
@@ -37,8 +38,8 @@ class GroupControllerTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function it_updates_a_project_group()
     {
         $user = $this->signIn();
@@ -61,8 +62,8 @@ class GroupControllerTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function it_deletes_a_group_with_its_dependencies()
     {
         $this->markTestIncomplete('This test has not been implemented yet.');

@@ -2,6 +2,7 @@
 
 namespace Tests\Unit\Models\Customfields;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Contacts\Contact;
 use App\Models\CustomFields\CustomField;
 use App\Receipts\Invoice;
@@ -12,8 +13,8 @@ use Tests\TestCase;
 class CustomfieldTest extends TestCase
 {
     /**
-     * @test
      */
+    #[Test]
     public function it_can_get_the_for_from_a_model()
     {
         $models = [
@@ -27,8 +28,8 @@ class CustomfieldTest extends TestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function it_can_get_all_default_models_for_a_type()
     {
         $for = 'kontakte';

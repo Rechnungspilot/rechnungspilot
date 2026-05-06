@@ -2,6 +2,7 @@
 
 namespace Tests\Unit\Projects;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Projects\Group;
 use App\Projects\Project;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -13,8 +14,8 @@ class GroupTest extends TestCase
     use RefreshDatabase;
 
     /**
-     * @test
      */
+    #[Test]
     public function it_has_projects()
     {
         $projects_count = 5;

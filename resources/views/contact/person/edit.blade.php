@@ -31,7 +31,7 @@
             <button type="submit" class="btn btn-danger btn-sm pointer">Kein Standard Rechnung</button>
         </form>
     @endif
-    <a href="{{ $contact->path }}" class="btn btn-secondary btn-sm btn-sm ml-1">Übersicht</a>
+    <a href="{{ route('contacts.show', ['contact' => $contact->id]) }}" class="btn btn-secondary btn-sm btn-sm ml-1">Übersicht</a>
 @endsection
 
 @section('content')
