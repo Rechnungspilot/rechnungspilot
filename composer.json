@@ -8,7 +8,7 @@
     ],
     "license": "MIT",
     "require": {
-        "php": "^7.3|^8.0",
+        "php": "^8.3",
         "ajcastro/eager-load-pivot-relations": "^0.2.1",
         "calebporzio/parental": "^1.6.0",
         "danielsundermeier/laravel-deploy": "^0.2.0",
