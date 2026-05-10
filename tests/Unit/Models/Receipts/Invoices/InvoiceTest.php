@@ -49,8 +49,8 @@ class InvoiceTest extends TestCase
             'term_id' => $this->term->id,
         ]);
 
-        // $this->fromReceipt->addItem($this->item);
-        // $this->fromReceipt->addItem($this->item);
+        $this->fromReceipt->addItem($this->item);
+        $this->fromReceipt->addItem($this->item);
 
         $this->fromReceipt = $this->fromReceipt->fresh();
     }

@@ -118,6 +118,8 @@ class Receipt extends Model
 
         static::creating(function($model)
         {
+            $model->{$model->getInheritanceColumn()} = $model->classToAlias(get_class($model));
+
             if (! $model->date) {
                 $model->date = now()->startOfDay();
             }

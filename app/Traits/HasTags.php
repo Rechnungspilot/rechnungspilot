@@ -50,7 +50,7 @@ trait HasTags
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeWithAnyTags(Builder $query, $tags, string $type = null): Builder
+    public function scopeWithAnyTags(Builder $query, $tags, ?string $type = null): Builder
     {
         if (! $tags)
         {
@@ -79,7 +79,7 @@ trait HasTags
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeWithAllTags(Builder $query, $tags, string $type = null): Builder
+    public function scopeWithAllTags(Builder $query, $tags, ?string $type = null): Builder
     {
         if (! $tags)
         {

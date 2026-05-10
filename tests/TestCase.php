@@ -28,7 +28,7 @@ abstract class TestCase extends BaseTestCase
         $this->company->setup();
     }
 
-    public function signIn(User $user = null)
+    public function signIn(?User $user = null)
     {
         if (is_null($user))
         {

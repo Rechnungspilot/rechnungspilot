@@ -68,7 +68,7 @@ class Userfile extends Model
         'user_id',
     ];
 
-    public static function fromUploadedFile(UploadedFile $file, Model $fileable = null) : self
+    public static function fromUploadedFile(UploadedFile $file, ?Model $fileable = null) : self
     {
         $attributes['company_id'] = auth()->user()->company_id;
         $attributes['mime'] = $file->getClientMimeType();
