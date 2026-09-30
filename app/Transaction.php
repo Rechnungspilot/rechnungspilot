@@ -3,6 +3,7 @@
 namespace App;
 
 use App\Company;
+use App\Traits\HasCompany;
 use App\Traits\HasTags;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -10,7 +11,7 @@ use Staudenmeir\EloquentJsonRelations\HasJsonRelationships;
 
 class Transaction extends Model
 {
-    use HasTags, HasJsonRelationships;
+    use HasCompany, HasTags, HasJsonRelationships;
 
     protected $appends = [
 

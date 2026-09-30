@@ -4,7 +4,9 @@ namespace App\Providers;
 
 use App\Auth\UserProvider;
 use App\Policies\InvoicePolicy;
+use App\Policies\TransactionPolicy;
 use App\Receipts\Invoice;
+use App\Transaction;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
@@ -18,6 +20,7 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected $policies = [
         Invoice::class => InvoicePolicy::class,
+        Transaction::class => TransactionPolicy::class,
     ];
 
     /**

@@ -202,9 +202,13 @@ Route::middleware(['auth', 'company.locked'])->group(function () {
     Route::post('briefe/aus/{receipt}', 'LetterFromController@store');
 
     // Buchungen
-    Route::get('buchungen', 'TransactionController@index');
+    Route::get('buchungen', 'TransactionController@index')
+        ->middleware('can:viewAny,' . Transaction::class)
+        ->name('transactions.index');
 
-    Route::put('buchungen/{transaction}', 'TransactionController@update');
+    Route::put('buchungen/{transaction}', 'TransactionController@update')
+        ->middleware('can:update,transaction')
+        ->name('transactions.update');
 
     Route::get('buchungen/belege', 'Transactions\ReceiptController@index');
 
